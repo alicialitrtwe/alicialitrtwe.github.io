@@ -14,9 +14,9 @@
     
     <item>
       <title>Bird Vocalizations</title>
-      <link>https://alicialitrtwe.github.io/project/project1birds/</link>
+      <link>https://alicialitrtwe.github.io/project/project1songbirds/</link>
       <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
-      <guid>https://alicialitrtwe.github.io/project/project1birds/</guid>
+      <guid>https://alicialitrtwe.github.io/project/project1songbirds/</guid>
       <description>&lt;p&gt;This project applying nonlinear dynamical systems techniques to characterize the mechanics of zebra finch song production. I combined topological data analysis with machine learning to show that the geometries of the reconstructed state-spaces of bird song recordings contain useful information about birds&amp;rsquo; individual identities.&lt;/p&gt;
 </description>
     </item>

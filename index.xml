@@ -261,6 +261,14 @@ A Markdown aside is useful for displaying notices, hints, or definitions to your
     </item>
     
     <item>
+      <title>A Nonlinear Dynamical System Approach to Bird Song Analysis</title>
+      <link>https://alicialitrtwe.github.io/publication/conference-paper/</link>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+      <guid>https://alicialitrtwe.github.io/publication/conference-paper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Display Jupyter Notebooks with Academic</title>
       <link>https://alicialitrtwe.github.io/post/jupyter/</link>
       <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
@@ -434,9 +442,9 @@ Three
     
     <item>
       <title>Bird Vocalizations</title>
-      <link>https://alicialitrtwe.github.io/project/project1birds/</link>
+      <link>https://alicialitrtwe.github.io/project/project1songbirds/</link>
       <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
-      <guid>https://alicialitrtwe.github.io/project/project1birds/</guid>
+      <guid>https://alicialitrtwe.github.io/project/project1songbirds/</guid>
       <description>&lt;p&gt;This project applying nonlinear dynamical systems techniques to characterize the mechanics of zebra finch song production. I combined topological data analysis with machine learning to show that the geometries of the reconstructed state-spaces of bird song recordings contain useful information about birds&amp;rsquo; individual identities.&lt;/p&gt;
 </description>
     </item>
@@ -536,25 +544,6 @@ Three
 &lt;h2 id=&#34;license&#34;&gt;License&lt;/h2&gt;
 &lt;p&gt;Copyright 2016-present &lt;a href=&#34;https://georgecushen.com&#34;&gt;George Cushen&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Released under the &lt;a href=&#34;https://github.com/gcushen/hugo-academic/blob/master/LICENSE.md&#34;&gt;MIT&lt;/a&gt; license.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>An example conference paper</title>
-      <link>https://alicialitrtwe.github.io/publication/conference-paper/</link>
-      <pubDate>Mon, 01 Jul 2013 00:00:00 +0000</pubDate>
-      <guid>https://alicialitrtwe.github.io/publication/conference-paper/</guid>
-      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Cite&lt;/em&gt; button above to demo the feature to enable visitors to import publication metadata into their reference management software.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Slides&lt;/em&gt; button above to demo Academic&#39;s Markdown slides feature.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Supplementary notes can be added here, including &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34;&gt;code and math&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
