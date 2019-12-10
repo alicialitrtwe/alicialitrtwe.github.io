@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects | Alicia Zeng</title>
-    <link>https://alicialitrtwe.github.io/project/</link>
-      <atom:link href="https://alicialitrtwe.github.io/project/index.xml" rel="self" type="application/rss+xml" />
-    <description>Projects</description>
+    <title>Auditory | Alicia Zeng</title>
+    <link>https://alicialitrtwe.github.io/tags/auditory/</link>
+      <atom:link href="https://alicialitrtwe.github.io/tags/auditory/index.xml" rel="self" type="application/rss+xml" />
+    <description>Auditory</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://alicialitrtwe.github.io/img/icon-192.png</url>
-      <title>Projects</title>
-      <link>https://alicialitrtwe.github.io/project/</link>
+      <title>Auditory</title>
+      <link>https://alicialitrtwe.github.io/tags/auditory/</link>
     </image>
     
     <item>
@@ -19,14 +19,6 @@
       <guid>https://alicialitrtwe.github.io/project/project1birds/</guid>
       <description>&lt;p&gt;This project applying nonlinear dynamical systems techniques to characterize the mechanics of zebra finch song production. I combined topological data analysis with machine learning to show that the geometries of the reconstructed state-spaces of bird song recordings contain useful information about birds&amp;rsquo; individual identities.&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>External Project</title>
-      <link>https://alicialitrtwe.github.io/project/external-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>https://alicialitrtwe.github.io/project/external-project/</guid>
-      <description></description>
     </item>
     
   </channel>
