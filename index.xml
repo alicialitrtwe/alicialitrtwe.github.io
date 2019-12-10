@@ -238,6 +238,15 @@ A Markdown aside is useful for displaying notices, hints, or definitions to your
     </item>
     
     <item>
+      <title>Sensory Uncertainty</title>
+      <link>https://alicialitrtwe.github.io/project/project2retinal/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>https://alicialitrtwe.github.io/project/project2retinal/</guid>
+      <description>&lt;p&gt;This ongoing project involves analyzing multi-electrode array recordings of retinal responses. Specifically, I’m interested in using flexible poisson models to discern how variance reflects uncertainty in stimulus perception. This analysis aims to unveil neural computations that cannot be understood from measures of average firing rate alone.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>An example preprint / working paper</title>
       <link>https://alicialitrtwe.github.io/publication/preprint/</link>
       <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
@@ -430,14 +439,6 @@ Three
       <guid>https://alicialitrtwe.github.io/project/project1birds/</guid>
       <description>&lt;p&gt;This project applying nonlinear dynamical systems techniques to characterize the mechanics of zebra finch song production. I combined topological data analysis with machine learning to show that the geometries of the reconstructed state-spaces of bird song recordings contain useful information about birds&amp;rsquo; individual identities.&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>External Project</title>
-      <link>https://alicialitrtwe.github.io/project/external-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>https://alicialitrtwe.github.io/project/external-project/</guid>
-      <description></description>
     </item>
     
     <item>

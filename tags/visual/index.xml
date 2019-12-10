@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects | Alicia Zeng</title>
-    <link>https://alicialitrtwe.github.io/project/</link>
-      <atom:link href="https://alicialitrtwe.github.io/project/index.xml" rel="self" type="application/rss+xml" />
-    <description>Projects</description>
+    <title>Visual | Alicia Zeng</title>
+    <link>https://alicialitrtwe.github.io/tags/visual/</link>
+      <atom:link href="https://alicialitrtwe.github.io/tags/visual/index.xml" rel="self" type="application/rss+xml" />
+    <description>Visual</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://alicialitrtwe.github.io/img/icon-192.png</url>
-      <title>Projects</title>
-      <link>https://alicialitrtwe.github.io/project/</link>
+      <title>Visual</title>
+      <link>https://alicialitrtwe.github.io/tags/visual/</link>
     </image>
     
     <item>
@@ -18,15 +18,6 @@
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://alicialitrtwe.github.io/project/project2retinal/</guid>
       <description>&lt;p&gt;This ongoing project involves analyzing multi-electrode array recordings of retinal responses. Specifically, I’m interested in using flexible poisson models to discern how variance reflects uncertainty in stimulus perception. This analysis aims to unveil neural computations that cannot be understood from measures of average firing rate alone.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Bird Vocalizations</title>
-      <link>https://alicialitrtwe.github.io/project/project1birds/</link>
-      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
-      <guid>https://alicialitrtwe.github.io/project/project1birds/</guid>
-      <description>&lt;p&gt;This project applying nonlinear dynamical systems techniques to characterize the mechanics of zebra finch song production. I combined topological data analysis with machine learning to show that the geometries of the reconstructed state-spaces of bird song recordings contain useful information about birds&amp;rsquo; individual identities.&lt;/p&gt;
 </description>
     </item>
     
