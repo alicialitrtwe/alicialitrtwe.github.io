@@ -17,13 +17,7 @@
       <link>https://alicialitrtwe.github.io/codes/attractorreconstruction/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://alicialitrtwe.github.io/codes/attractorreconstruction/</guid>
-      <description>&lt;iframe
-src=&#34;./&lt;widget&gt;&#34;
-width=&#34;90%&#34;
-height=&#34;1000px&#34;
-style=&#34;border:none;&#34;&gt;
-&lt;/iframe&gt;
-&lt;p&gt;This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel&#39;s exceptional book [ ^1 ] for more details.&lt;/p&gt;
+      <description>&lt;p&gt;This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel&#39;s exceptional book [ ^1 ] for more details.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;%matplotlib inline
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
@@ -345,6 +339,12 @@ We determine the minimal dimension needed to fully unfold the attractor by count
 &lt;p&gt;[ ^3 ] Kraskov, Alexander, Harald Stögbauer, and Peter Grassberger. &amp;ldquo;Estimating mutual information.&amp;rdquo; Physical review E 69.6 (2004): 066138.&lt;/p&gt;
 &lt;p&gt;[ ^4 ] Kennel, Matthew B., Reggie Brown, and Henry DI Abarbanel. &amp;ldquo;Determining embedding dimension for phase-space reconstruction using a geometrical construction.&amp;rdquo; Physical review A 45.6 (1992): 3403.&lt;/p&gt;
 &lt;p&gt;[ ^5 ] Cao, Liangyue. &amp;ldquo;Practical method for determining the minimum embedding dimension of a scalar time series.&amp;rdquo; Physica D: Nonlinear Phenomena 110.1-2 (1997): 43-50.&lt;/p&gt;
+&lt;iframe
+src=&#34;./&lt;CONVERTED_NOTEBOOK_FILENAME&gt;&#34;
+width=&#34;90%&#34;
+height=&#34;1000px&#34;
+style=&#34;border:none;&#34;&gt;
+&lt;/iframe&gt;
 </description>
     </item>
     
