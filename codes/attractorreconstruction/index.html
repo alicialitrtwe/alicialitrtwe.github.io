@@ -581,7 +581,7 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel's exceptional book [^1] for more details.</p>
+      <p>This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel's exceptional book [ ^1 ] for more details.</p>
 <pre><code class="language-python">%matplotlib inline
 </code></pre>
 <pre><code class="language-python">import numpy as np
@@ -595,7 +595,7 @@ import scipy.stats as sst
 from scipy.special import digamma,gamma
 from math import log, pi, exp
 </code></pre>
-<h1 id="0-generate-the-3d-lorenz-attractor-as-an-example">0. Generate the 3D Lorenz Attractor as an example</h1>
+<h2 id="0-generate-the-3d-lorenz-attractor-as-an-example">0. Generate the 3D Lorenz Attractor as an example</h2>
 <p>You can test out other chaotic systems simply by changing the ODE function below.</p>
 <pre><code class="language-python"># Define a function for generating time-seies data given ODEs
 def solve_ODE(time, ODE, state, parameters, dt=0.01):
@@ -632,28 +632,16 @@ def lorenz(time, x0, y0, z0, sigma, beta, rho):
 </code></pre>
 <pre><code class="language-python">lorenz_trajectory = lorenz(2**5, -8.0, 9.0, 20.0, 10.0, 8/3.0, 28.0)
 </code></pre>
-<p><img src="./AttractorReconstruction_5_0.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_5_0.png" alt="png"></p>
 <p>You can play with the parameters and the initial inputs:</p>
-<pre><code class="language-python">w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=4, rho=30)
+<pre><code class="language-python">w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=8/3.0, rho=28.0)
 display(w)
 </code></pre>
-<p>Failed to display Jupyter Widget of type <code>interactive</code>.</p>
-<p>
-  If you're reading this message in the Jupyter Notebook or JupyterLab Notebook, it may mean
-  that the widgets JavaScript is still loading. If this message persists, it
-  likely means that the widgets JavaScript library is either not installed or
-  not enabled. See the <a href="https://ipywidgets.readthedocs.io/en/stable/user_install.html">Jupyter
-  Widgets Documentation</a> for setup instructions.
-</p>
-<p>
-  If you're reading this message in another frontend (for example, a static
-  rendering on GitHub or <a href="https://nbviewer.jupyter.org/">NBViewer</a>),
-  it may mean that your frontend doesn't currently support widgets.
-</p>
-<h1 id="1-select-the-appropriate-time-delay-for-state-space-reconstruction">1. Select the appropriate time delay for state space reconstruction</h1>
-<p>We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum [^2]</p>
-<h2 id="11-mutual-information-estimator">1.1 Mutual information estimator</h2>
-<p>So we need to build a mutual information estimator. There are numerous methods aimming at correcting the bias which would arises from naively pluging in frequency distributions of the samples as the underlying probabiliy distribution. Here I choose Kraskov's K-nearest-neighbor estimator as it has been shown to be stable and less affected by parameters especially for time series from nonlinear dynamical systems [^3].</p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_7_0.png" alt="png"></p>
+<h2 id="1-select-the-appropriate-time-delay-for-state-space-reconstruction">1. Select the appropriate time delay for state space reconstruction</h2>
+<p>We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum [ ^2 ]</p>
+<h3 id="11-mutual-information-estimator">1.1 Mutual information estimator</h3>
+<p>So we need to build a mutual information estimator. There are numerous methods aimming at correcting the bias which would arises from naively pluging in frequency distributions of the samples as the underlying probabiliy distribution. Here I choose Kraskov's K-nearest-neighbor estimator as it has been shown to be stable and less affected by parameters especially for time series from nonlinear dynamical systems [ ^3 ].</p>
 <p>Below is a simple plugin code and a code based on the second algorithm proposed by the Kraskov paper.</p>
 <pre><code class="language-python">def MI_plugin(x, y, base = 2):
     bins = np.ceil(np.log2(len(x)))+1
@@ -693,7 +681,7 @@ display(w)
         + list(map(digamma, ny))) / N)+ digamma(N) ) / np.log(base)
     return MI_estimate
 </code></pre>
-<h2 id="12-plot-mi-against-time-delay">1.2 Plot MI against time delay</h2>
+<h3 id="12-plot-mi-against-time-delay">1.2 Plot MI against time delay</h3>
 <p>We find mutual information as a function of time delay, and locate the time delay when mutual information reaches it first minimum.</p>
 <pre><code class="language-python">def MI_tau(time_series, dt, code=MI_knn_1D, tau_number=40):
     # Input functions: 
@@ -725,7 +713,7 @@ plt.ylabel(&quot;x coordinate of the Lorenz attractor&quot;)
 </code></pre>
 <pre><code>Text(0,0.5,'x coordinate of the Lorenz attractor')
 </code></pre>
-<p><img src="./AttractorReconstruction_14_1.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_14_1.png" alt="png"></p>
 <pre><code class="language-python">tau_x, mi_lorenz_x = MI_tau(lorenz_x, 0.01, MI_plugin)
 plt.plot(tau_x, mi_lorenz_x)
 plt.xlabel(&quot;time lag&quot;)
@@ -734,7 +722,7 @@ plt.suptitle('lorenz_x')
 </code></pre>
 <pre><code>Text(0.5,0.98,'lorenz_x')
 </code></pre>
-<p><img src="./AttractorReconstruction_15_1.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_15_1.png" alt="png"></p>
 <pre><code class="language-python">from scipy.signal import argrelextrema
 def lcmin_1_2(data, order=1):
     # Find the indice for the first and the second local minimum
@@ -752,7 +740,7 @@ print(lcmin_1, lcmin_2)
 </code></pre>
 <pre><code>18 26
 </code></pre>
-<h1 id="2-choosing-the-dimension-of-reconstructed-phase-space">2. Choosing the dimension of Reconstructed Phase Space</h1>
+<h2 id="2-choosing-the-dimension-of-reconstructed-phase-space">2. Choosing the dimension of Reconstructed Phase Space</h2>
 <p>Now that we have chosen a time delay, we are ready to see how the time series look like in a d-dimensional state space with coordinates: $y(k) = [S(k), S(k+T),&hellip;, S(k+(d-1)T)]$</p>
 <p>First we find the points in the reconstructed spaces:</p>
 <pre><code class="language-python">def reconstruct(data, T_index, samplerate = 1, d_max = 8):
@@ -781,7 +769,7 @@ print(lcmin_1, lcmin_2)
 plt.plot(reconstru_lorenz_x_1[1][:,0],reconstru_lorenz_x_1[1][:,1], color='blue')
 plt.show()
 </code></pre>
-<p><img src="./AttractorReconstruction_22_0.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_22_0.png" alt="png"></p>
 <p>Plot the time series lorenz_x reconstructed in 3D space, using the first local minimum time delay:</p>
 <pre><code class="language-python">def plot_3D(data):
     # plot narray data of shape (n, 3) in 3D space
@@ -790,19 +778,16 @@ plt.show()
     axe.plot(data[:,0], data[:,1],data[:,2],lw=0.5)
     plt.show()
 </code></pre>
-<pre><code class="language-python">fig = plt.figure()
-axe = fig.gca(projection='3d')
-data = reconstru_lorenz_x_1[2]
-axe.plot(data[:,0], data[:,1],data[:,2],lw=0.5)
-plt.show()
+<pre><code class="language-python">plot_3D(reconstru_lorenz_x_1[2])
 </code></pre>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_25_0.png" alt="png"></p>
 <p>Try plotting the time series lorenz_x in 3D space using the second local minimum:</p>
 <pre><code class="language-python">reconstru_lorenz_x_2 = reconstruct(lorenz_x, lcmin_2, d_max=6)
 plot_3D(reconstru_lorenz_x_2[2])
 </code></pre>
-<p><img src="./AttractorReconstruction_27_0.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_27_0.png" alt="png"></p>
 <p>In a chaotic system any measurement stripe will eventually spread back to the invariant measure. To avoid this kind of spreading, as can be seen in the second graph, the first local minimum would be more preferable than the second minimum.<br>
-We determine the minimal dimension needed to fully unfold the attractor by counting the number of global false nearest neighbors [^4]:</p>
+We determine the minimal dimension needed to fully unfold the attractor by counting the number of global false nearest neighbors [ ^4 ]:</p>
 <pre><code class="language-python">def fnn(data, reconstru, A = 2, threshold=15):
     # Find the percentage of false nearst neighbor in dimension d 
     # Inputs: 
@@ -843,7 +828,7 @@ We determine the minimal dimension needed to fully unfold the attractor by count
     plt.show()
     return np.array(fnn_percentage).T
 </code></pre>
-<p>Cao has proposed a revised algorithm that could more precisely determine the minimum embedding dimension [^5].</p>
+<p>Cao has proposed a revised algorithm that could more precisely determine the minimum embedding dimension [ ^ 5].</p>
 <pre><code class="language-python">def fnn_Cao(reconstru):
     # Find the percentage of false nearst neighbor in dimension d 
     # Inputs: 
@@ -899,13 +884,13 @@ We determine the minimal dimension needed to fully unfold the attractor by count
 </code></pre>
 <pre><code class="language-python">fnn(lorenz_x, reconstru_lorenz_x_1)
 </code></pre>
-<p><img src="./AttractorReconstruction_32_0.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_32_0.png" alt="png"></p>
 <pre><code>array([0.97531271, 0.04542462, 0.        , 0.        , 0.        ,
        0.        , 0.        , 0.        , 0.        ])
 </code></pre>
 <pre><code class="language-python">fnn_Cao(reconstru_lorenz_x_1)
 </code></pre>
-<p><img src="./AttractorReconstruction_33_0.png" alt="png"></p>
+<p><img src="AttractorReconstruction_files/AttractorReconstruction_33_0.png" alt="png"></p>
 <pre><code>(array([9.53466625e-05, 3.72059585e-01, 9.06896870e-01, 9.09639052e-01,
         9.00596900e-01, 9.22524451e-01, 1.00414577e+00, 9.96374680e-01]),
  array([0.07351213, 0.93114608, 1.13263383, 1.02632908, 0.95937794,
@@ -913,11 +898,11 @@ We determine the minimal dimension needed to fully unfold the attractor by count
 </code></pre>
 <p>It is clear from both algorithms that the minimum embedding dimension for the reconstructed Lorenz Attractor should be 3.</p>
 <p>References:</p>
-<p>[^1] Abarbanel, H. (2012). Analysis of observed chaotic data. Springer Science &amp; Business Media.</p>
-<p>[^2] Fraser, A. M., &amp; Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. Physical review A, 33(2), 1134.</p>
-<p>[^3] Kraskov, Alexander, Harald Stögbauer, and Peter Grassberger. &ldquo;Estimating mutual information.&rdquo; Physical review E 69.6 (2004): 066138.</p>
-<p>[^4] Kennel, Matthew B., Reggie Brown, and Henry DI Abarbanel. &ldquo;Determining embedding dimension for phase-space reconstruction using a geometrical construction.&rdquo; Physical review A 45.6 (1992): 3403.</p>
-<p>[^5] Cao, Liangyue. &ldquo;Practical method for determining the minimum embedding dimension of a scalar time series.&rdquo; Physica D: Nonlinear Phenomena 110.1-2 (1997): 43-50.</p>
+<p>[ ^1 ] Abarbanel, H. (2012). Analysis of observed chaotic data. Springer Science &amp; Business Media.</p>
+<p>[ ^2 ] Fraser, A. M., &amp; Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. Physical review A, 33(2), 1134.</p>
+<p>[ ^3 ] Kraskov, Alexander, Harald Stögbauer, and Peter Grassberger. &ldquo;Estimating mutual information.&rdquo; Physical review E 69.6 (2004): 066138.</p>
+<p>[ ^4 ] Kennel, Matthew B., Reggie Brown, and Henry DI Abarbanel. &ldquo;Determining embedding dimension for phase-space reconstruction using a geometrical construction.&rdquo; Physical review A 45.6 (1992): 3403.</p>
+<p>[ ^5 ] Cao, Liangyue. &ldquo;Practical method for determining the minimum embedding dimension of a scalar time series.&rdquo; Physica D: Nonlinear Phenomena 110.1-2 (1997): 43-50.</p>
 
     </div>
 
