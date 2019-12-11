@@ -112,7 +112,7 @@ def lorenz(time, x0, y0, z0, sigma, beta, rho):
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;lorenz_trajectory = lorenz(2**5, -8.0, 9.0, 20.0, 10.0, 8/3.0, 28.0)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_5_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_files/AttractorReconstruction_5_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;You can play with the parameters and the initial inputs:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=8/3.0, rho=28.0)
 display(w)
@@ -193,7 +193,7 @@ plt.ylabel(&amp;quot;x coordinate of the Lorenz attractor&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Text(0,0.5,&#39;x coordinate of the Lorenz attractor&#39;)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_14_1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_files/AttractorReconstruction_14_1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;tau_x, mi_lorenz_x = MI_tau(lorenz_x, 0.01, MI_plugin)
 plt.plot(tau_x, mi_lorenz_x)
 plt.xlabel(&amp;quot;time lag&amp;quot;)

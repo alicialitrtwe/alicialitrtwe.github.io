@@ -632,7 +632,7 @@ def lorenz(time, x0, y0, z0, sigma, beta, rho):
 </code></pre>
 <pre><code class="language-python">lorenz_trajectory = lorenz(2**5, -8.0, 9.0, 20.0, 10.0, 8/3.0, 28.0)
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_5_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_files/AttractorReconstruction_5_0.png" alt="png"></p>
 <p>You can play with the parameters and the initial inputs:</p>
 <pre><code class="language-python">w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=8/3.0, rho=28.0)
 display(w)
@@ -713,7 +713,7 @@ plt.ylabel(&quot;x coordinate of the Lorenz attractor&quot;)
 </code></pre>
 <pre><code>Text(0,0.5,'x coordinate of the Lorenz attractor')
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_14_1.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_files/AttractorReconstruction_14_1.png" alt="png"></p>
 <pre><code class="language-python">tau_x, mi_lorenz_x = MI_tau(lorenz_x, 0.01, MI_plugin)
 plt.plot(tau_x, mi_lorenz_x)
 plt.xlabel(&quot;time lag&quot;)
