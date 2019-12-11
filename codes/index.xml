@@ -17,7 +17,7 @@
       <link>https://alicialitrtwe.github.io/codes/attractorreconstruction/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://alicialitrtwe.github.io/codes/attractorreconstruction/</guid>
-      <description>&lt;p&gt;This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel&#39;s exceptional book [ ^1 ] for more details.&lt;/p&gt;
+      <description>&lt;p&gt;This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel&#39;s exceptional book &lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; for more details.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;%matplotlib inline
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
@@ -75,9 +75,9 @@ display(w)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_7_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;1-select-the-appropriate-time-delay-for-state-space-reconstruction&#34;&gt;1. Select the appropriate time delay for state space reconstruction&lt;/h2&gt;
-&lt;p&gt;We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum [ ^2 ]&lt;/p&gt;
+&lt;p&gt;We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 &lt;h3 id=&#34;11-mutual-information-estimator&#34;&gt;1.1 Mutual information estimator&lt;/h3&gt;
-&lt;p&gt;So we need to build a mutual information estimator. There are numerous methods aimming at correcting the bias which would arises from naively pluging in frequency distributions of the samples as the underlying probabiliy distribution. Here I choose Kraskov&#39;s K-nearest-neighbor estimator as it has been shown to be stable and less affected by parameters especially for time series from nonlinear dynamical systems [ ^3 ].&lt;/p&gt;
+&lt;p&gt;So we need to build a mutual information estimator. There are numerous methods aimming at correcting the bias which would arises from naively pluging in frequency distributions of the samples as the underlying probabiliy distribution. Here I choose Kraskov&#39;s K-nearest-neighbor estimator as it has been shown to be stable and less affected by parameters especially for time series from nonlinear dynamical systems &lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 &lt;p&gt;Below is a simple plugin code and a code based on the second algorithm proposed by the Kraskov paper.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def MI_plugin(x, y, base = 2):
     bins = np.ceil(np.log2(len(x)))+1
@@ -223,7 +223,7 @@ plot_3D(reconstru_lorenz_x_2[2])
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_27_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;In a chaotic system any measurement stripe will eventually spread back to the invariant measure. To avoid this kind of spreading, as can be seen in the second graph, the first local minimum would be more preferable than the second minimum.&lt;br&gt;
-We determine the minimal dimension needed to fully unfold the attractor by counting the number of global false nearest neighbors [ ^4 ]:&lt;/p&gt;
+We determine the minimal dimension needed to fully unfold the attractor by counting the number of global false nearest neighbors &lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def fnn(data, reconstru, A = 2, threshold=15):
     # Find the percentage of false nearst neighbor in dimension d 
     # Inputs: 
@@ -264,7 +264,7 @@ We determine the minimal dimension needed to fully unfold the attractor by count
     plt.show()
     return np.array(fnn_percentage).T
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Cao has proposed a revised algorithm that could more precisely determine the minimum embedding dimension [ ^ 5].&lt;/p&gt;
+&lt;p&gt;Cao has proposed a revised algorithm that could more precisely determine the minimum embedding dimension &lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def fnn_Cao(reconstru):
     # Find the percentage of false nearst neighbor in dimension d 
     # Inputs: 
@@ -334,17 +334,26 @@ We determine the minimal dimension needed to fully unfold the attractor by count
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;It is clear from both algorithms that the minimum embedding dimension for the reconstructed Lorenz Attractor should be 3.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
-&lt;p&gt;[ ^1 ] Abarbanel, H. (2012). Analysis of observed chaotic data. Springer Science &amp;amp; Business Media.&lt;/p&gt;
-&lt;p&gt;[ ^2 ] Fraser, A. M., &amp;amp; Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. Physical review A, 33(2), 1134.&lt;/p&gt;
-&lt;p&gt;[ ^3 ] Kraskov, Alexander, Harald Stögbauer, and Peter Grassberger. &amp;ldquo;Estimating mutual information.&amp;rdquo; Physical review E 69.6 (2004): 066138.&lt;/p&gt;
-&lt;p&gt;[ ^4 ] Kennel, Matthew B., Reggie Brown, and Henry DI Abarbanel. &amp;ldquo;Determining embedding dimension for phase-space reconstruction using a geometrical construction.&amp;rdquo; Physical review A 45.6 (1992): 3403.&lt;/p&gt;
-&lt;p&gt;[ ^5 ] Cao, Liangyue. &amp;ldquo;Practical method for determining the minimum embedding dimension of a scalar time series.&amp;rdquo; Physica D: Nonlinear Phenomena 110.1-2 (1997): 43-50.&lt;/p&gt;
-&lt;iframe
-src=&#34;./&lt;CONVERTED_NOTEBOOK_FILENAME&gt;&#34;
-width=&#34;90%&#34;
-height=&#34;1000px&#34;
-style=&#34;border:none;&#34;&gt;
-&lt;/iframe&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Abarbanel, H. (2012). Analysis of observed chaotic data. Springer Science &amp;amp; Business Media.&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Fraser, A. M., &amp;amp; Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. Physical review A, 33(2), 1134.&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Kraskov, Alexander, Harald Stögbauer, and Peter Grassberger. &amp;ldquo;Estimating mutual information.&amp;rdquo; Physical review E 69.6 (2004): 066138.&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Kennel, Matthew B., Reggie Brown, and Henry DI Abarbanel. &amp;ldquo;Determining embedding dimension for phase-space reconstruction using a geometrical construction.&amp;rdquo; Physical review A 45.6 (1992): 3403.&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Cao, Liangyue. &amp;ldquo;Practical method for determining the minimum embedding dimension of a scalar time series.&amp;rdquo; Physica D: Nonlinear Phenomena 110.1-2 (1997): 43-50.&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
 </description>
     </item>
     
