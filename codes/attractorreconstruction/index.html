@@ -632,12 +632,12 @@ def lorenz(time, x0, y0, z0, sigma, beta, rho):
 </code></pre>
 <pre><code class="language-python">lorenz_trajectory = lorenz(2**5, -8.0, 9.0, 20.0, 10.0, 8/3.0, 28.0)
 </code></pre>
-<p><img src="./AttractorReconstruction_files/AttractorReconstruction_5_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_5_0.png" alt="png"></p>
 <p>You can play with the parameters and the initial inputs:</p>
 <pre><code class="language-python">w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=8/3.0, rho=28.0)
 display(w)
 </code></pre>
-<p><img src="./AttractorReconstruction_files/AttractorReconstruction_7_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_7_0.png" alt="png"></p>
 <h2 id="1-select-the-appropriate-time-delay-for-state-space-reconstruction">1. Select the appropriate time delay for state space reconstruction</h2>
 <p>We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <h3 id="11-mutual-information-estimator">1.1 Mutual information estimator</h3>
@@ -713,7 +713,7 @@ plt.ylabel(&quot;x coordinate of the Lorenz attractor&quot;)
 </code></pre>
 <pre><code>Text(0,0.5,'x coordinate of the Lorenz attractor')
 </code></pre>
-<p><img src="./AttractorReconstruction_files/AttractorReconstruction_14_1.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_14_1.png" alt="png"></p>
 <pre><code class="language-python">tau_x, mi_lorenz_x = MI_tau(lorenz_x, 0.01, MI_plugin)
 plt.plot(tau_x, mi_lorenz_x)
 plt.xlabel(&quot;time lag&quot;)
@@ -722,7 +722,7 @@ plt.suptitle('lorenz_x')
 </code></pre>
 <pre><code>Text(0.5,0.98,'lorenz_x')
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_15_1.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_15_1.png" alt="png"></p>
 <pre><code class="language-python">from scipy.signal import argrelextrema
 def lcmin_1_2(data, order=1):
     # Find the indice for the first and the second local minimum
@@ -769,7 +769,7 @@ print(lcmin_1, lcmin_2)
 plt.plot(reconstru_lorenz_x_1[1][:,0],reconstru_lorenz_x_1[1][:,1], color='blue')
 plt.show()
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_22_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_22_0.png" alt="png"></p>
 <p>Plot the time series lorenz_x reconstructed in 3D space, using the first local minimum time delay:</p>
 <pre><code class="language-python">def plot_3D(data):
     # plot narray data of shape (n, 3) in 3D space
@@ -780,12 +780,12 @@ plt.show()
 </code></pre>
 <pre><code class="language-python">plot_3D(reconstru_lorenz_x_1[2])
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_25_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_25_0.png" alt="png"></p>
 <p>Try plotting the time series lorenz_x in 3D space using the second local minimum:</p>
 <pre><code class="language-python">reconstru_lorenz_x_2 = reconstruct(lorenz_x, lcmin_2, d_max=6)
 plot_3D(reconstru_lorenz_x_2[2])
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_27_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_27_0.png" alt="png"></p>
 <p>In a chaotic system any measurement stripe will eventually spread back to the invariant measure. To avoid this kind of spreading, as can be seen in the second graph, the first local minimum would be more preferable than the second minimum.<br>
 We determine the minimal dimension needed to fully unfold the attractor by counting the number of global false nearest neighbors <sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>:</p>
 <pre><code class="language-python">def fnn(data, reconstru, A = 2, threshold=15):
@@ -884,13 +884,13 @@ We determine the minimal dimension needed to fully unfold the attractor by count
 </code></pre>
 <pre><code class="language-python">fnn(lorenz_x, reconstru_lorenz_x_1)
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_32_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_32_0.png" alt="png"></p>
 <pre><code>array([0.97531271, 0.04542462, 0.        , 0.        , 0.        ,
        0.        , 0.        , 0.        , 0.        ])
 </code></pre>
 <pre><code class="language-python">fnn_Cao(reconstru_lorenz_x_1)
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_33_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_33_0.png" alt="png"></p>
 <pre><code>(array([9.53466625e-05, 3.72059585e-01, 9.06896870e-01, 9.09639052e-01,
         9.00596900e-01, 9.22524451e-01, 1.00414577e+00, 9.96374680e-01]),
  array([0.07351213, 0.93114608, 1.13263383, 1.02632908, 0.95937794,

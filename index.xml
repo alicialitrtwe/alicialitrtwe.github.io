@@ -491,12 +491,12 @@ def lorenz(time, x0, y0, z0, sigma, beta, rho):
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;lorenz_trajectory = lorenz(2**5, -8.0, 9.0, 20.0, 10.0, 8/3.0, 28.0)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_files/AttractorReconstruction_5_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_5_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;You can play with the parameters and the initial inputs:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=8/3.0, rho=28.0)
 display(w)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_files/AttractorReconstruction_7_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_7_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;1-select-the-appropriate-time-delay-for-state-space-reconstruction&#34;&gt;1. Select the appropriate time delay for state space reconstruction&lt;/h2&gt;
 &lt;p&gt;We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 &lt;h3 id=&#34;11-mutual-information-estimator&#34;&gt;1.1 Mutual information estimator&lt;/h3&gt;
@@ -572,7 +572,7 @@ plt.ylabel(&amp;quot;x coordinate of the Lorenz attractor&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Text(0,0.5,&#39;x coordinate of the Lorenz attractor&#39;)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_files/AttractorReconstruction_14_1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_14_1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;tau_x, mi_lorenz_x = MI_tau(lorenz_x, 0.01, MI_plugin)
 plt.plot(tau_x, mi_lorenz_x)
 plt.xlabel(&amp;quot;time lag&amp;quot;)
@@ -581,7 +581,7 @@ plt.suptitle(&#39;lorenz_x&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Text(0.5,0.98,&#39;lorenz_x&#39;)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_15_1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_15_1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from scipy.signal import argrelextrema
 def lcmin_1_2(data, order=1):
     # Find the indice for the first and the second local minimum
@@ -628,7 +628,7 @@ print(lcmin_1, lcmin_2)
 plt.plot(reconstru_lorenz_x_1[1][:,0],reconstru_lorenz_x_1[1][:,1], color=&#39;blue&#39;)
 plt.show()
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_22_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_22_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Plot the time series lorenz_x reconstructed in 3D space, using the first local minimum time delay:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def plot_3D(data):
     # plot narray data of shape (n, 3) in 3D space
@@ -639,12 +639,12 @@ plt.show()
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;plot_3D(reconstru_lorenz_x_1[2])
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_25_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_25_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Try plotting the time series lorenz_x in 3D space using the second local minimum:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;reconstru_lorenz_x_2 = reconstruct(lorenz_x, lcmin_2, d_max=6)
 plot_3D(reconstru_lorenz_x_2[2])
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_27_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_27_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;In a chaotic system any measurement stripe will eventually spread back to the invariant measure. To avoid this kind of spreading, as can be seen in the second graph, the first local minimum would be more preferable than the second minimum.&lt;br&gt;
 We determine the minimal dimension needed to fully unfold the attractor by counting the number of global false nearest neighbors &lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def fnn(data, reconstru, A = 2, threshold=15):
@@ -743,13 +743,13 @@ We determine the minimal dimension needed to fully unfold the attractor by count
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;fnn(lorenz_x, reconstru_lorenz_x_1)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_32_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_32_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;array([0.97531271, 0.04542462, 0.        , 0.        , 0.        ,
        0.        , 0.        , 0.        , 0.        ])
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;fnn_Cao(reconstru_lorenz_x_1)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;AttractorReconstruction_files/AttractorReconstruction_33_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./AttractorReconstruction_33_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;(array([9.53466625e-05, 3.72059585e-01, 9.06896870e-01, 9.09639052e-01,
         9.00596900e-01, 9.22524451e-01, 1.00414577e+00, 9.96374680e-01]),
  array([0.07351213, 0.93114608, 1.13263383, 1.02632908, 0.95937794,

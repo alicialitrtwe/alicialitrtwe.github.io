@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Marc Schmidt | Alicia Zeng</title>
+    <link>https://alicialitrtwe.github.io/authors/marc-schmidt/</link>
+      <atom:link href="https://alicialitrtwe.github.io/authors/marc-schmidt/index.xml" rel="self" type="application/rss+xml" />
+    <description>Marc Schmidt</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <image>
+      <url>https://alicialitrtwe.github.io/img/icon-192.png</url>
+      <title>Marc Schmidt</title>
+      <link>https://alicialitrtwe.github.io/authors/marc-schmidt/</link>
+    </image>
+    
+    <item>
+      <title>A Topological Approach to Extract Dynamical Information from Temporal Fine Structures of Bird</title>
+      <link>https://alicialitrtwe.github.io/publication/preprint/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://alicialitrtwe.github.io/publication/preprint/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
