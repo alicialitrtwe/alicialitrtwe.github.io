@@ -40,8 +40,6 @@
 &lt;video controls poster=&#34;/img/SongAttractor.jpg&#34;&gt;
   &lt;source src=&#34;https://alicialitrtwe.github.io/img/SongAttractor.mp4&#34; type=&#34;video/mp4&#34;&gt;
 &lt;/video&gt;
-&lt;p&gt;&lt;strong&gt;Abstract&lt;/strong&gt;
-Bird vocalizations are fundamentally high-dimensional signals with complex dynamical structure. These signals often convey biologically meaningful information that facilitates important social interactions such as territorial defense or pair bonding. Yet, many questions remain as to how birds employ their vocal organs to produce elaborate acoustic signals with specific meanings. Recent experiments have demonstrated Zebra finches’ innate sensitivity to variations in the fine structure of their vocalizations. However, the dynamical information carried by temporal fine structure has largely been neglected by prior bioacoustics studies, partly because spectral analysis - a mainstay in the birdsong community to-date - obscures the transition rules encoded in the original waveform. We adopt time-delayed embedding, a data-driven dynamical-systems approach, to discern the temporal fine structure of bird vocalizations. We show that methods from topological data analysis allow us to reconstruct and extract topological and geometrical features of the dynamical trajectories of bird vocalizations. We further demonstrate that topological descriptors of the reconstructed vocalization dynamics, serve as superior input features over traditional, spectral or temporal descriptors, enhancing the performance of a logistic regression model on pairwise classification tasks of zebra finch contact calls.&lt;/p&gt;
 </description>
     </item>
     
