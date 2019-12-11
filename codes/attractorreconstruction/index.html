@@ -637,7 +637,7 @@ def lorenz(time, x0, y0, z0, sigma, beta, rho):
 <pre><code class="language-python">w = interactive(lorenz, time=(0,2**5), x0=-8, y0=9, z0=20, sigma=10, beta=8/3.0, rho=28.0)
 display(w)
 </code></pre>
-<p><img src="AttractorReconstruction_files/AttractorReconstruction_7_0.png" alt="png"></p>
+<p><img src="./AttractorReconstruction_files/AttractorReconstruction_7_0.png" alt="png"></p>
 <h2 id="1-select-the-appropriate-time-delay-for-state-space-reconstruction">1. Select the appropriate time delay for state space reconstruction</h2>
 <p>We use time lagged variables to form coordinates for the reconstructed phase space. Our goal is to identify a delayed measure which would give us as much new information about the evolution of the system as possible. Fraser proposes a good delay would be when the mutual information between $s(t)$ and $s(t+T)$ reaches its first local minimum <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <h3 id="11-mutual-information-estimator">1.1 Mutual information estimator</h3>
