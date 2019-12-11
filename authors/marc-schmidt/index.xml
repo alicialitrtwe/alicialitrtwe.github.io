@@ -5,7 +5,7 @@
     <link>https://alicialitrtwe.github.io/authors/marc-schmidt/</link>
       <atom:link href="https://alicialitrtwe.github.io/authors/marc-schmidt/index.xml" rel="self" type="application/rss+xml" />
     <description>Marc Schmidt</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 07 Jul 2018 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://alicialitrtwe.github.io/img/icon-192.png</url>
       <title>Marc Schmidt</title>
@@ -15,7 +15,7 @@
     <item>
       <title>Impending: A Topological Approach to Extract Dynamical Information from the Temporal Fine Structure of Bird Vocalizations</title>
       <link>https://alicialitrtwe.github.io/publication/preprint/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 07 Jul 2018 00:00:00 +0000</pubDate>
       <guid>https://alicialitrtwe.github.io/publication/preprint/</guid>
       <description>&lt;h2 id=&#34;hahahugoshortcodes0hbhb&#34;&gt;
 
@@ -51,7 +51,7 @@ url_code: &amp;lsquo;codes&amp;rsquo;
 #url_project: &#39;&amp;rsquo;
 #url_slides: &#39;&amp;rsquo;
 #url_source: &amp;lsquo;#&amp;rsquo;
-url_video: &amp;lsquo;#SongAttractor.mp4&amp;rsquo;&lt;/p&gt;
+url_video: &amp;lsquo;SongAttractor.mp4&amp;rsquo;&lt;/p&gt;
 &lt;h1 id=&#34;featured-image&#34;&gt;Featured image&lt;/h1&gt;
 &lt;h1 id=&#34;to-use-add-an-image-named-featuredjpgpng-to-your-pages-folder&#34;&gt;To use, add an image named &lt;code&gt;featured.jpg/png&lt;/code&gt; to your page&#39;s folder.&lt;/h1&gt;
 &lt;p&gt;#image:
@@ -77,9 +77,8 @@ url_video: &amp;lsquo;#SongAttractor.mp4&amp;rsquo;&lt;/p&gt;
 
 
 
-
-
-
+  
+  
 
 
 
@@ -88,8 +87,14 @@ url_video: &amp;lsquo;#SongAttractor.mp4&amp;rsquo;&lt;/p&gt;
   
 
 
-&lt;video controls &gt;
-  &lt;source src=&#34;SongAttractor.mp4&#34; type=&#34;video/mp4&#34;&gt;
+
+
+
+  
+
+
+&lt;video controls poster=&#34;/img/SongAttractor.jpg&#34;&gt;
+  &lt;source src=&#34;https://alicialitrtwe.github.io/img/SongAttractor.mp4&#34; type=&#34;video/mp4&#34;&gt;
 &lt;/video&gt;
 </description>
     </item>
