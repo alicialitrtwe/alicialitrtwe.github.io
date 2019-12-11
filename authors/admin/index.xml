@@ -61,7 +61,13 @@ date: 2019-09-01
       <link>https://alicialitrtwe.github.io/codes/attractorreconstruction/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://alicialitrtwe.github.io/codes/attractorreconstruction/</guid>
-      <description>&lt;p&gt;This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel&#39;s exceptional book [ ^1 ] for more details.&lt;/p&gt;
+      <description>&lt;iframe
+src=&#34;./&lt;widget&gt;&#34;
+width=&#34;90%&#34;
+height=&#34;1000px&#34;
+style=&#34;border:none;&#34;&gt;
+&lt;/iframe&gt;
+&lt;p&gt;This is a Jupyter Notebook I wrote in early 2018 when I first learnt about the nonlinear-time-series-analysis method of Attractor Reconstruction. Please refer to Henry Abarbanel&#39;s exceptional book [ ^1 ] for more details.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;%matplotlib inline
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
