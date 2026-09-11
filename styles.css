@@ -197,7 +197,9 @@ a.todo { text-decoration: none; }
 /* what is inside an area, so the card says something before it is clicked */
 .area-count { margin-top: 0.6rem; font-size: 0.875rem; color: var(--fg-muted); }
 
-.outputs { margin-top: 1.5rem; }
+/* Titles and author lists are the widest text on the site; without a measure
+   they run the full 64rem shell and become hard to scan. */
+.outputs { margin-top: 1.5rem; max-width: 46rem; }
 .outputs > li + li { margin-top: 1rem; }
 .output-title { font-weight: 400; }
 .output-links { margin-top: 0.15rem; font-size: 0.875rem; }
