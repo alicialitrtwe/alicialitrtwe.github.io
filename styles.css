@@ -160,6 +160,43 @@ a.todo { text-decoration: none; }
 .beat-lead { max-width: var(--measure); }
 .stream { margin-top: 2.5rem; }
 
+/* ---- the viewer invitation ------------------------------------------------------
+   The brain viewer is the one thing on this site a visitor can actually use,
+   so it sits high on the index and is sized to be clicked rather than read
+   past. The whole block is one link; the video underneath is decoration. */
+.invite { margin-top: var(--gap); }
+.invite-media { position: relative; border-radius: 0.25rem; overflow: hidden; background: #000; }
+.invite-media video { display: block; width: 100%; height: auto; }
+.invite-body { margin-top: 0.9rem; }
+.invite-title { font-size: 1.25rem; font-weight: 700; }
+.invite-title a { text-decoration: none; }
+.invite-title a:hover { text-decoration: underline; opacity: 1; }
+.invite-lead { margin-top: 0.4rem; max-width: var(--measure); }
+.invite-cta { margin-top: 0.75rem; }
+
+/* ---- research areas -------------------------------------------------------------
+   Three areas across the index, each fronted by a video. The videos have
+   different native shapes, so the box is fixed and they letterbox into it
+   against black — which is the ground all three already sit on. */
+.areas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 1.25rem;
+  margin-top: 1rem;
+  align-items: start;
+}
+@media (min-width: 34em) { .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 58em) { .areas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.area-media { border-radius: 0.25rem; overflow: hidden; background: #000; }
+.area-media video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: contain; background: #000; }
+.area-body { margin-top: 0.6rem; }
+.area-title { font-size: 1rem; font-weight: 700; }
+.area-title a { text-decoration: none; }
+.area-title a:hover { text-decoration: underline; opacity: 1; }
+.area-lead { margin-top: 0.3rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); }
+.area-count { margin-top: 0.35rem; font-size: 0.8125rem; color: var(--fg-muted); }
+
 /* ---- projects ------------------------------------------------------------------
    The research page leads with lines of work rather than with papers: one
    entry per project, a video instead of a still, and the papers, code and

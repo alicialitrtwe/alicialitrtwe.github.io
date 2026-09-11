@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>I started my PhD in one technological epoch and finished it in another — Alicia Zeng</title>
+<meta name="description" content="Why the bottleneck in machine learning for science is measurement rather than hypotheses, and the people who got me to the point of being able to say so. Adapted from the introduction and acknowledgments of my thesis.">
+<meta property="og:title" content="I started my PhD in one technological epoch and finished it in another">
+<meta property="og:description" content="Why the bottleneck in machine learning for science is measurement rather than hypotheses — adapted from the introduction and acknowledgments of my thesis.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+
+  <!-- The site is being written; the notice is deliberate and sitewide. -->
+  <p class="wip">Work in progress — pages and figures are still being written.</p>
+
+
+  <div class="topbar">
+    <p class="wordmark"><a href="../index.html">Alicia Zeng</a></p>
+    <nav aria-label="Site">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <p><a class="backlink" href="../notes.html"><span aria-hidden="true">←</span>
+      All notes</a></p>
+
+    <!-- The thesis, as a note rather than a research project. The text is
+         Alicia's own, from Chapter 1 (the introduction) and the
+         acknowledgments, reorganised into one post: the argument first, the
+         two projects in a paragraph each, the people last. Sentences are hers
+         and are trimmed rather than rewritten; the PDF's italics and a few
+         run-together words from text extraction are restored. Nothing is
+         added that is not in the thesis. -->
+    <article class="paper">
+
+      <header class="paper-head">
+        <h1 class="paper-title" id="post">I started my PhD in one technological epoch and finished
+          it in another</h1>
+        <p class="pub-meta"><time datetime="2025">2025</time> · adapted from the introduction and
+          acknowledgments of <cite>Principled Neuroscientific Discovery with Machine
+          Learning</cite></p>
+        <p class="buttons pub-links">
+          <a class="button" href="../files/Thesis-Alicia_Zeng.pdf" id="l-pdf"
+             aria-labelledby="l-pdf post">The thesis (PDF)</a>
+        </p>
+        <p class="dedication">Dedicated to my grandma, 赵友庄.</p>
+      </header>
+
+<p class="lead">Artificial intelligence has undergone an extraordinary transformation over the span
+  of my PhD. Around 2016–2017, AlphaGo defeated human masters at Go, a 2,500-year-old game whose
+  combinatorial space is so vast that exhaustive search is impossible in practice. Around the same
+  time, the Gallant Lab began using word embeddings in their encoding model pipeline to predict brain
+  activity.</p>
+
+<section class="paper-section" id="epoch" aria-labelledby="h-epoch">
+  <h2 id="h-epoch">Two epochs</h2>
+<p>Those embeddings represent words as points in a geometric space, where distances and directions
+  reflect relationships in meaning. In doing so, they evoke Ludwig Wittgenstein’s idea that “the
+  meaning of a word is its use in the language,” turning patterns of co-occurrence in natural
+  language into geometry in a learned vector space.</p>
+<p>These developments were what drew me into this field. Yet when I began my PhD in 2020, even
+  against this backdrop, almost no one I spoke with in adjacent research areas believed that language
+  models would approach human-level language abilities in the near term. Tasks that were widely
+  regarded as out of reach — from writing usable code or solving Olympiad-level mathematics problems
+  to engaging in extended technical dialogues — became routine capabilities of large models within
+  just a few years. As I complete this work, it feels as though I started my PhD in one technological
+  epoch and finished it in another.</p>
+</section>
+
+<section class="paper-section" id="bottleneck" aria-labelledby="h-bottleneck">
+  <h2 id="h-bottleneck">The bottleneck is not the number of ideas</h2>
+<p>For me and many others, the most compelling promise of machine learning has always been its
+  potential to advance the sciences. Treating neurological disorders, curing cancers, and discovering
+  new materials are more than technical milestones; they are breakthroughs that could profoundly
+  reshape how we live and reduce suffering. They are also precisely the domains where unaided human
+  intuition is weakest: the systems involved are noisy, high-dimensional, nonlinear, and often far
+  from equilibrium.</p>
+<p>In response to this promise, many groups are now pursuing the development of “AI scientists”:
+  language model–centric systems that read papers, synthesize literature, and generate hypotheses.
+  Such tools may be valuable, particularly for organizing and sharing knowledge. Yet in most
+  scientific domains they cannot address the principal bottleneck. For complex systems in molecular
+  biology, neuroscience, and materials science, the true constraint is not the number of ideas that
+  can be written down but the availability of rich, high-quality experimental data against which to
+  evaluate these ideas. These systems inhabit enormous state spaces; the set of hypotheses humans
+  have articulated and tested is a measure-zero subset of what is possible. Genuine progress requires
+  dense, carefully designed measurements in the environments where these systems actually operate,
+  rather than just more hypotheses on a page.</p>
+<blockquote class="pull"><p>The central question for “AI for science” is not simply how powerful our
+  models are, but how to couple these models to experiments so that they enable understanding rather
+  than mere prediction.</p></blockquote>
+<p>Machine learning models are, at their core, flexible high-dimensional nonlinear functions. With
+  the right data, they can detect patterns, uncover latent structure, and suggest hypotheses at
+  scales unachievable with human cognition alone. But without such data, and without an inductive
+  structure to keep the models interpretable, they risk becoming just another opaque layer between
+  scientists and the underlying phenomena.</p>
+</section>
+
+<section class="paper-section" id="projects" aria-labelledby="h-projects">
+  <h2 id="h-projects">Two projects, in that spirit</h2>
+<p>The first asks how the brain represents abstract ideas such as time, space, and number, using fMRI
+  encoding models as the main tool. A naturalistic stimulus is transformed into a feature matrix, and
+  a regularized linear model is fit to predict the corresponding pattern of brain responses. Each
+  voxel is associated with a weight vector — a direction in feature space that, in principle, reveals
+  which aspects of the stimulus that voxel is tuned to. The central difficulty lies in designing that
+  feature space. Recent work has achieved striking predictive performance by using word embeddings or
+  large language model activations, but at the cost of interpretability; these approaches risk
+  explaining one black box in terms of another. Because embeddings exhibit superposition — many
+  concepts compressed into a limited set of shared directions — abstract notions such as time, space
+  and number become entangled, and a voxel that appears to respond jointly to different concepts may
+  reflect a genuinely shared neural code, or merely correlations inherent to the embedding. The
+  <a href="../research/superpositions.html">Sparse Concept Encoding Model</a> addresses this by
+  unpacking the embedding space first, so that each axis carries a clear conceptual meaning and the
+  time-, space- and number-related atoms can be <a href="../research/number.html">read out directly
+  across cortex</a>.</p>
+<p>The second pivots to a clinical setting where understanding neural dynamics carries immediate
+  therapeutic stakes: deep brain stimulation for Parkinson’s disease. Parkinson’s is a dynamical
+  disease. Its motor symptoms arise not from a single static lesion, but from aberrant, time-varying
+  activity patterns distributed across basal ganglia and sensorimotor cortex — patterns continuously
+  shaped by movement, sensory input, medication state, and everyday context. Yet standard stimulation
+  is still delivered open-loop, tuned largely by clinical intuition rather than by explicit models of
+  how it interacts with neural dynamics during behaviour. Getting to adaptive, principled
+  neuromodulation requires something closer to what engineers would call <em>system
+  identification</em>: measuring the system densely, in the regimes where it naturally operates.
+  <a href="../research/closed-loop.html">That work</a> pairs an investigational bidirectional
+  neurostimulator with bilateral wrist accelerometry and synchronized video, deployed in
+  participants’ homes.</p>
+<p>The encoding model framework is the same in both. Only the variables change: instead of asking how
+  semantic features predict voxel responses, the second asks how behaviour predicts neural state.</p>
+</section>
+
+<section class="paper-section" id="people" aria-labelledby="h-people">
+  <h2 id="h-people">The people who lit the path</h2>
+<p>I am deeply grateful to the many awe-inspiring people who have illuminated the path leading to
+  this thesis.</p>
+<p>As an undergraduate, Professor Jeffery Tlumak supervised my unconventional philosophy honors
+  thesis on AlphaGo, written as the program defeated the human world champion in my junior year.
+  Developing that thesis, <cite>Go Metaphors: Meaning, Mind and Machines</cite>, convinced me that
+  rich, meaningful structure could emerge from simple computational elements — an intuition that set
+  me on the trajectory continuing here. In Advanced Quantum Mechanics, Professor Alfredo Gurrola took
+  me and my only classmate to lunch, astonished us with the elegance of physics, and insisted that we
+  were capable of doing research. Douglas Hofstadter welcomed me into his home at a moment when I was
+  profoundly uncertain about my path, and his way of thinking in <cite>Gödel, Escher, Bach</cite> has
+  always accompanied me. Later, Professor Vijay Balasubramanian took me on as a postbaccalaureate
+  researcher in his Physics of Living Matter lab at the University of Pennsylvania; his relentless
+  intellectual curiosity and versatility were both humbling and contagious, and he encouraged me to
+  pursue a PhD at a time when I still doubted that I belonged in one.</p>
+<p>At Berkeley, I was fortunate to join Professor Jack Gallant’s lab at what was, for me, a demanding
+  moment in life, having just become a new parent. Jack created and maintains a lab culture that
+  strives for the highest standards of scientific rigor and embodies a willingness to question,
+  criticize, and cross-examine one’s own thinking without mercy. I am especially grateful for the two
+  four-hour qualifying-exam practice sessions and the many lab meetings in which my presentations
+  were torn apart so that they could be rebuilt stronger. The numerous, often heated, arguments with
+  Jack reshaped how I think about pragmatism, about empiricism versus rationalism, and about the
+  social and political structure of scientific research. Previous and current lab members — including
+  Alex Huth, James Gao, Tom Dupré la Tour, Anwar Nunez-Elizalde, and Matteo Visconti di Oleggio
+  Castello — spent years building the methodological foundations that made the fMRI-based chapter
+  possible, and set a very high bar for taking risks in pursuit of genuinely new ideas. Beyond Jack’s
+  distinctive blend of irreverence and insight, I was drawn to the lab for its commitment to
+  naturalistic experiments, high-volume data collection, predictive modeling, and a
+  system-identification approach to understanding the brain as a high-dimensional nonlinear system.
+  The Gallant Lab has been developing these ideas for more than two decades, and recent shifts in
+  scientific practice toward machine learning on large datasets only underscore the prescience of
+  that vision.</p>
+<p>A second important intellectual home at Berkeley was the Redwood Center for Theoretical
+  Neuroscience, and especially Professor Bruno Olshausen. Bruno’s combination of deep ingenuity and
+  striking humility fostered an open, welcoming, and fiercely curious culture. Some of my most
+  illuminating moments came in the High-Dimensional Statistics reading group organized by then-postdoc
+  Anthony Thomas, and in the Bayesian Learning / Sensorimotor AI journal club led by postdoc Hadi
+  Vafaii. The idea for the second chapter first took shape during my first-year rotation in Bruno’s
+  lab, listening to Yubei Chen describe sparse manifold transforms and sparse coding applied to large
+  language models. Yubei’s work, which later helped inspire industry efforts on sparse autoencoders
+  for mechanistic interpretability, showed me how visionary ideas from theoretical neuroscience could
+  ripple outward and influence the broader trajectory of AI.</p>
+<p>I also owe special thanks to each of my thesis and qualification committee members. Professor
+  Richard Ivry co-taught an inspiring Socratic-style seminar on analyzing research papers that
+  fundamentally changed how I interrogate assumptions, methods, and claims in scientific literature.
+  Professor Frédéric Theunissen welcomed me into his lab during the early days of COVID-19, giving me
+  space to explore the use of neural networks in bird vocalization classification. Dr. Simon Little
+  served on my qualification committee and co-led the deep brain stimulation project; his clinical
+  insight and curiosity helped bridge the gap between abstract models and patients’ lived experience.
+  I am grateful to each of them for their warmth, their candor, and the many invigorating
+  conversations from which I learned more than I realized in the moment.</p>
+<p>During my time at Berkeley, I was also privileged to follow my curiosity into classrooms across
+  campus. Courses such as <cite>Designing, Visualizing and Understanding Deep Neural Networks</cite>
+  (Anant Sahai), <cite>Convex Optimization (in the Age of LLMs)</cite> (Benjamin Recht),
+  <cite>Neural Computation</cite> (Bruno Olshausen), <cite>Principles of Magnetic Resonance
+  Imaging</cite> (Michael Lustig), and <cite>Computational Imaging</cite> (Laura Waller) opened doors
+  to new ways of thinking and left a lasting imprint on how I approach scientific problems. Numerous
+  seminars at the Simons Institute were equally formative, especially the “AI ≡ Science” series
+  organized by Aditi Krishnapriyan and Jennifer Listgarten, which offered a vivid glimpse of how
+  machine learning and the natural sciences might evolve together.</p>
+<p>Looking ahead, I can only hope to carry forward the torches lit by these remarkable minds and to
+  keep that light burning for those who come next.</p>
+<p class="source">Adapted from <cite>Principled Neuroscientific Discovery with Machine Learning</cite>
+  (PhD thesis, UC Berkeley, 2025): Chapter 1 and the acknowledgments, trimmed and reordered. The
+  <a href="../files/Thesis-Alicia_Zeng.pdf">full thesis is here</a>.</p>
+</section>
+
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Site (footer)">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script src="../site.js"></script>
+</body>
+</html>

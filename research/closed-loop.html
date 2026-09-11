@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Parkinson’s, measured at home — Alicia Zeng</title>
-<meta name="description" content="A line of work on deep brain stimulation measured where people live: implanted sensing, wrist accelerometry and pose estimation recorded at home, and what that resolution makes answerable.">
-<meta property="og:title" content="Parkinson’s, measured at home">
-<meta property="og:description" content="Implanted sensing, wrist accelerometry and pose estimation recorded at home, and what that resolution makes answerable.">
+<title>Closed loop — Alicia Zeng</title>
+<meta name="description" content="Recording and stimulation in the same circuit: deep brain stimulation measured and steered where people actually live.">
+<meta property="og:title" content="Closed loop — Alicia Zeng">
+<meta property="og:description" content="Recording and stimulation in the same circuit: deep brain stimulation measured and steered where people actually live.">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:,">
@@ -37,87 +37,81 @@
     <p><a class="backlink" href="../research.html"><span aria-hidden="true">←</span>
       All research</a></p>
 
-    <!-- A project overview, not a paper. Claims here are ones already made on
-         the paper pages it hands off to (the Nature BME abstract, chapter 3
-         of the thesis, the JoVE paper). The hero video is generated from the
-         p2 20240828 session: RC+S neural and watch accelerometry, aligned
-         with the offset in aDBS/data/delays_rcs_watch_p2.csv, and labelled by
-         contact pair because the file does not record which cortical pair is
-         pre- and which is postcentral. No patient video appears anywhere on
-         this site. -->
+    <!-- One of three area pages. Claims here are ones already made on the
+         pages it hands off to. The hero video is generated from Patient 01's
+         20211122_2027_2037 session - the example day hardcoded in
+         aDBS/scripts/summary_figures/20251210_example_time_series_thesis.py -
+         pulled from caffeine. Left-hemisphere RC+S against the right wrist
+         (contralateral, matching the feature spec), aligned with the
+         -0.4694 s offset in aDBS/data/delays_rcs_watch_alicia.csv. Channels
+         are labelled by contact pair, not by gyrus, because the file does not
+         record which cortical pair is pre- and which is postcentral. No
+         patient video appears anywhere on this site. -->
     <article class="paper">
 
       <header class="paper-head">
-        <h1 class="paper-title" id="project">Parkinson’s, measured at home</h1>
-        <p class="pub-meta"><time datetime="2021">2021</time>–<time datetime="2026">2026</time>,
-          with the Gallant lab at UC Berkeley, and Simon Little (UCSF) and Jeffrey Herron (UW)</p>
-        <p class="buttons pub-links">
-          <a class="button" href="dbs.html" id="l-paper"
-             aria-labelledby="l-paper project">The paper</a>
-          <a class="button" href="stimulation.html" id="l-chapter"
-             aria-labelledby="l-chapter project">The thesis chapter</a>
-          <a class="button" href="thesis.html" id="l-thesis"
-             aria-labelledby="l-thesis project">Thesis</a>
-        </p>
+        <h1 class="paper-title" id="area">Closed loop</h1>
+        <p class="pub-meta">An area, not a project. With Simon Little (UCSF) and Jeffrey Herron (UW)</p>
       </header>
 
 <figure class="fig fig--hero">
   <video controls loop muted playsinline preload="none"
-         poster="../figures/project-parkinsons.jpg" width="1200" height="900"
-         aria-label="Four stacked spectrograms on one time axis: a subthalamic channel and two cortical channels above, the left wrist's acceleration spectrum below, with a playhead sweeping across. Bright columns of wrist movement line up with broadband changes in the subthalamic channel.">
-    <source src="../figures/project-parkinsons.mp4" type="video/mp4">
+         poster="../figures/area-closed-loop.jpg" width="1200" height="800"
+         aria-label="Four spectrograms scrolling together on one time axis: a subthalamic channel and two cortical channels above, the right wrist's acceleration spectrum below. Columns of wrist movement line up with low-frequency bursts in the cortical channels.">
+    <source src="../figures/area-closed-loop.mp4" type="video/mp4">
   </video>
-  <figcaption>Two hundred seconds of one left-hemisphere recording at home. Above, spectral power
-    from the subthalamic lead and the two cortical contact pairs; below, the acceleration spectrum
-    of the wrist on that side. The bright columns in the wrist are the participant moving; the
-    clocks are aligned by the session’s measured offset, and the playhead is only there to walk you
-    across.</figcaption>
+  <figcaption>Five minutes of Patient 01 at home, 22 November 2021, scrolling past. Above, spectral
+    power from the subthalamic lead and the two cortical contact pairs of the left hemisphere;
+    below, the acceleration spectrum of the right wrist, which is the side that hemisphere drives.
+    The columns in the wrist are the participant moving, and the bursts that answer them are
+    clearest in the cortical pairs. The flat line across the cortical channel at 65 Hz is the
+    stimulator: half of its 130.2 Hz pulse rate, entrained into the recording.</figcaption>
 </figure>
 
 <p class="lead">Deep brain stimulation is tuned in a clinic room over an afternoon, for a disease
-  that behaves differently at home over a day. The premise of this work is that the limiting factor
+  that behaves differently at home over a day. The premise of this area is that the limiting factor
   is the measurement, not the model.</p>
 
-<section class="paper-section" id="problem" aria-labelledby="h-problem">
-  <h2 id="h-problem">The problem</h2>
-<p>Parkinson’s disease is increasingly understood as a disorder of network dynamics: motor symptoms
-  arise from aberrant oscillatory activity across the basal ganglia and sensorimotor cortex rather
-  than from a static lesion. Deep brain stimulation is an effective treatment for it and remains an
-  open-loop one, delivered at a fixed amplitude and frequency chosen heuristically, while a
-  patient’s therapeutic needs move over the course of a day. Closing that loop requires knowing what
-  the neural signal does while someone actually lives — which is not something a clinic visit can
-  show you.</p>
+<section class="paper-section" id="what" aria-labelledby="h-what">
+  <h2 id="h-what">Why it is a category</h2>
+<p>A closed loop is a system that measures the thing it is also acting on. That is a harder object to
+  study than either half alone, because the signal you are reading is partly a consequence of what
+  you did last, and because the interesting behaviour only appears on timescales and in settings a
+  laboratory visit cannot reach. The work here is about earning the right to close the loop at all:
+  getting synchronised implanted, wearable and video recordings out of somebody’s living room, and
+  then showing that behaviour predicts neural activity well enough that stimulation can be driven
+  from it.</p>
 </section>
 
 <section class="paper-section" id="approach" aria-labelledby="h-approach">
   <h2 id="h-approach">The approach</h2>
-<p>Move the recording into the house. Participants implanted with bidirectional neurostimulators
-  (Medtronic Summit RC+S) were recorded at home while performing a standardised motor battery, with
-  local field potentials from the subthalamic nucleus and electrocorticography from precentral and
-  postcentral gyri, alongside bilateral wrist accelerometry and video-based pose estimation. The
-  data-collection platform itself was a publication — <a href="https://doi.org/10.3791/65305">an
-  at-home multimodal ecosystem</a> — because getting synchronised implanted, wearable and video
-  recordings out of someone’s living room is most of the difficulty.</p>
-<p>With behaviour recorded at that resolution, encoding models can run in the other direction from
-  the semantic work: predicting neural spectral power <em>from</em> behavioural features. That turns
-  out to matter. Temporally rich predictors — the full acceleration spectrogram, task labels — do
-  substantially better than coarse summaries like mean acceleration, which is a result about what
-  you have to measure before movement-related neural variance is visible at all.</p>
+<p>Participants implanted with bidirectional neurostimulators (Medtronic Summit RC+S) were recorded
+  at home while performing a standardised motor battery, with local field potentials from the
+  subthalamic nucleus and electrocorticography from precentral and postcentral gyri, alongside
+  bilateral wrist accelerometry and video-based pose estimation. The data-collection platform was
+  itself a publication — <a href="https://doi.org/10.3791/65305">an at-home multimodal
+  ecosystem</a> — because getting those streams synchronised outside a clinic is most of the
+  difficulty.</p>
+<p>With behaviour recorded at that resolution, encoding models can predict neural spectral power
+  <em>from</em> behavioural features. Which features matters: temporally rich predictors — the full
+  acceleration spectrogram, task labels — do substantially better than coarse summaries like mean
+  acceleration. That is a result about what you have to measure before movement-related neural
+  variance is visible at all.</p>
 </section>
 
-<section class="paper-section" id="what" aria-labelledby="h-what">
-  <h2 id="h-what">What came of it</h2>
-<p>Two things, in opposite directions. <a href="stimulation.html">The thesis chapter</a> asks what
-  stimulation does to the signal: in the participant with stronger baseline model performance,
+<section class="paper-section" id="results" aria-labelledby="h-results">
+  <h2 id="h-results">What came of it</h2>
+<p>Two things, in opposite directions. <a href="stimulation.html">The characterisation study</a> asks
+  what stimulation does to the signal: in the participant with stronger baseline model performance,
   higher amplitudes improved prediction across the sensorimotor network by amplifying a
   movement-locked spectral component — beta suppression alongside gamma enhancement — which is what
-  an “information lesion” account of DBS would predict.</p>
+  an “information lesion” account of DBS predicts.</p>
 <p><a href="dbs.html">The Nature Biomedical Engineering paper</a> goes the other way and uses the
   decoded motor signal to drive therapy: an adaptive algorithm that raises stimulation during
   movement, with improvements in dominant-hand movement speed and in participants’ own reports
   against an inverted control, and a machine-learning pipeline that tunes its parameters remotely.
   It is not first-author work of mine; <a href="dbs.html">that page</a> is a short explainer of
-  someone else’s paper that this project fed into.</p>
+  someone else’s paper this work fed into.</p>
 </section>
 
 <section class="paper-section" id="outputs" aria-labelledby="h-outputs">
@@ -137,10 +131,9 @@
     <li>
       <p class="output-title"><a href="stimulation.html"><cite>Deep Brain Stimulation Amplifies
         Movement-Related Neural Modulation in Parkinson’s Disease: Evidence from Multimodal Home
-        Recordings</cite></a> <span class="pub-meta">PhD thesis, chapter 3, UC Berkeley, <time datetime="2025">2025</time></span></p>
+        Recordings</cite></a> <span class="pub-meta">Unpublished, UC Berkeley, <time datetime="2025">2025</time></span></p>
       <p class="authors"><span class="me">Alicia Zeng</span></p>
-      <p class="output-links"><a href="../files/Thesis-Alicia_Zeng.pdf">Thesis PDF</a><span
-        class="sep" aria-hidden="true">·</span><a href="stimulation.html#bibtex">Cite</a><span
+      <p class="output-links"><a href="stimulation.html#bibtex">Cite</a><span
         class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-stimulation">Explainer</a></p>
     </li>
     <li>

@@ -53,6 +53,28 @@
       </div>
     </section>
 
+    <!-- The viewer sits above everything else on the page: it is the one
+         thing on this site that is usable rather than readable, so it gets
+         the position and the size. -->
+    <section class="block invite" aria-labelledby="h-viewer">
+      <div class="invite-media">
+        <video controls loop muted playsinline preload="none"
+               poster="figures/number-viewer-tour.jpg" width="1600" height="900"
+               aria-label="The brain viewer's guided tour: a group-average brain turning under the number, time and space tuning map, then inflated and flattened into a sheet.">
+          <source src="figures/number-viewer-tour.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="invite-body">
+        <h2 class="invite-title" id="h-viewer"><a href="viewer/">A brain you can open</a></h2>
+        <p class="invite-lead">Nineteen people listened to stories in a scanner while we measured
+          where their cortex answered to words about number, time and space. The maps are published
+          as something you can turn over rather than a figure you can only look at: the group
+          average and three individual brains, inflated, flattened, and clickable anywhere. There is
+          a two-minute guided tour if you would like one.</p>
+        <p class="invite-cta"><a class="button" href="viewer/">Open the viewer</a></p>
+      </div>
+    </section>
+
     <!-- The arc: one entry per year, the year set bold like a heading, then
          one sentence — her own first sentence from the draft, nothing else. -->
     <section class="block" aria-labelledby="h-arc">
@@ -89,84 +111,64 @@
       </ol>
     </section>
 
-    <!-- Every card thumb is a crop of real material: the NeurIPS poster,
-         Fig. 1 of the Nature BME paper, Figure 3.1 of the thesis. (The
-         decorative .viz stand-ins are still in styles.css if a future card
-         has no figure yet — see README.) The .abstract is the paper's own
-         abstract, verbatim; it appears on hover. -->
+    <!-- Three areas, each fronted by a video. Bayesian is a placeholder: the
+         new project there is not announced, so the card makes no claims. The
+         videos are real material - the measured responses the semantic models
+         are fit to, a scrolling at-home recording, and the viewer's own
+         channel toggles. -->
     <section class="block" aria-labelledby="h-research">
       <h2 class="section-label" id="h-research">Research</h2>
 
-      <div class="pub-grid">
+      <div class="areas">
 
-      <article class="pub pub--card">
-        <div class="thumb">
-          <img src="figures/superpositions-thumb.png" alt="Cortical flatmap of one subject from the NeurIPS 2025 poster, with voxels coloured by their selectivity for number, time and space." width="528" height="330">
-          <p class="abstract">Encoding models using word embeddings or artificial neural network (ANN)
-            features reliably predict brain responses to naturalistic stimuli, yet
-            interpreting these models remains challenging. A central limitation is
-            superposition: distinct semantic features become entangled along correlated
-            directions in dense embeddings when latent features outnumber embedding
-            dimensions. This entanglement renders regression weights non-identifiable—different combinations of semantic directions can produce identical
-            predictions, precluding principled interpretation of voxel selectivity. To
-            address this, we introduce the Sparse Concept Encoding Model, which transforms
-            dense embeddings into a higher-dimensional, sparse, non-negative space of
-            learned concept atoms. This transformation yields an axis-aligned semantic basis
-            where each dimension corresponds to an interpretable concept, enabling direct
-            readout of conceptual selectivity from voxel weights. When applied to fMRI data
-            collected during story listening, our model matches the prediction performance
-            of conventional dense models while substantially enhancing interpretability. It
-            enables novel neuroscientific analyses such as disentangling overlapping
-            cortical representations of time, space, and number, and revealing structured
-            similarity among distributed conceptual maps. This framework offers a scalable
-            and interpretable bridge between ANN-derived features and human conceptual
-            representations in the brain.</p>
-        </div>
-        <div class="pub-body">
-          <h3 class="pub-title"><a href="research/superpositions.html"><cite>Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse Concept Atoms</cite></a> <span class="pub-meta">NeurIPS <time datetime="2025">2025</time></span></h3>
-        </div>
-      </article>
+        <article class="area">
+          <div class="area-media">
+            <video controls loop muted playsinline preload="none"
+                   poster="figures/area-bayesian.jpg" width="1100" height="826"
+                   aria-label="Measured cortical responses to a story, on a pair of flattened hemispheres, changing frame by frame.">
+              <source src="figures/area-bayesian.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="area-body">
+            <h3 class="area-title"><a href="research/bayesian.html">Bayesian</a></h3>
+            <p class="area-lead">Inference as the thing that makes a model interpretable: sparse,
+              identifiable bases in place of entangled ones.</p>
+          </div>
+        </article>
 
-      <article class="pub pub--card">
-        <div class="thumb">
-          <img src="figures/dbs-thumb.png" alt="From Fig. 1 of the paper: movement threshold under movement-responsive DBS next to a participant wearing the implanted stimulator, two wrist watches and being filmed at home." width="801" height="500">
-          <p class="abstract">Deep brain stimulation (DBS) has garnered widespread use as an effective
-            treatment for advanced Parkinson’s disease. Conventional DBS (cDBS) provides
-            electrical stimulation to the basal ganglia at fixed amplitude and frequency,
-            yet patients’ therapeutic needs are often dynamic with residual symptom
-            fluctuations or side effects. Adaptive DBS (aDBS) is an emerging technology that
-            modulates stimulation with respect to real-time clinical, physiological or
-            behavioural states, enabling therapy to dynamically align with patient-specific
-            symptoms. Here we report an aDBS algorithm intended to mitigate movement
-            slowness by delivering targeted stimulation increases during movement using
-            decoded motor signals from the brain. Our approach demonstrated improvements in
-            dominant hand movement speeds and study participant-reported therapeutic
-            efficacy compared with an inverted control, as well as increased typing speed
-            and reduced dyskinesia compared with cDBS. Furthermore, we demonstrate proof of
-            principle of a machine learning pipeline capable of remotely optimizing aDBS
-            parameters in a home setting. This work illustrates the potential of movement-responsive aDBS as a promising therapeutic approach and highlights how machine
-            learning-assisted programming can simplify complex optimization to facilitate
-            translational scalability.</p>
-        </div>
-        <div class="pub-body">
-          <h3 class="pub-title"><a href="research/dbs.html"><cite>Movement-responsive deep brain stimulation for Parkinson’s disease using a remotely optimized neural decoder</cite></a> <span class="pub-meta">Nature Biomedical Engineering, <time datetime="2026">2026</time></span></h3>
-        </div>
-      </article>
+        <article class="area">
+          <div class="area-media">
+            <video controls loop muted playsinline preload="none"
+                   poster="figures/area-closed-loop.jpg" width="1200" height="800"
+                   aria-label="Four spectrograms scrolling together on one time axis: a subthalamic channel and two cortical channels above, wrist acceleration below.">
+              <source src="figures/area-closed-loop.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="area-body">
+            <h3 class="area-title"><a href="research/closed-loop.html">Closed loop</a></h3>
+            <p class="area-lead">Recording and stimulation in the same circuit, measured where
+              people actually live rather than in a clinic room.</p>
+          </div>
+        </article>
 
-      <article class="pub pub--card">
-        <div class="thumb">
-          <img src="figures/thesis-thumb.jpg" alt="From Figure 3.1 of the thesis: neural spectrograms from three recording sites over one day at home, under over-, under- and preferred-stimulation." width="800" height="500">
-          <p class="abstract">Understanding brain function requires modeling a high-dimensional, nonlinear dynamical system continuously driven by sensory input, shaped by internal state and context, and expressed through behavior. Machine learning can be used to extract predictive structure from large-scale neural recordings, but its scientific value hinges on whether fitted parameters admit interpretation as testable hypotheses about neural computation. This thesis develops and applies interpretable predictive models—primarily linearized encoding models that map stimulus or behavioral features onto neural responses—to investigate (i) how human cortex represents abstract concepts during naturalistic language comprehension and (ii) how deep brain stimulation (DBS) modulates movement-related neural dynamics in Parkinson’s disease. The first study addresses a central limitation of encoding models built on dense word embeddings or neural network activations: superposition. When latent semantic factors outnumber embedding dimensions, distinct concepts become entangled along shared directions, rendering voxelwise regression weights uninterpretable and formally non-identifiable. I introduce the Sparse Concept Encoding Model, which applies sparse dictionary learning to project dense embeddings into an overcomplete basis of interpretable concept atoms. Because each atom isolates a coherent semantic direction, voxel tuning can be read directly from regression coefficients. Applied to whole-brain fMRI acquired during naturalistic story listening, this approach matches the prediction accuracy of conventional dense models while substantially improving interpretability. The resulting cortical maps reveal convergent selectivity for time, space, and number in the intraparietal sulcus and the inferior frontal gyrus—consistent with the shared-magnitude hypothesis—and uncover systematic similarity structure among distributed semantic representations. The second study moves to a clinical domain where characterizing neural dynamics carries immediate therapeutic implications. Parkinson’s disease is increasingly understood as a disorder of network dynamics wherein motor symptoms arise from aberrant oscillatory activity across basal ganglia and sensorimotor cortex. Yet, DBS remains an open-loop therapy with parameters tuned heuristically. Using a home-deployed multimodal data collection platform integrating bidirectional neurostimulators, bilateral wrist accelerometry, and video-based pose estimation, we recorded synchronized neural and behavioral data from two participants performing standardized motor tasks across multiple stimulation amplitudes. By building encoding models that predict neural spectral power data from behavioral features, we demonstrate how temporally rich predictors such as full acceleration spectrograms and task labels outperform coarse movement summaries. Thus, this study highlights the importance of fine-grained behavioral structure for identifying movement-related variance in sensed neural signals. In the participant with stronger baseline model performance, higher stimulation amplitudes enhanced prediction performance across sensorimotor cortex and subthalamic nucleus. We show that these gains arise from amplification of a movement-related spectral component characterized by beta suppression alongside alpha/delta and gamma enhancement, including a prominent peak at the stimulation-entrained subharmonic. This interpretation is consistent with “information lesion” accounts of DBS, wherein pathological synchronization impedes movement-related signaling and high-frequency stimulation restores information flow through basal ganglia–cortical circuits. Together, these studies illustrate how high-volume data collected under naturalistic or semi-naturalistic conditions can be analyzed with interpretable predictive models to transform accurate prediction into mechanistic neuroscientific hypotheses.</p>
-        </div>
-        <div class="pub-body">
-          <h3 class="pub-title"><a href="research/thesis.html"><cite>Principled Neuroscientific Discovery with Machine Learning</cite></a> <span class="pub-meta">PhD thesis, UC Berkeley, <time datetime="2025">2025</time></span></h3>
-        </div>
-      </article>
+        <article class="area">
+          <div class="area-media">
+            <video controls loop muted playsinline preload="none"
+                   poster="figures/area-cognition.jpg" width="1500" height="720"
+                   aria-label="A flattened pair of hemispheres with the number, time and space channels switching on and off one at a time, the colours combining where they overlap.">
+              <source src="figures/area-cognition.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="area-body">
+            <h3 class="area-title"><a href="research/cognition.html">Cognition</a></h3>
+            <p class="area-lead">What cortex does with quantity, meaning and song, read out of
+              recordings made under natural conditions.</p>
+          </div>
+        </article>
 
       </div>
 
-
-      <p class="more"><a href="research.html">All research <span aria-hidden="true">→</span></a></p>
+      <p class="more"><a href="research.html">All research <span aria-hidden="true">&#8594;</span></a></p>
     </section>
 
     <section class="block" aria-labelledby="h-contact">
