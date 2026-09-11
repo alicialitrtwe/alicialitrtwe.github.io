@@ -160,62 +160,42 @@ a.todo { text-decoration: none; }
 .beat-lead { max-width: var(--measure); }
 .stream { margin-top: 2.5rem; }
 
-/* ---- the viewer invitation ------------------------------------------------------
-   The brain viewer is the one thing on this site a visitor can actually use,
-   so it sits high on the index and is sized to be clicked rather than read
-   past. The whole block is one link; the video underneath is decoration. */
-.invite { margin-top: var(--gap); }
-.invite-media { position: relative; border-radius: 0.25rem; overflow: hidden; background: #000; }
-.invite-media video { display: block; width: 100%; height: auto; }
-.invite-body { margin-top: 0.9rem; }
-.invite-title { font-size: 1.25rem; font-weight: 700; }
-.invite-title a { text-decoration: none; }
-.invite-title a:hover { text-decoration: underline; opacity: 1; }
-.invite-lead { margin-top: 0.4rem; max-width: var(--measure); }
-.invite-cta { margin-top: 0.75rem; }
+/* ---- areas and projects --------------------------------------------------------
+   One entry per area on the index, one per project on an area page: the video
+   beside the title and description, entries stacked down the page rather than
+   sitting in a row. An entry is NOT a .pub--card - the card rule below
+   stretches one link over the whole card, which would swallow the per-output
+   links underneath. */
+.areas, .projects { margin-top: 1.5rem; }
+.area + .area, .project + .project { margin-top: 3.5rem; }
+.area { position: relative; }
+.area .area-title a::after { content: ""; position: absolute; inset: 0; }
+.area:hover .area-title a { text-decoration: underline; }
 
-/* ---- research areas -------------------------------------------------------------
-   Three areas across the index, each fronted by a video. The videos have
-   different native shapes, so the box is fixed and they letterbox into it
-   against black — which is the ground all three already sit on. */
-.areas {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem 1.25rem;
-  margin-top: 1rem;
-  align-items: start;
+.area-media, .project-media { border-radius: 0.25rem; overflow: hidden; background: #000; }
+/* The clips have very different native shapes (a 4:3 flatmap render, a tall
+   journal figure, a wide flatmap strip). Capping the height keeps the rows
+   from becoming enormous and keeps them roughly even; the letterbox is black,
+   which is the ground most of them already sit on. */
+.area-media video, .project-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 19rem;
+  object-fit: contain;
+  background: #000;
 }
-@media (min-width: 34em) { .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 58em) { .areas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-.area-media { border-radius: 0.25rem; overflow: hidden; background: #000; }
-.area-media video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: contain; background: #000; }
-.area-body { margin-top: 0.6rem; }
-.area-title { font-size: 1rem; font-weight: 700; }
-.area-title a { text-decoration: none; }
-.area-title a:hover { text-decoration: underline; opacity: 1; }
-.area-lead { margin-top: 0.3rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); }
-.area-count { margin-top: 0.35rem; font-size: 0.8125rem; color: var(--fg-muted); }
-
-/* ---- projects ------------------------------------------------------------------
-   The research page leads with lines of work rather than with papers: one
-   entry per project, a video instead of a still, and the papers, code and
-   viewers that came out of it listed underneath. A project entry is NOT a
-   .pub--card — the card rule below stretches one link over the whole card,
-   which would swallow the per-output links. */
-.projects { margin-top: 1.5rem; }
-.project + .project { margin-top: 3.5rem; }
-
-.project-media { border-radius: 0.25rem; overflow: hidden; background: var(--surface); }
-.project-media video { display: block; width: 100%; height: auto; }
+.project-media video { max-height: 28rem; }
 .project-caption { margin-top: 0.6rem; font-size: 0.8125rem; line-height: 1.45; color: var(--fg-muted); }
 
-.project-body { margin-top: 1.25rem; }
-.project-title { font-size: 1rem; font-weight: 700; }
-.project-title a { text-decoration: none; }
-.project-title a:hover { text-decoration: underline; opacity: 1; }
+.area-body, .project-body { margin-top: 1.25rem; }
+.area-title, .project-title { font-size: 1rem; font-weight: 700; }
+.area-title a, .project-title a { text-decoration: none; }
+.area-title a:hover, .project-title a:hover { text-decoration: underline; opacity: 1; }
 .project-years { margin-left: 0.45rem; font-weight: 400; color: var(--fg-muted); }
-.project-lead { margin-top: 0.5rem; max-width: var(--measure); }
+.area-lead, .project-lead { margin-top: 0.5rem; max-width: var(--measure); }
+/* what is inside an area, so the card says something before it is clicked */
+.area-count { margin-top: 0.6rem; font-size: 0.875rem; color: var(--fg-muted); }
 
 .outputs { margin-top: 1.5rem; }
 .outputs > li + li { margin-top: 1rem; }
@@ -226,8 +206,15 @@ a.todo { text-decoration: none; }
 .output-links .sep { padding: 0 0.4rem; color: var(--border); }
 
 @media (min-width: 46em) {
-  .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2.5rem; align-items: start; }
-  .project-body { margin-top: 0; }
+  .area, .project {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0 2.5rem;
+    align-items: start;
+  }
+  .area-body, .project-body { margin-top: 0; }
+  /* the outputs list runs full width under the two columns */
+  .project > .outputs, .area > .outputs { grid-column: 1 / -1; margin-top: 2rem; }
 }
 
 /* ---- research cards ------------------------------------------------------------ */
@@ -417,6 +404,14 @@ a.todo { text-decoration: none; }
 .paper-nav ol { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1.25rem; }
 .paper-nav a { color: var(--fg-muted); text-decoration: none; }
 .paper-nav a:hover, .paper-nav a[aria-current="true"] { color: var(--fg); text-decoration: underline; }
+
+/* A paragraph sitting directly in .paper rather than inside a .paper-section
+   still has to line up with the sections, which are a centred 44em column.
+   Without this a lead protrudes to the left of everything beneath it. */
+.paper > p, .paper > .prose { max-width: 44em; margin-left: auto; margin-right: auto; }
+/* rem, not em: the lead sets its own font-size, so 44em here would resolve
+   against 1.1rem and overshoot the 44em the sections use. */
+.paper > .lead { max-width: 44rem; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); margin-bottom: 1.5rem; }
 
 .paper-section { max-width: 44em; margin: 0 auto var(--gap); }
 .paper-section > h2 { margin-bottom: 0.75rem; }

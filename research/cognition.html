@@ -37,104 +37,106 @@
     <p><a class="backlink" href="../research.html"><span aria-hidden="true">←</span>
       All research</a></p>
 
-    <!-- One of three area pages. The hero is the viewer's own channel
-         toggles, recorded from the published viewer; the claims are ones
-         already made on number.html and on the APS abstract. -->
-    <article class="paper">
+    <!-- An area page: what the area means, then the two projects in it. The
+         quantity video is recorded from the published viewer with its page
+         chrome and colour-map legend hidden at runtime and the camera pinned
+         between toggles, so the flatmap does not move. The birdsong video is
+         Alicia's own 2018 animation. -->
+    <h1 class="name">Cognition</h1>
 
-      <header class="paper-head">
-        <h1 class="paper-title" id="area">Cognition</h1>
-        <p class="pub-meta">An area, not a project</p>
-        <p class="buttons pub-links">
-          <a class="button" href="../viewer/" id="l-viewer"
-             aria-labelledby="l-viewer area">Brain viewer</a>
-          <a class="button" href="number.html" id="l-number"
-             aria-labelledby="l-number area">Number, space and time</a>
-          <a class="button" href="birdsong.html" id="l-birdsong"
-             aria-labelledby="l-birdsong area">Birdsong</a>
-        </p>
-      </header>
+    <p class="lead">The common thread is stimulus choice. If you want to know what cortex does with
+      a concept, the experiment has to contain the concept being used rather than being tested
+      for.</p>
 
-<figure class="fig fig--hero">
-  <video controls loop muted playsinline preload="none"
-         poster="../figures/area-cognition.jpg" width="1500" height="720"
-         aria-label="A flattened pair of hemispheres with the number, time and space channels switching on and off one at a time: pink for number, green for time, blue for space, and pale where they overlap.">
-    <source src="../figures/area-cognition.mp4" type="video/mp4">
-  </video>
-  <figcaption>The three quantity channels switched on and off over the group map — number, then
-    time, then space, then pairs, then all three. Where all three carry weight the colours combine
-    toward white. Recorded from <a href="../viewer/">the viewer</a>, which does this on click.</figcaption>
-</figure>
+    <div class="prose">
+      <p>The conventional way to ask whether two cognitive domains share machinery is to run a small
+        experiment per domain and check whether the activated regions coincide. Each experiment
+        carries its own task, its own stimuli and its own confounds, so “overlap” ends up being
+        partly a statement about how the experiments were built rather than about the brain.</p>
+      <p>The alternative is a stimulus rich enough to contain all of it at once, and a model whose
+        coordinates can be read — which is what the work under <a href="bayesian.html">Bayesian</a>
+        is for.</p>
+    </div>
 
-<p class="lead">The common thread is stimulus choice. If you want to know what cortex does with a
-  concept, the experiment has to contain the concept being used rather than being tested for.</p>
+    <div class="projects">
 
-<section class="paper-section" id="what" aria-labelledby="h-what">
-  <h2 id="h-what">Why it is a category</h2>
-<p>The conventional way to ask whether two cognitive domains share machinery is to run a small
-  experiment per domain and check whether the activated regions coincide. Each experiment carries its
-  own task, its own stimuli and its own confounds, so “overlap” ends up being partly a statement
-  about how the experiments were built rather than about the brain.</p>
-<p>The alternative is a stimulus rich enough to contain all of it at once. Someone telling a story
-  counts things, places them and times them continuously, in one stream, in one currency — words. A
-  single encoding model fit to that gives every voxel a weight for every feature, and the maps for
-  different concepts become directly comparable because they came from one experiment. The price is
-  that the features have to be disentangled first, which is what the work under
-  <a href="bayesian.html">Bayesian</a> is for.</p>
-</section>
+      <article class="project" aria-labelledby="p-quantity">
+        <div class="project-media">
+          <video autoplay loop muted playsinline preload="auto"
+                 poster="../figures/area-cognition.jpg" width="1210" height="580"
+                 aria-label="A flattened pair of hemispheres with the number, time and space channels switching on and off one at a time: pink for number, green for time, blue for space, and pale where they overlap.">
+            <source src="../figures/area-cognition.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="project-body">
+          <h2 class="project-title" id="p-quantity"><a href="number.html">Number, space and
+            time</a><span class="project-years"><time datetime="2022">2022</time>–<time datetime="2026">2026</time></span></h2>
+          <p class="project-lead">A theory from 2003 holds that the brain measures <em>how many</em>,
+            <em>how far</em> and <em>how long</em> with one shared system. Behaviour supports it;
+            imaging has disagreed with itself. Read out of story listening — one experiment, one
+            stimulus stream, three concepts each on their own axis — the three maps overlap, in the
+            intraparietal sulcus and the inferior frontal gyrus, bilaterally, across listeners.
+            Nineteen listeners later the picture is a distributed temporal, parietal and frontal
+            network in which some regions are sharply selective for one quantity and others answer
+            to all three.</p>
+          <p class="project-lead">The video is the viewer switching those three channels on and off
+            over the group map. <a href="../viewer/">The viewer itself</a> does this on click.</p>
+        </div>
+        <ul class="outputs" role="list">
+          <li>
+            <p class="output-title"><a href="number.html"><cite>A Distributed Cortical Network
+              Integrates Semantic Representations of Number, Space, and Time</cite></a> <span class="pub-meta">CCN <time datetime="2026">2026</time>, poster</span></p>
+            <p class="authors">Evi Hendrikx, <span class="me">Alicia Zeng</span>, Yashaswini,
+              Matteo Visconti di Oleggio Castello, Jack L. Gallant</p>
+            <p class="output-links"><a href="https://openreview.net/forum?id=V6IilrmWYe">OpenReview</a><span
+              class="sep" aria-hidden="true">·</span><a href="../viewer/">Brain viewer</a><span
+              class="sep" aria-hidden="true">·</span><a href="number.html#viewer">Tour</a><span
+              class="sep" aria-hidden="true">·</span><a href="number.html#bibtex">Cite</a><span
+              class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-number">Explainer</a></p>
+          </li>
+          <li>
+            <p class="output-title"><a href="../viewer/">Sparse concept atoms brain viewer</a> <span class="pub-meta">interactive, <time datetime="2026">2026</time></span></p>
+            <p class="output-links"><a href="../viewer/">Open</a><span
+              class="sep" aria-hidden="true">·</span><a href="number.html#viewer">Recorded tour</a></p>
+          </li>
+        </ul>
+      </article>
 
-<section class="paper-section" id="quantity" aria-labelledby="h-quantity">
-  <h2 id="h-quantity">Number, space and time</h2>
-<p>A theory from 2003 holds that the brain measures <em>how many</em>, <em>how far</em> and <em>how
-  long</em> with one shared system. Behaviour supports it; imaging has disagreed with itself. Read
-  out of story listening, the three maps overlap — in the intraparietal sulcus and the inferior
-  frontal gyrus, bilaterally, across listeners. Nineteen listeners later, the picture is a
-  distributed temporal, parietal and frontal network in which some regions are sharply selective for
-  one quantity and others answer to all three. <a href="number.html">The full tour is here</a>, and
-  the maps are <a href="../viewer/">open in the viewer</a>.</p>
-</section>
+      <article class="project" aria-labelledby="p-birdsong">
+        <div class="project-media">
+          <video autoplay loop muted playsinline preload="auto"
+                 poster="../figures/project-birdsong.jpg" width="640" height="480"
+                 aria-label="A reconstructed attractor from a zebra finch song, turning: a cloud of delay-embedded points tracing a closed loop, with a running time readout in milliseconds.">
+            <source src="../figures/project-birdsong.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="project-body">
+          <h2 class="project-title" id="p-birdsong"><a href="birdsong.html">Birdsong in state
+            space</a><span class="project-years"><time datetime="2017">2017</time>–<time datetime="2019">2019</time></span></h2>
+          <p class="project-lead">The same instinct applied to a smaller animal, earlier. A zebra
+            finch song is normally treated as acoustics: a spectrogram, an inventory of syllables.
+            The alternative is to treat the recording as one observable of a dynamical system and
+            reconstruct the state space behind it by delay embedding, taking the delay from the
+            first minimum of the mutual information and checking the whole procedure against systems
+            whose answers are already known. The video is one song’s reconstructed state space,
+            turning.</p>
+        </div>
+        <ul class="outputs" role="list">
+          <li>
+            <p class="output-title"><a
+              href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract"><cite>A Nonlinear
+              Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
+            <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong, Vijay Balasubramanian</p>
+            <p class="output-links"><a href="birdsong.html">Project</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">Abstract</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
+              Attractor (video)</a><span
+              class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-birdsong">Explainer</a></p>
+          </li>
+        </ul>
+      </article>
 
-<section class="paper-section" id="song" aria-labelledby="h-song">
-  <h2 id="h-song">Song</h2>
-<p>Earlier, and the same instinct applied to a smaller animal: a zebra finch song treated not as
-  acoustics but as one observable of a dynamical system, with the state space behind it reconstructed
-  by delay embedding. <a href="birdsong.html">That project is here.</a></p>
-</section>
-
-<section class="paper-section" id="outputs" aria-labelledby="h-outputs">
-  <h2 id="h-outputs">Outputs</h2>
-  <ul class="outputs" role="list">
-    <li>
-      <p class="output-title"><a href="number.html"><cite>A Distributed Cortical Network Integrates
-        Semantic Representations of Number, Space, and Time</cite></a> <span class="pub-meta">CCN <time datetime="2026">2026</time>, poster</span></p>
-      <p class="authors">Evi Hendrikx, <span class="me">Alicia Zeng</span>, Yashaswini,
-        Matteo Visconti di Oleggio Castello, Jack L. Gallant</p>
-      <p class="output-links"><a href="https://openreview.net/forum?id=V6IilrmWYe">OpenReview</a><span
-        class="sep" aria-hidden="true">·</span><a href="../viewer/">Brain viewer</a><span
-        class="sep" aria-hidden="true">·</span><a href="number.html#viewer">Tour</a><span
-        class="sep" aria-hidden="true">·</span><a href="number.html#bibtex">Cite</a><span
-        class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-number">Explainer</a></p>
-    </li>
-    <li>
-      <p class="output-title"><a href="../viewer/">Sparse concept atoms brain viewer</a> <span class="pub-meta">interactive, <time datetime="2026">2026</time></span></p>
-      <p class="output-links"><a href="../viewer/">Open</a><span
-        class="sep" aria-hidden="true">·</span><a href="number.html#viewer">Recorded tour</a></p>
-    </li>
-    <li>
-      <p class="output-title"><a
-        href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract"><cite>A Nonlinear
-        Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
-      <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong, Vijay Balasubramanian</p>
-      <p class="output-links"><a href="birdsong.html">Project</a><span
-        class="sep" aria-hidden="true">·</span><a href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">Abstract</a><span
-        class="sep" aria-hidden="true">·</span><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
-        Attractor (video)</a><span
-        class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-birdsong">Explainer</a></p>
-    </li>
-  </ul>
-</section>
-
-    </article>
+    </div>
 
   </main>
 

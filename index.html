@@ -53,28 +53,6 @@
       </div>
     </section>
 
-    <!-- The viewer sits above everything else on the page: it is the one
-         thing on this site that is usable rather than readable, so it gets
-         the position and the size. -->
-    <section class="block invite" aria-labelledby="h-viewer">
-      <div class="invite-media">
-        <video controls loop muted playsinline preload="none"
-               poster="figures/number-viewer-tour.jpg" width="1600" height="900"
-               aria-label="The brain viewer's guided tour: a group-average brain turning under the number, time and space tuning map, then inflated and flattened into a sheet.">
-          <source src="figures/number-viewer-tour.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="invite-body">
-        <h2 class="invite-title" id="h-viewer"><a href="viewer/">A brain you can open</a></h2>
-        <p class="invite-lead">Nineteen people listened to stories in a scanner while we measured
-          where their cortex answered to words about number, time and space. The maps are published
-          as something you can turn over rather than a figure you can only look at: the group
-          average and three individual brains, inflated, flattened, and clickable anywhere. There is
-          a two-minute guided tour if you would like one.</p>
-        <p class="invite-cta"><a class="button" href="viewer/">Open the viewer</a></p>
-      </div>
-    </section>
-
     <!-- The arc: one entry per year, the year set bold like a heading, then
          one sentence — her own first sentence from the draft, nothing else. -->
     <section class="block" aria-labelledby="h-arc">
@@ -111,11 +89,11 @@
       </ol>
     </section>
 
-    <!-- Three areas, each fronted by a video. Bayesian is a placeholder: the
-         new project there is not announced, so the card makes no claims. The
-         videos are real material - the measured responses the semantic models
-         are fit to, a scrolling at-home recording, and the viewer's own
-         channel toggles. -->
+    <!-- Three areas, stacked, each fronted by a video that plays on its own.
+         Bayesian is a placeholder: the new project there is not announced, so
+         the card makes no claims. The videos are real material - the measured
+         responses the semantic models are fit to, Figure 1 of the Nature BME
+         paper filling in, and the viewer's own channel toggles. -->
     <section class="block" aria-labelledby="h-research">
       <h2 class="section-label" id="h-research">Research</h2>
 
@@ -123,7 +101,7 @@
 
         <article class="area">
           <div class="area-media">
-            <video controls loop muted playsinline preload="none"
+            <video autoplay loop muted playsinline preload="auto"
                    poster="figures/area-bayesian.jpg" width="1100" height="826"
                    aria-label="Measured cortical responses to a story, on a pair of flattened hemispheres, changing frame by frame.">
               <source src="figures/area-bayesian.mp4" type="video/mp4">
@@ -132,15 +110,17 @@
           <div class="area-body">
             <h3 class="area-title"><a href="research/bayesian.html">Bayesian</a></h3>
             <p class="area-lead">Inference as the thing that makes a model interpretable: sparse,
-              identifiable bases in place of entangled ones.</p>
+              identifiable bases in place of entangled ones. What a fitted weight is actually
+              entitled to mean.</p>
+            <p class="area-count">Sparse concept atoms · one project not yet named</p>
           </div>
         </article>
 
         <article class="area">
           <div class="area-media">
-            <video controls loop muted playsinline preload="none"
-                   poster="figures/area-closed-loop.jpg" width="1200" height="800"
-                   aria-label="Four spectrograms scrolling together on one time axis: a subthalamic channel and two cortical channels above, wrist acceleration below.">
+            <video autoplay loop muted playsinline preload="auto"
+                   poster="figures/area-closed-loop.jpg" width="1200" height="1048"
+                   aria-label="Figure 1 of the Nature Biomedical Engineering paper filling in from left to right: three stimulation conditions side by side, each with postcentral, precentral and subthalamic spectrograms, elbow angle and wrist accelerometry.">
               <source src="figures/area-closed-loop.mp4" type="video/mp4">
             </video>
           </div>
@@ -148,14 +128,15 @@
             <h3 class="area-title"><a href="research/closed-loop.html">Closed loop</a></h3>
             <p class="area-lead">Recording and stimulation in the same circuit, measured where
               people actually live rather than in a clinic room.</p>
+            <p class="area-count">Parkinson’s, measured at home</p>
           </div>
         </article>
 
         <article class="area">
           <div class="area-media">
-            <video controls loop muted playsinline preload="none"
-                   poster="figures/area-cognition.jpg" width="1500" height="720"
-                   aria-label="A flattened pair of hemispheres with the number, time and space channels switching on and off one at a time, the colours combining where they overlap.">
+            <video autoplay loop muted playsinline preload="auto"
+                   poster="figures/area-cognition.jpg" width="1210" height="580"
+                   aria-label="A flattened pair of hemispheres with the number, time and space channels switching on and off one at a time: pink for number, green for time, blue for space, and pale where they overlap.">
               <source src="figures/area-cognition.mp4" type="video/mp4">
             </video>
           </div>
@@ -163,6 +144,7 @@
             <h3 class="area-title"><a href="research/cognition.html">Cognition</a></h3>
             <p class="area-lead">What cortex does with quantity, meaning and song, read out of
               recordings made under natural conditions.</p>
+            <p class="area-count">Number, space and time · Birdsong in state space</p>
           </div>
         </article>
 

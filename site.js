@@ -73,20 +73,30 @@
     if (reduceMotion) draw(0); else requestAnimationFrame(frame);
   }
 
-  /* ---- 2. project videos: play only while on screen ----------------------- */
-  /* The markup carries controls and a poster, so with no JavaScript the
-     videos are still there to play by hand. This only starts them when the
-     entry is actually in view, and never under prefers-reduced-motion. */
-  var clips = document.querySelectorAll('.project-media video');
-  if (clips.length && !reduceMotion && 'IntersectionObserver' in window) {
-    var clipObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        var v = e.target;
-        if (e.isIntersecting) { var p = v.play(); if (p) p.catch(function () {}); }
-        else if (!v.paused) { v.pause(); }
+  /* ---- 2. videos: autoplay, but not against the viewer's wishes ---------- */
+  /* The markup carries autoplay, so the page plays on load with no click.
+     This only ever takes play away: it stops everything under
+     prefers-reduced-motion, and pauses clips that have scrolled off screen so
+     they are not decoding in the background. */
+  var clips = document.querySelectorAll('.area-media video, .project-media video, .fig video');
+  if (clips.length) {
+    if (reduceMotion) {
+      clips.forEach(function (v) {
+        v.autoplay = false;
+        v.removeAttribute('autoplay');
+        v.setAttribute('controls', '');
+        v.pause();
       });
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.35 });
-    clips.forEach(function (v) { clipObs.observe(v); });
+    } else if ('IntersectionObserver' in window) {
+      var clipObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var v = e.target;
+          if (e.isIntersecting) { var p = v.play(); if (p) p.catch(function () {}); }
+          else if (!v.paused) { v.pause(); }
+        });
+      }, { rootMargin: '200px 0px', threshold: 0.01 });
+      clips.forEach(function (v) { clipObs.observe(v); });
+    }
   }
 
   /* ---- 2. paper page: which section is in view --------------------------- */
