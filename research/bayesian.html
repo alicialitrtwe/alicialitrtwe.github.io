@@ -94,6 +94,28 @@
         </ul>
       </article>
 
+      <!-- The NeurIPS talk itself. SlidesLive cannot be embedded here: its
+           frame-ancestors CSP allows only slideslive.* and neurips.cc, so an
+           iframe on this domain is refused. This is Alicia's own recording,
+           served directly. It is the one video on the site with sound, so it
+           does not autoplay and does not loop. -->
+      <article class="project" aria-labelledby="p-talk">
+        <div class="project-media">
+          <video controls preload="none" playsinline
+                 poster="../figures/talk-superpositions.jpg" width="1280" height="720"
+                 aria-label="Five-minute conference talk on the Sparse Concept Encoding Model, with slides on a black background.">
+            <source src="../figures/talk-superpositions.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="project-body">
+          <h2 class="project-title" id="p-talk">The talk<span class="project-years">NeurIPS <time datetime="2025">2025</time>, five minutes</span></h2>
+          <p class="project-lead">The whole argument in five minutes: why dense embeddings make voxel
+            weights unreadable, what sparse dictionary learning does about it, and what the
+            disentangled maps show. Also <a href="https://slideslive.com/39050668">on SlidesLive</a>,
+            where it was recorded.</p>
+        </div>
+      </article>
+
       <article class="project" aria-labelledby="p-new">
         <div class="project-media">
           <div class="fig-slot todo"><span class="todo" data-todo="bayesian-new-video">[video]</span></div>

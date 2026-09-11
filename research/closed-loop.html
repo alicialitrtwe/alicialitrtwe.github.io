@@ -38,12 +38,19 @@
       All research</a></p>
 
     <!-- An area page: what the area means, then the projects in it. The video
-         is Figure 1a of the Nature Biomedical Engineering paper
-         (aDBS/aDBS_nbiotech/nbiotech_fig1.png), filling in left to right. All
-         three stimulation conditions advance on one shared time scale, so the
-         shorter sessions finish before the longer one; nothing is redrawn or
-         re-derived, it is the published figure being revealed. No patient
-         video appears anywhere on this site. -->
+         is generated from Patient 01's 20211122_2007_2013 session, which is
+         the preferred-stimulation block: experiments.json's
+         multi_stim_level_by_dates[left][3] (20211122) is [1, 1.1, 0.5], so the
+         day's first session is the preferred amplitude. Left-hemisphere RC+S
+         against the right wrist (contralateral), aligned with the -0.4532 s
+         offset in delays_rcs_watch_alicia.csv, the whole 5m55s scrolling past.
+         Channels are a chosen subset: the two cortical pairs carry the
+         movement-locked modulation (beta power against the wrist's movement
+         envelope, r = -0.40 for 8-9 and -0.45 for 10-11, gamma going the other
+         way at +0.26 for 8-9) while both subthalamic channels sit near -0.13
+         and are dropped. Each frequency bin is normalised over the session, as
+         the paper's own figure script does, or the 1/f slope uses the whole
+         colour range. No patient video appears anywhere on this site. -->
     <h1 class="name">Closed loop</h1>
 
     <p class="lead">A closed loop is a system that measures the thing it is also acting on. Deep
@@ -64,8 +71,8 @@
       <article class="project" aria-labelledby="p-athome">
         <div class="project-media">
           <video autoplay loop muted playsinline preload="auto"
-                 poster="../figures/area-closed-loop.jpg" width="1200" height="1048"
-                 aria-label="Figure 1 of the Nature Biomedical Engineering paper filling in from left to right: three stimulation conditions side by side, each with postcentral, precentral and subthalamic spectrograms, elbow angle and wrist accelerometry, with a task-colour legend below.">
+                 poster="../figures/area-closed-loop.jpg" width="1400" height="740"
+                 aria-label="Three spectrograms scrolling together on one clock: two cortical contact pairs above and the right wrist's acceleration spectrum below. Bright columns of wrist movement line up with low-frequency bursts in the cortex.">
             <source src="../figures/area-closed-loop.mp4" type="video/mp4">
           </video>
         </div>
@@ -79,9 +86,12 @@
             recorded at that resolution, encoding models can predict neural power <em>from</em>
             behaviour — and which features you use matters, since the full acceleration spectrogram
             and task labels beat coarse summaries like mean acceleration by a wide margin.</p>
-          <p class="project-lead">The video is Figure 1 of the paper, filling in: the same session
-            under under-, preferred- and over-stimulation, advancing together on one clock. With
-            Simon Little (UCSF) and Jeffrey Herron (UW).</p>
+          <p class="project-lead">The video is one whole session at the clinically preferred
+            amplitude, scrolling: the two cortical contact pairs above, and below them the wrist on
+            the side that hemisphere drives. The columns in the wrist are the participant moving,
+            and the cortical bursts that answer them are the thing the models are fit to. The two
+            subthalamic channels are left out — they carry far less of this. With Simon Little
+            (UCSF) and Jeffrey Herron (UW).</p>
         </div>
         <ul class="outputs" role="list">
           <li>
