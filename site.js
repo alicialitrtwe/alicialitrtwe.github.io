@@ -73,6 +73,22 @@
     if (reduceMotion) draw(0); else requestAnimationFrame(frame);
   }
 
+  /* ---- 2. project videos: play only while on screen ----------------------- */
+  /* The markup carries controls and a poster, so with no JavaScript the
+     videos are still there to play by hand. This only starts them when the
+     entry is actually in view, and never under prefers-reduced-motion. */
+  var clips = document.querySelectorAll('.project-media video');
+  if (clips.length && !reduceMotion && 'IntersectionObserver' in window) {
+    var clipObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) { var p = v.play(); if (p) p.catch(function () {}); }
+        else if (!v.paused) { v.pause(); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.35 });
+    clips.forEach(function (v) { clipObs.observe(v); });
+  }
+
   /* ---- 2. paper page: which section is in view --------------------------- */
   var nav = document.querySelector('.paper-nav');
   if (nav && 'IntersectionObserver' in window) {

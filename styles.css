@@ -160,6 +160,39 @@ a.todo { text-decoration: none; }
 .beat-lead { max-width: var(--measure); }
 .stream { margin-top: 2.5rem; }
 
+/* ---- projects ------------------------------------------------------------------
+   The research page leads with lines of work rather than with papers: one
+   entry per project, a video instead of a still, and the papers, code and
+   viewers that came out of it listed underneath. A project entry is NOT a
+   .pub--card — the card rule below stretches one link over the whole card,
+   which would swallow the per-output links. */
+.projects { margin-top: 1.5rem; }
+.project + .project { margin-top: 3.5rem; }
+
+.project-media { border-radius: 0.25rem; overflow: hidden; background: var(--surface); }
+.project-media video { display: block; width: 100%; height: auto; }
+.project-caption { margin-top: 0.6rem; font-size: 0.8125rem; line-height: 1.45; color: var(--fg-muted); }
+
+.project-body { margin-top: 1.25rem; }
+.project-title { font-size: 1rem; font-weight: 700; }
+.project-title a { text-decoration: none; }
+.project-title a:hover { text-decoration: underline; opacity: 1; }
+.project-years { margin-left: 0.45rem; font-weight: 400; color: var(--fg-muted); }
+.project-lead { margin-top: 0.5rem; max-width: var(--measure); }
+
+.outputs { margin-top: 1.5rem; }
+.outputs > li + li { margin-top: 1rem; }
+.output-title { font-weight: 400; }
+.output-links { margin-top: 0.15rem; font-size: 0.875rem; }
+.output-links a { color: var(--fg-muted); }
+.output-links a:hover { color: var(--fg); }
+.output-links .sep { padding: 0 0.4rem; color: var(--border); }
+
+@media (min-width: 46em) {
+  .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2.5rem; align-items: start; }
+  .project-body { margin-top: 0; }
+}
+
 /* ---- research cards ------------------------------------------------------------ */
 /* Three across, two on a narrow window, one on a phone — with a hairline
    gutter, so the thumbnails read as one strip. */

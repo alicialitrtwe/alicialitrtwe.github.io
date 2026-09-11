@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Birdsong in state space — Alicia Zeng</title>
+<meta name="description" content="Two years at Penn treating zebra finch song as one observable of a dynamical system, reconstructing the state space behind it by delay embedding.">
+<meta property="og:title" content="Birdsong in state space">
+<meta property="og:description" content="Treating zebra finch song as one observable of a dynamical system, reconstructing the state space behind it by delay embedding.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+
+  <!-- The site is being written; the notice is deliberate and sitewide. -->
+  <p class="wip">Work in progress — pages and figures are still being written.</p>
+
+
+  <div class="topbar">
+    <p class="wordmark"><a href="../index.html">Alicia Zeng</a></p>
+    <nav aria-label="Site">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <p><a class="backlink" href="../research.html"><span aria-hidden="true">←</span>
+      All research</a></p>
+
+    <!-- A project overview for the 2017-2019 Penn work, which has one
+         published output (an APS abstract) and no paper page. The method
+         described here is read off the project's own files - the delay
+         embedding, the mutual-information criterion for tau, the Lorenz and
+         Roessler reconstructions kept as controls - and the framing is
+         Alicia's own sentence from the index page. It deliberately reports
+         no findings: the abstract is the only published claim, and it is
+         linked rather than paraphrased. The video is her 2018 animation. -->
+    <article class="paper">
+
+      <header class="paper-head">
+        <h1 class="paper-title" id="project">Birdsong in state space</h1>
+        <p class="pub-meta"><time datetime="2017">2017</time>–<time datetime="2019">2019</time>,
+          with Eve Armstrong and Vijay Balasubramanian at the University of Pennsylvania</p>
+        <p class="buttons pub-links">
+          <a class="button" href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract"
+             id="l-abstract" aria-labelledby="l-abstract project">APS abstract</a>
+          <a class="button" href="https://www.youtube.com/watch?v=2mlbTtkJ0uw" id="l-video"
+             aria-labelledby="l-video project">Song Attractor</a>
+        </p>
+      </header>
+
+<figure class="fig fig--hero">
+  <video controls loop muted playsinline preload="none"
+         poster="../figures/project-birdsong.jpg" width="640" height="480"
+         aria-label="A reconstructed attractor from a zebra finch song, turning: a cloud of delay-embedded points tracing a closed loop, with a running time readout in milliseconds.">
+    <source src="../figures/project-birdsong.mp4" type="video/mp4">
+  </video>
+  <figcaption>One song’s reconstructed state space, turning. Each point is a moment of the
+    recording, placed by its own value and its values one and two delays earlier; the readout is the
+    time within the song.</figcaption>
+</figure>
+
+<p class="lead">A zebra finch song is normally treated as acoustics: a spectrogram, an inventory of
+  syllables, a set of features. The premise here was that this discards the thing most likely to
+  matter — that the song is produced by a physical system with dynamics, and the recording is one
+  observable of it.</p>
+
+<section class="paper-section" id="approach" aria-labelledby="h-approach">
+  <h2 id="h-approach">The approach</h2>
+<p>Takens’ theorem says you can recover the geometry of a dynamical system’s attractor from a single
+  measured channel, by treating delayed copies of that channel as independent coordinates. So: take
+  the waveform, choose a delay, and plot each moment against itself one and two delays ago. The
+  delay is not free — too short and the coordinates are redundant, too long and they are unrelated —
+  and it was chosen from the first local minimum of the mutual information, the standard criterion.
+  The embedding dimension and the Lyapunov exponents, which say whether trajectories nearby now stay
+  nearby, were estimated alongside it.</p>
+<p>Because a reconstruction like this will happily produce a picture from noise, the procedure was
+  run on systems whose answers are already known — Lorenz and Rössler — and kept next to the song
+  reconstructions as controls. The corpus was ten zebra finch songs, segmented so that the geometry
+  could be compared syllable by syllable rather than over a whole recording.</p>
+</section>
+
+<section class="paper-section" id="status" aria-labelledby="h-status">
+  <h2 id="h-status">Where it got to</h2>
+<p>It was presented at the APS March Meeting in 2019 and did not go further; the work stopped when I
+  moved to Berkeley. The published claim is the <a
+  href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">abstract</a>, and I would
+  rather link it than restate it from memory seven years on.</p>
+<p>The through-line is easy to see in hindsight. The question — is there structure in this signal
+  that the conventional description throws away, and how would you know — is the same one the later
+  work asks about word embeddings and about movement at home. The strange attractor turning on
+  <a href="../index.html">the front page</a> is a Lorenz system, and it is there for this reason.</p>
+<p class="source">This page describes the method from the project’s own 2018–2019 files — the
+  embedding code, the mutual-information criterion, the Lorenz and Rössler reconstructions kept as
+  controls — and reports no results beyond that. The abstract is the only published claim. The work
+  appeared under <span class="me">Xiao Zeng</span>.</p>
+</section>
+
+<section class="paper-section" id="outputs" aria-labelledby="h-outputs">
+  <h2 id="h-outputs">Outputs</h2>
+  <ul class="outputs" role="list">
+    <li>
+      <p class="output-title"><a
+        href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract"><cite>A Nonlinear
+        Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
+      <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong, Vijay Balasubramanian</p>
+      <p class="output-links"><a href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">Abstract</a><span
+        class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-birdsong">Explainer</a></p>
+    </li>
+    <li>
+      <p class="output-title"><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
+        Attractor</a> <span class="pub-meta">video, <time datetime="2018">2018</time></span></p>
+      <p class="output-links"><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Watch on
+        YouTube</a></p>
+    </li>
+  </ul>
+</section>
+
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Site (footer)">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script src="../site.js"></script>
+</body>
+</html>

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Research — Alicia Zeng</title>
-<meta name="description" content="Publication list for Alicia Zeng.">
+<meta name="description" content="Three lines of work: semantic maps of the brain, Parkinson's measured at home, and birdsong in state space.">
 <meta property="og:title" content="Research — Alicia Zeng">
-<meta property="og:description" content="Publication list for Alicia Zeng.">
+<meta property="og:description" content="Three lines of work: semantic maps of the brain, Parkinson's measured at home, and birdsong in state space.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:,">
@@ -36,148 +36,193 @@
 
     <h1 class="name">Research</h1>
 
-    <!-- Three groups, in her order. Each title is written once and links to
-         its own page (cards) or straight out to the work (list entries).
-         The PDF / DOI / code links live on the paper pages, so a real URL is
-         only ever entered in one place. Titles, venues, years and DOIs were
-         verified against Crossref and PubMed, not typed from memory. -->
-    <section class="block group" aria-labelledby="h-bayes">
-      <h2 class="section-label" id="h-bayes">Bayesian inference</h2>
-      <div class="pub-grid">
-    <article class="pub pub--card">
-      <div class="thumb">
-        <img src="figures/superpositions-thumb.png" alt="Cortical flatmap of one subject from the NeurIPS 2025 poster, with voxels coloured by their selectivity for number, time and space." width="528" height="330">
-        <p class="abstract">Encoding models using word embeddings or artificial neural network (ANN) features
-          reliably predict brain responses to naturalistic stimuli, yet interpreting these
-          models remains challenging. A central limitation is superposition: distinct
-          semantic features become entangled along correlated directions in dense embeddings
-          when latent features outnumber embedding dimensions. This entanglement renders
-          regression weights non-identifiable—different combinations of semantic directions
-          can produce identical predictions, precluding principled interpretation of voxel
-          selectivity. To address this, we introduce the Sparse Concept Encoding Model,
-          which transforms dense embeddings into a higher-dimensional, sparse, non-negative
-          space of learned concept atoms. This transformation yields an axis-aligned
-          semantic basis where each dimension corresponds to an interpretable concept,
-          enabling direct readout of conceptual selectivity from voxel weights. When applied
-          to fMRI data collected during story listening, our model matches the prediction
-          performance of conventional dense models while substantially enhancing
-          interpretability. It enables novel neuroscientific analyses such as disentangling
-          overlapping cortical representations of time, space, and number, and revealing
-          structured similarity among distributed conceptual maps. This framework offers a
-          scalable and interpretable bridge between ANN-derived features and human
-          conceptual representations in the brain.</p>
-      </div>
-      <div class="pub-body">
-        <h3 class="pub-title"><a href="research/superpositions.html"><cite>Disentangling
-          Superpositions: Interpretable Brain Encoding Model with Sparse Concept Atoms</cite></a> <span class="pub-meta">NeurIPS <time datetime="2025">2025</time></span></h3>
-          <p class="authors"><span class="me">Alicia Zeng</span>, Jack Gallant</p>
-      </div>
-    </article>
-    <article class="pub pub--card">
-      <div class="thumb">
-        <img src="figures/thesis-thumb.jpg" alt="From Figure 3.1 of the thesis: neural spectrograms from three recording sites over one day at home, under over-, under- and preferred-stimulation." width="800" height="500">
-        <p class="abstract">Understanding brain function requires modeling a high-dimensional, nonlinear dynamical system continuously driven by sensory input, shaped by internal state and context, and expressed through behavior. Machine learning can be used to extract predictive structure from large-scale neural recordings, but its scientific value hinges on whether fitted parameters admit interpretation as testable hypotheses about neural computation. This thesis develops and applies interpretable predictive models—primarily linearized encoding models that map stimulus or behavioral features onto neural responses—to investigate (i) how human cortex represents abstract concepts during naturalistic language comprehension and (ii) how deep brain stimulation (DBS) modulates movement-related neural dynamics in Parkinson’s disease. The first study addresses a central limitation of encoding models built on dense word embeddings or neural network activations: superposition. When latent semantic factors outnumber embedding dimensions, distinct concepts become entangled along shared directions, rendering voxelwise regression weights uninterpretable and formally non-identifiable. I introduce the Sparse Concept Encoding Model, which applies sparse dictionary learning to project dense embeddings into an overcomplete basis of interpretable concept atoms. Because each atom isolates a coherent semantic direction, voxel tuning can be read directly from regression coefficients. Applied to whole-brain fMRI acquired during naturalistic story listening, this approach matches the prediction accuracy of conventional dense models while substantially improving interpretability. The resulting cortical maps reveal convergent selectivity for time, space, and number in the intraparietal sulcus and the inferior frontal gyrus—consistent with the shared-magnitude hypothesis—and uncover systematic similarity structure among distributed semantic representations. The second study moves to a clinical domain where characterizing neural dynamics carries immediate therapeutic implications. Parkinson’s disease is increasingly understood as a disorder of network dynamics wherein motor symptoms arise from aberrant oscillatory activity across basal ganglia and sensorimotor cortex. Yet, DBS remains an open-loop therapy with parameters tuned heuristically. Using a home-deployed multimodal data collection platform integrating bidirectional neurostimulators, bilateral wrist accelerometry, and video-based pose estimation, we recorded synchronized neural and behavioral data from two participants performing standardized motor tasks across multiple stimulation amplitudes. By building encoding models that predict neural spectral power data from behavioral features, we demonstrate how temporally rich predictors such as full acceleration spectrograms and task labels outperform coarse movement summaries. Thus, this study highlights the importance of fine-grained behavioral structure for identifying movement-related variance in sensed neural signals. In the participant with stronger baseline model performance, higher stimulation amplitudes enhanced prediction performance across sensorimotor cortex and subthalamic nucleus. We show that these gains arise from amplification of a movement-related spectral component characterized by beta suppression alongside alpha/delta and gamma enhancement, including a prominent peak at the stimulation-entrained subharmonic. This interpretation is consistent with “information lesion” accounts of DBS, wherein pathological synchronization impedes movement-related signaling and high-frequency stimulation restores information flow through basal ganglia–cortical circuits. Together, these studies illustrate how high-volume data collected under naturalistic or semi-naturalistic conditions can be analyzed with interpretable predictive models to transform accurate prediction into mechanistic neuroscientific hypotheses.</p>
-      </div>
-      <div class="pub-body">
-        <h3 class="pub-title"><a href="research/thesis.html"><cite>Principled Neuroscientific Discovery with Machine Learning</cite></a> <span class="pub-meta">PhD thesis, UC Berkeley, <time datetime="2025">2025</time></span></h3>
-          <p class="authors"><span class="me">Alicia Zeng</span></p>
-      </div>
-    </article>
-      </div>
-    </section>
+    <!-- Projects, not publications. The eight outputs below belong to three
+         lines of work, so the page is organised that way: each project has
+         its own page, a video rather than a still, and its papers, code and
+         viewers listed under it. The thesis appears under two projects
+         because its two chapters belong to two different ones.
 
-    <section class="block group" aria-labelledby="h-data">
-      <h2 class="section-label" id="h-data">Real-world data</h2>
-      <div class="pub-grid">
-    <article class="pub pub--card">
-      <div class="thumb">
-        <img src="figures/dbs-thumb.png" alt="From Fig. 1 of the paper: movement threshold under movement-responsive DBS next to a participant wearing the implanted stimulator, two wrist watches and being filmed at home." width="801" height="500">
-        <p class="abstract">Deep brain stimulation (DBS) has garnered widespread use as an effective treatment
-          for advanced Parkinson’s disease. Conventional DBS (cDBS) provides electrical
-          stimulation to the basal ganglia at fixed amplitude and frequency, yet patients’
-          therapeutic needs are often dynamic with residual symptom fluctuations or side
-          effects. Adaptive DBS (aDBS) is an emerging technology that modulates stimulation
-          with respect to real-time clinical, physiological or behavioural states, enabling
-          therapy to dynamically align with patient-specific symptoms. Here we report an
-          aDBS algorithm intended to mitigate movement slowness by delivering targeted
-          stimulation increases during movement using decoded motor signals from the brain.
-          Our approach demonstrated improvements in dominant hand movement speeds and study
-          participant-reported therapeutic efficacy compared with an inverted control, as
-          well as increased typing speed and reduced dyskinesia compared with cDBS.
-          Furthermore, we demonstrate proof of principle of a machine learning pipeline
-          capable of remotely optimizing aDBS parameters in a home setting. This work
-          illustrates the potential of movement-responsive aDBS as a promising therapeutic
-          approach and highlights how machine learning-assisted programming can simplify
-          complex optimization to facilitate translational scalability.</p>
-      </div>
-      <div class="pub-body">
-        <h3 class="pub-title"><a href="research/dbs.html"><cite>Movement-responsive deep brain
-          stimulation for Parkinson’s disease using a remotely optimized neural
-          decoder</cite></a> <span class="pub-meta">Nature Biomedical Engineering, <time datetime="2026">2026</time></span></h3>
-          <p class="authors">Tanner C. Dixon, Gabrielle Strandquist, <span class="me">Alicia Zeng</span>,
-          Tomasz Frączek, Raphael Bechtold, Daryl Lawrence, Shravanan Ravi, Philip A. Starr,
-          Jack L. Gallant, Jeffrey A. Herron, Simon J. Little</p>
-      </div>
-    </article>
-    <article class="pub pub--card">
-      <div class="thumb">
-        <img src="figures/stimulation-thumb.jpg" alt="From Figure 3.6 of the thesis: the precentral watch-acceleration weight matrix and its first principal component, negative in beta and positive in gamma." width="665" height="415">
-        <p class="abstract">Parkinson’s disease (PD) is a dynamical disease: motor symptoms arise not from static lesions but from aberrant neural activity across basal ganglia and sensorimotor cortex. Deep brain stimulation (DBS) is effective but remains open-loop, with parameters tuned heuristically. Here we use a home-deployed multimodal platform to quantify how DBS amplitude modulates movement-related neural activity. Two participants implanted with bidirectional neurostimulators (Medtronic Summit RC+S) completed six recording days at home, performing a UPDRS-derived motor battery at three stimulation amplitudes (under-, preferred-, and over-stimulation). We recorded local field potentials from subthalamic nucleus and electrocorticography from precentral and postcentral gyri, alongside bilateral wrist accelerometry and video data for pose estimation. Encoding models predicted neural spectral power from behavioral features: mean acceleration, full acceleration spectrogram, task labels, pose kinematics, and a combined set. Across participants, hemispheres, and recording sites, behavioral features robustly predicted neural activity; temporally rich representations—full acceleration spectrogram and task labels—substantially outperformed coarse summaries, indicating that fine-grained movement structure is necessary for capturing behaviorally driven neural variance. In the participant with stronger model performance, higher stimulation amplitudes enhanced prediction throughout the sensorimotor network by amplifying a movement-locked spectral component characterized by beta suppression and gamma enhancement. This pattern aligns with “information lesion” accounts of DBS in which stimulation restores movement-related signaling through pathologically synchronized circuits, and provides an empirical basis for adaptive neuromodulation informed by behavioral state.</p>
-      </div>
-      <div class="pub-body">
-        <h3 class="pub-title"><a href="research/stimulation.html"><cite>Deep Brain Stimulation Amplifies Movement-Related Neural Modulation in Parkinson’s Disease: Evidence from Multimodal Home Recordings</cite></a> <span class="pub-meta">Chapter 3 of the PhD thesis, UC Berkeley, <time datetime="2025">2025</time></span></h3>
-          <p class="authors"><span class="me">Alicia Zeng</span></p>
-      </div>
-    </article>
-      </div>
-      <ul class="minor-list" role="list">
-        <li class="minor">
-          <p class="minor-title"><a href="https://doi.org/10.3791/65305"><cite>Bringing the Clinic
-            Home: An At-Home Multi-Modal Data Collection Ecosystem to Support Adaptive Deep Brain
-            Stimulation</cite></a> <span class="pub-meta">Journal of Visualized Experiments, <time datetime="2023">2023</time></span></p>
-          <p class="authors">Gabrielle Strandquist, Tomasz Frączek, Tanner Dixon, Shravanan Ravi,
-            Raphael Bechtold, Daryl Lawrence, <span class="me">Alicia Zeng</span>, Jack Gallant,
-            Simon Little, Jeffrey Herron</p>
-        </li>
-        <li class="minor">
-          <p class="minor-title"><a href="https://doi.org/10.36227/techrxiv.22067474"><cite>In-Home
-            Video and IMU Kinematics of Self Guided Tasks Correlate with Clinical Bradykinesia
-            Scores</cite></a> <span class="pub-meta">Preprint, TechRxiv, <time datetime="2023">2023</time></span></p>
-          <p class="authors">Gabrielle Strandquist, Tanner Dixon, Tomasz Frączek, Shravanan Ravi,
-            <span class="me">Alicia Zeng</span>, Raphael Bechtold, Daryl Lawrence, Simon Little,
-            Jack Gallant, Jeffrey Herron</p>
-        </li>
-      </ul>
-    </section>
+         Every URL here is entered once on the paper page it belongs to and
+         copied from there; titles, venues, years and DOIs were verified
+         against Crossref and PubMed, not typed from memory.
 
-    <section class="block group" aria-labelledby="h-cognition">
-      <h2 class="section-label" id="h-cognition">Cognition</h2>
-      <div class="pub-grid">
-    <article class="pub pub--card">
-      <div class="thumb thumb--contain">
-        <img src="figures/number-thumb.jpg" alt="From Figure 2.6 of the thesis: the word cloud of the number concept atom — fifteen, eleven, eighteen, seven, sixteen, nine, sixty, twenty, thirty, nineteen, ten, eight, seventeen." width="592" height="296">
-        <p class="abstract">Prior studies have shown that perceptual representations of number, space, and time concepts are represented in several different regions of the human cerebral cortex. These quantities can also be represented as lexical- semantic concepts, but little is known about how lexical-semantic representations of quantity are organized across the cerebral cortex? We used voxelwise encoding models and a sparse lexical-semantic feature space, to map quantity representations in 19 participants who listened to narrative stories in the fMRI scanner. We find that quantity is represented in a distributed temporal, parietal, and frontal network. Inspection of voxel tuning profiles showed that tuning for space, time or number falls along a continuum. Voxels in some regions are highly selective for a single quantity, while those in other regions respond to all three domains. These results suggest that the brain represents space, time and number concepts in a distributed network of regions with varying degrees of cross-domain integration. This distributed network may support the flexible use of quantity concepts in everyday tasks.</p>
-      </div>
-      <div class="pub-body">
-        <h3 class="pub-title"><a href="research/number.html"><cite>A Distributed Cortical Network Integrates Semantic Representations of Number, Space, and Time</cite></a> <span class="pub-meta">CCN <time datetime="2026">2026</time>, poster</span></h3>
-          <p class="authors">Evi Hendrikx, <span class="me">Alicia Zeng</span>, Yashaswini, Matteo Visconti di Oleggio Castello, Jack L. Gallant</p>
-      </div>
-    </article>
-      </div>
-      <ul class="minor-list" role="list">
-        <li class="minor">
-          <p class="minor-title"><a
-            href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract"><cite>A Nonlinear
-            Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
-          <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong,
-            Vijay Balasubramanian</p>
-          <p class="pub-links profiles"><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
-            Attractor (video)</a></p>
-        </li>
-      </ul>
-      <p class="note"><span class="todo" data-todo="research-list-incomplete">[Still not complete —
-        any remaining papers, preprints and talks go here.]</span></p>
-    </section>
+         The videos: the semantic one is Alicia's own render (the frame
+         sequence from compose/scripts/20250507_neurips/20251102_animation.py);
+         the Parkinson's one is generated from the 20240828 p2 session — RC+S
+         neural and watch accelerometry, aligned with the delay in
+         aDBS/data/delays_rcs_watch_p2.csv; the birdsong one is her 2018
+         attractor animation, recovered from the old site's history. -->
+    <p class="lead">Three lines of work. Each has its own page; the papers, code and
+      viewers that came out of it are listed underneath.</p>
+
+    <div class="projects">
+
+      <!-- ---- 1. semantic ------------------------------------------------ -->
+      <article class="project" aria-labelledby="p-semantic">
+        <div>
+          <div class="project-media">
+            <video controls loop muted playsinline preload="none"
+                   poster="figures/project-semantic.jpg" width="1100" height="826"
+                   aria-label="Cortical responses to a story, painted on a pair of flattened hemispheres and changing frame by frame, red above the mean and blue below.">
+              <source src="figures/project-semantic.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="project-caption">Measured cortical responses to one story, on a pair of
+            flattened hemispheres, red above the mean and blue below.</p>
+        </div>
+        <div class="project-body">
+          <h2 class="project-title" id="p-semantic"><a href="research/semantic.html">Semantic maps of the
+            brain</a><span class="project-years"><time datetime="2020">2020</time>–<time datetime="2026">2026</time></span></h2>
+          <p class="project-lead">Encoding models built on word embeddings predict cortical responses
+            well and explain them badly. The features doing the predicting sit in superposition —
+            number, time and space are correlated directions in one dense space — so a voxel’s
+            weights are not identifiable, and its apparent selectivity may belong to the embedding
+            rather than to the brain. The work replaces that dense basis with a sparse, non-negative
+            one, a thousand concept atoms with a single interpretable direction each, and then asks
+            what becomes measurable: three quantities laid over one another on the same cortex, and
+            the places where all three meet.</p>
+
+          <ul class="outputs" role="list">
+            <li>
+              <p class="output-title"><a href="research/superpositions.html"><cite>Disentangling
+                Superpositions: Interpretable Brain Encoding Model with Sparse Concept
+                Atoms</cite></a> <span class="pub-meta">NeurIPS <time datetime="2025">2025</time></span></p>
+              <p class="output-links"><a href="https://openreview.net/forum?id=3aNvX9TQTo">OpenReview</a><span
+                class="sep" aria-hidden="true">·</span><a href="https://slideslive.com/39050668">Talk</a><span
+                class="sep" aria-hidden="true">·</span><a href="https://github.com/alicialitrtwe/sparseconcept">Code</a><span
+                class="sep" aria-hidden="true">·</span><a href="research/superpositions.html#bibtex">Cite</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-superpositions">Explainer</a></p>
+            </li>
+            <li>
+              <p class="output-title"><a href="research/number.html"><cite>A Distributed Cortical Network
+                Integrates Semantic Representations of Number, Space, and Time</cite></a> <span class="pub-meta">CCN <time datetime="2026">2026</time>, poster</span></p>
+              <p class="output-links"><a href="https://openreview.net/forum?id=V6IilrmWYe">OpenReview</a><span
+                class="sep" aria-hidden="true">·</span><a href="viewer/">Brain viewer</a><span
+                class="sep" aria-hidden="true">·</span><a href="research/number.html#viewer">Tour</a><span
+                class="sep" aria-hidden="true">·</span><a href="research/number.html#bibtex">Cite</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-number">Explainer</a></p>
+            </li>
+            <li>
+              <p class="output-title"><a href="research/thesis.html"><cite>Principled Neuroscientific
+                Discovery with Machine Learning</cite></a> <span class="pub-meta">PhD thesis, chapter 2, UC Berkeley, <time datetime="2025">2025</time></span></p>
+              <p class="output-links"><a href="files/Thesis-Alicia_Zeng.pdf">PDF</a><span
+                class="sep" aria-hidden="true">·</span><a href="research/thesis.html#bibtex">Cite</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-thesis">Explainer</a></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- ---- 2. parkinson's --------------------------------------------- -->
+      <article class="project" aria-labelledby="p-parkinsons">
+        <div>
+          <div class="project-media">
+            <video controls loop muted playsinline preload="none"
+                   poster="figures/project-parkinsons.jpg" width="1200" height="900"
+                   aria-label="Four stacked spectrograms on one time axis: subthalamic and two cortical channels above, the left wrist's acceleration spectrum below, with a playhead sweeping across. Bright columns of wrist movement line up with broadband changes in the subthalamic channel.">
+              <source src="figures/project-parkinsons.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="project-caption">Two hundred seconds of one at-home recording: subthalamic and
+            cortical power above, the wrist that moved below, on one clock.</p>
+        </div>
+        <div class="project-body">
+          <h2 class="project-title" id="p-parkinsons"><a href="research/parkinsons.html">Parkinson’s, measured at
+            home</a><span class="project-years"><time datetime="2021">2021</time>–<time datetime="2026">2026</time></span></h2>
+          <p class="project-lead">Deep brain stimulation is tuned in a clinic room over an afternoon,
+            for a disease that behaves differently at home over a day. This work moved the
+            measurement instead of the model: bidirectional neurostimulators sensing from the
+            subthalamic nucleus and sensorimotor cortex, two wrist accelerometers and video-based
+            pose estimation, all running in people’s houses while they did ordinary tasks. Recorded
+            at that resolution, behaviour is a good enough predictor of neural activity to ask what
+            stimulation actually does to movement-related signalling — and good enough that a
+            decoder can answer to movement as it happens.</p>
+
+          <ul class="outputs" role="list">
+            <li>
+              <p class="output-title"><a href="research/dbs.html"><cite>Movement-responsive deep brain
+                stimulation for Parkinson’s disease using a remotely optimized neural
+                decoder</cite></a> <span class="pub-meta">Nature Biomedical Engineering, <time datetime="2026">2026</time></span></p>
+              <p class="output-links"><a href="https://doi.org/10.1038/s41551-025-01438-0">DOI</a><span
+                class="sep" aria-hidden="true">·</span><a href="https://pubmed.ncbi.nlm.nih.gov/40579487/">PubMed</a><span
+                class="sep" aria-hidden="true">·</span><a href="research/dbs.html#bibtex">Cite</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-dbs">Explainer</a></p>
+            </li>
+            <li>
+              <p class="output-title"><a href="research/stimulation.html"><cite>Deep Brain Stimulation
+                Amplifies Movement-Related Neural Modulation in Parkinson’s Disease: Evidence from
+                Multimodal Home Recordings</cite></a> <span class="pub-meta">PhD thesis, chapter 3, UC Berkeley, <time datetime="2025">2025</time></span></p>
+              <p class="output-links"><a href="files/Thesis-Alicia_Zeng.pdf">Thesis PDF</a><span
+                class="sep" aria-hidden="true">·</span><a href="research/stimulation.html#bibtex">Cite</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-stimulation">Explainer</a></p>
+            </li>
+            <li>
+              <p class="output-title"><a href="https://doi.org/10.3791/65305"><cite>Bringing the Clinic
+                Home: An At-Home Multi-Modal Data Collection Ecosystem to Support Adaptive Deep Brain
+                Stimulation</cite></a> <span class="pub-meta">Journal of Visualized Experiments, <time datetime="2023">2023</time></span></p>
+              <p class="authors">Gabrielle Strandquist, Tomasz Frączek, Tanner Dixon, Shravanan Ravi,
+                Raphael Bechtold, Daryl Lawrence, <span class="me">Alicia Zeng</span>, Jack Gallant,
+                Simon Little, Jeffrey Herron</p>
+              <p class="output-links"><a href="https://doi.org/10.3791/65305">DOI</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-jove">Explainer</a></p>
+            </li>
+            <li>
+              <p class="output-title"><a href="https://doi.org/10.36227/techrxiv.22067474"><cite>In-Home
+                Video and IMU Kinematics of Self Guided Tasks Correlate with Clinical Bradykinesia
+                Scores</cite></a> <span class="pub-meta">Preprint, TechRxiv, <time datetime="2023">2023</time></span></p>
+              <p class="authors">Gabrielle Strandquist, Tanner Dixon, Tomasz Frączek, Shravanan Ravi,
+                <span class="me">Alicia Zeng</span>, Raphael Bechtold, Daryl Lawrence, Simon Little,
+                Jack Gallant, Jeffrey Herron</p>
+              <p class="output-links"><a href="https://doi.org/10.36227/techrxiv.22067474">DOI</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-techrxiv">Explainer</a></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- ---- 3. birdsong ------------------------------------------------- -->
+      <article class="project" aria-labelledby="p-birdsong">
+        <div>
+          <div class="project-media">
+            <video controls loop muted playsinline preload="none"
+                   poster="figures/project-birdsong.jpg" width="640" height="480"
+                   aria-label="A reconstructed attractor from a zebra finch song, turning: a cloud of delay-embedded points tracing a closed loop, with a running time readout in milliseconds.">
+              <source src="figures/project-birdsong.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="project-caption">One song’s reconstructed state space, turning. Each point is a
+            delay-embedded moment of the recording.</p>
+        </div>
+        <div class="project-body">
+          <h2 class="project-title" id="p-birdsong"><a href="research/birdsong.html">Birdsong in state
+            space</a><span class="project-years"><time datetime="2017">2017</time>–<time datetime="2019">2019</time></span></h2>
+          <p class="project-lead">A zebra finch song is normally treated as acoustics: a spectrogram,
+            an inventory of syllables. The alternative is to treat the recording as one observable of
+            a dynamical system and reconstruct the state space behind it by delay embedding, taking
+            the delay from the first minimum of the mutual information and checking the whole
+            procedure against systems whose answers are already known. The question was whether the
+            geometry that comes out carries anything the acoustic description throws away.</p>
+
+          <ul class="outputs" role="list">
+            <li>
+              <p class="output-title"><a
+                href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract"><cite>A Nonlinear
+                Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
+              <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong,
+                Vijay Balasubramanian</p>
+              <p class="output-links"><a href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">Abstract</a><span
+                class="sep" aria-hidden="true">·</span><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
+                Attractor (video)</a><span
+                class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-birdsong">Explainer</a></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="note"><span class="todo" data-todo="research-list-incomplete">[Still not complete —
+      any remaining papers, preprints and talks go here.]</span></p>
 
   </main>
 
