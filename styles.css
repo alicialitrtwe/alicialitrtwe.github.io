@@ -1,0 +1,433 @@
+/* Alicia Zeng — personal site.
+   Plain, after szymonkaliski.com — the system sans, one text size, bold
+   for headings, underlined links, gray for metadata — but on black,
+   committed: there is no light variant. No build step, no framework, no
+   network requests; the one script (site.js) draws the hero and is
+   optional — the page is complete without it.
+
+   The three research visuals are PURE CSS and ABSTRACT. They are
+   decorative: they are not figures, data or results from the papers.
+   They live here rather than in the markup so the art is written once
+   and every page shares it. See README.md to swap one for a real image.
+
+   The visuals and the real work are kept apart on purpose: decorative
+   art appears only in the home hero and in a card's thumbnail slot, is
+   never captioned, and never appears on a paper page — see README.
+
+   Placeholders are greppable:  grep -n 'class="todo"' *.html          */
+
+/* ---- tokens -------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+
+  --bg: #0a0a0a;
+  --fg: #e8e8e8;
+  --fg-dim: #c4c4c4;
+  --fg-muted: #8f8f8f;        /* 5.9:1 on --bg — the floor for small text */
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+  --highlight: #574d10;       /* placeholders */
+
+  --sans: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
+          "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI",
+          Arial, sans-serif;
+  --mono: Consolas, Monaco, ui-monospace, "SF Mono", Menlo, monospace;
+
+  --shell: 64rem;
+  --measure: 34em;
+  --gap: 4rem;              /* between sections and between years */
+}
+
+/* ---- base ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: var(--shell);
+  margin: 2rem auto;
+  padding: 0 1rem;
+  overflow: hidden;
+}
+
+h1, h2, h3, p, ol, ul { margin: 0; }
+h1, h2, h3 { font-size: 1rem; font-weight: 700; line-height: 1.5; text-wrap: balance; }
+p, li { text-wrap: pretty; }
+ol, ul { padding: 0; list-style: none; }
+cite { font-style: normal; }
+time { font-variant-numeric: tabular-nums; }
+
+::selection { background: var(--highlight); }
+
+/* links: underlined, the text colour, and they dim on hover — the only
+   hover effect on the site */
+a { color: inherit; text-decoration: underline; text-underline-offset: 0.12em; }
+a:hover { opacity: 0.66; }
+a:focus-visible { outline: 1px dotted currentColor; outline-offset: 2px; }
+
+/* an outward arrow after every link that leaves the site */
+a[href^="http"]::after {
+  content: "\2197";                       /* ↗ */
+  display: inline-block;                  /* so it is not underlined */
+  margin-left: 0.15em;
+  font-size: 0.7em;
+  color: var(--fg-muted);
+  vertical-align: 0.15em;
+}
+
+.skip {
+  position: absolute; left: -999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg); color: var(--fg);
+}
+.skip:focus { left: 1rem; z-index: 10; }
+
+.vh {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---- prose ---------------------------------------------------------------- */
+.lead, .prose, .paper-body, .note-body, .contact-note, .otherwise, .note {
+  max-width: var(--measure);
+}
+.lead, .prose > p, .paper-body > p, .note-body > p { margin-bottom: 1rem; }
+.prose > p:last-child, .paper-body > p:last-child, .note-body > p:last-child {
+  margin-bottom: 0;
+}
+.lead + .prose { margin-top: 0; }
+
+/* bracketed placeholder text, highlighted so it cannot be mistaken for copy */
+.todo { background: var(--highlight); }
+a.todo { text-decoration: none; }
+
+/* ---- work in progress ------------------------------------------------------
+   A sitewide notice while the pages are being written. Dashed and in the
+   placeholder colour, like the other unfinished markers (.todo, .fig-slot). */
+.wip {
+  margin-bottom: 2rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--highlight);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--highlight) 30%, var(--bg));
+  color: var(--fg-dim);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+/* ---- header ---------------------------------------------------------------- */
+.topbar { margin-bottom: 3.5rem; }
+.wordmark { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+.wordmark a { text-decoration: none; }
+.wordmark a:hover { text-decoration: underline; opacity: 1; }
+.topbar nav a { text-decoration: none; margin-right: 0.5rem; }
+.topbar nav a:hover { text-decoration: underline; }
+.topbar nav [aria-current="page"] { text-decoration: underline; margin-right: 0.5rem; }
+
+.name { margin-bottom: 1rem; }
+
+/* ---- the hero ----------------------------------------------------------- */
+/* A canvas that site.js fills with a slowly turning strange attractor —
+   ABSTRACT, decorative, aria-hidden. Without JavaScript (or with
+   prefers-reduced-motion) it is a still frame or an empty band. */
+.hero-viz {
+  display: block;
+  width: 100%;
+  height: clamp(240px, 42vh, 460px);
+  margin: -1.5rem 0 3rem;
+  background: var(--bg);
+}   /* subpage titles: bold body size, like the section labels */
+
+/* ---- sections ---------------------------------------------------------------- */
+.block { margin-top: var(--gap); }
+.name + .group { margin-top: 1.5rem; }   /* first group sits close under the page title */
+.section-label { margin-bottom: 0.5rem; }
+.backlink { display: inline-block; margin-bottom: 1.5rem; }
+
+/* ---- the arc / the notes stream ----------------------------------------------- */
+/* One entry per year, the year set bold like a heading, the rest plain. */
+.beat + .beat, .note-item + .note-item { margin-top: 1.5rem; }
+.beat-year, .note-date { font-weight: 700; margin-bottom: 0.25rem; }
+.beat-lead { max-width: var(--measure); }
+.stream { margin-top: 2.5rem; }
+
+/* ---- research cards ------------------------------------------------------------ */
+/* Three across, two on a narrow window, one on a phone — with a hairline
+   gutter, so the thumbnails read as one strip. */
+.pub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 0.5rem;
+  margin-top: 1rem;
+}
+@media (min-width: 30em) { .pub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60em) { .pub-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.pub { position: relative; }
+.thumb { position: relative; overflow: hidden; border-radius: 0.25rem; }
+/* a real figure in the thumb slot takes the same box as a .viz would */
+.thumb > img, .thumb > video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--surface); }
+/* a figure panel that must not be cropped (a word cloud) sits whole on the surface */
+.thumb--contain > img { object-fit: contain; padding: 0.75rem; box-sizing: border-box; }
+.pub-body { margin-top: 0.5rem; }
+
+/* Hover (or keyboard focus) on a card and its abstract fades in over the
+   thumbnail. It is real text in the page — screen readers get it always —
+   clipped with a fade at the bottom; the full abstract is on the paper
+   page, which the whole card links to. */
+.abstract {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  overflow: hidden;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--fg);
+  background: color-mix(in srgb, var(--bg) 93%, transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  -webkit-mask-image: linear-gradient(#000 72%, transparent);
+          mask-image: linear-gradient(#000 72%, transparent);
+}
+.pub:hover .abstract, .pub:focus-within .abstract { opacity: 1; }
+@media (hover: none) { .abstract { display: none; } }   /* no hover on touch: the card just links */
+.pub-title { font-weight: 400; }
+.pub-meta { color: var(--fg-dim); }
+.pub-title .pub-meta::before { content: " \2014  "; }   /* “Title — venue, year” */
+
+/* the whole card is the link, not just the words */
+.pub--card .pub-title a::after { content: ""; position: absolute; inset: 0; z-index: 2; }
+.pub--card:hover .pub-title a { opacity: 0.66; }
+
+/* Full author list, in published order. .me marks Alicia — she publishes
+   under two names (Alicia Zeng, and Xiao Zeng on the 2019 APS abstract). */
+.authors { margin-top: 0.25rem; max-width: var(--measure); font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); }
+.authors .me { color: var(--fg-dim); }
+
+.more { margin-top: 1.5rem; }
+
+/* ---- the visuals ----------------------------------------------------------------- */
+/* ABSTRACT AND DECORATIVE — not figures, data or results from the papers.
+   Each is one empty <div>; everything below is the artwork. Drawn in the
+   text colour at low opacity. */
+.viz {
+  --ink: color-mix(in srgb, var(--fg) 45%, transparent);
+  --ink-soft: color-mix(in srgb, var(--fg) 22%, transparent);
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background-color: var(--surface);
+  border-radius: 0.25rem;
+}
+.viz > span { display: none; }
+
+/* 1 — two ring systems drifting through each other over a fixed lattice.
+       Where they overlap they beat against each other: superposition. */
+.viz--atoms {
+  background-image: radial-gradient(circle at center, var(--ink-soft) 0.9px, transparent 1px);
+  background-size: 18px 18px;
+}
+.viz--atoms::before, .viz--atoms::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: repeating-radial-gradient(circle at 44% 52%,
+              transparent 0 25px, var(--ink) 25px 26px);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 26%, transparent 72%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 26%, transparent 72%);
+  animation: viz-drift 19s ease-in-out infinite alternate;
+}
+.viz--atoms::after {
+  background: repeating-radial-gradient(circle at 58% 46%,
+              transparent 0 29px, var(--ink-soft) 29px 30px);
+  animation-duration: 27s;
+  animation-direction: alternate-reverse;
+}
+@keyframes viz-drift {
+  from { transform: translate3d(-4%, -2%, 0); }
+  to   { transform: translate3d(5%, 3%, 0); }
+}
+
+/* 2 — a pulse train riding a baseline */
+.viz--pulse {
+  background-image: linear-gradient(90deg, var(--ink), var(--ink));   /* the baseline */
+  background-size: 100% 1px;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+}
+/* a band, not the full panel, so the bars read as pulses on the trace */
+.viz--pulse::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 31%; bottom: 31%;
+  /* two rhythms — tall bars every 50px, short every 25px — so the train
+     reads as a signal rather than a ruler. Both divide the 50px shift. */
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 43px, var(--ink) 43px 44px, transparent 44px 50px),
+    repeating-linear-gradient(90deg,
+      transparent 0 19px, var(--ink-soft) 19px 20px, transparent 20px 25px);
+  background-size: 100% 100%, 100% 44%;
+  background-position: 0 0, 0 50%;
+  background-repeat: repeat-x, repeat-x;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  animation: viz-slide 9s linear infinite;
+}
+@keyframes viz-slide { to { transform: translateX(-50px); } }   /* = one period */
+
+/* 3 — two coordinate frames turning against each other over fixed points */
+.viz--basis {
+  background-image: radial-gradient(circle at center, var(--ink-soft) 0.8px, transparent 0.9px);
+  background-size: 23px 23px;
+}
+.viz--basis::before, .viz--basis::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 46%;
+  aspect-ratio: 1;
+  border: 1px solid var(--ink);
+  animation: viz-spin 36s linear infinite;
+}
+.viz--basis::after {
+  width: 29%;
+  border-color: var(--ink-soft);
+  animation-duration: 23s;
+  animation-direction: reverse;
+}
+@keyframes viz-spin { to { transform: rotate(360deg); } }
+
+/* ---- the “Also” list --------------------------------------------------------- */
+.minor-list { margin-top: 0.5rem; }
+.pub-grid + .minor-list { margin-top: 2rem; }   /* list under the cards of the same group */
+.minor + .minor { margin-top: 1rem; }
+.minor-title { max-width: var(--measure); }
+.minor .pub-links { margin-top: 0.25rem; }   /* wins over .profiles */
+.note { margin-top: 2rem; color: var(--fg-dim); }
+
+/* ---- a paper page --------------------------------------------------------- */
+/* The shape of an academic project page — title, authors, buttons, teaser
+   figure, abstract, sections each with a figure — in this site's clothes.
+   Decorative art does not appear here: every image on a paper page is a
+   real figure with a caption, or a marked placeholder for one. */
+.paper-head { max-width: 44em; margin: 0 auto 2.5rem; text-align: center; }
+.paper-title { font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.75rem; }
+.paper-head .authors { max-width: none; margin: 0 auto; font-size: 0.95rem; color: var(--fg-dim); }
+.paper-head .pub-meta { margin-top: 0.35rem; color: var(--fg-muted); }
+.paper-head .dedication { margin-top: 1.25rem; font-style: italic; color: var(--fg-muted); }
+
+.buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; }
+.button {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  background: var(--surface);
+}
+.button:hover { opacity: 1; border-color: var(--fg-muted); }
+.button.todo { border-style: dashed; background: var(--highlight); }
+
+/* sticky section list; site.js marks the section in view */
+.paper-nav { position: sticky; top: 0; z-index: 3; margin: 0 -1rem 2rem; padding: 0.6rem 1rem; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+.paper-nav ol { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1.25rem; }
+.paper-nav a { color: var(--fg-muted); text-decoration: none; }
+.paper-nav a:hover, .paper-nav a[aria-current="true"] { color: var(--fg); text-decoration: underline; }
+
+.paper-section { max-width: 44em; margin: 0 auto var(--gap); }
+.paper-section > h2 { margin-bottom: 0.75rem; }
+.paper-section > p { max-width: var(--measure); margin-bottom: 1rem; }
+.paper-section > h2 + p { max-width: none; }
+
+/* a figure: the image or video, then a caption. .fig-slot is the marked
+   placeholder for one that does not exist yet. */
+.fig { margin: 1.5rem 0 0; }
+.fig img, .fig video, .fig iframe { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
+.fig iframe { aspect-ratio: 16 / 9; border: 0; }
+.fig-slot { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1rem; border: 1px dashed var(--border); border-radius: 0.25rem; text-align: center; color: var(--fg-muted); }
+.fig-slot.todo { background: color-mix(in srgb, var(--highlight) 30%, var(--bg)); border-color: var(--highlight); color: var(--fg); }
+.fig--hero { max-width: 44em; margin: 0 auto var(--gap); }
+figcaption { margin-top: 0.6rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); max-width: var(--measure); }
+figcaption .todo { color: var(--fg); }
+
+/* the long-form explainer pages: sub-headings inside a section, a pulled
+   sentence under the teaser, a boxed theorem, display equations (MathML,
+   no library), and the one-line source note. */
+.paper-section > h3 { margin: 2rem 0 0.6rem; }
+.paper-section > ul, .paper-section > ol { max-width: var(--measure); margin: 0 0 1rem; padding-left: 1.25rem; }
+.paper-section > ul li + li, .paper-section > ol li + li { margin-top: 0.35rem; }
+.paper-section > ul { list-style: disc; }
+.paper-section > ol { list-style: decimal; }
+.paper-section > h2 + h3 { margin-top: 1rem; }
+.pull { max-width: 44em; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--fg-muted); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
+.pull p { margin: 0; }
+.source { max-width: 44em; margin: calc(-1 * var(--gap) + 1.25rem) auto var(--gap); padding-left: calc(1rem + 2px); font-size: 0.875rem; color: var(--fg-muted); }
+.paper-section .pub-meta, .paper-section .source { max-width: var(--measure); color: var(--fg-muted); font-size: 0.875rem; }
+.theorem, .box { max-width: var(--measure); margin: 0 0 1rem; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 0.25rem; }
+.theorem p, .box p { margin-bottom: 0.75rem; }
+.theorem p:last-child, .box p:last-child { margin-bottom: 0; }
+.box-label { display: block; margin-bottom: 0.5rem; font-size: 0.8125rem; font-weight: 600; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.stats, .paper-section > ul.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem 1.5rem; max-width: 44em; margin: 1.5rem 0 1rem; padding: 0; list-style: none; }
+.stats li, .paper-section > ul.stats li + li { margin: 0; }
+.stats b { display: block; font-size: 1.5rem; font-weight: 600; line-height: 1.2; color: var(--fg); font-variant-numeric: tabular-nums; }
+.stats span { display: block; margin-top: 0.2rem; font-size: 0.875rem; line-height: 1.4; color: var(--fg-muted); }
+.paper-section > p.tldr { max-width: 44em; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); }
+.paper-section math[display="block"], .theorem math[display="block"] { margin: 0.5rem 0 1rem; font-size: 1.05rem; overflow-x: auto; }
+.eq { display: flex; align-items: center; gap: 1rem; max-width: var(--measure); margin: 0.5rem 0 1rem; }
+.eq-body { flex: 1; min-width: 0; }
+.eq-body math[display="block"] { margin: 0; }
+.eq-label { color: var(--fg-muted); font-size: 0.875rem; }
+.fig--table { max-width: 44em; margin: 1.5rem 0 0; }
+.table-wrap { overflow-x: auto; }
+.fig--table table { border-collapse: collapse; width: 100%; font-size: 0.875rem; line-height: 1.4; }
+.fig--table caption { text-align: left; caption-side: top; padding: 0 0 0.75rem; color: var(--fg-muted); }
+.fig--table caption b { color: var(--fg-dim); }
+.fig--table th, .fig--table td { text-align: left; vertical-align: top; padding: 0.35rem 0.75rem 0.35rem 0; border-bottom: 1px solid var(--border); }
+.fig--table th { color: var(--fg-dim); font-weight: 600; }
+.fig--table td:first-child, .fig--table th:first-child { font-family: var(--mono); white-space: nowrap; color: var(--fg-muted); }
+.fig--table tbody tr:last-child td { border-bottom: 0; }
+.fig + p, .fig + h3, .fig--table + p { margin-top: 1.5rem; }
+
+.paper-section code { font-family: var(--mono); font-size: 0.9em; }
+
+pre.bibtex { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; background: var(--surface); border-radius: 0.25rem; white-space: pre; }
+
+/* ---- contact ------------------------------------------------------------------- */
+.contact-note { margin-top: 0.5rem; }
+.profiles { margin-top: 1rem; }
+.profiles a { margin-right: 0.5rem; }
+.otherwise { margin-top: 1.5rem; color: var(--fg-dim); }
+
+/* ---- footer ---------------------------------------------------------------------- */
+.foot { margin-top: var(--gap); padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--fg-muted); }
+.foot a, .foot [aria-current="page"] { margin-right: 0.5rem; }
+.foot a { text-decoration: none; }
+.foot a:hover { text-decoration: underline; }
+
+/* ---- motion, print --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media print {
+  .skip, .viz, .hero-viz, .paper-nav, .abstract, .foot { display: none; }
+  a { text-decoration: none; }
+}
+
+/* A figure legend that is long enough to bury a short page: folded by default. */
+figcaption details.legend { margin-top: 0.4rem; }
+figcaption details.legend summary { cursor: pointer; color: var(--fg-dim); }
+figcaption details.legend p { margin: 0.4rem 0 0; }

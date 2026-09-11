@@ -1,0 +1,105 @@
+{
+  "R2_vmax_p95": {
+    "group": 0.0015,
+    "S01": 0.011,
+    "S02": 0.012,
+    "S04": 0.014
+  },
+  "R2_vmax_rule": "per brain: 95th percentile of positive quantity-band R2",
+  "subject_depth_layers": 32,
+  "color_scheme": {
+    "space": "OKLab",
+    "L": 0.68,
+    "C": 0.15924286141991617,
+    "sel_exp": 0.75,
+    "hues_deg": {
+      "number": 6.0,
+      "time": 126.0,
+      "space": 246.0
+    },
+    "glow_exp": 5.0,
+    "rule": "hue = tuning direction; chroma = selectivity as a fraction of the gamut ceiling; lightness = ISO_L + (1 - ISO_L) * g**5 * sqrt(m), g = (PR - 1) / 2",
+    "number": "#e76889",
+    "time": "#80a925",
+    "space_": "#2b9ff4",
+    "number+time": "#c48f59",
+    "number+space": "#aa8cca",
+    "time+space": "#49aea4",
+    "all": "#ffffff"
+  },
+  "total_r2_p99": {
+    "group": 0.00478614683728666,
+    "S01": 0.024343687491491437,
+    "S02": 0.029687977479770748,
+    "S04": 0.030108120823279017
+  },
+  "channel_vmax_r2": {
+    "group": 0.0025,
+    "S01": 0.0025,
+    "S02": 0.0025,
+    "S04": 0.0025
+  },
+  "channel_vmax_rule": "group shared-channel p99, reused by every brain",
+  "channel_units": "per-dimension split R2 (full-model product measure)",
+  "render": "opacity = sum(R2_d)/vmax of channels shown; hue = channel proportions",
+  "curvature": {
+    "brightness": 0.12,
+    "contrast": 0.2
+  },
+  "ramp_css": {
+    "number": [
+      "#1f1f1f",
+      "#402b30",
+      "#613742",
+      "#834354",
+      "#a45066",
+      "#c55c77",
+      "#e76889"
+    ],
+    "time": [
+      "#1f1f1f",
+      "#2f3620",
+      "#3f4d21",
+      "#4f6422",
+      "#5f7b23",
+      "#709224",
+      "#80a925"
+    ],
+    "space": [
+      "#1f1f1f",
+      "#213442",
+      "#234966",
+      "#255f89",
+      "#2774ad",
+      "#298ad0",
+      "#2b9ff4"
+    ],
+    "total": [
+      "#1f1f1f",
+      "#3a3a3a",
+      "#5b5b5b",
+      "#7f7f7f",
+      "#a7a7a7",
+      "#d2d2d2",
+      "#ffffff"
+    ]
+  },
+  "n_subjects_group": 19,
+  "tour_example": {
+    "hemi": "right",
+    "vertex_native": 51986,
+    "vertex": 123240,
+    "r2": {
+      "number": 0.00391799584031105,
+      "time": 0.000475656968774274,
+      "space": 0.00033665273804217577
+    }
+  },
+  "group_frac_vertices_ge1_sig_subject": 0.8985486017016394,
+  "built_utc": "2026-09-11T06:16:04.687432Z",
+  "compose_repo_sha": "29db3f2ca90b5823297a41b846807c885768272f",
+  "fit_results": "20260325_glove-transformed-factor-v2_demean_split",
+  "pycortex_version": "1.2.14",
+  "numpy_version": "2.4.2",
+  "matplotlib_version": "3.10.8"
+}

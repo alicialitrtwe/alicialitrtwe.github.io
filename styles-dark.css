@@ -1,0 +1,564 @@
+/* Alicia Zeng — personal site.
+   Dark, committed. Space Grotesk for prose, system mono for metadata.
+   No build step, no framework, no JavaScript.
+   One network request — the web font — which degrades to the system
+   sans stack if it is blocked or fails. Everything else is local.
+
+   The three research visuals are PURE CSS and ABSTRACT. They are
+   decorative: they are not figures, data or results from the papers.
+   They live here rather than in the markup so the art is written once
+   and both pages share it. See README.md to swap one for a real image
+   or video.
+
+   Placeholders are greppable:  grep -n 'class="todo"' *.html          */
+
+/* ---- tokens -------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+
+  --bg: #08090b;
+  --bg-panel: #0b0d10;
+  --fg: #e9ecef;
+  --fg-dim: #a3aab5;          /*  8.5:1 on --bg */
+  --fg-faint: #767e8a;        /*  4.9:1 on --bg — years, labels and the
+                                  footer are 11.5px, so this has to clear
+                                  4.5:1 as normal text, not large */
+  --rule: #191c21;
+  --rule-lit: #272c34;
+  --accent: #8fe3ff;
+  --accent-soft: rgba(143, 227, 255, 0.09);
+  --accent-line: rgba(143, 227, 255, 0.38);
+
+  --sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+          "Liberation Mono", monospace;
+
+  --shell: 1180px;
+  --measure: 66ch;
+  --pad: clamp(1.25rem, 4vw, 3.5rem);
+  --beat-pad: clamp(1.75rem, 4vw, 3.25rem);
+
+  --fs-name: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem);
+  --fs-lead: clamp(1.3rem, 1.1rem + 1vw, 1.85rem);
+  --fs-title: clamp(1.1rem, 1rem + 0.6vw, 1.45rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.075rem);
+  --fs-mono: 0.72rem;
+
+  --lh: 1.72;
+  --sp-1: 1.5rem;
+  --sp-2: clamp(2.5rem, 5vw, 4rem);
+  --sp-3: clamp(4.5rem, 9vw, 8rem);
+}
+
+/* ---- base ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  font-weight: 400;          /* 300 goes fragile at body size on a dark ground */
+  letter-spacing: 0.004em;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+/* A single wide, very soft bloom behind the top of the page. Static:
+   it gives the dark ground depth without adding motion or ornament. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20vh 0 auto 0;
+  height: 70vh;
+  background: radial-gradient(60% 60% at 50% 0%,
+              rgba(143, 227, 255, 0.055), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3, p, ul, ol, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+cite { font-style: normal; }   /* titles are set upright everywhere */
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
+a:not(.todo) { text-decoration-color: var(--fg-faint); }
+a:not(.todo):hover { text-decoration-color: var(--accent); color: var(--accent); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 1px; }
+main:focus { outline: none; }
+
+a[href^="mailto:"] { overflow-wrap: anywhere; }
+
+/* ---- shell --------------------------------------------------------------- */
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--pad) var(--sp-3);
+}
+
+.prose { max-width: var(--measure); }
+.prose > * + * { margin-top: 1.35em; }
+.prose p { color: var(--fg-dim); }
+
+/* ---- top bar ------------------------------------------------------------- */
+/* Every page carries the nav, so no page is ever a dead end — this is what
+   gives a shared or search-landed subpage a route back to the homepage
+   inside the first viewport. */
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  margin-bottom: var(--sp-3);
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.topbar nav { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.topbar [aria-current="page"] { color: var(--fg); }
+.topbar a { text-decoration-color: transparent; }
+.topbar a:hover { text-decoration-color: var(--accent); }
+
+.masthead { margin-bottom: var(--sp-3); }
+
+.wordmark {
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.wordmark a { text-decoration-color: transparent; }
+.wordmark a:hover { text-decoration-color: var(--accent); }
+
+/* ---- hero ---------------------------------------------------------------- */
+.name {
+  font-size: var(--fs-name);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  margin-bottom: var(--sp-2);
+}
+.name .todo {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.6ch;
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.lead {
+  max-width: 34ch;
+  font-size: var(--fs-lead);
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: -0.016em;
+  color: var(--fg);
+}
+.hero .prose { margin-top: var(--sp-2); }
+.contact-note { margin-top: var(--sp-1); }
+
+/* ---- sections ------------------------------------------------------------ */
+.block { margin-top: var(--sp-3); }
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin-bottom: var(--sp-2);
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rule-lit), transparent);
+}
+
+/* ---- the arc: a spine, not a CV ------------------------------------------ */
+/* The year is a tick. Each beat opens with its own first sentence, set
+   large — the reader meets the idea before the date. */
+/* .stream (notes) reuses the same spine, so the two pages rhyme. */
+.beats, .stream { position: relative; }
+.beats::before, .stream::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  bottom: 0.5em;
+  width: 1px;
+  background: linear-gradient(180deg,
+              var(--rule-lit), var(--rule) 65%, transparent);
+}
+
+.beat, .note-item { position: relative; padding-left: var(--beat-pad); }
+.beat + .beat { margin-top: var(--sp-3); }
+.note-item + .note-item { margin-top: var(--sp-2); }
+
+.beat-year, .note-date {
+  position: relative;
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.18em;
+  color: var(--fg-faint);
+  margin-bottom: 1.1rem;
+}
+.beat-year::before, .note-date::before {   /* node, centred on the 1px spine */
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--beat-pad) - 2px);
+  top: 0.5em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 0 12px rgba(143, 227, 255, 0.5);
+}
+
+.beat-lead {
+  max-width: 46ch;
+  font-size: var(--fs-lead);
+  font-weight: 300;
+  line-height: 1.42;
+  letter-spacing: -0.014em;
+}
+.beat .prose { margin-top: 1.5rem; }
+
+/* ---- research blocks ----------------------------------------------------- */
+.pub + .pub { margin-top: var(--sp-3); }
+
+.pub-title {
+  font-size: var(--fs-title);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
+.pub-title cite { font-style: normal; }
+.pub-title a { text-decoration-color: transparent; }
+.pub-title a:hover { text-decoration-color: var(--accent); }
+
+/* Full author list, in published order. .me marks Alicia — she publishes
+   under two names (Alicia Zeng, and Xiao Zeng on the 2019 APS abstract). */
+.authors {
+  margin-top: 0.7rem;
+  max-width: var(--measure);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--fg-faint);
+}
+.authors .me { color: var(--fg); font-weight: 500; }
+.authors + .pub-meta { margin-top: 0.45rem; }
+
+.pub-meta {
+  margin-top: 0.85rem;
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.pub-links { margin-top: 1.35rem; font-size: 0.9rem; }
+
+@media (min-width: 52em) {
+  .pub {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  /* nth-of-type, not nth-child: the section also holds a heading and a link */
+  .pub:nth-of-type(even) .viz { order: 2; }   /* alternate the media side */
+}
+
+.viz + .pub-body { margin-top: 1.75rem; }
+@media (min-width: 52em) { .viz + .pub-body { margin-top: 0; } }
+
+/* ---- the visuals --------------------------------------------------------- */
+/* ABSTRACT AND DECORATIVE — not figures, data or results from the papers.
+   Each is one empty <div>; everything below is the artwork. */
+.viz {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background-color: var(--bg-panel);
+  transition: border-color 0.5s ease;
+}
+.pub:hover .viz { border-color: var(--rule-lit); }
+
+/* inner vignette, so the art sits in the panel rather than on it */
+.viz > span {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 42px 6px rgba(8, 9, 11, 0.55);
+}
+
+/* 1 — two ring systems drifting through each other over a fixed lattice.
+       Where they overlap they beat against each other: superposition. */
+.viz--atoms {
+  background-image: radial-gradient(circle at center,
+                    rgba(233, 236, 239, 0.20) 0.9px, transparent 1px);
+  background-size: 18px 18px;
+}
+.viz--atoms::before, .viz--atoms::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: repeating-radial-gradient(circle at 44% 52%,
+              transparent 0 25px, rgba(143, 227, 255, 0.34) 25px 26px);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 26%, transparent 72%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 26%, transparent 72%);
+  animation: viz-drift 19s ease-in-out infinite alternate;
+}
+.viz--atoms::after {
+  background: repeating-radial-gradient(circle at 58% 46%,
+              transparent 0 29px, rgba(233, 236, 239, 0.24) 29px 30px);
+  animation-duration: 27s;
+  animation-direction: alternate-reverse;
+}
+@keyframes viz-drift {
+  from { transform: translate3d(-4%, -2%, 0); }
+  to   { transform: translate3d(5%, 3%, 0); }
+}
+
+/* 2 — a pulse train riding a baseline, under a slow sweeping cursor */
+.viz--pulse {
+  background-image:
+    linear-gradient(90deg, var(--accent-line), var(--accent-line)),   /* the baseline */
+    repeating-linear-gradient(0deg,
+      rgba(233, 236, 239, 0.05) 0 1px, transparent 1px 34px);
+  background-size: 100% 1px, 100% 100%;
+  background-position: 0 50%, 0 0;
+  background-repeat: no-repeat, repeat;
+}
+/* a band, not the full panel, so the bars read as pulses on the trace */
+.viz--pulse::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 31%; bottom: 31%;
+  /* two rhythms — tall bars every 50px, short every 25px — so the train
+     reads as a signal rather than a ruler. Both divide the 50px shift. */
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 43px, var(--accent) 43px 44px, transparent 44px 50px),
+    repeating-linear-gradient(90deg,
+      transparent 0 19px, rgba(143, 227, 255, 0.42) 19px 20px, transparent 20px 25px);
+  background-size: 100% 100%, 100% 44%;
+  background-position: 0 0, 0 50%;
+  background-repeat: repeat-x, repeat-x;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  opacity: 0.8;
+  animation: viz-slide 9s linear infinite;
+}
+@keyframes viz-slide { to { transform: translateX(-50px); } }   /* = one period */
+.viz--pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 42%,
+              rgba(143, 227, 255, 0.14) 49%, rgba(255, 255, 255, 0.16) 50.5%,
+              rgba(143, 227, 255, 0.14) 52%, transparent 59%);
+  animation: viz-sweep 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes viz-sweep {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+/* 3 — two coordinate frames turning against each other over fixed points */
+.viz--basis {
+  background-image: radial-gradient(circle at center,
+                    rgba(233, 236, 239, 0.14) 0.8px, transparent 0.9px);
+  background-size: 23px 23px;
+}
+.viz--basis::before, .viz--basis::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 46%;
+  aspect-ratio: 1;
+  border: 1px solid var(--accent-line);
+  animation: viz-spin 36s linear infinite;
+}
+.viz--basis::after {
+  width: 29%;
+  border-color: rgba(233, 236, 239, 0.28);
+  animation-duration: 23s;
+  animation-direction: reverse;
+}
+@keyframes viz-spin { to { transform: rotate(360deg); } }
+
+/* ---- research page entries ----------------------------------------------- */
+.entry + .entry { margin-top: var(--sp-3); }
+.note { margin-top: var(--sp-3); max-width: var(--measure); color: var(--fg-dim); }
+
+.more { margin-top: var(--sp-2); }
+.more a { font-family: var(--mono); font-size: var(--fs-mono);
+          letter-spacing: 0.16em; text-transform: uppercase; }
+
+/* ---- contact ------------------------------------------------------------- */
+.contact-mail { font-size: var(--fs-lead); font-weight: 300; letter-spacing: -0.014em; }
+.profiles { margin-top: var(--sp-1); display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+
+/* ---- research: whole block as one link ----------------------------------- */
+/* Only on index, where the block contains no other link. The anchor is the
+   title, so it keeps a real accessible name; the ::after just extends its
+   hit area over the whole block. research.html does NOT use this — its
+   blocks carry their own links, which an overlay would swallow. */
+.pub--card { position: relative; }
+.pub--card .pub-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.pub--card:hover .pub-title { color: var(--accent); }
+
+/* ---- a single paper -------------------------------------------------------*/
+.paper-title {
+  max-width: 28ch;
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+  margin-bottom: 1rem;
+}
+/* capped: full shell width at 16:10 is ~740px tall, which swamps the page */
+.paper .viz { max-width: 760px; aspect-ratio: 16 / 9; margin-bottom: var(--sp-2); }
+.paper-body { max-width: var(--measure); margin-top: var(--sp-1); }
+.paper-body > * + * { margin-top: 1.35em; }
+
+.backlink {
+  display: inline-block;
+  margin-bottom: var(--sp-2);
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---- secondary publication list ------------------------------------------ */
+.minor-list { margin-top: var(--sp-2); }
+.minor + .minor { margin-top: 1.9rem; }
+.minor-title {
+  max-width: var(--measure);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.minor .pub-meta { margin-top: 0.4rem; }
+
+/* ---- notes --------------------------------------------------------------- */
+.stream { margin-top: var(--sp-3); }
+.note-body { max-width: var(--measure); }
+
+/* ---- otherwise ----------------------------------------------------------- */
+/* One quiet line, at body size — deliberately not a display-scale section.
+   It is the only line here that is not about the work; it should read as an
+   aside, not as a claim. */
+.otherwise {
+  margin-top: var(--sp-2);
+  max-width: var(--measure);
+  color: var(--fg-dim);
+}
+
+/* ---- placeholders (greppable: class="todo", data-todo="...") ------------- */
+/* Deliberate. Every bracket in the draft that only Alicia can fill. */
+.todo {
+  background: var(--accent-soft);
+  border: 1px dashed var(--accent-line);
+  border-radius: 2px;
+  padding: 0.05em 0.4em;
+  color: var(--fg-dim);
+  font-style: normal;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+}
+a.todo { cursor: default; text-decoration: none; }   /* no href: not a link yet */
+
+/* ---- foot ---------------------------------------------------------------- */
+.foot {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-1);
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.foot nav { display: flex; gap: 1.5rem; }
+.foot [aria-current="page"] { color: var(--fg-dim); }
+
+/* ---- utilities ----------------------------------------------------------- */
+.vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  top: 0.75rem; left: 0.75rem;
+  z-index: 10;
+  transform: translateY(-200%);
+  padding: 0.7rem 1.1rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  text-decoration: none;
+}
+.skip:focus { transform: none; }
+
+/* ---- motion -------------------------------------------------------------- */
+/* No scroll-driven reveal. A view() timeline can leave content sitting at
+   opacity 0 when the range does not resolve as expected (very tall viewport,
+   short page, partial browser support), and content the reader cannot see is
+   a worse failure than a page that simply arrives. The .reveal hooks are left
+   on the markup so this can be switched on deliberately and tested. */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---- print --------------------------------------------------------------- */
+@media print {
+  :root {
+    --bg: #fff; --bg-panel: #fff; --fg: #000;
+    --fg-dim: #333; --fg-faint: #555; --rule: #bbb; --rule-lit: #999;
+  }
+  body::before, .skip, .viz { display: none; }
+  .shell { max-width: none; padding: 0; }
+  .foot { border-top: 1px solid #bbb; }
+}

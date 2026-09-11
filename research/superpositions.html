@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Disentangling Superpositions — Alicia Zeng</title>
+<meta name="description" content="Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse Concept Atoms. NeurIPS 2025. A short, plain-language tour of the paper.">
+<meta property="og:title" content="Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse Concept Atoms">
+<meta property="og:description" content="NeurIPS 2025. Alicia Zeng and Jack Gallant.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+
+  <!-- The site is being written; the notice is deliberate and sitewide. -->
+  <p class="wip">Work in progress — pages and figures are still being written.</p>
+
+
+  <div class="topbar">
+    <p class="wordmark"><a href="../index.html">Alicia Zeng</a></p>
+    <nav aria-label="Site">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <p><a class="backlink" href="../research.html"><span aria-hidden="true">←</span>
+      All research</a></p>
+
+    <!-- A tutorial-style project page (after Hewitt's structural-probe page
+         and the Waller lab's EncodingInformation site): title, buttons, one
+         figure, one pulled sentence, then the idea told in short sections
+         with the paper's figures in between. The running text was written
+         for the page; every number in it comes from the paper (thesis
+         chapter 2). The Abstract section is the paper's, verbatim, and must
+         match the research card. -->
+    <article class="paper">
+
+      <header class="paper-head">
+        <h1 class="paper-title" id="paper"><cite>Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse
+          Concept Atoms</cite></h1>
+        <p class="authors"><span class="me">Alicia Zeng</span>, Jack Gallant</p>
+        <p class="pub-meta">NeurIPS <time datetime="2025">2025</time></p>
+        <p class="buttons pub-links">
+          <a class="button" href="https://openreview.net/forum?id=3aNvX9TQTo" id="l-openreview"
+             aria-labelledby="l-openreview paper">OpenReview</a>
+          <a class="button" href="https://neurips.cc/virtual/2025/poster/120024" id="l-neurips"
+             aria-labelledby="l-neurips paper">NeurIPS</a>
+          <a class="button" href="#poster" id="l-poster"
+             aria-labelledby="l-poster paper">Poster</a>
+          <a class="button" href="https://slideslive.com/39050668" id="l-video"
+             aria-labelledby="l-video paper">Video</a>
+          <a class="button" href="https://github.com/alicialitrtwe/sparseconcept" id="l-code"
+             aria-labelledby="l-code paper">Code</a>
+          <a class="button" href="thesis.html" id="l-thesis"
+             aria-labelledby="l-thesis paper">Thesis</a>
+        </p>
+      </header>
+
+
+<nav class="paper-nav" aria-label="Sections">
+  <ol>
+      <li><a href="#tldr">Short version</a></li>
+      <li><a href="#encoding">Encoding models</a></li>
+      <li><a href="#catch">The catch</a></li>
+      <li><a href="#fix">The fix</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#takeaways">Takeaways</a></li>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#poster">Poster</a></li>
+      <li><a href="#bibtex">BibTeX</a></li>
+  </ol>
+</nav>
+
+<figure class="fig fig--hero">
+  <a href="../figures/thesis-fig2-1.png"><img src="../figures/thesis-fig2-1.png" alt="Left: in a dense embedding space, concept directions for number, time, space and femaleness are correlated, so a voxel’s weight vector projects onto several at once. Right: the Sparse Concept Encoding Model gives each concept its own axis, so the same voxel’s tuning is read directly along concept dimensions." width="1410" height="590" loading="lazy"></a>
+  <figcaption>The paper in one picture. Left: in a word embedding, concepts share directions, so a voxel tuned to <i>number</i> appears tuned to <i>time</i> as well. Right: once every concept has its own axis, the same voxel’s tuning can be read directly.</figcaption>
+</figure>
+
+<blockquote class="pull"><p>Mapping ANN-derived representations onto brain activity often amounts to explaining one black box with another.</p></blockquote>
+
+<p class="source">A short tour of the paper, written for this page; the figures are the paper’s. The full argument is <a href="https://openreview.net/forum?id=3aNvX9TQTo">on OpenReview</a> and in Chapter 2 of <a href="thesis.html">the thesis</a>.</p>
+
+<section class="paper-section" id="tldr" aria-labelledby="h-tldr">
+  <h2 id="h-tldr">The short version</h2>
+<p class="tldr">Encoding models predict brain activity from word embeddings, and they predict well. But an embedding compresses many thousands of concepts into a few hundred dimensions, so concepts share directions, and the fitted weights cannot say which concept a voxel is actually tuned to. We unpack the embedding into 1,000 sparse <em>concept atoms</em>, one concept per axis, and refit. Prediction is unchanged; the weights become legible. The first thing they show is that time, space and number occupy the same regions of cortex.</p>
+<ul class="stats">
+  <li><b>300 → 1,000</b><span>GloVe dimensions unpacked into concept atoms</span></li>
+  <li><b>0.0005</b><span>change in <i>R</i><sup>2</sup> from switching to sparse features (not significant)</span></li>
+  <li><b>0.26 vs 0.09</b><span>agreement of concept maps across people, sparse vs dense</span></li>
+  <li><b>IPS + IFG</b><span>where time, space and number all overlap, in both hemispheres</span></li>
+</ul>
+</section>
+
+<section class="paper-section" id="encoding" aria-labelledby="h-encoding">
+  <h2 id="h-encoding">Encoding models, briefly</h2>
+<p>Seven people lay in an fMRI scanner and listened to true stories told on stage for <cite>The Moth Radio Hour</cite>: eleven stories each, a little over two hours in all (Huth et al., 2016). Ten stories are used for training; the eleventh, heard twice, is held out for testing.</p>
+<p>An <b>encoding model</b> is a deliberately simple instrument. Every word of the story is turned into a vector of features. For every voxel — a 3 × 3 × 4 mm volume of brain — a ridge regression is fit from those features to the voxel’s response. The model is then judged only on the story it has never heard.</p>
+<p>The object of interest is not the prediction but the weights. Each voxel receives one weight per feature. If the features <em>were</em> concepts, a voxel’s weights would be its tuning curve, and one could read it as a sentence: responsive to numbers, indifferent to family, suppressed by small talk.</p>
+</section>
+
+<section class="paper-section" id="catch" aria-labelledby="h-catch">
+  <h2 id="h-catch">The catch: more concepts than dimensions</h2>
+<p>The features that predict best come from language models; here they are GloVe word embeddings, 300 numbers per word, learned from patterns of co-occurrence — Wittgenstein’s meaning-as-use, made geometric. Language contains far more than 300 concepts, so the embedding does what any crowded space must: concepts share dimensions. Each concept is a <em>direction</em>, and the directions are correlated. In the interpretability literature this is called <b>superposition</b> (Elhage et al., 2022).</p>
+<p>That undoes the readout. Ask whether a voxel’s weight vector points along <i>number</i> and some of <i>time</i> comes with it, because the two directions lean the same way. Some concept pairs point in nearly opposite directions, so a negative weight may mean the voxel is suppressed by one, driven by the other, or both. An overlap seen on a brain map may be a fact about the brain or an artefact of the embedding’s geometry, and the weights alone cannot tell the two apart.</p>
+<p>How crowded is the space? Learn 1,000 concept directions from GloVe and measure how nearly parallel they are. In 300 dimensions, 1,000 random directions are almost orthogonal: only 0.03% of pairs have a cosine above 0.2. Among the learned concepts the figure is 2.18% — seventy times the overlap expected by chance.</p>
+<div class="box">
+  <span class="box-label">For the algebra-inclined</span>
+  <p>Take unit concept directions <i>f</i><sub>1</sub> … <i>f</i><sub><i>k</i></sub> and their Gram matrix <i>G</i> (all the pairwise dot products). If a voxel’s weight vector is <i>w</i> = Σ <i>α</i><sub><i>i</i></sub> <i>f</i><sub><i>i</i></sub>, what you can measure is the projections <i>p</i> = <i>Gα</i>. When <i>G</i> is invertible you can recover <i>α</i>; when it is singular, different mixtures <i>α</i> give the same <i>w</i>, and the weights are <b>non-identifiable</b>. Orthogonal concepts mean <i>G</i> = <i>I</i> and the projections are the answer.</p>
+  <p>Seen as Bayesian regression, ridge on dense features is exactly ridge on the concept features with a correlated Gaussian prior: atoms that point the same way are pushed to share weight. Good for prediction when related concepts really do co-occur; bad for reading the weights.</p>
+</div>
+</section>
+
+<section class="paper-section" id="fix" aria-labelledby="h-fix">
+  <h2 id="h-fix">The fix: give every concept its own axis</h2>
+<p>The tool is <b>sparse coding</b>, proposed by Olshausen and Field in 1996 as an account of how visual cortex represents natural images: find a dictionary of atoms such that each input is the sum of only a few of them. Word vectors are well suited to this. <i>Queen</i> is royalty together with femaleness; royalty recurs in <i>king</i> and <i>castle</i>, femaleness in <i>daughter</i> and <i>mother</i>, and most words are composed of a handful of such factors.</p>
+<p>Non-negative sparse dictionary learning on the GloVe vectors yields an overcomplete dictionary: 1,000 atoms in the original 300-dimensional space. Each word becomes a sparse, non-negative combination of atoms. <i>Walking</i>, for instance:</p>
+<figure class="fig">
+  <a href="../figures/thesis-fig2-2.png"><img src="../figures/thesis-fig2-2.png" alt="The word “walking” written as 3 × atom 361 (“Trail”) + 2 × atom 924 (“Walkability”) + 2 × atom 384 (“Present Continuous Tense”) + 2 × atom 456 (“Body position”) + 1 × atom 997 (“Space”), each atom listed with its top five stimulus words." width="1410" height="360" loading="lazy"></a>
+  <figcaption><i>Walking</i> is three parts trail, two parts walkability, two parts present-continuous tense, two parts body position and one part space. Atom names are labels; the words after each atom are the ones that activate it most.</figcaption>
+</figure>
+
+<p>Most atoms are equally legible. A sample, with the words that activate each most strongly:</p>
+<figure class="fig fig--table" id="atoms"><div class="table-wrap"><table>
+<caption><b>Eight of the 1,000 atoms</b>, each shown by the story words that activate it most. The first three are the number, time and space atoms used later; the fifty most cortically active atoms are Table 2.1 of <a href="thesis.html">the thesis</a>.</caption>
+<thead><tr><th scope="col">Atom</th><th scope="col">Top words in the stories</th></tr></thead>
+<tbody>
+<tr><td>505</td><td>eleven, sixteen, nineteen, fifteen, seventeen, twenty, ten, eighteen, thirty, sixty</td></tr>
+<tr><td>81</td><td>morning, afternoon, evening, weekends, monday, tuesday, lunch, night, hour, day</td></tr>
+<tr><td>997</td><td>near, close, distance, airport, center, miles, opposite, minutes, village, mile</td></tr>
+<tr><td>456</td><td>standing, sitting, stood, sat, sit, crouch, aisle, stands, lying, behind</td></tr>
+<tr><td>115</td><td>grandparents, sister, dad, cousins, brother, siblings, mom, grandfather, mother, stepmother</td></tr>
+<tr><td>369</td><td>although, though, however, despite, but, yet, anyway, surprisingly, somewhat, far</td></tr>
+<tr><td>707</td><td>thanks, hello, sorry, hey, bye, hi, dear, thank, yeah, ya</td></tr>
+<tr><td>494</td><td>gon, outta, ya, gotta, lotta, em, wanna, gonna, fo, shit</td></tr>
+</tbody></table></div></figure>
+
+<p>Then the substitution. Every word is re-encoded as its 1,000-dimensional sparse code, and the same ridge regression is fit on those features in place of the 300 dense ones. Each weight now belongs to a single atom, and because the codes are non-negative, a positive weight means the voxel is driven by that concept and a negative weight that it is suppressed.</p>
+<figure class="fig">
+  <a href="../figures/thesis-fig2-3.png"><img src="../figures/thesis-fig2-3.png" alt="Three rows. Top, Dense Encoding Model: a dense feature matrix times voxel weights in an entangled dense weight-vector space gives the fMRI measurements. Middle, Sparse Dictionary Learning: a dense embedding matrix of many words equals a sparse encoding matrix times a dictionary of concept atoms such as number, time and space. Bottom, Sparse Concept Encoding Model: the sparse feature matrix times voxel weights along concept-atom axes gives the fMRI measurements." width="1416" height="1315" loading="lazy"></a>
+  <figcaption>Top: the usual dense encoding model, with weights living in an entangled space. Middle: sparse dictionary learning rewrites the embedding as sparse codes times a dictionary of concept atoms. Bottom: the Sparse Concept Encoding Model fits the sparse codes, so the weights sit on concept axes.</figcaption>
+</figure>
+
+<p>One refinement made the atoms cleaner. Very frequent words lie close to the origin of an embedding, so sparse coding tends to collect unrelated frequent words into a single atom. Before learning the dictionary we reparameterize each vector by its norm, spreading the short vectors apart and drawing the long ones together. This Vector Norm Reparameterization gives more coherent atoms, lower reconstruction error and sparser codes.</p>
+</section>
+
+<section class="paper-section" id="results" aria-labelledby="h-results">
+  <h2 id="h-results">What follows</h2>
+<h3>Prediction: unchanged</h3>
+<p>The first concern is that expanding 300 dimensions to 1,000 sparse ones should cost accuracy. It does not. Across the seven subjects, the mean difference in held-out <i>R</i><sup>2</sup> between the sparse and dense models is 0.00047 ± 0.00071, paired <i>t</i>(6) = −1.77, <i>p</i> = 0.13. Voxel for voxel, the two models lie on the diagonal.</p>
+<figure class="fig">
+  <a href="../figures/thesis-fig2-4.jpg"><img src="../figures/thesis-fig2-4.jpg" alt="(a) A 1,000 × 1,000 matrix of cosine similarities between concept atoms. (b–c) Cortical flatmaps for two subjects with prediction accuracy shown as colour over lateral temporal, medial parietal and prefrontal cortex. (d–e) Scatter plots of sparse-model against dense-model accuracy per voxel, lying along the diagonal." width="1428" height="745" loading="lazy"></a>
+  <figcaption>(a) The 1,000 atoms are moderately correlated in GloVe space; that is the superposition. (b, c) Where the sparse model predicts well in two subjects: lateral temporal, medial parietal and prefrontal cortex. (d, e) Sparse against dense accuracy, voxel by voxel.</figcaption>
+</figure>
+
+<h3>Maps you can read</h3>
+<p>A concept map is now immediate: take one atom and plot its weight in every voxel. Atom 456 (<i>standing, sitting, crouch</i>) and atom 115 (<i>grandparents, sister, dad</i>) each give a distributed, bilateral pattern, and the pattern is nearly the same in two different brains.</p>
+<p>The dense model has no principled way to produce such a map, only heuristics, and the one used here yields maps that are patchier, less symmetric and less consistent between people. Across the 20 most active atoms and all seven subjects, sparse maps agree between people at cosine 0.26 ± 0.04; dense heuristic maps at 0.09 ± 0.04.</p>
+<figure class="fig">
+  <a href="../figures/thesis-fig2-5.jpg"><img src="../figures/thesis-fig2-5.jpg" alt="Two rows: for the “body position” atom (456) and the “family” atom (115), a word cloud of top-activating words, then flatmaps of voxel weights for Subject 01 and Subject 02, red for positive and blue for negative, with matching bilateral patterns across the two subjects." width="1416" height="1046" loading="lazy"></a>
+  <figcaption>“Body position” (top) and “family” (bottom): the words that drive each atom, then its weights in Subject 01 and Subject 02. Red is driven, blue is suppressed, and only voxels with significant weights are drawn.</figcaption>
+</figure>
+
+<h3>Time, space and number share cortex</h3>
+<p>A long-standing hypothesis holds that the brain uses one shared magnitude system for time, space and number (Walsh, 2003; Dehaene). Behaviour supports it; imaging has been inconsistent. Concept atoms make the test direct: the number atom (<i>eleven, sixteen</i>), the time atom (<i>morning, afternoon</i>) and the space atom (<i>near, distance</i>) are independent axes in one space, so their maps can be laid over one another.</p>
+<p>Take the top 5,000 voxels for each and colour them red, green and blue. White, where all three coincide, falls in the intraparietal sulcus and the inferior frontal gyrus, bilaterally, in both subjects shown — the regions the shared-magnitude literature has pointed to. Averaged over seven people, each pair of domains overlaps with an intersection over union of about 0.32–0.34, and all three together at 0.18.</p>
+<figure class="fig">
+  <a href="../figures/thesis-fig2-6.jpg"><img src="../figures/thesis-fig2-6.jpg" alt="(a–c) Word clouds for the number, time and space atoms. (d–e) Flatmaps for Subject 01 and Subject 02 with number in red, time in green, space in blue and three-way overlap in white, the white falling in the intraparietal sulcus and inferior frontal gyrus on both hemispheres." width="1410" height="940" loading="lazy"></a>
+  <figcaption>Number (red), time (green) and space (blue). Secondary colours are pairwise overlap; white is all three, and it sits in IPS and IFG bilaterally.</figcaption>
+</figure>
+<p class="more"><a href="number.html">This result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
+
+<h3>Concepts have a geometry in cortex</h3>
+<p>With twenty legible maps one can ask how they relate. Compare every pair, cluster the 20 × 20 similarity matrix in one subject, and the same block structure appears in the next; across all seven, the matrices correlate at 0.70 ± 0.08. Is this the embedding’s structure showing through? It is not: the sparse features themselves are uncorrelated (|<i>r</i>| = 0.00 ± 0.10 across the 190 pairs), while the same directions in GloVe space correlate at 0.16 ± 0.14. The geometry is cortical.</p>
+<figure class="fig">
+  <a href="../figures/thesis-fig2-7.jpg"><img src="../figures/thesis-fig2-7.jpg" alt="(a) A dendrogram over 20 labelled concept atoms. (b, c) Two 20 × 20 similarity matrices of cortical maps, Subject 01 and Subject 02, with the same block structure. (d) The atoms’ cosine similarities in GloVe space, showing structured correlation. (e) Pearson correlations of the sparse features, near zero off the diagonal." width="1416" height="1112" loading="lazy"></a>
+  <figcaption>(a) Clustering the 20 most active atoms by how similar their cortical maps are. (b, c) The similarity matrices for two subjects, same ordering. (d) The atoms are correlated in GloVe space. (e) The sparse features are not, so the structure in (b, c) is cortical.</figcaption>
+</figure>
+
+</section>
+
+<section class="paper-section" id="takeaways" aria-labelledby="h-takeaways">
+  <h2 id="h-takeaways">Takeaways</h2>
+<ul>
+  <li>Weights on dense embedding features are not tuning curves. Superposition makes them non-identifiable, so a positive projection onto a concept establishes nothing.</li>
+  <li>Sparse coding is a factorial design for data one could not design. When the stimulus is a story rather than a controlled experiment, it decorrelates the features of interest after the fact.</li>
+  <li>It costs nothing in prediction, and it turns a black-box encoding model into a set of concept maps that can be compared.</li>
+</ul>
+<p>The limits should be stated. The word vectors are static and context-free, and contextual features from language models are the natural next step; 1,000 atoms was a choice rather than a result; and atoms inherit whatever biases the embedding carries. Better semantic decoding is also a double-edged instrument, and the questions it raises about mental privacy are real.</p>
+</section>
+
+<section class="paper-section" id="abstract" aria-labelledby="h-abstract">
+  <h2 id="h-abstract">Abstract</h2>
+<p>Encoding models using word embeddings or artificial neural network (ANN) features reliably predict brain responses to naturalistic stimuli, yet interpreting these models remains challenging. A central limitation is superposition: distinct semantic features become entangled along correlated directions in dense embeddings when latent features outnumber embedding dimensions. This entanglement renders regression weights non-identifiable—different combinations of semantic directions can produce identical predictions, precluding principled interpretation of voxel selectivity. To address this, we introduce the Sparse Concept Encoding Model, which transforms dense embeddings into a higher-dimensional, sparse, non-negative space of learned concept atoms. This transformation yields an axis-aligned semantic basis where each dimension corresponds to an interpretable concept, enabling direct readout of conceptual selectivity from voxel weights. When applied to fMRI data collected during story listening, our model matches the prediction performance of conventional dense models while substantially enhancing interpretability. It enables novel neuroscientific analyses such as disentangling overlapping cortical representations of time, space, and number, and revealing structured similarity among distributed conceptual maps. This framework offers a scalable and interpretable bridge between ANN-derived features and human conceptual representations in the brain.</p>
+</section>
+
+<section class="paper-section" id="poster" aria-labelledby="h-poster">
+  <h2 id="h-poster">Poster</h2>
+<p>The whole story on one sheet, as presented at NeurIPS 2025. The talk is <a href="https://slideslive.com/39050668">on SlidesLive</a>; the paper is <a href="https://openreview.net/forum?id=3aNvX9TQTo">on OpenReview</a>.</p>
+<figure class="fig">
+  <a href="../figures/superpositions-poster.png"><picture><source srcset="../figures/superpositions-poster.webp" type="image/webp"><img src="../figures/superpositions-poster.png" alt="The NeurIPS 2025 poster: dense embeddings put concepts in superposition; the Sparse Concept Encoding Model replaces dense features with sparse concept-atom activations; the model reveals overlapping cortical representations of time, space and number, consistent maps for individual concepts, and consistent concept-level structure across subjects." width="2592" height="1296" loading="lazy"></picture></a>
+  <figcaption><a href="../figures/superpositions-poster.png">Full size</a>.</figcaption>
+</figure>
+</section>
+
+<section class="paper-section" id="bibtex" aria-labelledby="h-bibtex">
+  <h2 id="h-bibtex">BibTeX</h2>
+<pre class="bibtex">@inproceedings{zeng2025disentangling,
+  title     = {Disentangling Superpositions: Interpretable Brain Encoding Model
+               with Sparse Concept Atoms},
+  author    = {Zeng, Alicia and Gallant, Jack},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2025},
+  url       = {https://openreview.net/forum?id=3aNvX9TQTo}
+}</pre>
+</section>
+
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Site (footer)">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script src="../site.js"></script>
+</body>
+</html>

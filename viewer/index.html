@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interactive brain viewer for Zeng & Gallant 2025 (NeurIPS): cortical maps of number, time, and space concept representations from voxelwise encoding models of 19 subjects listening to naturalistic stories.">
+<meta property="og:title" content="Zeng & Gallant 2025 sparse concept atoms brain viewer">
+<meta property="og:description" content="Explore cortical maps of number, time, and space concept representations — group average and individual subjects — in 3D.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0c0d10">
+<meta property="og:url" content="https://alicialitrtwe.github.io/viewer-compose-2026/">
+<meta property="og:image" content="https://alicialitrtwe.github.io/viewer-compose-2026/assets/thumb_group_rgb.png">
+<link rel="canonical" href="https://alicialitrtwe.github.io/viewer-compose-2026/">
+<!-- If the site moves (e.g. under gallantlab.org), update og:url/og:image/canonical above. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
+<title>Zeng &amp; Gallant 2025 sparse concept atoms brain viewer | Gallant Lab</title>
+<style>
+  :root {
+    --bg: #000;
+    --bar: #0c0d10;
+    --bar2: #101216;
+    --panel: #14161a;
+    --line: #23262c;
+    --text: #e8eaed;
+    --muted: #9aa0a8;
+    --faint: #6b7178;
+    --chip: #1a1d22;
+    --chip-line: #2a2e35;
+    --chip-hover: #23272e;
+    /* channel anchors: OKLab L 0.68 at the gamut's largest common chroma,
+       hues 6/126/246 deg (build_info.color_scheme). The rotation is chosen for
+       colour-vision robustness; mixtures lighten toward white with the
+       Participation Ratio. */
+    --n: #e76889;   /* number */
+    --t: #80a925;   /* time */
+    --s: #2b9ff4;   /* space */
+    --nt: #c08c57; --ns: #a789c7; --ts: #46aba1; --all: #ffffff;
+    --focus: #8ab4f8;
+  }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+  body { display: flex; flex-direction: column; }
+
+  /* ============ top chrome ============ */
+  .gl-bar { flex: 0 0 auto; background: linear-gradient(180deg, var(--bar2), var(--bar)); font-size: 13px; position: relative; z-index: 5; }
+  .gl-bar::after { content: ""; display: block; height: 2px;
+    background: linear-gradient(90deg, var(--n), var(--t) 50%, var(--s));
+    opacity: 0.85; }
+  .gl-row1 { min-height: 46px; display: flex; align-items: center; padding: 0 18px; }
+  .gl-home { font-weight: 700; letter-spacing: 0.01em; margin-right: 18px; font-size: 14px; }
+  .gl-bar a { color: var(--text); text-decoration: none; padding: 6px 10px; border-radius: 6px; transition: background 0.15s; white-space: nowrap; }
+  .gl-row1 a:hover, .gl-row1 a:focus-visible { background: rgba(255,255,255,0.08); }
+  .gl-bar nav { display: flex; gap: 2px; flex: 1; }
+  .gl-bar nav a { font-weight: 500; color: var(--muted); font-size: 12.5px; }
+  .gl-bar nav a:hover { color: var(--text); }
+
+  .gl-row2 { padding: 7px 18px 8px; border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .gl-cite { flex: 1 1 420px; min-width: 260px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+  .gl-cite .gl-title { color: var(--text); font-weight: 600; }
+  .gl-cite em { color: var(--muted); }
+  .gl-cite a { color: var(--muted); text-decoration: underline; text-decoration-color: #4a4e55; padding: 0; }
+  .gl-cite a:hover { color: var(--text); }
+
+  .gl-row3 { padding: 0 18px 10px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .gl-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .gl-group > span { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-right: 2px; }
+  .gl-seg { display: inline-flex; background: var(--chip); border: 1px solid var(--chip-line); border-radius: 999px; padding: 2px; gap: 2px; }
+  .gl-seg button { background: transparent; color: var(--muted); border: 0; border-radius: 999px;
+    padding: 4px 12px; font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, color 0.15s; }
+  .gl-seg button:hover { color: var(--text); background: var(--chip-hover); }
+  .gl-seg button.active { background: var(--text); color: #101114; font-weight: 600; }
+
+  .gl-maps { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .gl-maps::-webkit-scrollbar { display: none; }
+  .gl-maps button { display: inline-flex; align-items: center; gap: 7px;
+    background: var(--chip); color: var(--muted); border: 1px solid var(--chip-line);
+    border-radius: 999px; padding: 4px 12px 4px 8px; font-size: 12px; font-weight: 500;
+    cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+  .gl-maps button:hover { color: var(--text); background: var(--chip-hover); }
+  .gl-maps button.active { color: var(--text); background: var(--chip-hover); border-color: #4a4f58; }
+  .gl-dot { width: 11px; height: 11px; border-radius: 3px; flex: 0 0 auto; }
+  .gl-dot.rgb { background: conic-gradient(from 210deg, var(--n) 0 33%, var(--s) 33% 66%, var(--t) 66% 100%); }
+  .gl-dot.inferno { background: linear-gradient(135deg, #1b0c41, #a52c60, #fb9b06, #f7d13d); }
+  .gl-dot.n { background: var(--n); }
+  .gl-dot.t { background: var(--t); }
+  .gl-dot.s { background: var(--s); }
+
+  .gl-legend-btn { background: var(--chip); color: var(--muted); border: 1px solid var(--chip-line);
+    border-radius: 999px; padding: 5px 14px; font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, color 0.15s; flex: 0 0 auto; }
+  .gl-legend-btn:hover { background: var(--chip-hover); color: var(--text); }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+  /* ============ stage ============ */
+  .gl-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; background: var(--bg); }
+  iframe { flex: 1 1 auto; min-height: 0; width: 100%; border: 0; display: block; transition: opacity 0.25s; }
+  iframe.dim { opacity: 0.35; }
+  .gl-loading { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 9px;
+    background: rgba(18,19,23,0.92); color: var(--muted); border: 1px solid var(--line);
+    border-radius: 999px; padding: 7px 16px; font-size: 12px; pointer-events: none; }
+  .gl-loading[hidden] { display: none; }
+  [hidden] { display: none !important; }
+  /* Loading indicator: the map's own logic in miniature - three channel discs
+     that screen-blend, so the overlap brightens toward white exactly as the
+     cortex does. Neon variants of the SAME hue angles (6/126/246), pushed to
+     the gamut's maximum chroma: more saturated, and measurably easier to tell
+     apart than the map triad under every colour-vision deficiency
+     (deuteranopic dE 0.225 vs 0.102 for the map colours). */
+  .gl-spin { position: relative; width: 22px; height: 22px; flex: 0 0 auto;
+    isolation: isolate; animation: glorbit 3.4s linear infinite; }
+  .gl-spin i { position: absolute; width: 13px; height: 13px; border-radius: 50%;
+    mix-blend-mode: screen; animation: glpulse 1.9s ease-in-out infinite; }
+  .gl-spin i:nth-child(1) { background: #ff0675; box-shadow: 0 0 8px #ff0675;
+    top: 0; left: 4.5px; animation-delay: 0s; }
+  .gl-spin i:nth-child(2) { background: #befe09; box-shadow: 0 0 8px #befe09;
+    bottom: 0; left: 0; animation-delay: 0.63s; }
+  .gl-spin i:nth-child(3) { background: #04a0fe; box-shadow: 0 0 8px #04a0fe;
+    bottom: 0; right: 0; animation-delay: 1.26s; }
+  @keyframes glorbit { to { transform: rotate(360deg); } }
+  @keyframes glpulse { 0%, 100% { opacity: 0.32; transform: scale(0.80); }
+                       50%      { opacity: 1;    transform: scale(1.08); } }
+  @media (prefers-reduced-motion: reduce) {
+    .gl-spin, .gl-spin i { animation: none; }
+    .gl-spin i { opacity: 0.95; transform: none; }
+  }
+
+  /* ============ legend dialog ============ */
+  .gl-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    display: flex; align-items: center; justify-content: center; z-index: 100; }
+  .gl-overlay[hidden] { display: none; }
+  .gl-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    max-width: 680px; width: calc(100% - 48px); max-height: calc(100% - 48px); overflow-y: auto;
+    padding: 26px 30px 24px; color: #c6cad0; font-size: 13px; line-height: 1.55;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.75); animation: glpop 0.18s ease-out; }
+  @keyframes glpop { from { opacity: 0; transform: scale(0.965); } }
+  @media (prefers-reduced-motion: reduce) { .gl-panel { animation: none; } iframe { transition: none; } }
+  .gl-panel::-webkit-scrollbar { width: 10px; }
+  .gl-panel::-webkit-scrollbar-thumb { background: #2c3037; border-radius: 5px; border: 2px solid var(--panel); }
+
+  .gl-eyebrow { color: var(--faint); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 6px; }
+  .gl-panel h2 { margin: 0 0 10px; color: #fff; font-size: 19px; letter-spacing: -0.01em; }
+  .gl-panel h3 { margin: 22px 0 10px; color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 10px; }
+  .gl-panel h3::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .gl-close { float: right; background: var(--chip); border: 1px solid var(--chip-line); border-radius: 999px;
+    color: var(--muted); font-size: 16px; cursor: pointer; line-height: 1; padding: 6px 11px; margin: -4px -8px 0 12px; }
+  .gl-close:hover { color: #fff; background: var(--chip-hover); }
+
+  .gl-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--chip);
+    border: 1px solid var(--chip-line); border-radius: 999px; padding: 1px 10px 1px 6px;
+    font-weight: 600; font-size: 12px; color: var(--text); vertical-align: baseline; }
+  .gl-chip i { width: 9px; height: 9px; border-radius: 50%; }
+
+  .gl-map-list { display: flex; flex-direction: column; gap: 10px; margin: 4px 0; }
+  .gl-map-row { display: flex; gap: 12px; align-items: flex-start; }
+  .gl-swatch { width: 30px; height: 30px; border-radius: 8px; flex: 0 0 auto; margin-top: 2px;
+    border: 1px solid rgba(255,255,255,0.08); }
+  .gl-swatch.rgb { background: conic-gradient(from 210deg, var(--n) 0 33%, var(--s) 33% 66%, var(--t) 66% 100%); }
+  .gl-swatch.inferno { background: linear-gradient(135deg, #000004, #4a0c6b, #a52c60, #ed6925, #f7d13d); }
+  .gl-swatch.dims { background: linear-gradient(180deg, var(--n) 0 33%, var(--t) 33% 66%, var(--s) 66% 100%); }
+  .gl-map-row strong { color: var(--text); font-weight: 600; }
+
+  .gl-figs { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; margin: 14px 0 6px; }
+  .gl-figs img { max-width: 225px; height: auto; }
+  .gl-cbar { flex: 1 1 240px; min-width: 220px; }
+  .gl-cbar-title { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .gl-cbar-grad { height: 14px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(90deg, #000004, #1b0c41, #4a0c6b, #781c6d, #a52c60, #cf4446, #ed6925, #fb9b06, #f7d13d, #fcffa4); }
+  .gl-cbar-ticks { display: flex; justify-content: space-between; color: var(--faint); font-size: 11px; margin-top: 5px;
+    font-variant-numeric: tabular-nums; }
+
+  .gl-panel ul { margin: 6px 0; padding-left: 20px; }
+  .gl-panel li { margin: 5px 0; }
+  .gl-panel kbd { background: var(--chip); border: 1px solid #3a3e46; border-bottom-width: 2px; border-radius: 4px;
+    padding: 0 6px; font-size: 11px; color: var(--text); font-family: inherit; }
+  .gl-fine { color: var(--faint); font-size: 11.5px; line-height: 1.55; }
+
+  .gl-dot.pr { background: linear-gradient(135deg, #440154, #21918c, #fde725); }
+  .gl-swatch.pr { background: linear-gradient(135deg, #440154, #21918c, #fde725); }
+
+  /* word chips in the legend */
+  .gl-words { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0 10px; }
+  .gl-word { background: var(--chip); border: 1px solid var(--chip-line); border-radius: 999px;
+    padding: 1px 9px; font-size: 11.5px; color: var(--muted); }
+  .gl-word.wn { color: #f08a83; } .gl-word.wt { color: #6cc673; } .gl-word.ws { color: #86a8ff; }
+
+  /* dynamic per-map colorbar */
+  .gl-mapbar { position: absolute; left: 14px; bottom: 14px; width: 208px; z-index: 50;
+    background: rgba(20,22,26,0.92); border: 1px solid var(--line); border-radius: 10px;
+    padding: 9px 12px 8px; }
+  .gl-mapbar[hidden] { display: none; }
+  .gl-mapbar-title { color: var(--muted); font-size: 11px; margin-bottom: 6px; line-height: 1.35; }
+  .gl-toggles { display: inline-flex; gap: 4px; }
+  .gl-toggles button { display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    background: var(--chip); color: var(--faint); border: 1px solid var(--chip-line); border-radius: 999px;
+    padding: 4px 11px 4px 8px; font-size: 12px; cursor: pointer; opacity: 0.4; white-space: nowrap;
+    transition: opacity 0.15s, background 0.15s; }
+  .gl-toggles button .gl-dot { opacity: 0.6; }
+  .gl-toggles button.on .gl-dot { opacity: 1; }
+  .gl-tet { margin: 0 0 6px; }
+  .gl-tet canvas { display: block; width: 184px; height: 184px; border-radius: 6px; cursor: grab;
+    touch-action: none; }
+  .gl-tet canvas:active { cursor: grabbing; }
+  .gl-tet-note { color: var(--faint); font-size: 10px; text-align: center; margin-top: 3px; }
+  .gl-toggles button.on { opacity: 1; color: #fff; font-weight: 600; }
+  .gl-toggles button.on[data-dim="number"] { background: rgba(232,109,102,0.22); border-color: var(--n); }
+  .gl-toggles button.on[data-dim="time"] { background: rgba(82,176,88,0.22); border-color: var(--t); }
+  .gl-toggles button.on[data-dim="space"] { background: rgba(105,148,247,0.22); border-color: var(--s); }
+  .gl-toggles button:hover { opacity: 0.85; }
+  .gl-toggles button.on:hover { opacity: 1; }
+
+  /* tour card: front and centre, translucent so the brain stays visible */
+  .gl-tour { position: absolute; left: 50%; top: 18px; transform: translateX(-50%);
+    width: min(640px, calc(100% - 48px)); background: rgba(14,16,20,0.62);
+    backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 16px 22px 14px;
+    color: #e3e6ea; font-size: 15px; line-height: 1.5; text-align: center;
+    box-shadow: 0 16px 56px rgba(0,0,0,0.55); z-index: 60; }
+  .gl-tour[hidden] { display: none; }
+  .gl-tour h4 { margin: 0 0 6px; color: #fff; font-size: 18px; letter-spacing: -0.01em; }
+  .gl-tour b { color: #fff; }
+  .gl-tour .gl-tour-q { margin: 10px 0; color: #fff; font-size: 16.5px; line-height: 1.35;
+    font-weight: 600; letter-spacing: -0.01em; text-wrap: balance;
+    border-left: 2px solid rgba(255,255,255,0.5); padding-left: 12px; }
+  .gl-tour kbd { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-bottom-width: 2px;
+    border-radius: 4px; padding: 0 6px; font-size: 13px; color: #fff; font-family: inherit; }
+  .gl-tour .gl-tour-nav { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; }
+  .gl-tour .gl-tour-nav button { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 999px; padding: 6px 16px; font-size: 13px; cursor: pointer; }
+  .gl-tour .gl-tour-nav button:hover { background: rgba(255,255,255,0.2); }
+  .gl-tour .gl-tour-nav button:disabled { opacity: 0.35; cursor: default; }
+  .gl-tour .gl-tour-nav #tourNext { background: #fff; color: #101114; border-color: #fff; font-weight: 600; }
+  .gl-tour .gl-tour-nav #tourNext:hover { background: #e8eaed; }
+  .gl-tour .gl-tour-nav #tourEnd { background: none; border-color: transparent; color: var(--muted); }
+  .gl-tour .gl-tour-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+  .gl-tour .gl-tour-dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.28); }
+  .gl-tour .gl-tour-dots i.on { background: #fff; }
+  .gl-tour .gl-tour-step { color: var(--faint); font-size: 11px; position: absolute; right: 16px; top: 12px; }
+  @media (max-width: 720px) { .gl-tour { font-size: 13.5px; padding: 12px 14px 10px; } .gl-tour h4 { font-size: 16px; } }
+
+  /* floating tour launcher (top centre of the stage) */
+  .gl-tour-pill { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); z-index: 58;
+    background: linear-gradient(90deg, var(--n), var(--t) 50%, var(--s)); color: #fff; border: 0;
+    border-radius: 999px; padding: 9px 22px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.01em;
+    cursor: pointer; box-shadow: 0 8px 28px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.18);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45); transition: transform 0.15s, filter 0.15s; }
+  .gl-tour-pill:hover { transform: translateX(-50%) scale(1.04); filter: brightness(1.08); }
+  .gl-tour-pill[hidden] { display: none; }
+
+  /* spotlight on a toolbar element the tour is talking about */
+  .gl-spot { position: relative; z-index: 6; border-radius: 999px;
+    animation: glspot 1.4s ease-in-out infinite; }
+  @keyframes glspot { 0%, 100% { box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 0 0 9px rgba(255,255,255,0.12); }
+                      50% { box-shadow: 0 0 0 3px rgba(255,255,255,0.45), 0 0 0 14px rgba(255,255,255,0); } }
+
+  /* voxel inspector */
+  .gl-inspect { position: absolute; top: 14px; right: 14px; width: 252px;
+    background: rgba(20,22,26,0.96); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px 12px; color: #c6cad0; font-size: 12px; z-index: 55;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6); }
+  .gl-inspect[hidden] { display: none; }
+  .gl-inspect h4 { margin: 0 0 8px; color: #fff; font-size: 12.5px; display: flex; justify-content: space-between; }
+  .gl-inspect .gl-ins-close { background: none; border: 0; color: var(--faint); cursor: pointer; font-size: 15px; line-height: 1; padding: 0 2px; }
+  .gl-inspect .gl-ins-close:hover { color: #fff; }
+  .gl-bar-row { display: flex; align-items: center; gap: 7px; margin: 4px 0; }
+  .gl-bar-row span.lbl { width: 48px; color: var(--muted); font-size: 11px; }
+  .gl-bar-track { flex: 1; height: 9px; background: #23262c; border-radius: 5px; overflow: hidden; }
+  .gl-bar-fill { height: 100%; border-radius: 5px; width: 0%; transition: width 0.2s; }
+  .gl-ins-mix { color: var(--muted); font-size: 11px; margin: 8px 0 2px; line-height: 1.4; }
+  .gl-ins-mix b { color: var(--fg); }
+  .gl-rel { display: flex; gap: 3px; margin: 8px 0 2px; }
+  .gl-rel i { flex: 1; height: 7px; border-radius: 3px; background: #23262c; }
+  .gl-rel i.on { background: #d9a545; }
+  .gl-rel-lbl { color: var(--faint); font-size: 10.5px; margin-bottom: 6px; }
+  .gl-cloud { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; margin-top: 6px; }
+  .gl-cloud span { line-height: 1.15; }
+  .gl-ins-hint { color: var(--faint); font-size: 10.5px; margin-top: 8px; }
+
+  @media (max-width: 720px) {
+    .gl-row1 { flex-wrap: wrap; padding: 4px 10px; }
+    .gl-bar nav { flex-wrap: wrap; }
+    .gl-row2, .gl-row3 { padding-left: 10px; padding-right: 10px; }
+  }
+  @media (pointer: coarse) {
+    .gl-seg button, .gl-maps button, .gl-legend-btn { padding-top: 8px; padding-bottom: 8px; font-size: 13px; }
+    .gl-close { font-size: 20px; padding: 10px 15px; }
+  }
+</style>
+</head>
+<body>
+  <div class="gl-bar">
+    <div class="gl-row1">
+      <a class="gl-home" href="https://gallantlab.org/" target="_top">Gallant Lab</a>
+      <nav>
+        <a href="https://gallantlab.org/people/" target="_top">People</a>
+        <a href="https://gallantlab.org/publications/" target="_top">Publications</a>
+        <a href="https://gallantlab.org/brain-viewers/" target="_top">Brain Viewers</a>
+        <a href="https://gallantlab.org/learn/" target="_top">Learn</a>
+        <a href="https://gallantlab.org/code/" target="_top">Code</a>
+      </nav>
+    </div>
+    <div class="gl-row2">
+      <div class="gl-cite">Zeng, A., Gallant, J.L. (2025).
+        <a href="https://neurips.cc/virtual/2025/poster/120024" target="_top"><span class="gl-title">Disentangling superpositions: interpretable brain encoding model with sparse concept atoms.</span></a>
+        <em>NeurIPS</em>.
+        Hendrikx, E., Zeng, A., Yashaswini, Visconti di Oleggio Castello, M., Gallant, J.L. (2026).
+        <span class="gl-title">A cortical network processing quantity-related concepts.</span>
+        <em>CCN</em>.</div>
+      <button class="gl-legend-btn" id="legendBtn" aria-haspopup="dialog" aria-expanded="false">? Legend</button>
+    </div>
+    <div class="gl-row3">
+      <div class="gl-group" role="group" aria-label="Choose brain">
+        <span aria-hidden="true">Brain</span>
+        <div class="gl-seg">
+          <button data-brain="group" class="active" aria-pressed="true">Group (19)</button>
+          <button data-brain="S01" aria-pressed="false">S01</button>
+          <button data-brain="S02" aria-pressed="false">S02</button>
+          <button data-brain="S04" aria-pressed="false">S04</button>
+        </div>
+      </div>
+      <div class="gl-group" role="group" aria-label="Choose map">
+        <span aria-hidden="true">Map</span>
+        <div class="gl-maps" id="mapChips"></div>
+      </div>
+      <div class="gl-group" role="group" aria-label="Toggle tuning channels">
+        <span aria-hidden="true">Channels</span>
+        <div class="gl-toggles" id="chanToggles">
+          <button data-dim="number" class="on" aria-pressed="true" title="Show / hide the number channel"><span class="gl-dot n"></span>Number</button>
+          <button data-dim="time" class="on" aria-pressed="true" title="Show / hide the time channel"><span class="gl-dot t"></span>Time</button>
+          <button data-dim="space" class="on" aria-pressed="true" title="Show / hide the space channel"><span class="gl-dot s"></span>Space</button>
+        </div>
+      </div>
+      <div class="gl-group">
+        <button class="gl-legend-btn" id="snapBtn" title="Download a 2400x1200 snapshot of the current view">&#128247; Snapshot</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gl-stage">
+    <iframe id="viewerFrame" title="Zeng and Gallant 2025 sparse concept atoms brain viewer"></iframe>
+    <div class="gl-loading" id="loadingPill"><span class="gl-spin" aria-hidden="true"><i></i><i></i><i></i></span>Loading brain&hellip;</div>
+    <button class="gl-tour-pill" id="tourBtn" title="Guided tour of the findings">&#9654;&nbsp; Take the guided tour</button>
+
+    <div class="gl-mapbar" id="mapBar" hidden>
+      <div class="gl-tet" id="mapBarTet" hidden>
+        <canvas id="tetCanvas" width="184" height="184"
+                aria-label="Tuning tetrahedron: every voxel is a point; direction from the apex = tuning, summed R2 = opacity"></canvas>
+        <div class="gl-tet-note" id="tetNote">drag to rotate &middot; double-click to reset</div>
+      </div>
+      <div class="gl-mapbar-title" id="mapBarTitle"></div>
+      <div class="gl-cbar-grad" id="mapBarGrad" style="height:10px"></div>
+      <div class="gl-cbar-ticks"><span id="mapBarLo"></span><span id="mapBarHi"></span></div>
+    </div>
+
+    <div class="gl-tour" id="tourCard" hidden role="dialog" aria-label="Guided tour">
+      <h4 id="tourTitle"></h4>
+      <div id="tourBody"></div>
+      <div class="gl-tour-nav">
+        <button id="tourPrev">&larr; Back</button>
+        <button id="tourNext">Next &rarr;</button>
+        <button id="tourEnd">End tour</button>
+      </div>
+      <div class="gl-tour-dots" id="tourDots" aria-hidden="true"></div>
+      <span class="gl-tour-step" id="tourStep"></span>
+    </div>
+
+    <aside class="gl-inspect" id="inspectPanel" hidden aria-label="Voxel inspector">
+      <h4>Voxel inspector <button class="gl-ins-close" id="inspectClose" aria-label="Close">&times;</button></h4>
+      <div class="gl-bar-row"><span class="lbl">Number</span><div class="gl-bar-track"><div class="gl-bar-fill" id="barN" style="background:var(--n)"></div></div></div>
+      <div class="gl-bar-row"><span class="lbl">Time</span><div class="gl-bar-track"><div class="gl-bar-fill" id="barT" style="background:var(--t)"></div></div></div>
+      <div class="gl-bar-row"><span class="lbl">Space</span><div class="gl-bar-track"><div class="gl-bar-fill" id="barS" style="background:var(--s)"></div></div></div>
+      <div class="gl-ins-mix" id="insMix">&nbsp;</div>
+      <div class="gl-rel" id="relMeter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="gl-rel-lbl" id="relLabel">&nbsp;</div>
+      <div class="gl-cloud" id="wordCloud"></div>
+      <div class="gl-ins-hint">Each quantity dimension is a learned <em>concept atom</em>
+      (Zeng &amp; Gallant, NeurIPS 2025; Hendrikx et al., 2026, CCN); the words shown are the vocabulary with the
+      highest loadings on those atoms, weighted by this spot&rsquo;s tuning &mdash; the model
+      predicts this spot responds most strongly when these words occur in a story.
+      Click anywhere on the cortex to inspect another spot.</div>
+    </aside>
+  </div>
+
+  <noscript>
+    <div style="position:fixed;inset:auto 0 0 0;background:#14161a;color:#c6cad0;padding:10px 16px;font-size:13px;">
+      JavaScript is required for the brain switcher and legend. Direct viewers:
+      <a style="color:#fff" href="group/index.html">Group</a> ·
+      <a style="color:#fff" href="S01/index.html">S01</a> ·
+      <a style="color:#fff" href="S02/index.html">S02</a> ·
+      <a style="color:#fff" href="S04/index.html">S04</a>
+    </div>
+  </noscript>
+
+  <div class="gl-overlay" id="legendOverlay" hidden>
+    <div class="gl-panel" role="dialog" aria-modal="true" aria-labelledby="legendTitle">
+      <button class="gl-close" id="legendClose" aria-label="Close legend">&times;</button>
+      <p class="gl-eyebrow">Gallant Lab &middot; NeurIPS 2025</p>
+      <h2 id="legendTitle">Semantic quantity maps</h2>
+      <p>Voxelwise encoding models were fit to fMRI responses of 19 participants
+      listening to naturalistic stories. Dense word embeddings entangle distinct semantic
+      features in superposition; the
+      <a href="https://neurips.cc/virtual/2025/poster/120024" target="_top">Sparse Concept
+      Encoding Model (Zeng &amp; Gallant, NeurIPS 2025)</a> transforms them into a sparse,
+      non-negative space of learned <em>concept atoms</em> &mdash; an axis-aligned basis where
+      conceptual selectivity can be read directly from voxel weights. The atoms for
+      <span class="gl-chip"><i style="background:var(--n)"></i>number</span>
+      <span class="gl-chip"><i style="background:var(--t)"></i>time</span> and
+      <span class="gl-chip"><i style="background:var(--s)"></i>space</span>
+      were fit as their own model band, disentangling the overlapping cortical
+      representations of the three quantities (Hendrikx, Zeng, Yashaswini,
+      Visconti di Oleggio Castello &amp; Gallant, 2026, <em>CCN</em> poster).</p>
+
+      <h3>Maps</h3>
+      <div class="gl-map-list">
+        <div class="gl-map-row"><span class="gl-swatch rgb" aria-hidden="true"></span>
+          <div><strong>Number-Time-Space tuning</strong> &mdash; each voxel&rsquo;s quantity
+          tuning as three channels. A channel is the share of variance that dimension
+          explains within the full model (its <em>split R&sup2;</em>, counted only where its
+          weight is positive, i.e. where it drives the response rather than suppresses it).
+          The map is one fixed rendering of those three numbers, with each perceptual axis
+          of color carrying one thing: <b>hue</b> = which concept, <b>saturation</b> = how
+          selective, <b>lightness</b> = how much is explained and how widely the tuning
+          spreads. The channel colors are hues 120&deg; apart in the perceptually uniform
+          OKLab space at one lightness and one chroma, so equal R&sup2; in number, time or
+          space is equally visible (sRGB red/green/blue differ 10&times; in luminance). A
+          pair mixes to a vivid intermediate hue; a voxel tuned to all three alike
+          desaturates and <b>brightens toward white</b>. So <b>dark = little variance
+          explained</b>, and a poorly predicted voxel can never look pale.</div></div>
+        <div class="gl-map-row"><span class="gl-swatch inferno" aria-hidden="true"></span>
+          <div><strong>Quantity network</strong> &mdash; prediction accuracy of the three
+          quantity features alone: how much of each voxel&rsquo;s response they predict
+          within the joint model (cross-validated, leave-one-story-out across the 10
+          training stories; black = none, bright = strong).</div></div>
+        <div class="gl-map-row"><span class="gl-swatch dims" aria-hidden="true"></span>
+          <div><strong>Single channels and pairs</strong> &mdash; the <em>Channels</em> toggles
+          run that same rendering on one or two channels instead of three, on one shared
+          scale (0 to the group map&rsquo;s 99th percentile of channel R&sup2;) so the three
+          channels and the four brains are directly comparable.</div></div>
+      </div>
+
+      <div class="gl-figs">
+        <img src="assets/legend_triangle.png" alt="Color triangle: number rose at top, time olive-green at lower left, space azure at lower right; mixtures desaturate and brighten to white in the centre">
+        <div class="gl-cbar">
+          <div class="gl-cbar-title">Quantity network: cross-validated R&sup2; of the quantity features alone</div>
+          <div class="gl-cbar-grad" aria-hidden="true"></div>
+          <div class="gl-cbar-ticks"><span>0</span><span id="cbarMax">95th&nbsp;percentile</span></div>
+        </div>
+      </div>
+      <p>Mixture hues mark overlap:
+      <span class="gl-chip"><i style="background:var(--nt)"></i>number + time</span>
+      <span class="gl-chip"><i style="background:var(--ns)"></i>number + space</span>
+      <span class="gl-chip"><i style="background:var(--ts)"></i>time + space</span> and
+      <span class="gl-chip"><i style="background:var(--all)"></i>all three</span> (white).
+      Selective spots stay vivid single hues. The <em>tuning tetrahedron</em> (bottom left) is
+      the legend: every voxel sits at (R&sup2;<sub>number</sub>, R&sup2;<sub>time</sub>,
+      R&sup2;<sub>space</sub>) in the color it has on the cortex. Distance from the apex is the
+      map&rsquo;s opacity (summed R&sup2;); direction from the apex is the tuning that sets the
+      hue. Click the cortex to mark a voxel on it.</p>
+      <p><b>Saturation is the Participation Ratio.</b> The tuning statistic reported per
+      region in the paper &mdash; PR, from 1 (all the explained variance in one concept) to
+      3 (split evenly) &mdash; is exactly the number the map&rsquo;s color carries: with hues
+      120&deg; apart, the length of the mixed hue vector is
+      &radic;((3/PR&nbsp;&minus;&nbsp;1)/2). A vivid single hue is PR&nbsp;1, a vivid pair
+      hue is PR&nbsp;2, and voxels lighten smoothly toward white as PR approaches 3, so the
+      map and the regional statistics are one measure. That lightening is a plain power of
+      PR rather than a threshold, deliberately: lines of constant PR are circles, so any
+      switch-on point would draw a boundary on the cortex that a reader could mistake for
+      a finding. The white is not painted on: the
+      sRGB gamut is a cone, so a neutral is the only color with lightness left above the
+      channel colors, and a balanced voxel is the only voxel that is neutral. The
+      trade-off, stated plainly: at equal summed R&sup2; a balanced voxel now looks
+      brighter than a selective one, so compare brightness within a hue, and read
+      whiteness as generality.</p>
+      <p><b>Stimulus confound.</b> Number, time and space words tend to occur together in
+      these stories, so their contributions are correlated and cannot be separated cleanly.
+      A region&rsquo;s dominant hue is more trustworthy than its exact mixture.</p>
+      <p class="gl-fine">The tuning maps share one absolute color scale across all brains
+      (0 to the group map&rsquo;s 99th percentile of channel R&sup2;), so opacity is comparable
+      across the Brain buttons; individual brains are noisier, so their strongest voxels clip
+      at the top. The Quantity network map is scaled per brain, 0 to that brain&rsquo;s 95th
+      percentile of positive R&sup2;. Channel values are cross-validated across stories
+      (leave-one-story-out; a few degenerate folds are excluded). Group maps average the 19
+      subjects&rsquo; R&sup2; after zeroing each subject&rsquo;s voxels that miss full-model
+      permutation p &lt; 0.05; the single-subject viewers apply the same mask (about 20% of
+      voxels pass), so they show exactly what enters the group average.</p>
+      <p class="gl-fine"><b>What the group map is.</b> The mean of the 19 subjects&rsquo; maps
+      on one surface. Averaging conserves the total explained variance exactly, but keeps
+      only about a fifth of each subject&rsquo;s peak (19.5% for number, 20.6% for time,
+      23.2% for space), because those peaks do not land in the same place in different
+      brains. How much survives follows from how consistent the maps are: for S subjects
+      with mean pairwise spatial correlation r, the group map&rsquo;s spatial SD is
+      &radic;((1&nbsp;+&nbsp;(S&minus;1)r)&thinsp;/&thinsp;S) of a single subject&rsquo;s,
+      which predicts 0.38&ndash;0.47 here against 0.41&ndash;0.49 observed. So the group map
+      behaves as a <em>consistency filter</em>. It answers where people agree, and says
+      little about how strongly any one person responds. Use the Brain buttons for
+      individuals.</p>
+      <p class="gl-fine"><b>Why time looks fainter.</b> Time is not less represented, and its maps
+      are no less consistent across subjects: the mean pairwise spatial correlation of the
+      R&sup2; maps is 0.095 for number, 0.100 for time and 0.175 for space, so time is if
+      anything marginally <em>more</em> consistent than number. The cause is the measure. Averaged
+      over subjects the three dimensions take 35.7&thinsp;/&thinsp;31.1&thinsp;/&thinsp;33.2%
+      of the quantity band in &radic;R&sup2;, but 37.7&thinsp;/&thinsp;25.6&thinsp;/&thinsp;36.7%
+      in R&sup2; &mdash; and this map is in R&sup2;. Squaring is a peak-weighting: it rewards
+      a few strong voxels over many moderate ones, and time&rsquo;s maps are the flattest of
+      the three (peak-to-mean 4.93, against 5.77 for number and 5.94 for space). Time is what
+      squaring costs.</p>
+
+      <h3>What the dimensions mean &mdash; example words</h3>
+      <p class="gl-fine" style="margin:2px 0 6px">Each dimension is a learned <em>concept atom</em> in a
+      sparse, non-negative semantic space
+      (<a href="https://neurips.cc/virtual/2025/poster/120024" target="_top">Zeng &amp; Gallant, NeurIPS 2025</a>; Hendrikx et al., 2026, CCN):
+      an axis-aligned basis where each axis is an interpretable concept, so selectivity can be read
+      directly from voxel weights. Shown below: the vocabulary with the highest loadings on each of the
+      three quantity atoms, standardized by each atom&rsquo;s variability across the stories &mdash; the
+      same units the encoding model sees, so words are comparable across atoms. A voxel tuned to an
+      atom responds when words like these occur in the story.</p>
+      <div class="gl-words" id="wordChips"></div>
+
+      <h3>Controls</h3>
+      <ul>
+        <li>Drag to rotate &middot; scroll to zoom &middot; <kbd>shift</kbd>+drag to pan.</li>
+        <li>On the network map, click the number at either end of the in-viewer
+        colorbar (bottom) to type a new color-scale limit &mdash; the map rescales
+        interactively.</li>
+        <li>Switch maps with the <em>Map</em> chips and the <em>Channels</em> toggles in
+        the top bar, or with <kbd>+</kbd>/<kbd>&minus;</kbd>.</li>
+        <li>Press <kbd>i</kbd> to inflate the brain and <kbd>f</kbd> to flatten it into
+        a flatmap (or use the viewer controls, top right, which also toggle ROI labels);
+        use the <em>Brain</em> buttons to switch between the group average and
+        individual subjects.</li>
+      </ul>
+    </div>
+  </div>
+
+<!-- Only the tetrahedron legend needs these; deferring them keeps ~150 KB of
+     parser-blocking work off the path to creating the viewer iframe. Both
+     run before DOMContentLoaded, and showTet() re-checks window.TuningLegend
+     anyway, so a slow load costs the legend nothing. -->
+<script defer src="assets/three.min.js"></script>
+<script defer src="assets/tuning_legend.js"></script>
+<script>
+  var frame = document.getElementById('viewerFrame');
+  var loading = document.getElementById('loadingPill');
+  var cbarMax = document.getElementById('cbarMax');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.gl-seg button'));
+  var BRAINS = buttons.map(function (b) { return b.dataset.brain; });
+  var STATE_KEYS = ['mix', 'camera.azimuth', 'camera.altitude', 'camera.radius'];
+  var DEFAULT_RADIUS = 300;   // folded-brain camera distance (pycortex default 400)
+  var MAPS = [
+    { name: 'Number-Time-Space tuning', label: 'Number·Time·Space tuning', dot: 'rgb' },
+    { name: 'Quantity network', label: 'Quantity network', dot: 'inferno' },
+  ];
+  var pendingRestore = null;   // {map: name|null, state: {key: value}}
+  var currentBrain = 'group';
+  var buildInfo = null;
+
+  var VER = '';   // build id; appended to viewer URLs so stale cached copies
+                  // of the viewer pages (which reference deleted textures) can
+                  // never be served after a rebuild.
+  // exact per-brain vmax values for the colorbar (fails soft to "95th pct")
+  fetch('assets/build_info.json', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      buildInfo = j;
+      VER = (j.built_utc || '').replace(/[^0-9]/g, '').slice(0, 14);
+      updateCbar();
+    })
+    .catch(function () {})
+    .then(boot, boot);
+
+  function updateCbar() {
+    if (!buildInfo || !buildInfo.R2_vmax_p95) return;
+    var v = buildInfo.R2_vmax_p95[currentBrain];
+    if (typeof v === 'number') cbarMax.textContent = v.toPrecision(2) + ' R\u00b2';
+  }
+
+  function getViewer() {
+    // The viewer builds dataviews synchronously at boot but streams its
+    // geometry (ctm) afterwards. Surface.setMix() writes the surfmix shader
+    // uniform first and only then touches this.names (undefined until the ctm
+    // arrives), so a ui.set('mix') that lands too early morphs the mesh to the
+    // flat coordinates without pivoting the hemispheres, culling the medial
+    // wall, moving the labels or the camera: a dark unpivoted sheet with the
+    // ROI labels floating around it, until the next i/f re-runs setMix fully.
+    // Require the geometry (names/hemis) before handing the viewer out.
+    try {
+      var v = frame.contentWindow.viewer;
+      if (v && v.dataviews && Object.keys(v.dataviews).length &&
+          v.surfs && v.surfs.length) {
+        var s = v.surfs[0].surf || v.surfs[0];
+        if (s && s.names && s.hemis && s.hemis.left && s.hemis.right) return v;
+      }
+    } catch (e) { /* cross-origin or not ready */ }
+    return null;
+  }
+
+  // The ROI labels are point sprites that pycortex creates when the SVG overlay
+  // finishes loading — after the ctm, i.e. after getViewer() first succeeds —
+  // and initialises for the folded brain (mix 0). A mix set before that
+  // (restoring the flatten state across brains, the tour, a hash view) leaves
+  // the labels at their folded positions floating over a flat mesh. Re-issue
+  // the current mix once the overlay exists so labels, picker and pivots agree.
+  function syncOverlayLabels(v) {
+    var tries = 0;
+    var t = setInterval(function () {
+      var s = null;
+      try { s = v.surfs[0].surf || v.surfs[0]; } catch (e) {}
+      if (!s || getViewer() !== v || ++tries > 900) { clearInterval(t); return; }
+      if (s.svg && s.svg.rois && s.svg.rois.labels) {
+        clearInterval(t);
+        try { s.setMix(v.ui.get('mix')); v.schedule(); } catch (e) {}
+      }
+    }, 200);
+  }
+  // The viewer's own dataset-name panel (top left, opens a dataset menu) only
+  // duplicates the Map chips; hide it.
+  function hideViewerChrome() {
+    try {
+      var doc = frame.contentDocument;
+      if (!doc || doc.getElementById('gl-chrome')) return;
+      var st = doc.createElement('style');
+      st.id = 'gl-chrome';
+      st.textContent = '#dataopts { display: none !important; }';
+      (doc.head || doc.documentElement).appendChild(st);
+    } catch (e) {}
+  }
+
+  // --- map chips, two-way synced with the viewer ---
+  var chipBox = document.getElementById('mapChips');
+  var chips = MAPS.map(function (m) {
+    var c = document.createElement('button');
+    c.innerHTML = '<span class="gl-dot ' + m.dot + '" aria-hidden="true"></span>' + m.label;
+    c.title = m.name;
+    c.setAttribute('aria-pressed', 'false');
+    c.addEventListener('click', function () { switchMap(m.name); });
+    chipBox.appendChild(c);
+    return { el: c, name: m.name };
+  });
+
+  // Single-flight map switching with a verify-and-retry + forced redraw:
+  // switching datasets while textures are still streaming can leave the
+  // cortex half-painted; a delayed re-setData + resize event heals it.
+  var switching = false;
+  function switchMap(name) {
+    if (switching) return;
+    var v = getViewer();
+    if (!v || !v.dataviews[name]) return;
+    switching = true;
+    try { v.setData(name); } catch (e) {}
+    setTimeout(function () {
+      var v2 = getViewer();
+      try {
+        if (v2 && (!v2.active || v2.active.name !== name) && v2.dataviews[name]) {
+          v2.setData(name);
+        }
+        frame.contentWindow.dispatchEvent(new frame.contentWindow.Event('resize'));
+      } catch (e) {}
+      switching = false;
+      syncChips();
+      updateHash();
+      if (overlay.hidden) { try { frame.contentWindow.focus(); } catch (e) {} }
+    }, 350);
+    syncChips();
+    updateHash();
+  }
+
+  function syncChips() {
+    var active = null;
+    var v = getViewer();
+    if (v && v.active && v.active.name) active = v.active.name;
+    var famFallback = active && STATE_OF[active] ? 'Number-Time-Space tuning' : null;
+    chips.forEach(function (c) {
+      var on = c.name === active || c.name === famFallback;
+      c.el.classList.toggle('active', on);
+      c.el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    updateMapBar(active);
+    updateColorLegend();
+  }
+
+  // The viewer's own colorbar (bottom centre) only describes scalar maps; on
+  // the RGB tuning maps it would show an unrelated gray ramp, so hide it there.
+  function updateColorLegend() {
+    try {
+      var v = getViewer(); if (!v || !v.active) return;
+      var raw = !!(v.active.data && v.active.data[0] && v.active.data[0].raw);
+      var el = frame.contentDocument.getElementById('colorlegend');
+      if (el) el.style.display = raw ? 'none' : '';
+    } catch (e) {}
+  }
+
+  // --- channel toggles: every subset of {N,T,S} is a baked dataset ---
+  var COMBOS = {
+    '111': 'Number-Time-Space tuning', '100': 'Number tuning',
+    '010': 'Time tuning', '001': 'Space tuning',
+    '110': 'Number+Time overlap', '101': 'Number+Space overlap',
+    '011': 'Time+Space overlap',
+  };
+  var STATE_OF = {};
+  Object.keys(COMBOS).forEach(function (k) { STATE_OF[COMBOS[k]] = k; });
+  var togBtns = Array.prototype.slice.call(
+    document.querySelectorAll('#chanToggles button'));
+  function toggleState() {
+    return togBtns.map(function (b) {
+      return b.classList.contains('on') ? '1' : '0';
+    }).join('');
+  }
+  function setToggles(state) {
+    togBtns.forEach(function (b, i) {
+      var on = state.charAt(i) === '1';
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  togBtns.forEach(function (b, i) {
+    b.addEventListener('click', function () {
+      var s = toggleState().split('');
+      s[i] = s[i] === '1' ? '0' : '1';
+      var state = s.join('');
+      if (state === '000') return;  // keep at least one channel
+      var v = getViewer();
+      if (v && v.dataviews[COMBOS[state]]) {
+        setToggles(state);
+        switchMap(COMBOS[state]);
+      }
+    });
+  });
+
+  // --- per-map colorbar with the actual numeric scale for this brain ---
+  var INFERNO = 'linear-gradient(90deg,#000004,#1b0c41,#4a0c6b,#781c6d,#a52c60,#cf4446,#ed6925,#fb9b06,#f7d13d,#fcffa4)';
+  var lastMapBar = null;
+  function fmt(x) { return (typeof x === 'number') ? x.toPrecision(2) : '\u2026'; }
+  function bi(key) { return buildInfo && buildInfo[key] ? buildInfo[key][currentBrain] : null; }
+  function rampGrad(dim) {
+    var stops = buildInfo && buildInfo.ramp_css && buildInfo.ramp_css[dim];
+    return stops ? 'linear-gradient(90deg,' + stops.join(',') + ')' : '#333';
+  }
+  function updateMapBar(active) {
+    var bar = document.getElementById('mapBar');
+    if (!active) { bar.hidden = true; lastMapBar = null; return; }
+    var sig = active + '|' + currentBrain + '|' + (buildInfo ? 1 : 0);
+    if (sig === lastMapBar) return;
+    lastMapBar = sig;
+    var cfg = null;
+    var famState = STATE_OF[active];
+    var DIMS = ['number', 'time', 'space'];
+    function cap(d) { return d.charAt(0).toUpperCase() + d.slice(1); }
+    if (famState) {
+      var on = DIMS.filter(function (d, i) { return famState.charAt(i) === '1'; });
+      var vmaxTxt = fmt(bi('channel_vmax_r2'));
+      var mask = DIMS.map(function (d, i) { return famState.charAt(i) === '1' ? 1 : 0; });
+      var what = on.length === 1 ? cap(on[0]) + ' channel' :
+                 on.length === 2 ? cap(on[0]) + ' + ' + cap(on[1]) : 'Number + Time + Space';
+      cfg = { title: '<b>' + what + '</b> \u2014 opacity: R\u00b2 explained by the channel' + (on.length > 1 ? 's' : '') +
+                     ' shown; hue: their proportions' + (on.length === 3 ? ' (all three \u2192 white)' : '') +
+                     '. One scale for every brain, 0 to ' + vmaxTxt + ' (group 99th percentile).',
+              grad: rampGrad(on.length === 1 ? on[0] : 'total'), lo: '0', hi: vmaxTxt + ' R\u00b2',
+              tet: mask };
+      setToggles(famState);
+    } else if (active === 'Quantity network') {
+      cfg = { title: '<b>Quantity network</b> \u2014 cross-validated R\u00b2 of the number + time + space ' +
+                     'features alone (plain R\u00b2, not \u221aR\u00b2). Scaled per brain: top = this brain\u2019s ' +
+                     '95th percentile of positive R\u00b2.',
+              grad: INFERNO, lo: '0', hi: fmt(bi('R2_vmax_p95')) + ' R\u00b2' };
+    }
+    if (!cfg) { bar.hidden = true; showTet(null); return; }
+    showTet(cfg.tet || null);
+    document.getElementById('mapBarGrad').parentNode.querySelector('.gl-cbar-ticks').hidden = !cfg.grad;
+    document.getElementById('mapBarGrad').hidden = !cfg.grad;
+    document.getElementById('mapBarTitle').innerHTML = cfg.title;
+    document.getElementById('mapBarGrad').style.background = cfg.grad || 'none';
+    document.getElementById('mapBarLo').textContent = cfg.lo || '';
+    document.getElementById('mapBarHi').textContent = cfg.hi || '';
+    bar.hidden = false;
+  }
+
+  // ---- tuning tetrahedron (3-D legend; lazy-loads the inspector sidecar it shares)
+  var tet = null, tetMask = null;
+  function chanVmax() { return bi('channel_vmax_r2') || 1; }
+  function tetNoteText(count) {
+    var group = currentBrain === 'group';
+    return 'each dot = one ' + (group ? 'vertex' : 'voxel') + ' at its (R\u00b2<sub>N</sub>, R\u00b2<sub>T</sub>, ' +
+           'R\u00b2<sub>S</sub>), in its map color \u00b7 ' + count.toLocaleString() + (group ? ' vertices' : ' voxels') +
+           ' \u00b7 drag to rotate';
+  }
+  // The tetrahedron legend plots every voxel, which needs the ~5 MB inspect.bin
+  // sidecar. Fetching it at boot puts it in direct competition with the ~6 MB
+  // geometry pack that first paint actually waits on, so it is held until the
+  // viewer has finished loading and the browser is idle. The legend already has
+  // a "loading voxels..." state to sit in meanwhile.
+  var viewerReady = false, pendingSidecar = null;
+  function whenViewerIdle(fn) {
+    if (!viewerReady) { pendingSidecar = fn; return; }
+    if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 4000 });
+    else setTimeout(fn, 800);
+  }
+  function releaseDeferredWork() {
+    viewerReady = true;
+    var fn = pendingSidecar; pendingSidecar = null;
+    if (fn) whenViewerIdle(fn);
+  }
+
+  function showTet(mask) {
+    var wrap = document.getElementById('mapBarTet');
+    if (!mask) { wrap.hidden = true; if (tet) tet.setVisible(false); tetMask = null; return; }
+    wrap.hidden = false;
+    if (!tet && window.TuningLegend) {
+      tet = TuningLegend.create(document.getElementById('tetCanvas'));
+    }
+    // three.js / tuning_legend.js are deferred, so on a very early call they may
+    // not have run yet; retry rather than hiding the legend for good.
+    if (!tet) {
+      wrap.hidden = true;
+      if (!tetRetry) tetRetry = setTimeout(function () {
+        tetRetry = null; if (tetMask !== null) showTet(mask);
+      }, 300);
+      return;
+    }
+    tetMask = mask;
+    tet.setChannels(mask);
+    tet.setVisible(true);
+    var brain = currentBrain, note = document.getElementById('tetNote');
+    if (sidecar && sidecarBrain === brain) {
+      tet.setPoints(sidecar, chanVmax());
+      note.innerHTML = tetNoteText(tet.count);
+    } else {
+      tet.clearPoints(); tet.clearHighlight();
+      note.textContent = 'loading voxels\u2026';
+      whenViewerIdle(function () {
+        if (currentBrain !== brain || !tetMask) return;
+        loadSidecar(function (sc) {
+          if (currentBrain !== brain || !tetMask) return;
+          tet.setPoints(sc, chanVmax());
+          note.innerHTML = tetNoteText(tet.count);
+        });
+      });
+    }
+  }
+
+  function updateHash() {
+    var h = '#' + currentBrain;
+    var v = getViewer();
+    if (v && v.active && v.active.name) h += '/' + encodeURIComponent(v.active.name);
+    if (window.location.hash !== h) {
+      try { history.replaceState(null, '', h); } catch (e) {}
+    }
+  }
+
+  function markActive(brain) {
+    currentBrain = brain;
+    buttons.forEach(function (o) {
+      var on = o.dataset.brain === brain;
+      o.classList.toggle('active', on);
+      o.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    updateCbar();
+  }
+
+  function loadBrain(brain, restore) {
+    markActive(brain);
+    viewerReady = false;   // re-armed by releaseDeferredWork on the new iframe
+    pendingRestore = restore || null;
+    loading.innerHTML = '<span class="gl-spin" aria-hidden="true"><i></i><i></i><i></i></span>Loading brain\u2026';
+    loading.hidden = false;
+    frame.classList.add('dim');
+    // replace() so brain switches don't pile up browser-history entries;
+    // ?v= busts any stale cached copy of the viewer page
+    var url = new URL(brain + '/index.html' + (VER ? '?v=' + VER : ''),
+                      window.location.href);
+    try { frame.contentWindow.location.replace(url.href); }
+    catch (e) { frame.src = url.href; }
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.classList.contains('active')) return;
+      // carry the chosen map and view state (inflate/flatten mix, camera) to the next brain
+      var restore = { map: null, state: {} };
+      var v = getViewer();
+      if (v) {
+        if (v.active && v.active.name) restore.map = v.active.name;
+        STATE_KEYS.forEach(function (k) {
+          try {
+            var val = v.ui.get(k);
+            if (val !== undefined && val !== null) restore.state[k] = val;
+          } catch (e) {}
+        });
+      }
+      loadBrain(b.dataset.brain, restore);
+    });
+  });
+
+  // After each viewer load, wait for its JS to be ready, restore the
+  // previous map and view state if possible, then hide the loading pill.
+  frame.addEventListener('load', function () {
+    var keep = pendingRestore;
+    pendingRestore = null;
+    var attempts = 0;
+    var t = setInterval(function () {
+      attempts++;
+      if (attempts === 100) {  /* 20s: something is wrong — say so */
+        loading.innerHTML = '<span class="gl-spin" aria-hidden="true"><i></i><i></i><i></i></span>' +
+          'Still loading\u2026 if this persists, hard-refresh ' +
+          '(<b>Cmd/Ctrl+Shift+R</b>)';
+      }
+      var stop = attempts > 600; /* 2 min cap: subject volumes + ctm can be slow */
+      var v = getViewer();
+      if (v) {
+        try {
+          if (keep && keep.map && v.dataviews[keep.map] &&
+              (!v.active || v.active.name !== keep.map)) {
+            v.setData(keep.map);
+          }
+          if (keep && keep.state) {
+            STATE_KEYS.forEach(function (k) {
+              if (k in keep.state) {
+                try { v.ui.set(k, keep.state[k]); } catch (e) {}
+              }
+            });
+          } else {
+            // first view: pycortex's default radius (400) shows the folded
+            // brain at ~40% of the view height; bring it closer
+            try { v.ui.set('camera.radius', DEFAULT_RADIUS); } catch (e) {}
+          }
+        } catch (e) {}
+        stop = true;
+      }
+      if (stop) {
+        clearInterval(t);
+        loading.hidden = true;
+        frame.classList.remove('dim');
+        hideViewerChrome();
+        if (v) syncOverlayLabels(v);
+        syncChips();
+        updateHash();
+        bindFrameEvents();
+        sidecar = null;  // per-brain data; refetched on next pick
+        if (!userTouched && !tourActive) startAutoRotate();
+        releaseDeferredWork();
+        setTimeout(prefetchBrains, 12000);
+        // focus the viewer so its +/- map-switching keys work immediately
+        if (overlay.hidden) { try { frame.contentWindow.focus(); } catch (e) {} }
+      }
+    }, 200);
+  });
+
+  // Keep chips and the shareable #brain/map hash in sync with in-viewer switches.
+  setInterval(function () { syncChips(); updateHash(); }, 1500);
+
+  // --- idle prefetch: warm the browser cache for the other brains ---
+  var prefetchStarted = false;
+  function prefetchBrains() {
+    if (prefetchStarted) return;
+    // Warming the other brains costs ~23 MB the visitor may never look at.
+    // Skip it entirely when the browser says the connection is metered or slow.
+    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conn && (conn.saveData || /^(slow-)?2g$|^3g$/.test(conn.effectiveType || ''))) return;
+    prefetchStarted = true;
+    var order = BRAINS.filter(function (b) { return b !== currentBrain; });
+    (function nextBrain() {
+      var b = order.shift();
+      if (!b) return;
+      fetch(b + '/index.html' + (VER ? '?v=' + VER : '')).then(function (r) { return r.text(); }).then(function (html) {
+        var names = {}, m;
+        var re = /[A-Za-z0-9_]+_\[inflated\]_mg2_9_v3\.(?:ctm|json|svg)|data\/__[0-9a-f]{16}_0\.png/g;
+        while ((m = re.exec(html))) names[m[0]] = 1;
+        var list = Object.keys(names).map(function (f) { return b + '/' + f; });
+        list.push(b + '/inspect.json');
+        (function seq() {
+          var f = list.shift();
+          if (!f) return nextBrain();
+          fetch(f).then(function () { seq(); }, function () { seq(); });
+        })();
+      }).catch(function () { nextBrain(); });
+    })();
+  }
+
+  // --- Legend dialog ---
+  var overlay = document.getElementById('legendOverlay');
+  var legendBtn = document.getElementById('legendBtn');
+  var legendClose = document.getElementById('legendClose');
+  var lastFocus = null;
+  var downOnBackdrop = false;
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') { closeLegend(); }
+    else if (e.key === 'Tab') {
+      // single focusable control in the dialog: keep focus on it
+      e.preventDefault();
+      legendClose.focus();
+    }
+  }
+  function openLegend() {
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    legendBtn.setAttribute('aria-expanded', 'true');
+    legendClose.focus();
+    document.addEventListener('keydown', onKeydown);
+  }
+  function closeLegend() {
+    overlay.hidden = true;
+    legendBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', onKeydown);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    // hand focus to the viewer so the advertised +/- keys work right away
+    if (getViewer()) { try { frame.contentWindow.focus(); } catch (e) {} }
+  }
+  legendBtn.addEventListener('click', openLegend);
+  legendClose.addEventListener('click', closeLegend);
+  // close on backdrop click, but not when a text-selection drag ends there
+  overlay.addEventListener('pointerdown', function (e) { downOnBackdrop = (e.target === overlay); });
+  overlay.addEventListener('click', function (e) { if (e.target === overlay && downOnBackdrop) closeLegend(); });
+
+  // =====================================================================
+  // Example words per dimension (top loadings in the sparse concept space)
+  // =====================================================================
+  var NST_WORDS = {
+    number: [['fourteen',5.11],['thirteen',5.10],['eleven',5.01],['twelve',4.91],['sixteen',4.80],['nineteen',4.69],['fifteen',4.60],['seventeen',4.53],['twenty',4.51],['ten',4.45],['eighteen',4.38],['thirty',4.19],['sixty',4.13],['seven',4.11],['nine',4.11],['eight',4.11],['six',3.99],['fifty',3.98],['five',3.94],['forty',3.94],['hundred',3.89],['four',3.30],['three',3.01],['thousand',2.81],['dozen',2.72]],
+    time: [['noon',9.61],['weekdays',7.93],['midday',7.16],['mornings',7.13],['morning',6.97],['midnight',6.95],['afternoons',6.55],['afternoon',6.45],['evenings',6.01],['evening',5.90],['tomorrow',5.65],['weekends',5.61],['monday',5.40],['thursday',5.24],['sunday',5.22],['friday',5.10],['saturday',5.05],['wednesday',4.87],['dusk',4.63],['tuesday',4.34],['lunch',4.31],['night',4.30],['hour',4.10],['today',3.63]],
+    space: [['km',9.72],['located',8.80],['situated',8.57],['near',8.10],['centre',7.65],['nearby',7.19],['vicinity',6.92],['kilometers',6.68],['close',6.65],['distance',6.63],['proximity',6.41],['nearest',6.39],['outskirts',6.07],['location',5.85],['closest',5.66],['metres',5.56],['center',5.37],['miles',5.23],['village',3.99],['town',3.80],['away',3.42],['outside',2.80]],
+  };
+  var DIM_CLASS = { number: 'wn', time: 'wt', space: 'ws' };
+  var DIM_COLOR = { number: '#fd8d86', time: '#63c76b', space: '#86a8ff' };
+  (function () {
+    var box = document.getElementById('wordChips');
+    ['number', 'time', 'space'].forEach(function (dim) {
+      NST_WORDS[dim].slice(0, 9).forEach(function (w) {
+        var s = document.createElement('span');
+        s.className = 'gl-word ' + DIM_CLASS[dim];
+        s.textContent = w[0];
+        s.title = dim + ' \u2014 standardized loading ' + w[1].toFixed(2);
+        box.appendChild(s);
+      });
+    });
+    // tooltips on the per-dimension map chips
+    chips.forEach(function (c) {
+      var dim = { 'Number tuning': 'number', 'Time tuning': 'time', 'Space tuning': 'space' }[c.name];
+      if (dim) c.el.title = c.name + ' — responds to words like: ' +
+        NST_WORDS[dim].slice(0, 8).map(function (w) { return w[0]; }).join(', ');
+    });
+  })();
+
+  // =====================================================================
+  // Click-a-voxel inspector (lazy-loads a small per-brain sidecar)
+  // =====================================================================
+  var sidecar = null, sidecarBrain = null, sidecarLoading = false, sidecarWaiters = [];
+  var inspectPanel = document.getElementById('inspectPanel');
+  var userTouched = false, pickStart = null;
+
+  // callbacks are queued while a load is in flight; if the brain changed
+  // meanwhile the load is repeated for the current brain
+  function loadSidecar(cb) {
+    if (sidecar && sidecarBrain === currentBrain) return cb(sidecar);
+    sidecarWaiters.push(cb);
+    if (sidecarLoading) return;
+    sidecarLoading = true;
+    var brain = currentBrain;
+    function done() {
+      sidecarLoading = false;
+      if (sidecarBrain !== currentBrain) { if (sidecarWaiters.length) loadSidecar(sidecarWaiters.shift()); return; }
+      var w = sidecarWaiters; sidecarWaiters = [];
+      w.forEach(function (f) { f(sidecar); });
+    }
+    fetch(brain + '/inspect.json').then(function (r) { return r.json(); })
+      .then(function (meta) {
+        var wants = [fetch(brain + '/inspect.bin').then(function (r) { return r.arrayBuffer(); })];
+        if (meta.shape) wants.push(fetch(brain + '/inspect_idx.bin').then(function (r) { return r.arrayBuffer(); }));
+        return Promise.all(wants).then(function (bufs) {
+          var f = new Float32Array(bufs[0]);
+          var n = meta.n;
+          sidecar = { n: n, num: f.subarray(0, n), time: f.subarray(n, 2 * n),
+                      space: f.subarray(2 * n, 3 * n), r2: f.subarray(3 * n, 4 * n),
+                      idx: bufs[1] ? new Int32Array(bufs[1]) : null, shape: meta.shape || null };
+          sidecarBrain = brain; done();
+        });
+      }).catch(function () { sidecarLoading = false; sidecarWaiters = []; });
+  }
+
+  function coordsToColumn(sc, coords) {
+    if (!sc.shape) {                       // vertex data (group / fsaverage)
+      var vert = coords.vertex;
+      if (vert === undefined || vert === null) return -1;
+      var half = sc.n / 2;
+      var right = coords.hemi === 'right' || coords.hemi === 1 || coords.hemi === 'rh';
+      var i = (right ? half : 0) + Math.round(vert);
+      return (i >= 0 && i < sc.n) ? i : -1;
+    }
+    var v = coords.voxel; if (!v) return -1;
+    var x = Math.round(v.x !== undefined ? v.x : v[0]);
+    var y = Math.round(v.y !== undefined ? v.y : v[1]);
+    var z = Math.round(v.z !== undefined ? v.z : v[2]);
+    var nz = sc.shape[0], ny = sc.shape[1], nx = sc.shape[2];
+    if (x < 0 || y < 0 || z < 0 || x >= nx || y >= ny || z >= nz) return -1;
+    var flat = z * ny * nx + y * nx + x;
+    var col = sc.idx[flat];
+    return (col !== undefined && col >= 0) ? col : -1;
+  }
+
+  function showInspection(nv, tv, sv, r2v) {
+    inspectPanel.hidden = false;
+    var mx = Math.max(nv, tv, sv, 1e-12);
+    document.getElementById('barN').style.width = (100 * nv / mx) + '%';
+    document.getElementById('barT').style.width = (100 * tv / mx) + '%';
+    document.getElementById('barS').style.width = (100 * sv / mx) + '%';
+    // tuning mix (R2 proportions) + ring on the tuning tetrahedron
+    var sum = nv + tv + sv;
+    var dN = sum > 0 ? nv / sum : 1 / 3, dT = sum > 0 ? tv / sum : 1 / 3, dS = sum > 0 ? sv / sum : 1 / 3;
+    var pct = function (x) { return Math.round(100 * x) + '%'; };
+    document.getElementById('insMix').innerHTML = sum > 0 ?
+      'Tuning: <b>' + pct(dN) + '</b> number \u00b7 <b>' + pct(dT) + '</b> time \u00b7 <b>' + pct(dS) +
+      '</b> space<br>variance explained by quantity tuning: R\u00b2 = ' + sum.toPrecision(2) + ' (' +
+      Math.round(100 * Math.min(1, sum / chanVmax())) + '% of the color scale)' +
+      (tetMask ? '<br>\u25ef marked on the tuning tetrahedron (bottom left)' : '') :
+      'No positive quantity tuning at this spot';
+    if (tet && tetMask) tet.highlight(nv, tv, sv, chanVmax());
+    // reliability: quantity-band R2 relative to this brain's p95 (the network map's top of scale)
+    var vmax = (buildInfo && buildInfo.R2_vmax_p95 && buildInfo.R2_vmax_p95[currentBrain]) || 0.003;
+    var rel = Math.max(r2v, 0) / vmax;
+    var lvl = rel < 0.1 ? 0 : rel < 0.3 ? 1 : rel < 0.55 ? 2 : rel < 0.8 ? 3 : 4;
+    var lbls = ['very weak — ignore this spot', 'weakly predicted', 'moderately predicted',
+                'well predicted', 'excellent — highly reliable'];
+    var segs = document.getElementById('relMeter').children;
+    for (var i = 0; i < 5; i++) segs[i].className = i <= lvl && rel >= 0.1 ? 'on' : '';
+    document.getElementById('relLabel').textContent = lbls[lvl];
+    // word cloud: score each example word by the voxel's tuning direction
+    var scored = [];
+    [['number', dN], ['time', dT], ['space', dS]].forEach(function (p) {
+      NST_WORDS[p[0]].forEach(function (w) { scored.push([w[0], w[1] * p[1], p[0]]); });
+    });
+    scored.sort(function (a, b) { return b[1] - a[1]; });
+    var cloud = document.getElementById('wordCloud');
+    cloud.innerHTML = '';
+    var top = scored.slice(0, 12);
+    var smax = top.length ? top[0][1] : 1;
+    top.forEach(function (w) {
+      var s = document.createElement('span');
+      s.textContent = w[0];
+      s.style.color = DIM_COLOR[w[2]];
+      s.style.fontSize = (10.5 + 8.5 * (w[1] / smax)) + 'px';
+      cloud.appendChild(s);
+    });
+  }
+
+  function tryPick(e) {
+    var v = getViewer(); if (!v || !v.getCoords) return;
+    var coords = null;
+    try { coords = v.getCoords({ clientX: e.clientX, clientY: e.clientY }); } catch (err) { return; }
+    if (!coords) return;
+    loadSidecar(function (sc) {
+      var col = coordsToColumn(sc, coords);
+      if (col < 0) return;
+      showInspection(sc.num[col], sc.time[col], sc.space[col], sc.r2[col]);
+    });
+  }
+  document.getElementById('inspectClose').addEventListener('click', function () { inspectPanel.hidden = true; });
+
+  function bindFrameEvents() {
+    try {
+      var doc = frame.contentDocument;
+      if (!doc || doc.__glBound) return;
+      doc.__glBound = true;
+      doc.addEventListener('pointerdown', function (e) {
+        userTouched = true; stopAutoRotate();
+        pickStart = { x: e.clientX, y: e.clientY, t: Date.now() };
+      }, true);
+      doc.addEventListener('pointerup', function (e) {
+        if (!pickStart) return;
+        var dt = Date.now() - pickStart.t;
+        var dd = Math.hypot(e.clientX - pickStart.x, e.clientY - pickStart.y);
+        pickStart = null;
+        if (dt < 350 && dd < 6 && !tourActive) tryPick(e);
+      }, true);
+      doc.addEventListener('wheel', function () { userTouched = true; stopAutoRotate(); },
+                           { capture: true, passive: true });
+      // keyboard shortcuts (f/i/r, +/-) must not fight the auto-rotate loop
+      doc.addEventListener('keydown', function () { userTouched = true; stopAutoRotate(); }, true);
+    } catch (e) {}
+  }
+
+  // =====================================================================
+  // Idle auto-rotate (until first interaction; never while flat or touring)
+  // =====================================================================
+  var rotTimer = null;
+  function startAutoRotate() {
+    if (rotTimer) return;
+    rotTimer = setInterval(function () {
+      var v = getViewer();
+      if (!v || tourActive || userTouched) return stopAutoRotate();
+      try {
+        var mix = v.ui.get('mix') || 0;
+        if (mix > 0.05) return stopAutoRotate();
+        v.ui.set('camera.azimuth', ((v.ui.get('camera.azimuth') || 0) + 0.12) % 360);
+      } catch (e) { stopAutoRotate(); }
+    }, 40);
+  }
+  function stopAutoRotate() { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } }
+  document.addEventListener('pointerdown', function () { userTouched = true; stopAutoRotate(); }, true);
+
+  // The viewer's own f/i/r and +/- shortcuts only fire while the iframe has
+  // focus; clicking any wrapper button steals it. Mirror the shortcuts at the
+  // parent level so flatten/inflate/reset and map cycling always work.
+  document.addEventListener('keydown', function (e) {
+    if (!overlay.hidden || tourActive) return;
+    var v = getViewer();
+    if (!v) return;
+    var k = e.key;
+    try {
+      if (k === 'f') v.animate([{ state: 'mix', value: 1, idx: 1.5 }]);
+      else if (k === 'i') v.animate([{ state: 'mix', value: 0.5, idx: 1.5 }]);
+      else if (k === 'r' && v.reset_view) v.reset_view();
+      else if (k === '+' || k === '=' || k === '-') {
+        var names = MAPS.map(function (m) { return m.name; })
+          .filter(function (n) { return v.dataviews[n]; });
+        var cur = names.indexOf(v.active && v.active.name);
+        switchMap(names[(cur + (k === '-' ? -1 : 1) + names.length) % names.length]);
+      } else return;
+      userTouched = true;
+      stopAutoRotate();
+    } catch (err) {}
+  }, true);
+
+  // =====================================================================
+  // Snapshot (offscreen 2400x1200 render, same as the viewer's Shift+S)
+  // =====================================================================
+  document.getElementById('snapBtn').addEventListener('click', function () {
+    var v = getViewer(); if (!v || !v.getImage) return;
+    try {
+      var canvas = v.getImage(2400, 1200);
+      setTimeout(function () {
+        canvas.toBlob(function (b) {
+          if (!b) return;
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(b);
+          a.download = 'quantity-brain-' + currentBrain + '.png';
+          a.click();
+          setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+        });
+      }, 400);
+    } catch (e) {}
+  });
+
+  // =====================================================================
+  // Guided tour (runs on the group brain)
+  // =====================================================================
+  var tetRetry = null;
+  var tourActive = false, tourIdx = 0;
+  // The number step flies to and marks one concrete vertex: right intraparietal
+  // sulcus (native fsaverage vertex 51986, MNI152 ~ 33, -62.5, 43; number R2
+  // 0.0039 vs time 0.0005 / space 0.0003 in the 19-subject group map -> 83% of
+  // the voxel's quantity R2 is number, and 12 of 19 subjects are significant
+  // there). The viewer
+  // addresses vertices in its ctm pack's order, not fsaverage's, so the build
+  // script translates the native index (build_info.tour_example.vertex).
+  function tourExample() {
+    var t = buildInfo && buildInfo.tour_example;
+    return (t && t.vertex !== undefined) ? { hemi: t.hemi, vertex: t.vertex } : null;
+  }
+  var TOUR = [
+    { title: 'A common sense of magnitude?',
+      body: 'Kant held that space and time are the forms of all experience, and that number arises from counting in time. Behaviour suggests the three are entangled: people respond to small numbers faster with the left hand and to large numbers faster with the right, as if numbers were laid out on a mental line (the SNARC effect; Dehaene 1993), and larger or more numerous stimuli are judged to last longer (Xuan 2007).<p class="gl-tour-q">Do number, space and time share a common magnitude system in the brain?</p><b>A Theory of Magnitude</b> (Walsh 2003) hypothesises that it does: “common cortical metrics of time, space and quantity”, one magnitude system in parietal cortex, shared because all three are needed to act on the world.',
+      map: 'Number-Time-Space tuning',
+      radius: 330, lit: true,
+      anim: [{ state: 'mix', value: 0, idx: 0.5 }, { state: 'camera.azimuth', value: 150, idx: 0.6 }, { state: 'camera.azimuth', value: 60, idx: 5 }, { state: 'camera.altitude', value: 70, idx: 2 }] },
+    { title: 'From percepts to concepts',
+      body: 'That question has almost always been studied with percepts: participants judge how many dots are on a screen, how long a flash lasts, or how far apart two marks are (Harvey 2013; Hendrikx 2024). But quantity also lives in <b>concepts</b>: “dozen”, “yesterday”, “far away”. Rather than run another perceptual experiment, we reuse an existing <b>semantic</b> dataset — fMRI recorded while people listened to stories — and read the three quantity dimensions out of a sparse concept space fit to it (Zeng &amp; Gallant 2025).',
+      map: 'Number-Time-Space tuning',
+      radius: 330, lit: true,
+      anim: [{ state: 'mix', value: 0, idx: 0.5 }, { state: 'camera.azimuth', value: 90, idx: 3 }, { state: 'camera.altitude', value: 62, idx: 3 }] },
+    { title: 'A brain listening to stories',
+      body: '19 people listened to spoken stories in the scanner (Huth 2016). Encoding models learned each spot’s response to <b>number</b>, <b>time</b> and <b>space</b> words (Hendrikx 2026). What you are looking at is the <b>average of all 19 brains</b> on one shared surface, so this map is really about <b>agreement</b> between brains. The <b>Brain</b> buttons show individual subjects, whose own maps are much brighter.',
+      map: 'Number-Time-Space tuning',
+      radius: 330, lit: true,
+      anim: [{ state: 'mix', value: 0, idx: 0.5 }, { state: 'camera.azimuth', value: 270, idx: 3.5 }, { state: 'camera.altitude', value: 68, idx: 3.5 }] },
+    { title: 'Inflate and flatten',
+      body: 'Much of cortex hides in its folds, so we <b>inflate</b> the brain, then <b>flatten</b> it into a sheet. Do it yourself with <kbd>i</kbd> and <kbd>f</kbd>, or with the <b>inflate / flatten</b> buttons in the viewer’s control panel (top right, highlighted — it opens under “camera”).',
+      map: 'Number-Time-Space tuning', controls: 'camera',
+      radius: 160,
+      anim: [{ state: 'camera.azimuth', value: 180, idx: 1.2 }, { state: 'camera.altitude', value: 20, idx: 1.2 }, { state: 'mix', value: 0.5, idx: 2.2 }, { state: 'mix', value: 1, idx: 4 }, { state: 'camera.radius', value: 160, idx: 4 }] },
+    { title: 'The quantity network',
+      body: 'Cross-validated <b>R²</b> of the three quantity features alone. The bright regions form one distributed network: superior temporal sulcus, middle temporal gyrus, angular gyrus, subparietal sulcus, superior and middle frontal gyri, anterior cingulate gyrus and precuneus.',
+      map: 'Quantity network', radius: 160, anim: [] },
+    { title: 'Overlap: cortex that carries all three',
+      body: 'Across most of that network the three channels overlap, and the colours desaturate and brighten toward white — spots that answer to number, time and space alike. Watch the <b>Channels</b> toggles (top bar, highlighted): each channel is a map of its own, and switching them on and off shows how the three overlay.',
+      map: 'Number-Time-Space tuning', spot: '#chanToggles', demo: ['100', '110', '111'], radius: 160, anim: [] },
+    { title: 'Selectivity, and what the stories can settle',
+      body: 'Other cortex clearly prefers one concept: the marker sits in the right <b>intraparietal sulcus</b>, where number words account for most of the quantity response and time and space words for very little. Both carry the same caveat. These three kinds of word tend to turn up together in the stories, so the model cannot pull them fully apart. A spot’s dominant colour means more than its exact mixture.',
+      map: 'Number tuning', anim: [], mark: 'example' },
+    { title: 'Explore it yourself',
+      body: '<b>Click</b> any spot to inspect its tuning and words. Use <b>Channels</b> to overlay maps, <b>Brain</b> to compare individual subjects, and the viewer’s <b>control panel</b> (top right) for more: depth through the cortical sheet, opacity, one hemisphere at a time, ROI labels, camera and image export. Press <kbd>r</kbd> to reset the view.',
+      map: 'Number-Time-Space tuning', controls: 'open', spot: '.gl-seg', radius: 160, anim: [] },
+  ];
+
+  // Put pycortex's pick marker (white axes cross) on a vertex and return its
+  // world position, or null. ptidx is the viewer's reordered geometry index.
+  // Arrays handed to the viewer must be created in the iframe's realm: pycortex
+  // tests `xyz instanceof Array`, which is false for an array from this window,
+  // so a wrapper-realm [x, y, z] silently does nothing in setTarget/animate.
+  function vArr(a) { return frame.contentWindow.Array.from(a); }
+  // pycortex keeps two camera targets: the folded one (origin) and a flat one
+  // (y = -60, the flatmap's centre in its pivoted frame). ui.set('camera.target')
+  // writes whichever the current mix selects, so "re-centre" while flat (or
+  // while an animation is flattening) must use the flat centre — the origin
+  // would shift the flatmap down the screen.
+  // While mix animates, pycortex itself blends the camera between the two
+  // targets, and a target set mid-way lands in whichever one the current mix
+  // selects; so animate the target only when the mix stays put, and pin the
+  // right target once a mix animation has finished.
+  var FLAT_TARGET = [0, -60, 0];
+  // During the tour the card sits over the top ~third of the viewer, so the
+  // tour aims the camera a little above the brain (folded: +z; flat: +y in
+  // the pivoted flat frame) to push the brain down, out from under the card.
+  function foldedTarget() { return tourActive ? [0, 0, 30] : [0, 0, 0]; }
+  function flatTarget() { return tourActive ? [0, -48, 0] : FLAT_TARGET; }
+  // same idea for a flat-view target on a marked vertex: aim 10 units above
+  // it so the marker sits below the card rather than at its bottom edge
+  function belowCard(p) { return vArr([p[0], p[1] + 10, p[2]]); }
+  function centreTarget(v, anim) {
+    var flat = false, mixAnim = false, cur = 0;
+    try { cur = v.ui.get('mix'); flat = cur >= 0.999; } catch (e) {}
+    // a mix state that only restates the current mix is not a morph
+    (anim || []).forEach(function (a) { if (a.state === 'mix' && Math.abs(a.value - cur) > 0.001) mixAnim = true; });
+    return mixAnim ? null : vArr(flat ? flatTarget() : foldedTarget());
+  }
+  var tourPinTimer = null;
+  function pinTargetAfter(v, anim) {
+    var mix = null, dur = 0;
+    (anim || []).forEach(function (a) { dur = Math.max(dur, a.idx || 0); if (a.state === 'mix') mix = a.value; });
+    if (mix === null) return;
+    if (tourPinTimer) clearTimeout(tourPinTimer);
+    tourPinTimer = setTimeout(function () {
+      tourPinTimer = null;
+      try {
+        if (getViewer() !== v) return;
+        v.ui.set('mix', mix);
+        v.ui.set('camera.target', vArr(mix >= 0.999 ? flatTarget() : foldedTarget()));
+        v.schedule();
+      } catch (e) {}
+    }, dur * 1000 + 150);
+  }
+  function markVertex(hemi, vertex) {
+    var v = getViewer(); if (!v) return null;
+    try {
+      var surf = v.surfs[0].surf || v.surfs[0];
+      var picker = surf.picker, hem = surf.hemis && surf.hemis[hemi];
+      if (!picker || !hem || !hem.indexMap) return null;
+      var ptidx = hem.indexMap[vertex];
+      if (ptidx === undefined) return null;
+      picker.addMarker(hemi, ptidx, false);
+      var ax = picker.axes[picker.axes.length - 1];
+      surf.object.updateMatrixWorld(true);
+      var wp = ax.group.getWorldPosition(new frame.contentWindow.THREE.Vector3());
+      v.schedule();
+      return vArr([wp.x, wp.y, wp.z]);
+    } catch (e) { return null; }
+  }
+  function markerWorldPos() {
+    var v = getViewer(); if (!v) return null;
+    try {
+      var surf = v.surfs[0].surf || v.surfs[0];
+      var ax = surf.picker && surf.picker.axes[surf.picker.axes.length - 1];
+      if (!ax) return null;
+      surf.object.updateMatrixWorld(true);
+      var wp = ax.group.getWorldPosition(new frame.contentWindow.THREE.Vector3());
+      return vArr([wp.x, wp.y, wp.z]);
+    } catch (e) { return null; }
+  }
+  function clearMarker() {
+    var v = getViewer(); if (!v) return;
+    try {
+      var surf = v.surfs[0].surf || v.surfs[0];
+      if (surf.picker) { surf.picker.process_nonpick(); v.schedule(); }
+    } catch (e) {}
+  }
+  var tourMarkTimer = null;
+  // Show the example on the flatmap: flatten first (the marker's world position
+  // depends on the inflate/flatten state), then mark it and fly the camera to it.
+  function tourMark(mark) {
+    var v = getViewer(); if (!v) return;
+    var flat = false, wait = 0;
+    try { flat = v.ui.get('mix') >= 0.999; } catch (e) {}
+    if (!flat) {
+      try {
+        v.animate([{ state: 'mix', value: 1, idx: 1.4 }, { state: 'camera.azimuth', value: 180, idx: 1.4 },
+                   { state: 'camera.altitude', value: 0.1, idx: 1.4 }]);
+      } catch (e) {}
+      wait = 1600;
+    }
+    tourMarkTimer = setTimeout(function () {
+      tourMarkTimer = null;
+      if (!tourActive) return;
+      // pin the final flat pose before measuring the marker (a slow frame rate
+      // can leave the animation a hair short of mix = 1)
+      try { v.ui.set('mix', 1); v.ui.set('camera.azimuth', 180); v.ui.set('camera.altitude', 0.1); v.ui.set('camera.target', vArr(flatTarget())); } catch (e) {}
+      var pos = markVertex(mark.hemi, mark.vertex);
+      if (pos) {
+        try {
+          var r = v.ui.get('camera.radius');
+          v.animate([{ state: 'camera.target', value: belowCard(pos), idx: 1.5 },
+                     { state: 'camera.radius', value: Math.min(r, 130), idx: 1.5 }]);
+        } catch (e) {}
+        // after the flight, re-measure (a frame has rendered by now) and pin
+        tourMarkTimer = setTimeout(function () {
+          tourMarkTimer = null;
+          if (!tourActive) return;
+          var p2 = markerWorldPos();
+          if (p2) { try { v.ui.set('camera.target', belowCard(p2)); v.schedule(); } catch (e) {} }
+        }, 1700);
+      }
+    }, wait);
+    loadSidecar(function (sc) {
+      if (!tourActive) return;
+      var col = coordsToColumn(sc, mark);
+      if (col >= 0) showInspection(sc.num[col], sc.time[col], sc.space[col], sc.r2[col]);
+    });
+  }
+
+  // Spotlight a toolbar element (pulsing ring) while a step talks about it.
+  function tourSpot(sel) {
+    Array.prototype.forEach.call(document.querySelectorAll('.gl-spot'), function (el) { el.classList.remove('gl-spot'); });
+    if (!sel) return;
+    var el = document.querySelector(sel);
+    if (el) el.classList.add('gl-spot');
+  }
+  // pycortex's dat.gui panel inside the iframe: open it (and a folder) and ring it.
+  var tourOpenedControls = false;
+  function tourControls(what) {
+    var doc; try { doc = frame.contentDocument; } catch (e) { return; }
+    if (!doc) return;
+    var main = doc.querySelector('.dg.main');
+    var style = doc.getElementById('glTourSpot');
+    if (!what) {
+      if (style) style.remove();
+      // close the panel again if the tour opened it
+      if (tourOpenedControls && main) {
+        try { var cb0 = main.querySelector('.close-button'); if (cb0) cb0.click(); } catch (e) {}
+      }
+      tourOpenedControls = false;
+      return;
+    }
+    if (!main) return;
+    if (!style) {
+      style = doc.createElement('style'); style.id = 'glTourSpot';
+      style.textContent = '.dg.main { outline: 3px solid rgba(255,255,255,0.9); outline-offset: 2px; ' +
+        'animation: glTourPulse 1.4s ease-in-out infinite; } ' +
+        '@keyframes glTourPulse { 50% { outline-color: rgba(255,255,255,0.35); } }';
+      doc.head.appendChild(style);
+    }
+    try {
+      var ul = main.querySelector('ul');
+      if (ul && ul.classList.contains('closed')) {
+        var cb = main.querySelector('.close-button'); if (cb) { cb.click(); tourOpenedControls = true; }
+      }
+      if (what !== 'open') {
+        Array.prototype.forEach.call(main.querySelectorAll('li.title'), function (t) {
+          if (t.textContent.trim() === what && t.parentNode.classList.contains('closed')) t.click();
+        });
+      }
+    } catch (e) {}
+  }
+  var tourDemoTimers = [];
+  function tourDemoClear() { tourDemoTimers.forEach(clearTimeout); tourDemoTimers = []; }
+  // step through channel subsets so the overlay of the maps is visible
+  function tourDemo(states) {
+    tourDemoClear();
+    states.forEach(function (state, k) {
+      tourDemoTimers.push(setTimeout(function () {
+        if (!tourActive) return;
+        var v = getViewer();
+        if (v && v.dataviews[COMBOS[state]]) { setToggles(state); switchMap(COMBOS[state]); }
+      }, 900 + 1700 * k));
+    });
+  }
+
+  // The site's curvature backdrop is deliberately dark (brightness 0.18,
+  // contrast 0.2) so tuning colours stand out on the flatmap; on the folded
+  // brain that leaves the sulci barely legible. Folded tour steps lift it to
+  // a medium grey; flat steps and endTour restore the build's values.
+  function setCurvLight(v, lit) {
+    try {
+      var s = v.surfs[0].surf || v.surfs[0];
+      var vo = frame.contentWindow.viewopts || {};
+      s.uniforms.brightness.value = lit ? 0.32 : parseFloat(vo.brightness || 0.18);
+      s.uniforms.contrast.value = lit ? 0.38 : parseFloat(vo.contrast || 0.2);
+      v.schedule();
+    } catch (e) {}
+  }
+  function tourShow(i) {
+    tourIdx = Math.max(0, Math.min(i, TOUR.length - 1));
+    var st = TOUR[tourIdx];
+    document.getElementById('tourTitle').textContent = st.title;
+    document.getElementById('tourBody').innerHTML = st.body;
+    document.getElementById('tourStep').textContent = (tourIdx + 1) + ' / ' + TOUR.length;
+    document.getElementById('tourDots').innerHTML = TOUR.map(function (_, k) {
+      return '<i' + (k === tourIdx ? ' class="on"' : '') + '></i>'; }).join('');
+    document.getElementById('tourPrev').disabled = tourIdx === 0;
+    document.getElementById('tourNext').textContent = tourIdx === TOUR.length - 1 ? 'Finish' : 'Next →';
+    if (tourMarkTimer) { clearTimeout(tourMarkTimer); tourMarkTimer = null; }
+    if (tourPinTimer) { clearTimeout(tourPinTimer); tourPinTimer = null; }
+    tourDemoClear();
+    tourSpot(st.spot || null);
+    tourControls(st.controls || null);
+    if (st.demo) tourDemo(st.demo);
+    var v = getViewer();
+    if (v) {
+      if (st.map) switchMap(st.map);
+      setCurvLight(v, !!st.lit);
+      var mark = st.mark ? tourExample() : null;
+      if (mark) {
+        // let the map switch settle before drawing the marker and zooming in
+        tourMarkTimer = setTimeout(function () { tourMarkTimer = null; if (tourActive) tourMark(mark); }, 400);
+      } else {
+        clearMarker(); inspectPanel.hidden = true;
+      }
+      // one animate() call: a second call would replace the first
+      var anim = (st.anim || []).slice();
+      if (!mark) {
+        // re-center and back out from the zoomed-in example, if we were there
+        var ct = centreTarget(v, anim);
+        if (ct) anim.push({ state: 'camera.target', value: ct, idx: 1 });
+        // each step names its camera distance (folded 250, flat 160; pycortex's
+        // default 400 shows the brain at ~40% of the view height); steps whose
+        // own anim already moves the radius (flatten) are left alone
+        var hasR = anim.some(function (a) { return a.state === 'camera.radius'; });
+        try {
+          if (st.radius && !hasR && Math.abs(v.ui.get('camera.radius') - st.radius) > 1)
+            anim.push({ state: 'camera.radius', value: st.radius, idx: 1 });
+        } catch (e) {}
+      }
+      try { v.animate(anim); pinTargetAfter(v, anim); } catch (e) {}
+      syncChips(); updateHash();
+    }
+  }
+  function startTour() {
+    stopAutoRotate();
+    inspectPanel.hidden = true;
+    if (currentBrain !== 'group') { loadBrain('group', null); }
+    tourActive = true;
+    document.getElementById('tourCard').hidden = false;
+    document.getElementById('tourBtn').hidden = true;
+    // wait for the viewer if we just switched brains
+    var tries = 0;
+    var t = setInterval(function () {
+      if (getViewer() || ++tries > 100) { clearInterval(t); tourShow(0); }
+    }, 200);
+  }
+  function endTour() {
+    tourActive = false;
+    if (tourMarkTimer) { clearTimeout(tourMarkTimer); tourMarkTimer = null; }
+    tourDemoClear(); tourSpot(null); tourControls(null);
+    document.getElementById('tourCard').hidden = true;
+    document.getElementById('tourBtn').hidden = false;
+    clearMarker();
+    var v = getViewer();
+    if (v) {
+      setCurvLight(v, false);
+      try { v.controls._flattarget.set(FLAT_TARGET[0], FLAT_TARGET[1], FLAT_TARGET[2]); } catch (e) {}
+      var back = [{ state: 'camera.radius', value: DEFAULT_RADIUS, idx: 1.5 }, { state: 'mix', value: 0, idx: 1.5 }];
+      try { v.animate(back); pinTargetAfter(v, back); } catch (e) {}
+    }
+  }
+  document.getElementById('tourBtn').addEventListener('click', function () {
+    if (tourActive) { endTour(); } else { startTour(); }
+  });
+  document.getElementById('tourNext').addEventListener('click', function () {
+    if (tourIdx === TOUR.length - 1) { endTour(); } else { tourShow(tourIdx + 1); }
+  });
+  document.getElementById('tourPrev').addEventListener('click', function () { tourShow(tourIdx - 1); });
+  document.getElementById('tourEnd').addEventListener('click', endTour);
+
+  // Boot: runs once buildInfo (and the cache-busting build id) is settled.
+  // Handles deep links (#S02 or #S02/Space%20tuning) and the first-visit tour.
+  var booted = false;
+  function boot() {
+    if (booted) return;
+    booted = true;
+    var m = window.location.hash.replace(/^#/, '').split('/');
+    var brain = (m[0] && BRAINS.indexOf(m[0]) !== -1) ? m[0] : 'group';
+    var restore = m[1] ? { map: decodeURIComponent(m[1]), state: {} } : null;
+    loadBrain(brain, restore);
+    try {
+      if (!localStorage.getItem('qviewer-tour-seen') && !window.location.hash) {
+        localStorage.setItem('qviewer-tour-seen', '1');
+        setTimeout(startTour, 800);
+      }
+    } catch (e) { /* storage unavailable */ }
+  }
+</script>
+</body>
+</html>

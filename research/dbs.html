@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Movement-responsive deep brain stimulation — Alicia Zeng</title>
+<meta name="description" content="Movement-responsive deep brain stimulation for Parkinson’s disease using a remotely optimized neural decoder. Nature Biomedical Engineering, 2026.">
+<meta property="og:title" content="Movement-responsive deep brain stimulation for Parkinson’s disease using a remotely optimized neural decoder">
+<meta property="og:description" content="Nature Biomedical Engineering, 2026. Alicia Zeng.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+
+  <!-- The site is being written; the notice is deliberate and sitewide. -->
+  <p class="wip">Work in progress — pages and figures are still being written.</p>
+
+
+  <div class="topbar">
+    <p class="wordmark"><a href="../index.html">Alicia Zeng</a></p>
+    <nav aria-label="Site">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <p><a class="backlink" href="../research.html"><span aria-hidden="true">←</span>
+      All research</a></p>
+
+    <!-- A short introduction to a paper I am a middle author on: the running
+         text is written for this page in a describing voice, every number is
+         from the CC BY medRxiv preprint, and the two preprint figures are
+         credited in their captions. Fig. 1 and the abstract are the
+         publisher's, verbatim. -->
+    <article class="paper">
+
+      <header class="paper-head">
+        <h1 class="paper-title" id="paper"><cite>Movement-responsive deep brain stimulation for Parkinson’s disease using a
+          remotely optimized neural decoder</cite></h1>
+        <p class="authors">Tanner C. Dixon, Gabrielle Strandquist, <span class="me">Alicia Zeng</span>,
+        Tomasz Frączek, Raphael Bechtold, Daryl Lawrence, Shravanan Ravi, Philip A. Starr,
+        Jack L. Gallant, Jeffrey A. Herron, Simon J. Little</p>
+        <p class="pub-meta">Nature Biomedical Engineering, <time datetime="2026">2026</time></p>
+        <p class="buttons pub-links">
+          <a class="button" href="https://doi.org/10.1038/s41551-025-01438-0" id="l-doi"
+             aria-labelledby="l-doi paper">Paper</a>
+          <a class="button" href="https://pubmed.ncbi.nlm.nih.gov/40579487/" id="l-pubmed"
+             aria-labelledby="l-pubmed paper">PubMed</a>
+          <a class="button todo" data-todo="link-dbs-code" id="l-code"
+             aria-labelledby="l-code paper">Code</a>
+          <a class="button" href="stimulation.html" id="l-chapter"
+             aria-labelledby="l-chapter paper">Related thesis chapter</a>
+        </p>
+      </header>
+
+      <nav class="paper-nav" aria-label="Sections">
+        <ol>
+          <li><a href="#tldr">Short version</a></li>
+          <li><a href="#idea">Closing the loop</a></li>
+          <li><a href="#home">Optimized at home</a></li>
+          <li><a href="#results">The comparison</a></li>
+          <li><a href="#role">My part</a></li>
+          <li><a href="#abstract">Abstract</a></li>
+          <li><a href="#bibtex">BibTeX</a></li>
+        </ol>
+      </nav>
+
+      <!-- The teaser: Fig. 1 of the paper, from the publisher's figure page,
+           with its caption verbatim. -->
+      <figure class="fig fig--hero">
+        <a href="../figures/dbs-fig1.png"><img src="../figures/dbs-fig1.png" alt="Three panels: movement thresholds in the healthy, Parkinsonian and treated states; the movement-responsive framework tying stimulation to motor intent; and a participant with the implanted system, wrist watches and three cameras at home." width="1811" height="724"></a>
+        <figcaption><b>Fig. 1: Rationale and setup.</b> <b>a</b>, The movement
+          threshold in the healthy, Parkinsonian and treated states; <b>b</b>, stimulation
+          tied to motor intent; <b>c</b>, the participant at home with the implant, wrist
+          accelerometers and three cameras. From the published paper.
+          <details class="legend"><summary>The published legend, verbatim</summary>
+          <p><b>Fig. 1: Movement-responsive DBS theoretical framework.</b>
+          <b>a</b>, Motivation for the movement-responsive DBS approach is compatible with both an
+          action selection and gain-control theoretical framework. Left: in the neurologically
+          healthy state, the basal ganglia inhibit actions that have not yet been selected through
+          activation beyond a gating threshold (black dashed line). When activation associated
+          with a particular action reaches this threshold, movement is released with the
+          appropriate timing and vigour (subthreshold activation is represented as a yellow line,
+          which becomes green to indicate suprathreshold activation/selection and downstream
+          movement). Middle: in the Parkinsonian state, excessive and fluctuating inhibition in
+          the basal ganglia raises the movement threshold. This results in difficulty initiating
+          vigorous movements. Right: in the treated Parkinsonian state (medicated/cDBS), the
+          movement threshold is lowered through tonic disinhibition without regard for motor
+          intent. This can result in unintended movements (red asterisks) when activation exceeds
+          the reduced, fluctuating threshold. <b>b</b>, A ‘movement-responsive’ framework is
+          proposed where stimulation (stim) is tied to motor intent, reaching higher levels
+          during intended movement and reducing to lower levels at rest. Right: illustration of
+          how this prevents dyskinesia when movement is not intended while providing targeted
+          disinhibition for vigorous, volitional movement (compare to a). <b>c</b>, To enable
+          movement-responsive experiments, neural data were streamed from bilateral STN and
+          cortical electrodes in a participant implanted with the Medtronic Summit RC + S DBS
+          system. External devices for streaming data from the implants were worn over the upper
+          chest; however, adaptive stimulation was performed embedded on the device. Video from
+          three cameras and wrist-worn accelerometry (Apple Watches) were simultaneously recorded
+          and time-synced (note that the camera placement in the cartoon image is for
+          illustration only and not indicative of the precise locations and orientations used in
+          the study).</p></details></figcaption>
+      </figure>
+
+<blockquote class="pull"><p>In the present study, we report the first fully embedded movement-responsive aDBS in a human subject with PD.</p></blockquote>
+
+<p class="source">An introduction written for this page. The study was led by Tanner Dixon, with Jeffrey Herron, Simon Little and Jack Gallant supervising; I am one of the middle authors, and <a href="#role">my part</a> is stated at the end. Fig. 1 is the published version’s; Figs. 2 and 3, and every number quoted here, are from the <a href="https://doi.org/10.1101/2024.08.14.24312002">medRxiv preprint</a> (CC&nbsp;BY&nbsp;4.0).</p>
+
+<section class="paper-section" id="tldr" aria-labelledby="h-tldr">
+  <h2 id="h-tldr">The short version</h2>
+<p class="tldr">Parkinson’s disease is a dynamical disease: its motor symptoms arise from time-varying activity across the basal ganglia and sensorimotor cortex, shaped moment to moment by what the person is doing. Deep brain stimulation, as usually delivered, is open-loop — a constant train of pulses, indifferent to that activity. This study closes the loop at the level of behaviour. A classifier embedded in the implant infers from cortical and subthalamic field potentials whether the person is moving, and stimulation rises during movement and falls at rest. The classifier was optimized automatically from recordings the participant made alone at home, then evaluated for more than a year in blinded comparison with constant stimulation and with an inverted control. Movement of the dominant hand quickened, typing became faster without becoming less accurate, and involuntary movement at rest diminished.</p>
+<ul class="stats">
+  <li><b>1</b><span>participant, one implant per hemisphere</span></li>
+  <li><b>6</b><span>home sessions of about 25 minutes, recorded without a researcher present</span></li>
+  <li><b>12</b><span>blinded test sessions over 154 days</span></li>
+  <li><b>82% / 76%</b><span>classification accuracy during adaptive stimulation, left and right hemisphere</span></li>
+</ul>
+</section>
+
+<section class="paper-section" id="idea" aria-labelledby="h-idea">
+  <h2 id="h-idea">Closing the loop on behaviour</h2>
+<p>Conventional DBS delivers high-frequency stimulation at a fixed amplitude, and it is effective: it relieves slowness and tremor and reduces the dyskinesia that accompanies dopaminergic medication. But the therapeutic need is not constant. It fluctuates with medication, arousal and activity, and a static setting must compromise between under-treating one state and over-treating another. Adaptive DBS proposes to resolve the compromise by measuring the brain in real time and adjusting stimulation accordingly. Most implementations track a physiological marker of symptom state, most often beta-band (13–30&nbsp;Hz) power. Beta, however, is suppressed during movement, so a controller that lowers stimulation when beta is low may withdraw therapy at precisely the moments it is needed.</p>
+<p>This study takes a different control variable: not a marker of symptoms but movement itself. The rationale (Fig. 1) is the gating account of basal ganglia function. In the healthy state the basal ganglia hold candidate actions below a threshold and release the one that is selected, with appropriate timing and vigour. In Parkinson’s, excessive and fluctuating inhibition raises that threshold, and initiating vigorous movement becomes difficult — bradykinesia. Medication and constant stimulation lower the threshold tonically, without regard to intent, which relieves bradykinesia but lets activity cross the threshold when no movement was intended — dyskinesia. A stimulation policy tied to motor intent would lower the threshold only while a movement is under way and restore it at rest, addressing the symptom and the side effect through one mechanism.</p>
+<p>Such a policy needs an estimate of motor state that is available on the device, at the moment of movement, from neural signals alone. The participant’s implant, a Medtronic Summit RC+S, records local field potentials from the subthalamic nucleus and from an electrocorticography strip over precentral and postcentral cortex, and it can execute a small classifier on board: up to four power bands with programmable frequency limits, combined linearly and passed through threshold logic that governs the transitions between states. The problem is to find, within that constrained model class, the parameters that read movement reliably — and to find them by a procedure that does not depend on a research team being present.</p>
+</section>
+
+<section class="paper-section" id="home" aria-labelledby="h-home">
+  <h2 id="h-home">Optimized at home</h2>
+<p>The data for fitting the classifier were collected in the participant’s home office rather than in the clinic. A remote platform streamed the implant’s field potentials together with accelerometry from an Apple Watch on each wrist, video from three cameras and keystrokes from the participant’s own computer, all synchronized to a common timeline. Movement was labelled by thresholding the wrist acceleration — a deliberately simple ground truth. The participant completed six sessions of roughly 25 minutes, performing a self-guided battery drawn from the UPDRS motor examination — rest, finger tapping, hand open–close, wrist pronation–supination — and a typing task, alternating hands so that one rested while the other moved. Five sessions served for training and validation; the sixth was held out for testing.</p>
+<figure class="fig">
+  <a href="../figures/dbs-preprint-fig2.jpg"><img src="../figures/dbs-preprint-fig2.jpg" alt="Cartoons of the five tasks; three minutes of wrist acceleration with motor-cortex beta and gamma power for each hemisphere, movement periods shaded; and a flowchart narrowing personalized and canonical power bands to one optimal classifier." width="1280" height="576" loading="lazy"></a>
+  <figcaption><b>Fig. 2: Optimizing the on-device classifier from home recordings.</b> <b>a</b>, The self-guided tasks. <b>b</b>, Wrist acceleration (top) alongside beta and gamma power from precentral cortex; the red line is the movement threshold and the shading marks movement periods. <b>c</b>, The pipeline: two pools of candidate power bands, 682 combinations each, narrowed by a broad search and a final optimization to one classifier per hemisphere. Preprint Figure 2, <a href="https://doi.org/10.1101/2024.08.14.24312002">Dixon et al. 2024</a>, CC&nbsp;BY&nbsp;4.0.</figcaption>
+</figure>
+<p>Fitting proceeded in three stages, each answering a different question. Regression first asked how well neural power bands predict the continuous wrist signal. Bayesian optimization then tuned the parameters that convert those predictions into a binary movement state — the dynamics of the on-device logic, reproduced in software by a high-fidelity simulator of the device, since one cannot optimize an embedded algorithm without being able to run it in silico. Finally, a feature-selection search asked which inputs to use at all: three brain regions, four bands each, at most four inputs, 682 candidate models per pool, narrowed by a broad search of twenty optimization iterations and a final optimization of two hundred. Two comparisons were built into this search. Candidate bands were drawn either from canonical ranges (theta, alpha, beta, gamma) or from bands personalized to the participant, found by principal components analysis of the spectrogram at each recording site; the personalized bands were more accurate, by 6% in the left hemisphere and 3% in the right, and consistently so across the top 200 models of each pool. And the most informative bands were uniformly cortical, which argues for sensing from cortex rather than from the stimulation target alone. On the held-out session the classifiers reached 83% and 76% accuracy.</p>
+</section>
+
+<section class="paper-section" id="results" aria-labelledby="h-results">
+  <h2 id="h-results">The blinded comparison</h2>
+<p>The evaluation was designed as a within-subject experiment carrying its own control. Twelve sessions were run over 154 days, the last of them 435 days after the training data were recorded. Each session contained three stimulation conditions in a randomized order to which the participant was blind. In the movement-responsive condition, stimulation rose from 1.6 to 2.2&nbsp;mA when movement was decoded and returned to 1.6&nbsp;mA at rest. The inverted condition applied the same amplitudes with the opposite contingency — lower during decoded movement — so that any benefit of merely varying stimulation could be separated from the benefit of varying it in the right direction. The constant condition delivered 1.9&nbsp;mA throughout: conventional therapy at the midpoint of the adaptive range. The classifiers remained accurate across the year (82% and 76%), with two threshold adjustments after changes in signal magnitude on days 384 and 429 and no other retraining.</p>
+<figure class="fig">
+  <a href="../figures/dbs-preprint-fig6.jpg"><img src="../figures/dbs-preprint-fig6.jpg" alt="Box plots of blinded self-scores by condition; self-score against classifier F1 and against mean stimulation amplitude; repetition rates for wrist rotations and nose tapping per hand; and 1–4 Hz accelerometry power at rest per hand." width="1280" height="623" loading="lazy"></a>
+  <figcaption><b>Fig. 3: The blinded comparison.</b> <b>a</b>, The participant’s own 0–10 scores per block. <b>b</b>, Self-scores against the classifier’s F1 score in each session; <b>c</b>, self-scores against mean stimulation amplitude. <b>d</b>, Movement speed for wrist rotations and nose tapping, left and right hand. <b>e</b>, Dyskinesia at rest, from low-frequency power in the wrist accelerometry. Preprint Figure 6, <a href="https://doi.org/10.1101/2024.08.14.24312002">Dixon et al. 2024</a>, CC&nbsp;BY&nbsp;4.0.</figcaption>
+</figure>
+<p>The results are consistent across three kinds of measurement. Subjectively, the participant scored the inverted condition lower than both others; across sessions, self-scores correlated positively with the classifier’s accuracy that day (Pearson <i>r</i>&nbsp;=&nbsp;0.52) and negatively with the mean stimulation amplitude (<i>r</i>&nbsp;=&nbsp;−0.44) — evidence that the benefit came from stimulating at the right times rather than from delivering more current. Kinematically, the dominant hand rotated and tapped faster than under the inverted control, and dyskinesia at rest, quantified as low-frequency power in the wrist accelerometry, fell below both other conditions while tremor-band power did not rise. Behaviourally, in the one bimanual and naturalistic task — typing — keypresses were shorter than under either other condition, typing was faster than under the inverted control by 0.33 keypresses per second, and the backspace rate was unchanged.</p>
+<p>The study is a proof of principle in a single participant. What it establishes is nonetheless substantial: that a classifier confined to the arithmetic an implant can perform is enough to track motor state; that its parameters can be identified from data a patient records alone at home; that the identification holds for more than a year; and that stimulation made contingent on that state has effects the patient can both feel and demonstrate.</p>
+</section>
+
+<section class="paper-section" id="role" aria-labelledby="h-role">
+  <h2 id="h-role">My part</h2>
+<p>I am the third of eleven authors. The paper’s contribution statement records my part precisely: with Gabrielle Strandquist, Tomasz Frączek and Raphael Bechtold, I designed the data-collection infrastructure — the home platform that brings the implant, the wrist accelerometers, the cameras and the keyboard onto a common timeline, described in <a href="https://doi.org/10.3791/65305">Strandquist et al. 2023</a> — and, with Tanner Dixon, Gabrielle and Raphael, I analysed the data. That platform is what allowed the optimization above to be done at home, and it is also the foundation of <a href="stimulation.html">Chapter 3 of my thesis</a>, which uses the same kind of recording to ask how stimulation reshapes movement-related activity in the sensed circuits.</p>
+</section>
+
+      <section class="paper-section" id="abstract" aria-labelledby="h-abstract">
+        <h2 id="h-abstract">Abstract</h2>
+        <p>Deep brain stimulation (DBS) has garnered widespread use as an effective treatment
+          for advanced Parkinson’s disease. Conventional DBS (cDBS) provides electrical
+          stimulation to the basal ganglia at fixed amplitude and frequency, yet patients’
+          therapeutic needs are often dynamic with residual symptom fluctuations or side
+          effects. Adaptive DBS (aDBS) is an emerging technology that modulates stimulation
+          with respect to real-time clinical, physiological or behavioural states, enabling
+          therapy to dynamically align with patient-specific symptoms. Here we report an
+          aDBS algorithm intended to mitigate movement slowness by delivering targeted
+          stimulation increases during movement using decoded motor signals from the brain.
+          Our approach demonstrated improvements in dominant hand movement speeds and study
+          participant-reported therapeutic efficacy compared with an inverted control, as
+          well as increased typing speed and reduced dyskinesia compared with cDBS.
+          Furthermore, we demonstrate proof of principle of a machine learning pipeline
+          capable of remotely optimizing aDBS parameters in a home setting. This work
+          illustrates the potential of movement-responsive aDBS as a promising therapeutic
+          approach and highlights how machine learning-assisted programming can simplify
+          complex optimization to facilitate translational scalability.</p>
+      </section>
+
+      <section class="paper-section" id="bibtex" aria-labelledby="h-bibtex">
+        <h2 id="h-bibtex">BibTeX</h2>
+<pre class="bibtex">@article{dixon2026movement,
+  title   = {Movement-responsive deep brain stimulation for Parkinson's disease
+             using a remotely optimized neural decoder},
+  author  = {Dixon, Tanner C. and Strandquist, Gabrielle and Zeng, Alicia and
+             Fr{\k{a}}czek, Tomasz and Bechtold, Raphael and Lawrence, Daryl and
+             Ravi, Shravanan and Starr, Philip A. and Gallant, Jack L. and
+             Herron, Jeffrey A. and Little, Simon J.},
+  journal = {Nature Biomedical Engineering},
+  volume  = {10},
+  number  = {1},
+  pages   = {110--124},
+  year    = {2026},
+  doi     = {10.1038/s41551-025-01438-0}
+}</pre>
+      </section>
+
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Site (footer)">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script src="../site.js"></script>
+</body>
+</html>

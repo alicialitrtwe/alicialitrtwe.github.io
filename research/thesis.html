@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Principled Neuroscientific Discovery with Machine Learning — Alicia Zeng</title>
+<meta name="description" content="Principled Neuroscientific Discovery with Machine Learning. PhD thesis in Biophysics, UC Berkeley, 2025.">
+<meta property="og:title" content="Principled Neuroscientific Discovery with Machine Learning">
+<meta property="og:description" content="PhD thesis in Biophysics, UC Berkeley, 2025. Alicia Zeng.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+
+  <!-- The site is being written; the notice is deliberate and sitewide. -->
+  <p class="wip">Work in progress — pages and figures are still being written.</p>
+
+
+  <div class="topbar">
+    <p class="wordmark"><a href="../index.html">Alicia Zeng</a></p>
+    <nav aria-label="Site">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <p><a class="backlink" href="../research.html"><span aria-hidden="true">←</span>
+      All research</a></p>
+
+    <!-- The thesis page. Every sentence on it is from the thesis itself:
+         the abstract, the introduction (chapter 1), the figure captions and
+         the acknowledgments, verbatim. Figures are cropped from the PDF. -->
+    <article class="paper">
+
+      <header class="paper-head">
+        <h1 class="paper-title" id="paper"><cite>Principled Neuroscientific Discovery with Machine Learning</cite></h1>
+        <p class="authors"><span class="me">Alicia Zeng</span></p>
+        <p class="pub-meta">PhD thesis, Biophysics, UC Berkeley, <time datetime="2025">2025</time></p>
+        <p class="pub-meta">Committee: Jack Gallant (chair), Bruno Olshausen, Frederic Theunissen, Richard Ivry</p>
+        <p class="buttons pub-links">
+          <a class="button" href="../files/Thesis-Alicia_Zeng.pdf" id="l-pdf"
+             aria-labelledby="l-pdf paper">PDF</a>
+          <a class="button" href="superpositions.html" id="l-ch2"
+             aria-labelledby="l-ch2 paper">Chapter 2 as a paper</a>
+          <a class="button" href="stimulation.html" id="l-ch3"
+             aria-labelledby="l-ch3 paper">Chapter 3 in full</a>
+          <a class="button todo" data-todo="link-thesis-doi" id="l-doi"
+             aria-labelledby="l-doi paper">eScholarship</a>
+          <a class="button todo" data-todo="link-thesis-code" id="l-code"
+             aria-labelledby="l-code paper">Code</a>
+        </p>
+        <p class="dedication">Dedicated to my grandma, 赵友庄.</p>
+      </header>
+
+      <nav class="paper-nav" aria-label="Sections">
+        <ol>
+          <li><a href="#abstract">Abstract</a></li>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#chapter-2">Chapter 2</a></li>
+          <li><a href="#chapter-3">Chapter 3</a></li>
+          <li><a href="#motivation">Motivation</a></li>
+          <li><a href="#acknowledgments">Acknowledgments</a></li>
+          <li><a href="#bibtex">BibTeX</a></li>
+        </ol>
+      </nav>
+
+      <figure class="fig fig--hero">
+        <a href="../figures/thesis-fig3-1.jpg"><img src="../figures/thesis-fig3-1.jpg" alt="Six aligned rows over one recording day: stimulation state, neural spectrograms from three sites, watch-acceleration spectrograms, mean watch acceleration, pose trajectories and task labels, under over-, under- and preferred-stimulation." width="1600" height="1526"></a>
+        <figcaption><b>Figure 3.1: Multimodal recordings across stimulation conditions, Patient 01.</b>
+          Overview of simultaneously acquired neural and behavioral signals from one recording day
+          in Patient 01 (left hemisphere), during structured motor tasks under three stimulation
+          states: over-stimulation (left), under-stimulation (center), and preferred-stimulation
+          (right). Clear movement-related modulations are evident in the neural spectra
+          features.</figcaption>
+      </figure>
+
+      <section class="paper-section" id="abstract" aria-labelledby="h-abstract">
+        <h2 id="h-abstract">Abstract</h2>
+        <p>Understanding brain function requires modeling a high-dimensional, nonlinear dynamical
+          system continuously driven by sensory input, shaped by internal state and context, and
+          expressed through behavior. Machine learning can be used to extract predictive structure
+          from large-scale neural recordings, but its scientific value hinges on whether fitted
+          parameters admit interpretation as testable hypotheses about neural computation. This
+          thesis develops and applies interpretable predictive models—primarily linearized encoding
+          models that map stimulus or behavioral features onto neural responses—to investigate (i)
+          how human cortex represents abstract concepts during naturalistic language comprehension
+          and (ii) how deep brain stimulation (DBS) modulates movement-related neural dynamics in
+          Parkinson’s disease.</p>
+        <p>The first study addresses a central limitation of encoding models built on dense word
+          embeddings or neural network activations: superposition. When latent semantic factors
+          outnumber embedding dimensions, distinct concepts become entangled along shared
+          directions, rendering voxelwise regression weights uninterpretable and formally
+          non-identifiable. I introduce the Sparse Concept Encoding Model, which applies sparse
+          dictionary learning to project dense embeddings into an overcomplete basis of
+          interpretable concept atoms. Because each atom isolates a coherent semantic direction,
+          voxel tuning can be read directly from regression coefficients. Applied to whole-brain
+          fMRI acquired during naturalistic story listening, this approach matches the prediction
+          accuracy of conventional dense models while substantially improving interpretability. The
+          resulting cortical maps reveal convergent selectivity for time, space, and number in the
+          intraparietal sulcus and the inferior frontal gyrus—consistent with the shared-magnitude
+          hypothesis—and uncover systematic similarity structure among distributed semantic
+          representations.</p>
+        <p>The second study moves to a clinical domain where characterizing neural dynamics carries
+          immediate therapeutic implications. Parkinson’s disease is increasingly understood as a
+          disorder of network dynamics wherein motor symptoms arise from aberrant oscillatory
+          activity across basal ganglia and sensorimotor cortex. Yet, DBS remains an open-loop
+          therapy with parameters tuned heuristically. Using a home-deployed multimodal data
+          collection platform integrating bidirectional neurostimulators, bilateral wrist
+          accelerometry, and video-based pose estimation, we recorded synchronized neural and
+          behavioral data from two participants performing standardized motor tasks across multiple
+          stimulation amplitudes. By building encoding models that predict neural spectral power
+          data from behavioral features, we demonstrate how temporally rich predictors such as full
+          acceleration spectrograms and task labels outperform coarse movement summaries. Thus, this
+          study highlights the importance of fine-grained behavioral structure for identifying
+          movement-related variance in sensed neural signals. In the participant with stronger
+          baseline model performance, higher stimulation amplitudes enhanced prediction performance
+          across sensorimotor cortex and subthalamic nucleus. We show that these gains arise from
+          amplification of a movement-related spectral component characterized by beta suppression
+          alongside alpha/delta and gamma enhancement, including a prominent peak at the
+          stimulation-entrained subharmonic. This interpretation is consistent with “information
+          lesion” accounts of DBS, wherein pathological synchronization impedes movement-related
+          signaling and high-frequency stimulation restores information flow through basal
+          ganglia–cortical circuits.</p>
+        <p>Together, these studies illustrate how high-volume data collected under naturalistic or
+          semi-naturalistic conditions can be analyzed with interpretable predictive models to
+          transform accurate prediction into mechanistic neuroscientific hypotheses.</p>
+      </section>
+
+      <!-- Chapter 1, in part. -->
+      <section class="paper-section" id="introduction" aria-labelledby="h-introduction">
+        <h2 id="h-introduction">Introduction</h2>
+        <p>Artificial intelligence has undergone an extraordinary transformation over the span of my
+          PhD. Around 2016–2017, AlphaGo defeated human masters at Go, a 2,500-year-old game whose
+          combinatorial space is so vast that exhaustive search is impossible in practice. Around the
+          same time, the Gallant Lab began using word embeddings in their encoding model pipeline to
+          predict brain activity. These embeddings represent words as points in a geometric space,
+          where distances and directions reflect relationships in meaning. In doing so, they evoke
+          Ludwig Wittgenstein’s idea that ’the meaning of a word is its use in the language,’ turning
+          patterns of co-occurrence in natural language into geometry in a learned vector space.</p>
+        <p>These developments were what drew me into this field. Yet when I began my PhD in 2020,
+          even against this backdrop, almost no one I spoke with in adjacent research areas believed
+          that language models would approach human-level language abilities in the near term. Tasks
+          that were widely regarded as out of reach, from writing usable code or solving
+          Olympiad-level mathematics problems to engaging in extended technical dialogues, became
+          routine capabilities of large models within just a few years. As I complete this work, it
+          feels as though I started my PhD in one technological epoch and finished it in another.</p>
+        <p>For me and many others, the most compelling promise of machine learning has always been
+          its potential to advance the sciences. Treating neurological disorders, curing cancers,
+          and discovering new materials are more than technical milestones; they are breakthroughs
+          that could profoundly reshape how we live and reduce suffering. They are also precisely
+          the domains where unaided human intuition is weakest: the systems involved are noisy,
+          high-dimensional, nonlinear, and often far from equilibrium.</p>
+        <p>In response to this promise, many groups, including large industrial labs and research
+          institutes, are now pursuing the development of “AI scientists”: language model–centric
+          systems that read papers, synthesize literature, and generate hypotheses. Such tools may
+          be valuable, particularly for organizing and sharing knowledge. Yet in most scientific
+          domains they cannot address the principal bottleneck. For complex systems in molecular
+          biology, neuroscience, and materials science, the true constraint is not the number of
+          ideas that can be written down but the availability of rich, high-quality experimental
+          data against which to evaluate these ideas. These systems inhabit enormous state spaces;
+          the set of hypotheses humans have articulated and tested is a measure-zero subset of what
+          is possible. Genuine progress requires dense, carefully designed measurements in the
+          environments where these systems actually operate, rather than just more hypotheses on a
+          page.</p>
+        <p>Machine learning models are, at their core, flexible high-dimensional nonlinear
+          functions. With the right data, they can detect patterns, uncover latent structure, and
+          suggest hypotheses at scales unachievable with human cognition alone. But without such
+          data, and without an inductive structure to keep the models interpretable, they risk
+          becoming just another opaque layer between scientists and the underlying phenomena. The
+          central question for “AI for science” is therefore not simply how powerful our models are,
+          but how to couple these models to experiments so that they enable understanding rather
+          than mere prediction. This thesis presents two projects that move deliberately toward a
+          more data-grounded and principled vision of machine learning for science.</p>
+      </section>
+
+      <section class="paper-section" id="chapter-2" aria-labelledby="h-chapter-2">
+        <h2 id="h-chapter-2">Chapter 2 — Interpretable Brain Encoding Model with Sparse Concept Atoms</h2>
+        <p>In Chapter 2, adapted from (Zeng and Gallant, 2025), I ask how the brain represents
+          abstract ideas such as time, space, and number, using fMRI encoding models as the main
+          tool. In this framework, a naturalistic stimulus is transformed into a feature matrix, and
+          a regularized linear model is fit to predict the corresponding pattern of brain responses.
+          Each voxel is thus associated with a weight vector, a direction in feature space that, in
+          principle, reveals which aspects of the stimulus that voxel is tuned to. The central
+          difficulty lies in designing this feature space. Recent work has achieved striking
+          predictive performance by using word embeddings or large language model activations to
+          represent story stimuli, but at the cost of interpretability. These approaches risk
+          explaining one black box in terms of another. Because these embeddings exhibit
+          superposition-many concepts compressed into a limited set of shared directions-abstract
+          notions such as time, space, and number become entangled. A voxel that appears to respond
+          jointly to different concepts may reflect a genuinely shared neural code, or merely
+          correlations inherent to the embedding. Until now, this ambiguity has been an unresolved
+          confounding factor in semantic maps reported in earlier works.</p>
+        <figure class="fig">
+          <img src="../figures/thesis-fig2-1.png" alt="Left: in a dense feature space, concept directions for number, space, time, family, femaleness and colour fan out at correlated angles around a weight vector. Right: in the sparse concept feature space each concept has its own axis and the weight vector decomposes onto them." width="1410" height="590" loading="lazy">
+          <figcaption><b>Figure 2.1: The Sparse Concept Encoding Model resolves superposition in dense
+            feature spaces.</b> <b>Left:</b> In dense embedding space, semantic concepts are represented
+            by correlated linear combinations of basis directions. This superposition introduces
+            ambiguity: a voxel’s weight vector may project positively onto multiple concept directions
+            simply because those directions are themselves correlated. <b>Right:</b> The Sparse Concept
+            Encoding Model recovers the underlying semantic directions and assigns each to an
+            independent axis, transforming the dense space into an interpretable, axis-aligned
+            representation. This enables voxel tuning to be directly read out along concept
+            dimensions.</figcaption>
+        </figure>
+        <p>The Sparse Concept Encoding Model addresses this problem by first unpacking the embedding
+          space. Using sparse dictionary learning, we factor dense word embeddings into a
+          higher-dimensional basis of sparse “concept atoms”, each capturing a more coherent
+          semantic direction. Encoding models are then refit in this new space, so that each voxel’s
+          tuning is expressed as a sparse linear combination of concept atoms rather than a dense
+          mixture of opaque coordinates. In this representation, each axis carries a clear
+          conceptual meaning, allowing us to directly read out how time-, space-, and number-related
+          atoms are expressed across cortex. Thus, we transform black-box features into a structured
+          hypothesis space for understanding how abstract ideas are laid out in the brain.</p>
+        <p class="more"><a href="superpositions.html">The chapter as a paper, with the poster <span aria-hidden="true">→</span></a></p>
+        <p class="more"><a href="number.html">Its time–space–number result, from the theory of magnitude <span aria-hidden="true">→</span></a></p>
+      </section>
+
+      <section class="paper-section" id="chapter-3" aria-labelledby="h-chapter-3">
+        <h2 id="h-chapter-3">Chapter 3 — Deep Brain Stimulation Amplifies Movement-Related Neural Modulation in Parkinson’s Disease</h2>
+        <p>In Chapter 3, I pivot from distributed semantic representations in fMRI to a clinical
+          setting where understanding neural dynamics carries immediate therapeutic stakes: deep
+          brain stimulation (DBS) for Parkinson’s disease (PD). PD is a dynamical disease. Its motor
+          symptoms arise not from a single static lesion, but from aberrant, time-varying activity
+          patterns distributed across basal ganglia and sensorimotor cortex—patterns that are
+          continuously shaped by movement, sensory input, medication state, and everyday context.
+          Yet standard DBS is still delivered as an open-loop therapy: high-frequency stimulation
+          runs continuously, and parameters are tuned largely by clinical intuition rather than by
+          explicit models of how stimulation interacts with neural dynamics during behavior.
+          Advancing DBS toward adaptive, principled neuromodulation requires something closer to
+          what engineers would call system identification: measuring the system densely, in the
+          regimes where it naturally operates, and learning the mapping between behavior,
+          stimulation, and neural state.</p>
+        <p>Only recently has that ambition become realistic. Bidirectional neurostimulators can now
+          deliver therapeutic stimulation while simultaneously recording local field potentials
+          (LFPs) chronically in freely moving patients. At the same time, wrist-worn accelerometers
+          and video-based pose estimation can capture behavior with a richness that the clinic
+          cannot. Chapter 3 brings these tools together in a home-deployed multimodal platform that
+          pairs an investigational Medtronic Summit RC+S device with bilateral wrist accelerometry
+          and synchronized video. Two participants completed six recording days at home, performing
+          a standardized UPDRS-derived motor battery under three monopolar stimulation amplitudes
+          spanning under-stimulation, clinically preferred stimulation, and over-stimulation.</p>
+        <p>The encoding model framework mirrors the one in Chapter 2, but with different variables.
+          Instead of asking how semantic features predict voxel responses, we ask how behavioral
+          measurements predict neural spectra recorded from the stimulation target and sensorimotor
+          cortex. We treat brain–behavior coupling as an encoding problem: regularized linear models
+          predict time-resolved neural log-power spectra from behavioral feature sets. This framing
+          is deliberately modest—linear models, standard regularization—but it is exactly what makes
+          the results interpretable enough to support mechanistic claims.</p>
+        <p>Three findings emerge. First, behavioral features robustly predict neural spectral
+          activity across STN, precentral cortex, and postcentral cortex, showing that
+          movement-related structure is reliably present in the signals sensed by the implanted
+          system. Second, richer behavioral representations—especially one-hot task labels and the
+          full watch-acceleration spectrogram—substantially outperform coarse summaries such as mean
+          acceleration, highlighting how much information in neural structure is invisible to the
+          conventional “rest versus movement” lens. Third, in the participant with stronger overall
+          encoding, higher stimulation amplitudes increase prediction performance across the
+          sensorimotor network by amplifying a distinctive movement-linked spectral signature,
+          characterized by beta suppression alongside elevated gamma power, including
+          stimulation-entrained gamma. In other words, stimulation does not merely push neural
+          activity up or down; it changes the way movement-related modulation is written into the
+          circuit’s rhythms, an effect that fits naturally with network-level accounts in which DBS
+          alters pathological dynamics by changing patterns of information flow.</p>
+        <figure class="fig">
+          <a href="../figures/thesis-fig3-6.jpg"><img src="../figures/thesis-fig3-6.jpg" alt="Top: encoding-model weight matrices for precentral and postcentral cortex with their first principal component, dipping in the beta band and peaking near 65 Hz. Bottom: an example day in which the cortical PC 1 projections track mean watch acceleration under preferred- and over-stimulation more closely than under under-stimulation." width="1524" height="1600" loading="lazy"></a>
+          <figcaption><b>Figure 3.6: Stimulation amplifies a movement-related cortical component.</b>
+            (a,b) Encoding model weight matrices mapping watch-acceleration features (y-axis:
+            accelerometer frequency) onto neural spectral power (x-axis: neural frequency) for
+            precentral (a) and postcentral (b) cortex in Patient 01, left hemisphere. Each row of
+            the weight matrix corresponds to one accelerometer frequency band; each column
+            corresponds to one neural frequency bin. Color indicates normalized regression weight
+            (red: positive; blue: negative). Below each matrix, the first principal component
+            (PC 1) summarizes the dominant structure of the weights across neural frequencies.
+            PC 1 exhibits negative loadings in the beta band (∼13–30 Hz), positive loadings at
+            lower (delta/alpha) frequencies, and a prominent positive peak at the
+            stimulation-entrained gamma frequency (∼65 Hz, half the 130 Hz stimulation frequency).
+            (c) Example recording day illustrating how PC 1 tracks movement across stimulation
+            conditions. Top three rows: neural spectrograms from STN, precentral, and postcentral
+            cortex (segments separated by vertical dashed lines) during over-stimulation (left),
+            under-stimulation (center), and preferred-stimulation (right). Fourth row:
+            time-aligned behavioral and neural signals, showing mean watch acceleration (black),
+            neural projection onto precentral PC 1 (orange), and neural projection onto
+            postcentral PC 1 (blue), all z-scored. Bottom row: task labels indicating the motor
+            task performed at each time point. During preferred- and over-stimulation, the
+            cortical PC 1 projections more closely track task-related fluctuations in mean
+            acceleration, whereas this coupling is attenuated during
+            under-stimulation.</figcaption>
+        </figure>
+        <p class="more"><a href="stimulation.html">The whole chapter, with all six figures <span aria-hidden="true">→</span></a></p>
+      </section>
+
+      <section class="paper-section" id="motivation" aria-labelledby="h-motivation">
+        <h2 id="h-motivation">Summary and Motivation</h2>
+        <p>Although these two projects operate at very different scales of the nervous system and
+          draw on distinct data modalities—fMRI measurements of distributed semantic representations
+          and LFPs from basal ganglia–cortical circuits during DBS—they are guided by the same
+          philosophy. Both begin with high-volume, within-individual datasets collected in
+          naturalistic or semi-naturalistic settings, where the dynamics of interest are actually
+          expressed rather than averaged away. Both treat machine learning as a disciplined tool for
+          linking rich measurements to latent structure, using explicit regularization and stringent
+          held-out evaluation to emphasize generalization over post hoc significance reporting. And
+          in both cases, the models are built to support explanation: their internal organization
+          and fitted parameters can be read as concrete, testable hypotheses about brain function,
+          serving as interpretable instruments for scientific insight rather than black boxes
+          optimized for benchmark performance.</p>
+        <p>The techniques and computational resources that make these studies possible—large-scale
+          optimization, pose estimation from video, word embeddings and sparse coding, would have
+          been extremely difficult to deploy in practice even a decade ago. Yet in the rapidly
+          evolving landscape of AI, they have already begun to feel like the tools of a previous
+          generation. Despite this, it is clear that we are still just at the beginning of this sea
+          change. AI is being woven into the entire scientific pipeline: proposing hypotheses,
+          designing experiments, controlling instruments, collecting and labeling data, and
+          interpreting complex, multimodal datasets. It has already helped address problems that not
+          long ago seemed intractable, such as large-scale protein structure prediction and certain
+          classes of climate and molecular simulations. At the same time, there remain deep gaps in
+          how we design algorithms, experiments, and institutions suited to this new regime of “AI
+          for science.” Working through those gaps will be one of the central tasks of my generation
+          of scientists and engineers.</p>
+        <p>“It was the best of times, it was the worst of times, it was the age of wisdom, it was the
+          age of foolishness, it was the epoch of belief, it was the epoch of incredulity.” We are
+          entering a moment that is at once exhilarating and perilous. Like all powerful
+          technologies, the impact of machine learning tools depends on the social, scientific, and
+          moral frameworks into which they are embedded. The same tools that can help us understand
+          the brain and treat disease can also, if deployed carelessly, drive unemployment,
+          dislocation, and social upheaval. They can be harnessed to construct new weapons and
+          systems of surveillance or develop therapies and technologies that benefit humans and
+          other living beings.</p>
+        <p>This thesis aspires to be a step along the latter path. It takes as its premise that
+          machine learning can be a principled partner in scientific discovery. But it does not
+          assume that such an outcome is guaranteed. What we choose to build, and how we choose to
+          use it, remains, for now, in our hands.</p>
+      </section>
+
+      <section class="paper-section" id="acknowledgments" aria-labelledby="h-acknowledgments">
+        <h2 id="h-acknowledgments">Acknowledgments</h2>
+        <p>I am deeply grateful to the many awe-inspiring people who have illuminated the path
+          leading to this thesis.</p>
+        <p>As an undergraduate, Professor Jeffery Tlumak supervised my unconventional philosophy
+          honors thesis on AlphaGo, written as the program defeated the human world champion in my
+          junior year. Developing that thesis, <cite>Go Metaphors: Meaning, Mind and Machines</cite>,
+          convinced me that rich, meaningful structure could emerge from simple computational
+          elements—an intuition that set me on the trajectory continuing here. In Advanced Quantum
+          Mechanics, Professor Alfredo Gurrola took me and my only classmate to lunch, astonished us
+          with the elegance of physics, and insisted that we were capable of doing research. Douglas
+          Hofstadter welcomed me into his home at a moment when I was profoundly uncertain about my
+          path, and his way of thinking in <cite>Gödel, Escher, Bach</cite> has always accompanied me.
+          Later, Professor Vijay Balasubramanian took me on as a postbaccalaureate researcher in his
+          Physics of Living Matter lab at the University of Pennsylvania; his relentless intellectual
+          curiosity and versatility were both humbling and contagious, and he encouraged me to
+          pursue a PhD at a time when I still doubted that I belonged in one.</p>
+        <p>At Berkeley, I was fortunate to join Professor Jack Gallant’s lab at what was, for me, a
+          demanding moment in life, having just become a new parent. Jack created and maintains a
+          lab culture that strives for the highest standards of scientific rigor and embodies a
+          willingness to question, criticize, and cross-examine one’s own thinking without mercy. I
+          am especially grateful for the two four-hour qualifying-exam practice sessions and the
+          many lab meetings in which my presentations were torn apart so that they could be rebuilt
+          stronger. The numerous, often heated, arguments with Jack reshaped how I think about
+          pragmatism, about empiricism versus rationalism, and about the social and political
+          structure of scientific research. Previous and current lab members—including Alex Huth,
+          James Gao, Tom Dupré la Tour, Anwar Nunez-Elizalde, and Matteo Visconti di Oleggio
+          Castello—spent years building the methodological foundations that made the fMRI-based
+          chapter of this thesis possible, and set a very high bar for taking risks in pursuit of
+          genuinely new ideas. Beyond Jack’s distinctive blend of irreverence and insight, I was
+          drawn to the lab for its commitment to naturalistic experiments, high-volume data
+          collection, predictive modeling, and a system-identification approach to understanding
+          the brain as a high-dimensional nonlinear system. The Gallant Lab has been developing
+          these ideas for more than two decades, and recent shifts in scientific practice toward
+          machine learning on large datasets only underscore the prescience of that vision.</p>
+        <p>A second important intellectual home at Berkeley was the Redwood Center for Theoretical
+          Neuroscience, and especially Professor Bruno Olshausen. Bruno’s combination of deep
+          ingenuity and striking humility fostered an open, welcoming, and fiercely curious culture.
+          Some of my most illuminating moments came in the High-Dimensional Statistics reading group
+          organized by then-postdoc Anthony Thomas, and in the Bayesian Learning / Sensorimotor AI
+          journal club led by postdoc Hadi Vafaii. The idea for the second chapter of this thesis
+          first took shape during my first-year rotation in Bruno’s lab, listening to Yubei Chen
+          describe sparse manifold transforms and sparse coding applied to large language models.
+          Yubei’s work, which later helped inspire industry efforts on sparse autoencoders for
+          mechanistic interpretability, showed me how visionary ideas from theoretical neuroscience
+          could ripple outward and influence the broader trajectory of AI.</p>
+        <p>I also owe special thanks to each of my thesis and qualification committee members.
+          Professor Richard Ivry co-taught an inspiring Socratic-style seminar on analyzing research
+          papers that fundamentally changed how I interrogate assumptions, methods, and claims in
+          scientific literature. Professor Frédéric Theunissen welcomed me into his lab during the
+          early days of COVID-19, giving me space to explore the use of neural networks in bird
+          vocalization classification. Dr. Simon Little served on my qualification committee and
+          co-led the deep brain stimulation project; his clinical insight and curiosity helped bridge
+          the gap between abstract models and patients’ lived experience. I am grateful to each of
+          them for their warmth, their candor, and the many invigorating conversations from which I
+          learned more than I realized in the moment.</p>
+        <p>During my time at Berkeley, I was also privileged to follow my curiosity into classrooms
+          across campus. Courses such as <cite>Designing, Visualizing and Understanding Deep Neural
+          Networks</cite> (Anant Sahai), <cite>Convex Optimization (in the Age of LLMs)</cite> (Benjamin
+          Recht), <cite>Neural Computation</cite> (Bruno Olshausen), <cite>Principles of Magnetic
+          Resonance Imaging</cite> (Michael Lustig), and <cite>Computational Imaging</cite> (Laura Waller)
+          opened doors to new ways of thinking and left a lasting imprint on how I approach
+          scientific problems. Numerous seminars at the Simons Institute were equally formative,
+          especially the “AI ≡ Science” series organized by Aditi Krishnapriyan and Jennifer
+          Listgarten, which offered a vivid glimpse of how machine learning and the natural sciences
+          might evolve together.</p>
+        <p>Looking ahead, I can only hope to carry forward the torches lit by these remarkable minds
+          and to keep that light burning for those who come next.</p>
+      </section>
+
+      <section class="paper-section" id="bibtex" aria-labelledby="h-bibtex">
+        <h2 id="h-bibtex">BibTeX</h2>
+<pre class="bibtex">@phdthesis{zeng2025thesis,
+  title  = {Principled Neuroscientific Discovery with Machine Learning},
+  author = {Zeng, Alicia},
+  school = {University of California, Berkeley},
+  year   = {2025},
+  note   = {Doctor of Philosophy in Biophysics}
+}</pre>
+      </section>
+
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Site (footer)">
+      <a href="../index.html">Index</a>
+      <a href="../research.html">Research</a>
+      <a href="../notes.html">Notes</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script src="../site.js"></script>
+</body>
+</html>
