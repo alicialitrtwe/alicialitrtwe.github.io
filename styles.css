@@ -591,40 +591,21 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 }
 .section-label a:hover { color: var(--area); }
 
-/* ---- the arc as a timeline ---------------------------------------------------
-   It already is one; the rail says so. The last beat is "Now", so its dot is
-   filled and the rail fades out above it rather than stopping square. */
-.beats { position: relative; padding-left: 1.75rem; }
-.beats::before {
-  content: "";
-  position: absolute;
-  left: 3px;
-  top: 0.6rem;
-  bottom: 0.6rem;
-  width: 1px;
-  background: linear-gradient(180deg,
-    color-mix(in srgb, var(--accent) 45%, transparent),
-    color-mix(in srgb, var(--accent) 14%, transparent) 65%,
-    transparent);
+/* ---- the arc, and the notes stream -------------------------------------------
+   Both were drawn as timelines, with a rail and a dot per entry. The device was
+   doing no work the dates were not already doing, and it read as decoration
+   rather than as structure. They are lists now, with the date in a column of
+   its own — the same move as a label in the margin, one level in. */
+.beat-year, .note-date { color: var(--fg-muted); }
+@media (min-width: 34em) {
+  .beat, .note-item {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    column-gap: 1.5rem;
+    align-items: baseline;
+  }
+  .beat-year, .note-date { margin-bottom: 0; }
 }
-.beat { position: relative; }
-.beat::before {
-  content: "";
-  position: absolute;
-  left: calc(-1.75rem + 0.5px);
-  top: 0.45rem;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.beat:last-child::before {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
-}
-.beat-year { color: var(--fg-dim); }
 
 /* ---- areas and projects wear their colour ------------------------------------- */
 .area-title::before, .project-title::before {
@@ -741,39 +722,7 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
   background: var(--area);
 }
 
-/* The notes stream is chronological, so it takes the same rail as the arc —
-   newest first, so the rail fades downward into the older entries. */
-.stream { position: relative; padding-left: 1.75rem; }
-.stream::before {
-  content: "";
-  position: absolute;
-  left: 3px;
-  top: 0.6rem;
-  bottom: 0.6rem;
-  width: 1px;
-  background: linear-gradient(180deg,
-    color-mix(in srgb, var(--accent) 45%, transparent),
-    color-mix(in srgb, var(--accent) 12%, transparent) 65%,
-    transparent);
-}
-.note-item { position: relative; }
-.note-item::before {
-  content: "";
-  position: absolute;
-  left: calc(-1.75rem + 0.5px);
-  top: 0.45rem;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.note-item:first-child::before {   /* newest */
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
-}
-.note-date { color: var(--fg-dim); }
+
 
 /* "All research →" reads as the way out of the section, so the arrow moves.
    The underline stays: links on this site are underlined. */
