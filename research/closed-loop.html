@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Closed loop — Alicia Zeng</title>
-<meta name="description" content="Recording and stimulation in the same circuit: deep brain stimulation measured and steered where people actually live.">
+<meta name="description" content="Recording and stimulation in one circuit: deep brain stimulation measured and steered in people’s homes.">
 <meta property="og:title" content="Closed loop — Alicia Zeng">
-<meta property="og:description" content="Recording and stimulation in the same circuit: deep brain stimulation measured and steered where people actually live.">
+<meta property="og:description" content="Recording and stimulation in one circuit: deep brain stimulation measured and steered in people’s homes.">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:,">
@@ -53,17 +53,19 @@
          colour range. No patient video appears anywhere on this site. -->
     <h1 class="name">Closed loop</h1>
 
-    <p class="lead">A closed loop is a system that measures the thing it is also acting on. Deep
-      brain stimulation is tuned in a clinic room over an afternoon, for a disease that behaves
-      differently at home over a day.</p>
+    <p class="lead">Deep brain stimulation is set in a clinic over an afternoon and then runs
+      unchanged for months, in a disease whose symptoms move over the course of a day. Closing that
+      gap means letting the stimulator respond to the person, and that has to start with measuring
+      what the person is doing.</p>
 
     <div class="prose">
-      <p>That is a harder object to study than either half alone, because the signal you are reading
-        is partly a consequence of what you did last, and because the interesting behaviour only
-        appears on timescales and in settings a laboratory visit cannot reach. The work here is
-        about earning the right to close the loop at all: getting synchronised implanted, wearable
-        and video recordings out of somebody’s living room, and then showing that behaviour predicts
-        neural activity well enough that stimulation can be driven from it.</p>
+      <p>A clinic visit cannot supply that measurement. The behaviour worth responding to happens at
+        home across hours, and the neural signal you would drive the stimulator from is itself partly
+        a consequence of the stimulation already being delivered. Recording is therefore the first
+        problem: implanted electrodes, wearables and video running at once in somebody’s house, and
+        synchronised closely enough that they can be compared.</p>
+      <p>Once they can, the question is whether behaviour predicts the neural signal
+        well enough to be worth decoding from.</p>
     </div>
 
     <div class="projects">
@@ -79,19 +81,20 @@
         <div class="project-body">
           <h2 class="project-title" id="p-athome"><a href="dbs.html">Parkinson’s, measured at
             home</a><span class="project-years"><time datetime="2021">2021</time>–<time datetime="2026">2026</time></span></h2>
-          <p class="project-lead">Participants implanted with bidirectional neurostimulators were
-            recorded at home while performing a standardised motor battery: local field potentials
-            from the subthalamic nucleus, electrocorticography from precentral and postcentral
-            gyri, bilateral wrist accelerometry and video-based pose estimation. With behaviour
-            recorded at that resolution, encoding models can predict neural power <em>from</em>
-            behaviour — and which features you use matters, since the full acceleration spectrogram
-            and task labels beat coarse summaries like mean acceleration by a wide margin.</p>
-          <p class="project-lead">The video is one whole session at the clinically preferred
-            amplitude, scrolling: the two cortical contact pairs above, and below them the wrist on
-            the side that hemisphere drives. The columns in the wrist are the participant moving,
-            and the cortical bursts that answer them are the thing the models are fit to. The two
-            subthalamic channels are left out — they carry far less of this. With Simon Little
-            (UCSF) and Jeffrey Herron (UW).</p>
+          <p class="project-lead">Participants with bidirectional neurostimulators were recorded at
+            home while working through a standardised motor battery. The implant returned local field
+            potentials from the subthalamic nucleus and electrocorticography from precentral and
+            postcentral cortex; accelerometers on both wrists and video pose estimation recorded what
+            the person was doing. At that resolution behaviour predicts neural power well enough to
+            fit encoding models in that direction, and how well depends on how finely behaviour is
+            described: the full acceleration spectrogram and the task labels do considerably better
+            than mean acceleration.</p>
+          <p class="project-lead">The video plays one session through at the clinically preferred
+            amplitude. The upper two panels are the cortical contact pairs; the lower one is the
+            wrist on the side that hemisphere controls. Bright columns in the wrist are the
+            participant moving, and the cortical changes alongside them are what the encoding models
+            are fit to. The two subthalamic channels carry much less of this and are not shown. With
+            Simon Little (UCSF) and Jeffrey Herron (UW).</p>
         </div>
         <ul class="outputs" role="list">
           <li>

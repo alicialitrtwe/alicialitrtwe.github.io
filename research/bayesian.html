@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Bayesian — Alicia Zeng</title>
-<meta name="description" content="Inference as the thing that makes a model interpretable: sparse, identifiable bases in place of entangled ones.">
+<meta name="description" content="What a fitted weight is entitled to mean, and what the features have to look like before it means anything.">
 <meta property="og:title" content="Bayesian — Alicia Zeng">
-<meta property="og:description" content="Inference as the thing that makes a model interpretable: sparse, identifiable bases in place of entangled ones.">
+<meta property="og:description" content="What a fitted weight is entitled to mean, and what the features have to look like before it means anything.">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:,">
@@ -45,19 +45,18 @@
          claims. -->
     <h1 class="name">Bayesian</h1>
 
-    <p class="lead">What I mean by this heading is narrower than it sounds. Not Bayesian as a
-      school — Bayesian as the discipline of asking what a fitted parameter is actually entitled to
-      mean.</p>
+    <p class="lead">Every model here is fit to predict something measured. This area is about
+      what you may then conclude from its parameters.</p>
 
     <div class="prose">
-      <p>A model can predict well and still support no inference at all. If the features it is fit on
-        are correlated enough, many different parameter settings produce identical predictions, and
-        the fitted weights are not a measurement of anything — they are one arbitrary point in a set
-        the data cannot distinguish between. Prediction accuracy will not warn you about this.
-        Nothing in the fit will.</p>
-      <p>So the work here is about the conditions under which a fitted model is allowed to be read:
-        identifiability, sparsity, and priors chosen so that the basis a thing is expressed in is one
-        where the coordinates mean something separately.</p>
+      <p>A model can predict well and still support no conclusion. When its features are correlated,
+        many different settings of the weights produce the same prediction, so the weights a fit
+        returns are one choice among many that the data cannot separate. Accuracy does not reveal
+        this, because accuracy is identical for all of them.</p>
+      <p>This is a property of the basis, not of the fit. If the features are sparse
+        and non-negative, with one interpretable direction per coordinate, the weights become
+        identifiable, and reading them off is a measurement rather than an interpretation of an
+        arbitrary point.</p>
     </div>
 
     <div class="projects">
@@ -73,12 +72,13 @@
         <div class="project-body">
           <h2 class="project-title" id="p-atoms"><a href="superpositions.html">Sparse concept
             atoms</a><span class="project-years"><time datetime="2021">2021</time>–<time datetime="2025">2025</time></span></h2>
-          <p class="project-lead">Word embeddings predict cortical responses well and explain them
-            badly: they carry more latent semantic factors than they have dimensions, so the factors
-            sit in superposition and a voxel’s weights are not identifiable. Replacing the dense
-            basis with a thousand sparse, non-negative concept atoms — one interpretable direction
-            each — leaves prediction accuracy unchanged and makes the weights readable atom by atom.
-            The video is what the models are fit to: measured responses while one story plays.</p>
+          <p class="project-lead">Word embeddings predict cortical responses well. They also carry
+            more semantic factors than they have dimensions, so the factors share directions, and a
+            voxel’s weights cannot be attributed to any one of them. Sparse dictionary learning
+            rewrites the embedding as a thousand non-negative concept atoms, one interpretable
+            direction per atom. Prediction accuracy is unchanged; the difference is that the weights
+            can now be read an atom at a time. The video shows what the models are fit to: measured
+            responses while a story plays.</p>
         </div>
         <ul class="outputs" role="list">
           <li>
@@ -109,10 +109,10 @@
         </div>
         <div class="project-body">
           <h2 class="project-title" id="p-talk">The talk<span class="project-years">NeurIPS <time datetime="2025">2025</time>, five minutes</span></h2>
-          <p class="project-lead">The whole argument in five minutes: why dense embeddings make voxel
-            weights unreadable, what sparse dictionary learning does about it, and what the
-            disentangled maps show. Also <a href="https://slideslive.com/39050668">on SlidesLive</a>,
-            where it was recorded.</p>
+          <p class="project-lead">Five minutes on the same argument: why dense embeddings leave
+            voxel weights unreadable, what sparse dictionary learning does about it, and what the
+            resulting maps show. Recorded at the conference, and also
+            <a href="https://slideslive.com/39050668">on SlidesLive</a>.</p>
         </div>
       </article>
 
