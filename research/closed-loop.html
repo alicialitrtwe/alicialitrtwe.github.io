@@ -58,8 +58,12 @@
          the paper's own figure script does, or the 1/f slope uses the whole
          colour range. The watch drops samples - six gaps over a second - so it
          is resampled onto a true 50 Hz grid before the spectrogram and the
-         dropped windows are left blank; without that its time axis compresses
-         and wrist movements slide seconds early against the cortex.
+         dropped windows are left blank; handed to scipy as a uniform array
+         instead, its time axis compresses and wrist movements slide seconds
+         early against the cortex. This is what the feature pipeline already
+         does: find_valid_epochs cuts at any gap outside min_max_gap, which the
+         watch_accel spec sets to [0.0, 0.5], and each epoch is interpolated to
+         a fixed rate before features are taken.
 
          The fourth row is shoulder and elbow angle from the mediapipe landmark
          store, computed with aDBS's own MID_UPPER_JOINTS definitions. Joint
