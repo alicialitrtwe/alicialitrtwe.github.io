@@ -90,8 +90,8 @@
 </nav>
 
 <figure class="fig fig--hero">
-  <a href="../figures/thesis-fig2-6.jpg"><img src="../figures/thesis-fig2-6.jpg" alt="(a–c) Word clouds for the number, time and space atoms. (d–e) Flatmaps for Subject 01 and Subject 02 with number in red, time in green, space in blue and three-way overlap in white, the white falling in the intraparietal sulcus and inferior frontal gyrus on both hemispheres." width="1410" height="940" loading="lazy"></a>
-  <figcaption>Number in red, time in green, space in blue, on the cortex of two listeners. White marks where all three coincide: the intraparietal sulcus and the inferior frontal gyrus, in both hemispheres.</figcaption>
+  <a href="../figures/talk-overlap.jpg"><img src="../figures/talk-overlap.jpg" alt="Word clouds for the time atom in green, the number atom in red and the space atom in blue, a three-circle Venn key, and cortical flatmaps for Subject 01 and Subject 02 with the three concepts overlaid, white marking where all three coincide in the intraparietal sulcus and inferior frontal gyrus of both hemispheres." width="1920" height="960" loading="lazy"></a>
+  <figcaption>The words that drive each atom, then the three laid over the cortex of two listeners: number in red, time in green, space in blue. Secondary colours are pairwise overlap; white is all three, and it falls in the intraparietal sulcus and the inferior frontal gyrus of both hemispheres. From <a href="bayesian.html#p-talk">the talk</a>.</figcaption>
 </figure>
 
 <blockquote class="pull"><p>This pattern is consistent with the hypothesis that these domains rely on a shared magnitude system in the human brain.</p></blockquote>
@@ -121,8 +121,8 @@
 <p>Stories are the opposite. Someone telling a true story on stage counts things, places things and times things continually, in the same breath and in the same currency: words. An fMRI encoding model fit to story listening (see <a href="superpositions.html">the method page</a>) gives every voxel a weight for every feature of the words it hears. If there were a feature for <em>number</em>, one for <em>time</em> and one for <em>space</em>, the three maps would come from one experiment, one stimulus stream and one model, and could be compared directly.</p>
 <p>The difficulty is in the features. Those that predict brain activity best are word embeddings, and in an embedding <em>number</em>, <em>time</em> and <em>space</em> are not separate dimensions. They are correlated directions compressed into a shared space. A voxel tuned to number will appear tuned to time as well, purely because of the geometry of the embedding, and any overlap then found on cortex could be an artefact of the features rather than a fact about the brain.</p>
 <figure class="fig">
-  <a href="../figures/thesis-fig2-1.png"><img src="../figures/thesis-fig2-1.png" alt="Left: in a dense embedding space, concept directions for number, time, space and femaleness are correlated, so a voxel’s weight vector projects onto several at once. Right: the Sparse Concept Encoding Model gives each concept its own axis, so the same voxel’s tuning is read directly along concept dimensions." width="1410" height="590" loading="lazy"></a>
-  <figcaption>Left: in the embedding, the number, time and space directions lean on one another, so a voxel’s weight vector projects onto all three at once. Right: after unpacking the embedding into concept atoms, each domain has its own axis and the projections mean what they say.</figcaption>
+  <a href="../figures/talk-weights.jpg"><img src="../figures/talk-weights.jpg" alt="Two axis diagrams. Left, a concept category feature space: three orthogonal axes for time, space and number, with a voxel’s weight vector projecting cleanly onto each. Right, a dense feature space: seven correlated, non-orthogonal directions for family, number, space, femaleness, colour and time, with the same weight vector projecting onto several at once." width="1830" height="619" loading="lazy"></a>
+  <figcaption>In the embedding (right) the number, time and space directions lean on one another, so a voxel’s weight vector projects onto all three at once. Once every concept has an axis of its own (left), the projections mean what they say.</figcaption>
 </figure>
 
 </section>
@@ -137,7 +137,7 @@
 </ul>
 <p>For each atom we take the 5,000 voxels with the largest significant positive weights — the same count for each, so that no domain prevails by extent — colour them red, green and blue, and look for white.</p>
 <p>The dense model cannot do this in a principled way, but it can do it approximately: call a voxel selective for a concept if that concept is among its top ten cosine matches. The same three-colour test run on those heuristic maps is the control.</p>
-<figure class="fig">
+<figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-9.jpg"><img src="../figures/thesis-fig2-9.jpg" alt="The same layout as the sparse-model figure: word clouds for the number, time and space atoms, then flatmaps for Subject 01 and Subject 02 coloured red, green and blue by the dense model’s heuristic selectivity. The colours are scattered and there is very little white." width="1376" height="900" loading="lazy"></a>
   <figcaption>The control: the same three concepts mapped from the dense model’s heuristic. The colours scatter and rarely meet; whatever overlap exists is far harder to see, which is what entangled features do to a map.</figcaption>
 </figure>
@@ -153,7 +153,7 @@
 <p>Atoms 505, 81 and 997 are one exemplar per domain, but the dictionary has others in each domain: number atoms 394 and 505, time atoms 81, 798 and 880, space atoms 353 and 997. Cortical maps of atoms in the same domain agree with each other (cosine 0.50 ± 0.06 for the number pair, 0.50 ± 0.09 for the space pair, 0.43–0.46 among the time atoms) far more than maps of atoms from different domains, which average 0.05 ± 0.01. The domains are coherent units on cortex, not one fortunate atom apiece.</p>
 <h3>Number sits beside time in the larger geometry</h3>
 <p>Widen the view to the twenty most active atoms and cluster them by the similarity of their cortical maps. The two time atoms and the number atom fall into one branch, beside one another. That grouping is not inherited from the features: the sparse features themselves are uncorrelated, so the structure comes from cortex.</p>
-<figure class="fig">
+<figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-7.jpg"><img src="../figures/thesis-fig2-7.jpg" alt="(a) A dendrogram over 20 labelled concept atoms. (b, c) Two 20 × 20 similarity matrices of cortical maps, Subject 01 and Subject 02, with the same block structure. (d) The atoms’ cosine similarities in GloVe space, showing structured correlation. (e) Pearson correlations of the sparse features, near zero off the diagonal." width="1416" height="1112" loading="lazy"></a>
   <figcaption>(a) Twenty concept atoms clustered by the similarity of their cortical maps in Subject 01; atoms 798 (time, durations), 81 (time, moments) and 505 (numbers) share a branch. (b, c) The same block structure in two subjects. (d, e) The atoms are correlated in the embedding but the sparse features are not, so the clustering is the brain’s.</figcaption>
 </figure>
@@ -193,7 +193,7 @@
 <section class="paper-section" id="poster" aria-labelledby="h-poster">
   <h2 id="h-poster">Poster</h2>
 <p>The NeurIPS 2025 poster for the method paper, whose time–space–number panel is the analysis told on this page. The talk is <a href="https://slideslive.com/39050668">on SlidesLive</a>; the poster page is <a href="https://neurips.cc/virtual/2025/poster/120024">on neurips.cc</a>. The CCN 2026 poster itself is not published online.</p>
-<figure class="fig">
+<figure class="fig fig--plate">
   <a href="../figures/superpositions-poster.png"><picture><source srcset="../figures/superpositions-poster.webp" type="image/webp"><img src="../figures/superpositions-poster.png" alt="The NeurIPS 2025 poster: dense embeddings put concepts in superposition; the Sparse Concept Encoding Model replaces dense features with sparse concept-atom activations; the model reveals overlapping cortical representations of time, space and number, consistent maps for individual concepts, and consistent concept-level structure across subjects." width="2592" height="1296" loading="lazy"></picture></a>
   <figcaption><a href="../figures/superpositions-poster.png">Full size</a>.</figcaption>
 </figure>

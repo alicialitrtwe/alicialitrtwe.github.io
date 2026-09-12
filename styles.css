@@ -452,9 +452,8 @@ a.todo:hover { color: var(--fg-dim); }
 .paper > .lead { max-width: 44rem; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); margin-bottom: 1.5rem; }
 
 .paper-section { max-width: 44em; margin: 0 auto var(--gap); }
-.paper-section > h2 { margin-bottom: 0.75rem; }
+.paper-section > h2 { margin-bottom: 0.9rem; }
 .paper-section > p { max-width: var(--measure); margin-bottom: 1rem; }
-.paper-section > h2 + p { max-width: none; }
 
 /* a figure: the image or video, then a caption. .fig-slot is the marked
    placeholder for one that does not exist yet. */
@@ -478,7 +477,12 @@ figcaption .todo { color: var(--fg); }
 .paper-section > h2 + h3 { margin-top: 1rem; }
 .pull { max-width: 44em; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--accent-dim); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
 .pull p { margin: 0; }
-.source { max-width: 44em; margin: calc(-1 * var(--gap) + 1.25rem) auto var(--gap); padding-left: calc(1rem + 2px); font-size: 0.875rem; color: var(--fg-muted); }
+/* A source note normally tucks under the pull quote, which is why it pulls
+   itself up by a gap. On a page with no pull quote that negative margin slid
+   it on top of the paragraph above, so the pull-up is scoped to the case it
+   was written for. */
+.source { max-width: 44em; margin: 1.5rem auto var(--gap); padding-left: calc(1rem + 2px); font-size: 0.875rem; color: var(--fg-muted); }
+.pull + .source { margin-top: calc(-1 * var(--gap) + 1.25rem); }
 .paper-section .pub-meta, .paper-section .source { max-width: var(--measure); color: var(--fg-muted); font-size: 0.875rem; }
 .theorem, .box { max-width: var(--measure); margin: 0 0 1rem; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 0.25rem; }
 .theorem p, .box p { margin-bottom: 0.75rem; }
@@ -865,4 +869,27 @@ figcaption { max-width: 40em; }
   border-top: 1px solid var(--border);
   margin-top: 3rem;
   padding-top: 3rem;
+}
+
+/* Section headings on a paper page were body size, which on a chapter-length
+   page leaves nothing to navigate by. Two steps up, and a mark in the area's
+   colour so a section start is visible while scrolling past. */
+.paper-section > h2 {
+  font-size: 1.3rem;
+  line-height: 1.3;
+  position: relative;
+}
+.paper-section > h2::before {
+  content: "";
+  position: absolute;
+  left: -1.1rem;
+  top: 0.62em;
+  width: 0.45rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--area);
+}
+.paper-section > h3 { font-size: 1.05rem; color: var(--fg); }
+@media (max-width: 48em) {
+  .paper-section > h2::before { display: none; }
 }

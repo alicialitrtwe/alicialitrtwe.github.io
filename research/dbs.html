@@ -77,7 +77,7 @@
 
       <!-- The teaser: Fig. 1 of the paper, from the publisher's figure page,
            with its caption verbatim. -->
-      <figure class="fig fig--hero">
+      <figure class="fig fig--hero fig--plate">
         <a href="../figures/dbs-fig1.png"><img src="../figures/dbs-fig1.png" alt="Three panels: movement thresholds in the healthy, Parkinsonian and treated states; the movement-responsive framework tying stimulation to motor intent; and a participant with the implanted system, wrist watches and three cameras at home." width="1811" height="724"></a>
         <figcaption><b>Fig. 1: Rationale and setup.</b> <b>a</b>, The movement
           threshold in the healthy, Parkinsonian and treated states; <b>b</b>, stimulation
@@ -137,7 +137,7 @@
 <section class="paper-section" id="home" aria-labelledby="h-home">
   <h2 id="h-home">Optimized at home</h2>
 <p>The data for fitting the classifier were collected in the participant’s home office rather than in the clinic. A remote platform streamed the implant’s field potentials together with accelerometry from an Apple Watch on each wrist, video from three cameras and keystrokes from the participant’s own computer, all synchronized to a common timeline. Movement was labelled by thresholding the wrist acceleration — a deliberately simple ground truth. The participant completed six sessions of roughly 25 minutes, performing a self-guided battery drawn from the UPDRS motor examination — rest, finger tapping, hand open–close, wrist pronation–supination — and a typing task, alternating hands so that one rested while the other moved. Five sessions served for training and validation; the sixth was held out for testing.</p>
-<figure class="fig">
+<figure class="fig fig--plate">
   <a href="../figures/dbs-preprint-fig2.jpg"><img src="../figures/dbs-preprint-fig2.jpg" alt="Cartoons of the five tasks; three minutes of wrist acceleration with motor-cortex beta and gamma power for each hemisphere, movement periods shaded; and a flowchart narrowing personalized and canonical power bands to one optimal classifier." width="1280" height="576" loading="lazy"></a>
   <figcaption><b>Fig. 2: Optimizing the on-device classifier from home recordings.</b> <b>a</b>, The self-guided tasks. <b>b</b>, Wrist acceleration (top) alongside beta and gamma power from precentral cortex; the red line is the movement threshold and the shading marks movement periods. <b>c</b>, The pipeline: two pools of candidate power bands, 682 combinations each, narrowed by a broad search and a final optimization to one classifier per hemisphere. Preprint Figure 2, <a href="https://doi.org/10.1101/2024.08.14.24312002">Dixon et al. 2024</a>, CC&nbsp;BY&nbsp;4.0.</figcaption>
 </figure>
@@ -147,7 +147,7 @@
 <section class="paper-section" id="results" aria-labelledby="h-results">
   <h2 id="h-results">The blinded comparison</h2>
 <p>The evaluation was designed as a within-subject experiment carrying its own control. Twelve sessions were run over 154 days, the last of them 435 days after the training data were recorded. Each session contained three stimulation conditions in a randomized order to which the participant was blind. In the movement-responsive condition, stimulation rose from 1.6 to 2.2&nbsp;mA when movement was decoded and returned to 1.6&nbsp;mA at rest. The inverted condition applied the same amplitudes with the opposite contingency — lower during decoded movement — so that any benefit of merely varying stimulation could be separated from the benefit of varying it in the right direction. The constant condition delivered 1.9&nbsp;mA throughout: conventional therapy at the midpoint of the adaptive range. The classifiers remained accurate across the year (82% and 76%), with two threshold adjustments after changes in signal magnitude on days 384 and 429 and no other retraining.</p>
-<figure class="fig">
+<figure class="fig fig--plate">
   <a href="../figures/dbs-preprint-fig6.jpg"><img src="../figures/dbs-preprint-fig6.jpg" alt="Box plots of blinded self-scores by condition; self-score against classifier F1 and against mean stimulation amplitude; repetition rates for wrist rotations and nose tapping per hand; and 1–4 Hz accelerometry power at rest per hand." width="1280" height="623" loading="lazy"></a>
   <figcaption><b>Fig. 3: The blinded comparison.</b> <b>a</b>, The participant’s own 0–10 scores per block. <b>b</b>, Self-scores against the classifier’s F1 score in each session; <b>c</b>, self-scores against mean stimulation amplitude. <b>d</b>, Movement speed for wrist rotations and nose tapping, left and right hand. <b>e</b>, Dyskinesia at rest, from low-frequency power in the wrist accelerometry. Preprint Figure 6, <a href="https://doi.org/10.1101/2024.08.14.24312002">Dixon et al. 2024</a>, CC&nbsp;BY&nbsp;4.0.</figcaption>
 </figure>
