@@ -710,7 +710,7 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 .output-links a:hover { color: var(--area); }
 .paper-nav a[aria-current="true"] { color: var(--area); text-decoration: none; }
 .pull { border-left-color: transparent; border-image: linear-gradient(180deg, var(--area), transparent) 1; }
-.output-links .sep { color: color-mix(in srgb, var(--area) 42%, transparent); }
+.output-links .sep { color: color-mix(in srgb, var(--area) 60%, transparent); }
 .authors .me { color: var(--fg); }
 
 /* The opening pairs the text with the attractor instead of stacking them.
@@ -918,12 +918,15 @@ figcaption { max-width: 40em; }
 }
 .output-media--plate img { background: #f4f4f2; object-fit: contain; }
 .output-media .fig-slot { aspect-ratio: 16 / 10; font-size: 0.8125rem; }
+/* Only the inventory's list carries thumbnails. Area pages use .outputs too,
+   and their items have no media, so an unscoped grid crushed their titles into
+   a 11.5rem column with the author list beside it. */
 @media (min-width: 40em) {
-  .outputs > li {
+  .outputs--media > li {
     display: grid;
     grid-template-columns: 11.5rem minmax(0, 1fr);
     column-gap: 1.5rem;
     align-items: start;
   }
-  .output-media { margin-bottom: 0; }
+  .outputs--media .output-media { margin-bottom: 0; }
 }
