@@ -50,13 +50,21 @@
          the 20211122 row of delays_watch_video.csv (-1.25 s), since aDBS holds
          the video clock as the reference and shifts the others onto it.
 
-         Channels are a chosen subset: the two cortical pairs carry the
+         Channels are a chosen subset: the two cortical sites carry the
          movement-locked modulation (beta power against the wrist's movement
-         envelope, r = -0.40 for 8-9 and -0.45 for 10-11, gamma going the other
-         way at +0.26 for 8-9) while both subthalamic channels sit near -0.13
-         and are dropped. Each frequency bin is normalised over the session, as
-         the paper's own figure script does, or the 1/f slope uses the whole
-         colour range. The watch drops samples - six gaps over a second - so it
+         envelope, r = -0.40 precentral and -0.45 postcentral, gamma going the
+         other way at +0.26 precentral) while both subthalamic channels sit
+         near -0.13 and are dropped. Which cortical site is which is not in the
+         file, but it is in the code: aDBS's CHANNELS maps the feature blocks
+         to stn0, stn1, precentral, postcentral in raw column order, and the
+         raw columns here are 1_3_a, 1_3_b, 8_9, 10_11 - so 8-9 is precentral
+         and 10-11 is postcentral, which is how her own figures name them.
+
+         The rows show the whole band the implant returns, 0 to 250 Hz, which
+         is what her feature spec keeps (251 bins per channel at fs 500). Each
+         frequency bin is normalised over the session, as the paper's own
+         figure script does; that is what makes the full band readable, since
+         it flattens the 1/f slope and the stimulation line alike. The watch drops samples - six gaps over a second - so it
          is resampled onto a true 50 Hz grid before the spectrogram and the
          dropped windows are left blank; handed to scipy as a uniform array
          instead, its time axis compresses and wrist movements slide seconds
@@ -91,7 +99,7 @@
         <div class="project-media">
           <video autoplay loop muted playsinline preload="auto"
                  poster="../figures/area-closed-loop.jpg" width="820" height="600"
-                 aria-label="Four rows scrolling together on one clock: spectrograms from two cortical contact pairs, the right wrist's acceleration spectrum, and the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
+                 aria-label="Four rows scrolling together on one clock: spectrograms of precentral and postcentral cortex across the whole band the implant returns, 0 to 250 hertz, then the right wrist's acceleration spectrum, then the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
             <source src="../figures/area-closed-loop.mp4" type="video/mp4">
           </video>
         </div>
@@ -107,9 +115,9 @@
             described: the full acceleration spectrogram and the task labels do considerably better
             than mean acceleration.</p>
           <p class="project-lead">The video plays one session through at the clinically preferred
-            amplitude. The top two rows are the cortical contact pairs, the third is the wrist on
-            the side that hemisphere controls, and the fourth is that arm’s shoulder and elbow
-            angle, measured from video. Bright columns in the wrist are the participant moving, the
+            amplitude. The top two rows are precentral and postcentral cortex, across the whole
+            band the implant returns; the third is the wrist on the side that hemisphere controls,
+            and the fourth is that arm’s shoulder and elbow angle, measured from video. Bright columns in the wrist are the participant moving, the
             elbow swings with them, and the cortical changes alongside are what the encoding models
             are fit to. The two subthalamic channels carry much less of this and are not shown. With
             Simon Little (UCSF) and Jeffrey Herron (UW).</p>

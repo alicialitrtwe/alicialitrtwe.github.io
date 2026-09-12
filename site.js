@@ -18,13 +18,16 @@
   if (canvas && canvas.getContext) {
     var ctx = canvas.getContext('2d');
 
-    // Integrate Lorenz once. N points, dt small enough that the trace is
-    // smooth; the first few hundred steps are discarded so the cloud
-    // starts on the attractor rather than flying in toward it.
-    var N = 11000, dt = 0.005;
+    // Integrate Lorenz once. The trajectory is drawn as a line rather than as
+    // a cloud of dots, so it can afford more steps and a smaller one: dots
+    // read as grain, and the thing worth looking at is the winding.
+    var N = 20000, dt = 0.0027;
     var pts = new Float32Array(N * 3);
+    // A long burn-in, discarded: drawn as dots the fly-in from (0.1, 0, 0) was
+    // lost in the cloud, but drawn as a line it is a stray straight stroke
+    // running into the attractor from outside it.
     var x = 0.1, y = 0, z = 0, s = 10, r = 28, b = 8 / 3;
-    for (var i = -400; i < N; i++) {
+    for (var i = -3000; i < N; i++) {
       var dx = s * (y - x), dy = x * (r - z) - y, dz = x * y - b * z;
       x += dx * dt; y += dy * dt; z += dz * dt;
       if (i >= 0) { pts[i * 3] = x; pts[i * 3 + 1] = y; pts[i * 3 + 2] = z - 25; }
@@ -53,17 +56,26 @@
     var bucket = new Uint8Array(N), counts = new Int32Array(NB + 1);
     // The two lobes sit at x = +/-sqrt(b(r-1)) = +/-8.5, so a linear map over
     // the full x range lands both of them in the middle of the ramp and the
-    // whole cloud comes out one muddy colour. tanh separates them: each lobe
+    // whole thing comes out one muddy colour. tanh separates them: each lobe
     // takes an end of the ramp and only the crossing between them is the
     // middle stop.
-    for (var i = 0; i < N; i++) {
-      var u2 = 0.5 + 0.5 * Math.tanh(pts[i * 3] / 6);
-      bucket[i] = Math.round(u2 * (NB - 1));
-      counts[bucket[i] + 1]++;
+    for (var i = 0; i < N; i++)
+      bucket[i] = Math.round((0.5 + 0.5 * Math.tanh(pts[i * 3] / 6)) * (NB - 1));
+
+    // Break the trajectory into runs of consecutive points that share a
+    // colour. Drawing run by run keeps the line continuous where the path is
+    // continuous, and never draws a chord across the gap where it left a
+    // colour and came back to it. Runs are grouped by colour so a frame sets
+    // strokeStyle NB times rather than once per segment.
+    var runsBy = [];
+    for (var k3 = 0; k3 < NB; k3++) runsBy.push([]);
+    var rs = 0;
+    for (var i3 = 1; i3 <= N; i3++) {
+      if (i3 === N || bucket[i3] !== bucket[rs]) {
+        if (i3 - rs > 1) runsBy[bucket[rs]].push(rs, i3);   // start, end
+        rs = i3;
+      }
     }
-    for (var k2 = 0; k2 < NB; k2++) counts[k2 + 1] += counts[k2];
-    var order = new Int32Array(N), fill = counts.slice();
-    for (var i2 = 0; i2 < N; i2++) order[fill[bucket[i2]]++] = i2;
 
     // Fit the attractor to whatever box it is given. It turns about z, so the
     // horizontal half-extent is the largest radius in the xy plane and the
@@ -78,6 +90,7 @@
       if (qy > maxSY) maxSY = qy;
     }
 
+    var proj = new Float32Array(N * 3);
     var W, H, dpr;
 
     function resize() {
@@ -99,19 +112,43 @@
       var cp = cpFit, sp = spFit;
       var scale = 0.94 * Math.min(W / (2 * maxRX), H / (2 * maxSY));
       var cx = W / 2, cy = H / 2;
+      // Project once per frame, then stroke. Additive blending is what makes
+      // the dense windings glow: where many filaments cross they sum toward
+      // white, which is the structure of the attractor rather than a fog laid
+      // over it.
+      for (var i = 0, o = 0; i < N; i++, o += 3) {
+        var px = pts[o], py = pts[o + 1], pz = pts[o + 2];
+        var rx = px * ca - py * sa, ry = px * sa + py * ca;     // turn about z
+        proj[o] = cx + rx * scale;                              // screen x
+        proj[o + 1] = cy - (pz * cp + ry * sp) * scale;          // screen y
+        proj[o + 2] = (ry * cp - pz * sp + 30) / 60;             // 0 far … 1 near
+      }
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
       for (var k = 0; k < NB; k++) {
-        ctx.fillStyle = ramp[k];
-        for (var j = counts[k]; j < counts[k + 1]; j++) {
-          var i = order[j];
-          var px = pts[i * 3], py = pts[i * 3 + 1], pz = pts[i * 3 + 2];
-          var rx = px * ca - py * sa, ry = px * sa + py * ca;   // turn about z
-          var sy = pz * cp + ry * sp;                           // screen vertical
-          var depth = (ry * cp - pz * sp + 30) / 60;            // 0 far … 1 near
-          ctx.globalAlpha = 0.12 + 0.55 * depth;
-          var sz = 0.6 + 1.1 * depth;
-          ctx.fillRect(cx + rx * scale, cy - sy * scale, sz, sz);
+        var runs = runsBy[k];
+        if (!runs.length) continue;
+        // two passes: the far half thin and dim, the near half wider and
+        // brighter, which is the whole depth cue now that the dots are gone
+        for (var pass = 0; pass < 2; pass++) {
+          ctx.strokeStyle = ramp[k];
+          ctx.globalAlpha = pass ? 0.85 : 0.34;
+          ctx.lineWidth = pass ? 1.5 : 0.85;
+          ctx.beginPath();
+          for (var q = 0; q < runs.length; q += 2) {
+            var a0 = runs[q], a1 = runs[q + 1], started = false;
+            for (var m = a0; m < a1; m++) {
+              var near = proj[m * 3 + 2] > 0.5;
+              if (near !== !!pass) { started = false; continue; }
+              if (!started) { ctx.moveTo(proj[m * 3], proj[m * 3 + 1]); started = true; }
+              else ctx.lineTo(proj[m * 3], proj[m * 3 + 1]);
+            }
+          }
+          ctx.stroke();
         }
       }
+      ctx.globalCompositeOperation = 'source-over';
       ctx.globalAlpha = 1;
     }
 
@@ -132,7 +169,9 @@
      This only ever takes play away: it stops everything under
      prefers-reduced-motion, and pauses clips that have scrolled off screen so
      they are not decoding in the background. */
-  var clips = document.querySelectorAll('.area-media video, .project-media video, .fig video');
+  // The inventory's thumbnails carry no autoplay attribute and preload
+  // nothing, so for them the observer is what starts playback at all.
+  var clips = document.querySelectorAll('.area-media video, .project-media video, .output-media video, .fig video');
   if (clips.length) {
     if (reduceMotion) {
       clips.forEach(function (v) {

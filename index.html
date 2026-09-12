@@ -125,7 +125,7 @@
           <div class="area-media">
             <video autoplay loop muted playsinline preload="auto"
                    poster="figures/area-closed-loop.jpg" width="820" height="600"
-                   aria-label="Four rows scrolling together on one clock: spectrograms from two cortical contact pairs, the right wrist's acceleration spectrum, and the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
+                   aria-label="Four rows scrolling together on one clock: spectrograms of precentral and postcentral cortex across the whole band the implant returns, 0 to 250 hertz, then the right wrist's acceleration spectrum, then the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
               <source src="figures/area-closed-loop.mp4" type="video/mp4">
             </video>
           </div>
@@ -150,6 +150,11 @@
             <p class="area-lead">What cortex does with quantity, meaning and song, measured
               from natural stimuli.</p>
             <p class="area-count">Number, space and time · Birdsong in state space</p>
+            <!-- The clip is the viewer's own channel toggles, so the viewer is
+                 the obvious next click. It needs its own stacking context: the
+                 area title's ::after covers the whole card. -->
+            <p class="area-extra"><a href="viewer/">Play with it yourself in the brain
+              viewer <span aria-hidden="true">&#8594;</span></a></p>
           </div>
         </article>
 

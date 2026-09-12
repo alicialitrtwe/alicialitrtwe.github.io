@@ -893,3 +893,37 @@ figcaption { max-width: 40em; }
 @media (max-width: 48em) {
   .paper-section > h2::before { display: none; }
 }
+
+/* A link inside an area card has to rise above the card-wide overlay that the
+   area title lays down, or it cannot be clicked. */
+.area-extra { margin-top: 0.6rem; font-size: 0.875rem; }
+.area-extra a { position: relative; z-index: 2; }
+.area-extra a span { display: inline-block; transition: transform 0.2s ease; text-decoration: none; }
+.area-extra a:hover span { transform: translateX(0.3rem); }
+
+/* ---- the inventory's thumbnails -------------------------------------------------
+   Every output on research.html carries its own thumbnail beside it. They are
+   small, so the clips letterbox rather than crop: a cropped flatmap loses the
+   hemispheres, which is the only thing a 12rem thumbnail can convey. */
+.output-media { margin-bottom: 0.75rem; }
+.output-media video, .output-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  background: #000;
+  border-radius: 0.2rem;
+  border: 1px solid color-mix(in srgb, var(--area) 16%, transparent);
+}
+.output-media--plate img { background: #f4f4f2; object-fit: contain; }
+.output-media .fig-slot { aspect-ratio: 16 / 10; font-size: 0.8125rem; }
+@media (min-width: 40em) {
+  .outputs > li {
+    display: grid;
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    column-gap: 1.5rem;
+    align-items: start;
+  }
+  .output-media { margin-bottom: 0; }
+}
