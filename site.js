@@ -47,7 +47,7 @@
       // the two lobes read as the butterfly and rotate through edge-on.
       var a = t * 0.00012, ca = Math.cos(a), sa = Math.sin(a);
       var pitch = 0.35, cp = Math.cos(pitch), sp = Math.sin(pitch);
-      var scale = Math.min(W / 48, H / 52), cx = W / 2, cy = H / 2;
+      var scale = Math.min(W / 42, H / 44), cx = W / 2, cy = H / 2;
       ctx.fillStyle = ink;
       for (var i = 0; i < N; i++) {
         var px = pts[i * 3], py = pts[i * 3 + 1], pz = pts[i * 3 + 2];

@@ -27,6 +27,9 @@
   --surface: #1a1a1a;
   --border: #2a2a2a;
   --highlight: #574d10;       /* placeholders */
+  --accent: #35bcc9;          /* the teal the clips and the viewer share */
+  --accent-dim: #1d5c66;
+  --placeholder: #8a7a1f;     /* the dashed rule under an unwritten bit */
 
   --sans: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
           "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI",
@@ -67,13 +70,13 @@ ol, ul { padding: 0; list-style: none; }
 cite { font-style: normal; }
 time { font-variant-numeric: tabular-nums; }
 
-::selection { background: var(--highlight); }
+::selection { background: var(--accent-dim); color: var(--fg); }
 
 /* links: underlined, the text colour, and they dim on hover — the only
    hover effect on the site */
 a { color: inherit; text-decoration: underline; text-underline-offset: 0.12em; }
 a:hover { opacity: 0.66; }
-a:focus-visible { outline: 1px dotted currentColor; outline-offset: 2px; }
+a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 
 /* an outward arrow after every link that leaves the site */
 a[href^="http"]::after {
@@ -106,22 +109,27 @@ a[href^="http"]::after {
 }
 .lead + .prose { margin-top: 0; }
 
-/* bracketed placeholder text, highlighted so it cannot be mistaken for copy */
-.todo { background: var(--highlight); }
+/* Bracketed placeholder text: marked so it cannot be mistaken for copy, but
+   quiet enough not to dominate a page. Still greppable via class="todo". */
+.todo {
+  color: var(--fg-muted);
+  border-bottom: 1px dashed var(--placeholder);
+  padding-bottom: 0.05em;
+}
 a.todo { text-decoration: none; }
+a.todo:hover { color: var(--fg-dim); }
 
 /* ---- work in progress ------------------------------------------------------
    A sitewide notice while the pages are being written. Dashed and in the
    placeholder colour, like the other unfinished markers (.todo, .fig-slot). */
 .wip {
-  margin-bottom: 2rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px dashed var(--highlight);
-  border-radius: 0.25rem;
-  background: color-mix(in srgb, var(--highlight) 30%, var(--bg));
-  color: var(--fg-dim);
-  font-size: 0.875rem;
-  line-height: 1.45;
+  margin-bottom: 2.75rem;
+  padding-left: 0.8rem;
+  border-left: 1px solid var(--accent-dim);
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 /* ---- header ---------------------------------------------------------------- */
@@ -131,7 +139,12 @@ a.todo { text-decoration: none; }
 .wordmark a:hover { text-decoration: underline; opacity: 1; }
 .topbar nav a { text-decoration: none; margin-right: 0.5rem; }
 .topbar nav a:hover { text-decoration: underline; }
-.topbar nav [aria-current="page"] { text-decoration: underline; margin-right: 0.5rem; }
+.topbar nav [aria-current="page"] {
+  margin-right: 0.5rem;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.3em;
+}
 
 .name { margin-bottom: 1rem; }
 
@@ -142,15 +155,24 @@ a.todo { text-decoration: none; }
 .hero-viz {
   display: block;
   width: 100%;
-  height: clamp(240px, 42vh, 460px);
-  margin: -1.5rem 0 3rem;
+  height: clamp(210px, 34vh, 380px);
+  margin: -1rem 0 2.25rem;
   background: var(--bg);
 }   /* subpage titles: bold body size, like the section labels */
 
 /* ---- sections ---------------------------------------------------------------- */
 .block { margin-top: var(--gap); }
 .name + .group { margin-top: 1.5rem; }   /* first group sits close under the page title */
-.section-label { margin-bottom: 0.5rem; }
+.section-label {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.section-label a { color: var(--fg); text-decoration: none; }
+.section-label a:hover { color: var(--accent); opacity: 1; }
 .backlink { display: inline-block; margin-bottom: 1.5rem; }
 
 /* ---- the arc / the notes stream ----------------------------------------------- */
@@ -202,10 +224,11 @@ a.todo { text-decoration: none; }
 .outputs { margin-top: 1.5rem; max-width: 46rem; }
 .outputs > li + li { margin-top: 1rem; }
 .output-title { font-weight: 400; }
+.output-title .pub-meta { display: block; margin-top: 0.1rem; font-size: 0.875rem; color: var(--fg-muted); }
 .output-links { margin-top: 0.15rem; font-size: 0.875rem; }
 .output-links a { color: var(--fg-muted); }
 .output-links a:hover { color: var(--fg); }
-.output-links .sep { padding: 0 0.4rem; color: var(--border); }
+.output-links .sep { padding: 0 0.4rem; color: #3d3d3d; }
 
 @media (min-width: 46em) {
   .area, .project {
@@ -399,7 +422,7 @@ a.todo { text-decoration: none; }
   background: var(--surface);
 }
 .button:hover { opacity: 1; border-color: var(--fg-muted); }
-.button.todo { border-style: dashed; background: var(--highlight); }
+.button.todo { border-style: dashed; border-color: var(--placeholder); background: none; color: var(--fg-muted); }
 
 /* sticky section list; site.js marks the section in view */
 .paper-nav { position: sticky; top: 0; z-index: 3; margin: 0 -1rem 2rem; padding: 0.6rem 1rem; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.875rem; }
@@ -426,7 +449,7 @@ a.todo { text-decoration: none; }
 .fig img, .fig video, .fig iframe { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
 .fig iframe { aspect-ratio: 16 / 9; border: 0; }
 .fig-slot { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1rem; border: 1px dashed var(--border); border-radius: 0.25rem; text-align: center; color: var(--fg-muted); }
-.fig-slot.todo { background: color-mix(in srgb, var(--highlight) 30%, var(--bg)); border-color: var(--highlight); color: var(--fg); }
+.fig-slot.todo { background: color-mix(in srgb, var(--highlight) 22%, var(--bg)); border-color: var(--placeholder); color: var(--fg-muted); }
 .fig--hero { max-width: 44em; margin: 0 auto var(--gap); }
 figcaption { margin-top: 0.6rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); max-width: var(--measure); }
 figcaption .todo { color: var(--fg); }
@@ -440,7 +463,7 @@ figcaption .todo { color: var(--fg); }
 .paper-section > ul { list-style: disc; }
 .paper-section > ol { list-style: decimal; }
 .paper-section > h2 + h3 { margin-top: 1rem; }
-.pull { max-width: 44em; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--fg-muted); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
+.pull { max-width: 44em; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--accent-dim); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
 .pull p { margin: 0; }
 .source { max-width: 44em; margin: calc(-1 * var(--gap) + 1.25rem) auto var(--gap); padding-left: calc(1rem + 2px); font-size: 0.875rem; color: var(--fg-muted); }
 .paper-section .pub-meta, .paper-section .source { max-width: var(--measure); color: var(--fg-muted); font-size: 0.875rem; }
@@ -480,7 +503,7 @@ pre.bibtex { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--mono
 .otherwise { margin-top: 1.5rem; color: var(--fg-dim); }
 
 /* ---- footer ---------------------------------------------------------------------- */
-.foot { margin-top: var(--gap); padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--fg-muted); }
+.foot { margin-top: var(--gap); padding-top: 1.1rem; border-top: 1px solid #232323; font-size: 0.8125rem; letter-spacing: 0.01em; color: var(--fg-muted); }
 .foot a, .foot [aria-current="page"] { margin-right: 0.5rem; }
 .foot a { text-decoration: none; }
 .foot a:hover { text-decoration: underline; }
