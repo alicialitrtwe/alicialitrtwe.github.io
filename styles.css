@@ -783,3 +783,13 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 }
 .box-label { color: var(--area); letter-spacing: 0.12em; }
 .stats b { color: var(--area); }
+
+/* A figure that only exists on white — a plate from the paper, where the talk
+   has no slide of its own. Matting it in its own ground and giving it an edge
+   makes it read as a plate rather than as a hole burned in the page. */
+.fig--plate img {
+  background: #f4f4f2;
+  padding: 0.9rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--area) 20%, transparent);
+}
