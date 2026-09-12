@@ -462,7 +462,7 @@ a.todo:hover { color: var(--fg-dim); }
 .fig img, .fig video, .fig iframe { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
 .fig iframe { aspect-ratio: 16 / 9; border: 0; }
 .fig-slot { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1rem; border: 1px dashed var(--border); border-radius: 0.25rem; text-align: center; color: var(--fg-muted); }
-.fig-slot.todo { background: color-mix(in srgb, var(--highlight) 22%, var(--bg)); border-color: var(--placeholder); color: var(--fg-muted); }
+.fig-slot.todo { background: color-mix(in srgb, var(--highlight) 12%, var(--bg)); border-color: color-mix(in srgb, var(--placeholder) 55%, transparent); color: var(--fg-muted); }
 .fig--hero { max-width: 44em; margin: 0 auto var(--gap); }
 figcaption { margin-top: 0.6rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); max-width: var(--measure); }
 figcaption .todo { color: var(--fg); }
@@ -792,4 +792,77 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
   padding: 0.9rem;
   border-radius: 0.25rem;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--area) 20%, transparent);
+}
+
+/* ---- layout and hierarchy ------------------------------------------------------
+   The site set everything at one size, which is restful but leaves a page with
+   no masthead: the title of a page read exactly like a heading inside it. These
+   are the only three sizes added, and they are all at the top of a page. */
+.name { font-size: 1.5rem; line-height: 1.25; margin-bottom: 1.25rem; }
+.hero .lead { font-size: 1.2rem; line-height: 1.45; color: var(--fg); max-width: 30em; }
+.paper-head .authors { font-size: 1rem; }
+
+/* A caption sits under a 44em figure, so a 34em measure leaves it looking
+   orphaned at the left. 40em keeps it readable and squares it up. */
+figcaption { max-width: 40em; }
+
+/* Figures take the same hairline as the clips, so a paper page and an area
+   page are recognisably the same site. */
+.fig img, .fig video, .fig iframe {
+  border: 1px solid color-mix(in srgb, var(--area) 14%, transparent);
+}
+.fig--plate img { border-color: transparent; }
+
+/* ---- research.html: the label moves into a gutter -------------------------------
+   The inventory runs at 46em inside a 64em shell, so a third of the page was
+   empty to the right of it. Above 68em the area label moves out to the left
+   instead, where it labels the block the way a margin note would, and the list
+   keeps its measure. */
+@media (min-width: 68em) {
+  .group {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    column-gap: 2.5rem;
+    align-items: start;
+  }
+  .group > .section-label {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    position: sticky;
+    top: 1.5rem;
+    margin-bottom: 0;
+  }
+  /* Out here the trailing rule has nothing to trail into, so the area's
+     colour goes above the label instead — the same mark a page title takes. */
+  .group > .section-label { display: block; }
+  .group > .section-label::after { display: none; }
+  .group > .section-label::before {
+    content: "";
+    display: block;
+    width: 1.75rem;
+    height: 2px;
+    margin-bottom: 0.7rem;
+    border-radius: 2px;
+    background: var(--area);
+  }
+  .group > .area-lead { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .group > .outputs { grid-column: 2; grid-row: 2; margin-top: 1.25rem; }
+}
+
+/* Every subpage gets a standfirst, the way the index opening has one: the
+   paragraph directly under the page title is set larger and lighter. */
+.name + .lead {
+  font-size: 1.2rem;
+  line-height: 1.45;
+  color: var(--fg);
+  max-width: 32em;
+  margin-bottom: 1.25rem;
+}
+
+/* Entries are separated by a hairline as well as by space. Without it the
+   outputs list of one entry runs into the next entry's video. */
+.area + .area, .project + .project {
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding-top: 3rem;
 }
