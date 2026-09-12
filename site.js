@@ -126,15 +126,17 @@
       ctx.globalCompositeOperation = 'lighter';
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
+
+      // 1. The attractor itself, dim: the shape the trajectory is confined to.
+      //    Two passes, the far half thinner and fainter, which is the depth cue
+      //    now that the dots are gone.
       for (var k = 0; k < NB; k++) {
         var runs = runsBy[k];
         if (!runs.length) continue;
-        // two passes: the far half thin and dim, the near half wider and
-        // brighter, which is the whole depth cue now that the dots are gone
         for (var pass = 0; pass < 2; pass++) {
           ctx.strokeStyle = ramp[k];
-          ctx.globalAlpha = pass ? 0.85 : 0.34;
-          ctx.lineWidth = pass ? 1.5 : 0.85;
+          ctx.globalAlpha = pass ? 0.26 : 0.11;
+          ctx.lineWidth = pass ? 1.1 : 0.7;
           ctx.beginPath();
           for (var q = 0; q < runs.length; q += 2) {
             var a0 = runs[q], a1 = runs[q + 1], started = false;
@@ -148,6 +150,41 @@
           ctx.stroke();
         }
       }
+
+      // 2. The state, moving: a bright comet running along the path, so it is
+      //    visible that this is one trajectory being integrated forward rather
+      //    than a static tangle. It spirals out on one wing, flips to the other,
+      //    and never repeats - which is the only thing the picture has to say.
+      var head = Math.floor(t * 0.0007 * 1000) % N;   // ~700 points a second
+      var CH = 10, CK = 1500;                          // chunks, comet length
+      for (var cch = 0; cch < CH; cch++) {
+        var f0 = (cch + 1) / CH;
+        ctx.globalAlpha = 0.10 + 0.9 * f0 * f0;
+        ctx.lineWidth = 0.8 + 1.9 * f0;
+        var i0 = head - CK + Math.floor(cch * CK / CH);
+        var i1 = head - CK + Math.floor((cch + 1) * CK / CH);
+        var cur = -1, open = false;
+        for (var n2 = i0; n2 <= i1; n2++) {
+          if (n2 < 1 || n2 >= N) { open = false; continue; }
+          if (bucket[n2] !== cur) {
+            if (open) ctx.stroke();
+            cur = bucket[n2]; ctx.strokeStyle = ramp[cur];
+            ctx.beginPath(); ctx.moveTo(proj[(n2 - 1) * 3], proj[(n2 - 1) * 3 + 1]);
+            open = true;
+          }
+          ctx.lineTo(proj[n2 * 3], proj[n2 * 3 + 1]);
+        }
+        if (open) ctx.stroke();
+      }
+      // the state itself
+      if (head > 0 && head < N) {
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(proj[head * 3], proj[head * 3 + 1], 1.9, 0, 6.2832);
+        ctx.fill();
+      }
+
       ctx.globalCompositeOperation = 'source-over';
       ctx.globalAlpha = 1;
     }

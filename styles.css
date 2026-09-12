@@ -817,30 +817,32 @@ figcaption { max-width: 40em; }
 }
 .fig--plate img { border-color: transparent; }
 
-/* ---- research.html: the label moves into a gutter -------------------------------
-   The inventory runs at 46em inside a 64em shell, so a third of the page was
-   empty to the right of it. Above 68em the area label moves out to the left
-   instead, where it labels the block the way a margin note would, and the list
-   keeps its measure. */
+/* ---- the page grid: labels in the margin ----------------------------------------
+   Every section ran its label and its content down one ragged left column, so a
+   block set to the 34em measure trailed a third of the page in empty space and
+   a block that filled the shell sat against nothing. Above 68em the label moves
+   out into a margin of its own and every section's content starts on the same
+   axis, which is what gives the page a proportion rather than an alternation. */
 @media (min-width: 68em) {
-  .group {
+  .block {
     display: grid;
     grid-template-columns: 9.5rem minmax(0, 1fr);
     column-gap: 2.5rem;
     align-items: start;
   }
-  .group > .section-label {
+  .block > * { grid-column: 2; }
+  .block > .section-label {
     grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 30;
     position: sticky;
     top: 1.5rem;
+    display: block;
     margin-bottom: 0;
   }
   /* Out here the trailing rule has nothing to trail into, so the area's
      colour goes above the label instead — the same mark a page title takes. */
-  .group > .section-label { display: block; }
-  .group > .section-label::after { display: none; }
-  .group > .section-label::before {
+  .block > .section-label::after { display: none; }
+  .block > .section-label::before {
     content: "";
     display: block;
     width: 1.75rem;
@@ -849,8 +851,8 @@ figcaption { max-width: 40em; }
     border-radius: 2px;
     background: var(--area);
   }
-  .group > .area-lead { grid-column: 2; grid-row: 1; margin-top: 0; }
-  .group > .outputs { grid-column: 2; grid-row: 2; margin-top: 1.25rem; }
+  .block > .area-lead, .block > .areas, .block > .outputs { margin-top: 0; }
+  .block > .outputs { margin-top: 1.25rem; }
 }
 
 /* Every subpage gets a standfirst, the way the index opening has one: the
@@ -910,14 +912,14 @@ figcaption { max-width: 40em; }
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1.45;
   object-fit: contain;
   background: #000;
   border-radius: 0.2rem;
   border: 1px solid color-mix(in srgb, var(--area) 16%, transparent);
 }
 .output-media--plate img { background: #f4f4f2; object-fit: contain; }
-.output-media .fig-slot { aspect-ratio: 16 / 10; font-size: 0.8125rem; }
+.output-media .fig-slot { aspect-ratio: 1.45; font-size: 0.8125rem; }
 /* Only the inventory's list carries thumbnails. Area pages use .outputs too,
    and their items have no media, so an unscoped grid crushed their titles into
    a 11.5rem column with the author list beside it. */
@@ -929,4 +931,53 @@ figcaption { max-width: 40em; }
     align-items: start;
   }
   .outputs--media .output-media { margin-bottom: 0; }
+}
+
+/* The opening joins the same grid above 68em: an empty gutter, then the text
+   on the axis every other section's content starts from, then the attractor.
+   Without this the page had two left edges — the masthead and labels on one,
+   body content on another, and the opening paragraph on the wrong one. */
+@media (min-width: 68em) {
+  .hero-split {
+    grid-template-columns: 9.5rem minmax(0, 1fr) minmax(0, 0.86fr);
+    column-gap: 2.5rem;
+  }
+  .hero-split > .hero { grid-column: 2; }
+  .hero-split > .hero-viz { grid-column: 3; }
+}
+
+/* ---- an area page's opening spread ---------------------------------------------
+   The standfirst ran at the 32em measure and the two paragraphs under it at 34em,
+   so the page opened with a narrow column and a third of the width empty, then
+   dropped into projects that use all of it. Side by side above 68em the opening
+   fills the measure it is given and the step down into the projects is even. */
+.area-intro > .lead + .prose { margin-top: 1rem; }
+@media (min-width: 68em) {
+  .area-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    column-gap: 3rem;
+    align-items: start;
+  }
+  .area-intro > .lead { margin-bottom: 0; max-width: none; }
+  .area-intro > .prose { margin-top: 0; max-width: none; }
+  .area-intro > .prose > p { max-width: var(--measure); }
+}
+
+/* ---- one frame for every clip ---------------------------------------------------
+   The three clips on the index have different native shapes, so capping their
+   height left three boxes of three different heights sitting in a column. The
+   box is fixed now and the clip letterboxes inside it, which is what makes the
+   frames line up down the page and across to the inventory's thumbnails. 1.45
+   is the middle of the clips' own range, so most of them nearly fill it.
+
+   Two clips were mostly empty and have been recropped rather than padded: the
+   flatmap render carried 156px of black above and below its hemispheres, and
+   the birdsong animation sat 190px left of centre in its frame. */
+.area-media, .project-media { aspect-ratio: 1.45; }
+.area-media video, .project-media video {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
 }
