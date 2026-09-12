@@ -31,6 +31,16 @@
   --accent-dim: #1d5c66;
   --placeholder: #8a7a1f;     /* the dashed rule under an unwritten bit */
 
+  /* One hue per research area, each read off its own clip rather than picked:
+     the warm half of the flatmap (hue 10-20 deg), the spectrogram teal (190),
+     the number channel's rose (340). They are wayfinding, not decoration - an
+     area keeps its colour from the index through to its own page. --area is
+     the slot they fill; anything outside an area falls back to the accent. */
+  --c-bayesian:  #e09a6a;
+  --c-closed:    #35bcc9;
+  --c-cognition: #d4698f;
+  --area: var(--accent);
+
   --sans: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
           "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI",
           Arial, sans-serif;
@@ -524,3 +534,252 @@ pre.bibtex { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--mono
 figcaption details.legend { margin-top: 0.4rem; }
 figcaption details.legend summary { cursor: pointer; color: var(--fg-dim); }
 figcaption details.legend p { margin: 0.4rem 0 0; }
+
+/* ---- colour and decoration ---------------------------------------------------
+   Added last so it reads as one system rather than as edits scattered through
+   the file. Three rules govern it:
+
+   1. Colour carries meaning or it does not appear. The three hues are the
+      research areas, taken from their own clips; the accent teal is chrome
+      (focus, current page, selection). Body links stay white and dim on hover,
+      which is the site's oldest rule.
+   2. Decoration marks structure. The rail down the arc is a timeline, the tick
+      before a section label points at the section, the bar over an area title
+      is that area's colour. Nothing is drawn that says nothing.
+   3. Everything is a hairline or a tint. No fills, no shadows except the one
+      that lifts a clip on hover.                                               */
+
+[data-area="bayesian"]   { --area: var(--c-bayesian); }
+[data-area="closed-loop"]{ --area: var(--c-closed); }
+[data-area="cognition"]  { --area: var(--c-cognition); }
+
+/* ---- interface typography ----------------------------------------------------
+   Metadata goes monospace: years, venues, counts, dates, the notice, the
+   footer. It is the one typographic move that reads as instrumentation rather
+   than as decoration, and it separates what the site says from what the site
+   knows. Mono runs large at a given size, so each is stepped down. */
+.section-label, .beat-year, .note-date, .project-years, .pub-meta,
+.area-count, .wip, .foot, .box-label, .eq-label, .paper-head .pub-meta {
+  font-family: var(--mono);
+}
+.pub-meta, .project-years { font-size: 0.8125rem; letter-spacing: 0.01em; }
+.output-title .pub-meta { font-size: 0.8125rem; }
+.area-count { font-size: 0.8125rem; letter-spacing: 0.01em; }
+.beat-year, .note-date { font-size: 0.9375rem; letter-spacing: 0.02em; }
+.wip, .foot { font-size: 0.75rem; letter-spacing: 0.02em; }
+
+/* A section label is a label plus a rule that runs off the end of it — the
+   area's own colour where there is one, the accent otherwise. */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+}
+.section-label::after {
+  content: "";
+  flex: 1 1 auto;
+  max-width: 8rem;
+  height: 1px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--area) 50%, transparent), transparent);
+}
+.section-label a:hover { color: var(--area); }
+
+/* ---- the arc as a timeline ---------------------------------------------------
+   It already is one; the rail says so. The last beat is "Now", so its dot is
+   filled and the rail fades out above it rather than stopping square. */
+.beats { position: relative; padding-left: 1.75rem; }
+.beats::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1px;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent) 45%, transparent),
+    color-mix(in srgb, var(--accent) 14%, transparent) 65%,
+    transparent);
+}
+.beat { position: relative; }
+.beat::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.75rem + 0.5px);
+  top: 0.45rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.beat:last-child::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.beat-year { color: var(--fg-dim); }
+
+/* ---- areas and projects wear their colour ------------------------------------- */
+.area-title::before, .project-title::before {
+  content: "";
+  display: block;
+  width: 2rem;
+  height: 2px;
+  margin-bottom: 0.8rem;
+  border-radius: 2px;
+  background: var(--area);
+}
+.area-count { color: var(--fg-muted); }
+
+/* A clip sits in a hairline of its area's colour, and lifts on hover. This is
+   the only shadow on the site. */
+.area-media, .project-media {
+  border: 1px solid color-mix(in srgb, var(--area) 16%, transparent);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.area:hover .area-media,
+.project:hover .project-media,
+.area:focus-within .area-media,
+.project:focus-within .project-media {
+  border-color: color-mix(in srgb, var(--area) 45%, transparent);
+  box-shadow: 0 12px 44px -20px color-mix(in srgb, var(--area) 70%, transparent);
+}
+
+/* ---- chrome ------------------------------------------------------------------- */
+/* A hairline under the masthead and over the footer, lit at the left edge and
+   running out to nothing — the same gesture as the section-label rule. */
+.topbar {
+  position: relative;
+  padding-bottom: 1.15rem;
+  margin-bottom: 2.6rem;
+}
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    var(--border) 26%,
+    transparent 92%);
+}
+.foot {
+  position: relative;
+  border-top: 0;
+  padding-top: 1.2rem;
+}
+.foot::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent) 40%, transparent),
+    var(--border) 24%,
+    transparent 92%);
+}
+
+/* The hero band carries a soft halo in the accent, so the attractor sits in
+   something rather than floating in a wide empty strip. */
+.hero-viz {
+  height: clamp(230px, 36vh, 400px);
+  background:
+    radial-gradient(ellipse 58% 66% at 50% 50%,
+      color-mix(in srgb, var(--accent) 11%, transparent), transparent 72%),
+    var(--bg);
+}
+
+/* ---- small accents ------------------------------------------------------------ */
+.button:hover {
+  border-color: color-mix(in srgb, var(--area) 55%, transparent);
+  background: color-mix(in srgb, var(--area) 8%, var(--surface));
+}
+/* Output links are metadata, not prose, so they may take the area colour on
+   hover; body links stay white and dim, which is the site's oldest rule. */
+.output-links a:hover { color: var(--area); }
+.paper-nav a[aria-current="true"] { color: var(--area); text-decoration: none; }
+.pull { border-left-color: transparent; border-image: linear-gradient(180deg, var(--area), transparent) 1; }
+.output-links .sep { color: color-mix(in srgb, var(--area) 42%, transparent); }
+.authors .me { color: var(--fg); }
+
+/* The opening pairs the text with the attractor instead of stacking them.
+   Below 60em they stack and the text comes first, which is the order the
+   markup is already in. */
+.hero-split { display: grid; gap: 1.5rem; }
+/* Stacked, the attractor still opens the page, as it did before the split. */
+.hero-viz { order: -1; margin: 0 0 2.25rem; }
+@media (min-width: 60em) {
+  .hero-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: 0 3rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .hero-viz { order: 0; height: clamp(340px, 48vh, 470px); margin: 0; }
+}
+
+/* A subpage title carries its area's colour, so a reader arriving on a paper
+   page knows which of the three it belongs to before reading a word. */
+.name::before {
+  content: "";
+  display: block;
+  width: 2.25rem;
+  height: 2px;
+  margin-bottom: 0.85rem;
+  border-radius: 2px;
+  background: var(--area);
+}
+
+/* The notes stream is chronological, so it takes the same rail as the arc —
+   newest first, so the rail fades downward into the older entries. */
+.stream { position: relative; padding-left: 1.75rem; }
+.stream::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1px;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent) 45%, transparent),
+    color-mix(in srgb, var(--accent) 12%, transparent) 65%,
+    transparent);
+}
+.note-item { position: relative; }
+.note-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.75rem + 0.5px);
+  top: 0.45rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.note-item:first-child::before {   /* newest */
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.note-date { color: var(--fg-dim); }
+
+/* "All research →" reads as the way out of the section, so the arrow moves.
+   The underline stays: links on this site are underlined. */
+.more a span { display: inline-block; transition: transform 0.2s ease; text-decoration: none; }
+.more a:hover span { transform: translateX(0.3rem); }
+
+/* A boxed aside and a figure of numbers both belong to their area. */
+.theorem, .box {
+  border-left: 2px solid color-mix(in srgb, var(--area) 55%, transparent);
+  background: color-mix(in srgb, var(--area) 3%, transparent);
+}
+.box-label { color: var(--area); letter-spacing: 0.12em; }
+.stats b { color: var(--area); }

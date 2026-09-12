@@ -34,24 +34,30 @@
 
   <main id="main" tabindex="-1">
 
-    <!-- Decorative: a strange attractor drawn by site.js. Not data. -->
-    <canvas class="hero-viz" aria-hidden="true"></canvas>
+    <!-- The opening, with the attractor beside it rather than above it: on a
+         wide window the text column stops at its measure and left half the
+         page empty, and the canvas sat alone in a band of its own. Below 60em
+         they stack, text first. The canvas is decorative and aria-hidden - a
+         strange attractor drawn by site.js, not data from any paper. -->
+    <div class="hero-split">
+      <section class="hero" aria-labelledby="h-name">
+        <p class="lead">For about ten years I've been asking a version of the same question, first in
+          philosophy and then in physics: how does meaning come out of mechanism, and how would you
+          know if it had?</p>
 
-    <section class="hero" aria-labelledby="h-name">
-      <p class="lead">For about ten years I've been asking a version of the same question, first in
-        philosophy and then in physics: how does meaning come out of mechanism, and how would you
-        know if it had?</p>
+        <div class="prose">
+          <p>The answer I've settled into is that structure lives in the data, and intelligence is
+            whatever extracts it. That puts the constraint in a slightly unfashionable place. How
+            clever the model is matters less than whether the measurement got made at all, and whether
+            it got made somewhere rich enough that the structure survived contact with the
+            experiment.</p>
+          <p>Most of what I've worked on has been messy on purpose for that reason. Stories instead of
+            word lists. Actual birdsong. Patients at home rather than in a clinic room.</p>
+        </div>
+      </section>
 
-      <div class="prose">
-        <p>The answer I've settled into is that structure lives in the data, and intelligence is
-          whatever extracts it. That puts the constraint in a slightly unfashionable place. How
-          clever the model is matters less than whether the measurement got made at all, and whether
-          it got made somewhere rich enough that the structure survived contact with the
-          experiment.</p>
-        <p>Most of what I've worked on has been messy on purpose for that reason. Stories instead of
-          word lists. Actual birdsong. Patients at home rather than in a clinic room.</p>
-      </div>
-    </section>
+      <canvas class="hero-viz" aria-hidden="true"></canvas>
+    </div>
 
     <!-- The arc: one entry per year, the year set bold like a heading, then
          one sentence — her own first sentence from the draft, nothing else. -->
@@ -99,7 +105,7 @@
 
       <div class="areas">
 
-        <article class="area">
+        <article class="area" data-area="bayesian">
           <div class="area-media">
             <video autoplay loop muted playsinline preload="auto"
                    poster="figures/area-bayesian.jpg" width="900" height="676"
@@ -115,7 +121,7 @@
           </div>
         </article>
 
-        <article class="area">
+        <article class="area" data-area="closed-loop">
           <div class="area-media">
             <video autoplay loop muted playsinline preload="auto"
                    poster="figures/area-closed-loop.jpg" width="820" height="600"
@@ -131,7 +137,7 @@
           </div>
         </article>
 
-        <article class="area">
+        <article class="area" data-area="cognition">
           <div class="area-media">
             <video autoplay loop muted playsinline preload="auto"
                    poster="figures/area-cognition.jpg" width="1270" height="810"
