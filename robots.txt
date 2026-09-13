@@ -1,0 +1,8 @@
+# The brain viewer is a large generated WebGL app with thousands of data
+# files; it is linked from the pages that explain it and does not need
+# crawling on its own.
+User-agent: *
+Allow: /
+Disallow: /viewer/
+
+Sitemap: https://alicialitrtwe.github.io/sitemap.xml

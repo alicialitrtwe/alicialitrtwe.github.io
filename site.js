@@ -39,8 +39,11 @@
     // read from the stylesheet so the palette lives in one place.
     var css = getComputedStyle(document.documentElement);
     function hex(name, fallback) {
-      var v = css.getPropertyValue(name).trim() || fallback;
-      return [parseInt(v.substr(1, 2), 16), parseInt(v.substr(3, 2), 16), parseInt(v.substr(5, 2), 16)];
+      var v = (css.getPropertyValue(name) || '').trim() || fallback;
+      if (/^#[0-9a-f]{3}$/i.test(v)) v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3];
+      var m = /^#([0-9a-f]{6})$/i.exec(v) || /^#([0-9a-f]{6})$/i.exec(fallback);
+      var h = m ? m[1] : '888888';
+      return [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)];
     }
     var stops = [hex('--c-closed', '#35bcc9'), hex('--c-bayesian', '#e09a6a'), hex('--c-cognition', '#d4698f')];
     var NB = 18, ramp = new Array(NB);
@@ -157,9 +160,13 @@
       //    and never repeats - which is the only thing the picture has to say.
       var head = Math.floor(t * 0.0007 * 1000) % N;   // ~700 points a second
       var CH = 10, CK = 1500;                          // chunks, comet length
+      // Index 0 and index N-1 are unrelated points on the attractor, so the
+      // wrap is a teleport. Fade the comet out into it and back in out of it
+      // and the seam reads as the state dimming rather than jumping.
+      var seam = Math.min(1, head / (CK * 0.8), (N - head) / (CK * 0.8));
       for (var cch = 0; cch < CH; cch++) {
         var f0 = (cch + 1) / CH;
-        ctx.globalAlpha = 0.10 + 0.9 * f0 * f0;
+        ctx.globalAlpha = (0.10 + 0.9 * f0 * f0) * seam;
         ctx.lineWidth = 0.8 + 1.9 * f0;
         var i0 = head - CK + Math.floor(cch * CK / CH);
         var i1 = head - CK + Math.floor((cch + 1) * CK / CH);
@@ -178,7 +185,7 @@
       }
       // the state itself
       if (head > 0 && head < N) {
-        ctx.globalAlpha = 0.95;
+        ctx.globalAlpha = 0.95 * seam;
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.arc(proj[head * 3], proj[head * 3 + 1], 1.9, 0, 6.2832);
@@ -193,10 +200,11 @@
     // thousand points are re-projected and stroked every frame; there is no
     // reason to spend that on a reader who has scrolled past it, and a loop
     // that only ever re-schedules itself never stops.
-    var t0 = null, raf = 0, onScreen = true;
+    var t0 = null, raf = 0, onScreen = true, lastT = 0;
     function frame(now) {
       if (t0 === null) t0 = now;
-      draw(now - t0);
+      lastT = now - t0;
+      draw(lastT);
       raf = requestAnimationFrame(frame);
     }
     function run() {
@@ -209,7 +217,9 @@
 
     resize();
     // A resize while the loop is running is redrawn by the next frame anyway.
-    window.addEventListener('resize', function () { resize(); if (!raf) draw(t0 === null ? 0 : 0); });
+    // Redraw at the phase it was already showing; drawing at 0 snapped the
+    // rotation back to the start on every resize.
+    window.addEventListener('resize', function () { resize(); if (!raf) draw(lastT); });
     document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {

@@ -164,16 +164,22 @@ a.todo:hover { color: var(--fg-dim); }
 .name { margin-bottom: 1rem; }
 
 /* ---- the hero ----------------------------------------------------------- */
-/* A canvas that site.js fills with a slowly turning strange attractor —
-   ABSTRACT, decorative, aria-hidden. Without JavaScript (or with
-   prefers-reduced-motion) it is a still frame or an empty band. */
+/* A canvas that site.js fills with a strange attractor tracing itself —
+   ABSTRACT, decorative, aria-hidden. Under prefers-reduced-motion it is a
+   still frame; with no script at all a <noscript> rule collapses the band.
+   The halo gives the attractor something to sit in rather than a wide empty
+   strip. Everything about this element is set here; it was spread over four
+   rules, three of which only re-set what the first had already said. */
 .hero-viz {
   display: block;
   width: 100%;
-  height: clamp(210px, 34vh, 380px);
+  height: clamp(230px, 36vh, 400px);
   margin: -1rem 0 2.25rem;
-  background: var(--bg);
-}   /* subpage titles: bold body size, like the section labels */
+  background:
+    radial-gradient(ellipse 58% 66% at 50% 50%,
+      color-mix(in srgb, var(--accent) 11%, transparent), transparent 72%),
+    var(--bg);
+}
 
 /* ---- sections ---------------------------------------------------------------- */
 .block { margin-top: var(--gap); }
@@ -530,16 +536,6 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
     color-mix(in srgb, var(--accent) 40%, transparent),
     var(--border) 24%,
     transparent 92%);
-}
-
-/* The hero band carries a soft halo in the accent, so the attractor sits in
-   something rather than floating in a wide empty strip. */
-.hero-viz {
-  height: clamp(230px, 36vh, 400px);
-  background:
-    radial-gradient(ellipse 58% 66% at 50% 50%,
-      color-mix(in srgb, var(--accent) 11%, transparent), transparent 72%),
-    var(--bg);
 }
 
 /* ---- small accents ------------------------------------------------------------ */
