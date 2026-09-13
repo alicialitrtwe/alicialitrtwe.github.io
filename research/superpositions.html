@@ -134,7 +134,7 @@
 <p class="tldr">We use interpretable AI models to understand how the brain represents abstract ideas. Encoding models predict brain activity from word embeddings, and they predict well. But an embedding compresses many thousands of concepts into a few hundred dimensions, so concepts share directions, and the fitted weights cannot say which concept a voxel is actually tuned to. We unpack the embedding into 1,000 sparse <em>concept atoms</em>, one concept per axis, and refit. Prediction is unchanged; the weights become legible. The first thing they show is that time, space and number occupy the same regions of cortex.</p>
 <ul class="stats" role="list">
   <li><b>300 → 1,000</b><span>GloVe dimensions unpacked into concept atoms</span></li>
-  <li><b>0.0005</b><span>change in <i>R</i><sup>2</sup> from switching to sparse features (not significant)</span></li>
+  <li><b>0.0005</b><span>difference in <i>R</i><sup>2</sup> between sparse and dense features, not significant over seven subjects</span></li>
   <li><b>0.26 vs 0.09</b><span>agreement of concept maps across people, sparse vs dense</span></li>
   <li><b>IPS + IFG</b><span>intraparietal sulcus and inferior frontal gyrus, where time, space and number all overlap, in both hemispheres</span></li>
 </ul>
@@ -235,8 +235,8 @@
 
 <section class="paper-section" id="results" aria-labelledby="h-results">
   <h2 id="h-results">What follows</h2>
-<h3>Prediction: unchanged</h3>
-<p>The first concern is that expanding 300 dimensions to 1,000 sparse ones should cost accuracy. It does not. Across the seven subjects, the mean difference in held-out <i>R</i><sup>2</sup> between the sparse and dense models is 0.00047 ± 0.00071, paired <i>t</i>(6) = −1.77, <i>p</i> = 0.13. Voxel for voxel, the two models lie on the diagonal.</p>
+<h3>Prediction: no difference detectable</h3>
+<p>The first concern is that expanding 300 dimensions to 1,000 sparse ones should cost accuracy. No cost is detectable across the seven subjects, which with seven is a weaker statement than equality: the mean difference in held-out <i>R</i><sup>2</sup> between the sparse and dense models is 0.00047 ± 0.00071, paired <i>t</i>(6) = −1.77, <i>p</i> = 0.13. Voxel for voxel, the two models lie on the diagonal.</p>
 <figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-4.jpg"><img src="../figures/thesis-fig2-4.jpg" alt="(a) A 1,000 × 1,000 matrix of cosine similarities between concept atoms. (b–c) Cortical flatmaps for two subjects with prediction accuracy shown as colour over lateral temporal, medial parietal and prefrontal cortex. (d–e) Scatter plots of sparse-model against dense-model accuracy per voxel, lying along the diagonal." width="1428" height="745" loading="lazy"></a>
   <figcaption>(a) The 1,000 atoms are moderately correlated in GloVe space; that is the superposition. (b, c) Where the sparse model predicts well in two subjects: lateral temporal, medial parietal and prefrontal cortex. (d, e) Sparse against dense accuracy, voxel by voxel. From the paper.</figcaption>
@@ -255,7 +255,7 @@
 <p>Take the top 5,000 voxels for each and colour them red, green and blue. White areas show the three-way overlap, the voxels that respond to all three. They fall in the intraparietal sulcus and the inferior frontal gyrus, bilaterally, in both subjects shown — the regions the shared-magnitude literature has pointed to. Averaged over seven people, each pair of domains overlaps with an intersection over union of about 0.32–0.34, and all three together at 0.18.</p>
 <figure class="fig">
   <a href="../figures/talk-overlap.jpg"><img src="../figures/talk-overlap.jpg" alt="Word clouds for the time atom in green, the number atom in red and the space atom in blue, a three-circle Venn key, and cortical flatmaps for Subject 01 and Subject 02 with the three concepts overlaid, white marking where all three coincide in the intraparietal sulcus and inferior frontal gyrus of both hemispheres." width="1920" height="960" loading="lazy"></a>
-  <figcaption>Number (red), time (green) and space (blue). Secondary colours are pairwise overlap; white is all three, and it sits in IPS and IFG bilaterally, in both subjects.</figcaption>
+  <figcaption>Number (red), time (green) and space (blue). Secondary colours are pairwise overlap; white is all three. The plate labels prefrontal, medial parietal and lateral temporal cortex; the intraparietal sulcus and inferior frontal gyrus are identified in the analysis rather than marked on the figure.</figcaption>
 </figure>
 <p class="more">The analysis has since been extended to nineteen listeners, which is the <a href="number.html">CCN 2026 poster</a>; the maps in <a href="../viewer/">the brain viewer</a> are that larger set, not the seven here. <a href="number.html">That result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
 
