@@ -283,7 +283,7 @@ a.todo:hover { color: var(--fg-dim); }
 .button.todo { border-style: dashed; border-color: var(--placeholder); background: none; color: var(--fg-muted); }
 
 /* sticky section list; site.js marks the section in view */
-.paper-nav { position: sticky; top: 0; z-index: 3; margin: 0 -1rem 2rem; padding: 0.6rem 1rem; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+.paper-nav { position: sticky; top: 0; z-index: 3; margin: 0 -1rem 2rem; padding: 0.6rem 1rem; background: color-mix(in srgb, var(--bg) 90%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.875rem; }
 .paper-nav ol { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1.25rem; }
 .paper-nav a { color: var(--fg-muted); text-decoration: none; }
 .paper-nav a:hover, .paper-nav a[aria-current="true"] { color: var(--fg); text-decoration: underline; }
@@ -317,9 +317,9 @@ figcaption .todo { color: var(--fg); }
    sentence under the teaser, a boxed theorem, display equations (MathML,
    no library), and the one-line source note. */
 .paper-section > h3 { margin: 2rem 0 0.6rem; }
-.paper-section > ul, .paper-section > ol { max-width: var(--measure); margin: 0 0 1rem; padding-left: 1.25rem; }
-.paper-section > ul li + li, .paper-section > ol li + li { margin-top: 0.35rem; }
-.paper-section > ul { list-style: disc; }
+.paper-section > ul:not(.outputs):not(.stats), .paper-section > ol { max-width: var(--measure); margin: 0 0 1rem; padding-left: 1.25rem; }
+.paper-section > ul:not(.outputs) li + li, .paper-section > ol li + li { margin-top: 0.35rem; }
+.paper-section > ul:not(.outputs):not(.stats) { list-style: disc; }
 .paper-section > ol { list-style: decimal; }
 .paper-section > h2 + h3 { margin-top: 1rem; }
 .pull { max-width: 44rem; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--accent-dim); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
@@ -378,8 +378,21 @@ pre.bibtex { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--mono
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 @media print {
-  .skip, .viz, .hero-viz, .paper-nav, .abstract, .foot { display: none; }
-  a { text-decoration: none; }
+  /* The screen design is dark-only, which on paper means white text on a
+     ground the printer will not lay down: an empty sheet. Reset ink and ground
+     for print, and let the area colours fall back to black so a heading is not
+     invisible either. */
+  :root { --bg: #fff; --fg: #111; --fg-dim: #333; --fg-muted: #555; --border: #ccc;
+          --surface: #f4f4f2; --accent: #036; --area: #036; }
+  html, body { background: #fff; color: #111; }
+  .skip, .hero-viz, .paper-nav, .foot { display: none; }
+  a { text-decoration: none; color: #111; }
+  /* a URL is worth having on paper, where a link cannot be followed */
+  .paper-head a[href^="http"]::after,
+  .output-links a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+  .fig img, .fig video, .output-media, .area-media, .project-media { border-color: #ccc; }
+  .todo { background: none; border: 1px dashed #999; }
+  figure, .box, .theorem, .paper-section { break-inside: avoid; }
 }
 
 /* A figure legend that is long enough to bury a short page: folded by default. */
@@ -780,3 +793,17 @@ figcaption { max-width: 40em; }
   max-height: none;
   object-fit: contain;
 }
+
+/* A transcript sits under the thing it transcribes, closed by default: it is
+   there for anyone who cannot hear the talk, not something to scroll past. */
+.transcript { margin-top: 1rem; font-size: 0.9375rem; }
+.transcript > summary {
+  cursor: pointer;
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+.transcript > summary:hover { color: var(--fg); }
+.transcript > summary:focus-visible { outline: 1px solid var(--area); outline-offset: 3px; }
+.transcript > p { margin-top: 0.9rem; max-width: var(--measure); color: var(--fg-dim); }
