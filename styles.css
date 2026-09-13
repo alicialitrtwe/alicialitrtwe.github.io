@@ -537,7 +537,9 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 /* Output links are metadata, not prose, so they may take the area colour on
    hover; body links stay white and dim, which is the site's oldest rule. */
 .output-links a:hover { color: var(--area); }
-.paper-nav a[aria-current="true"] { color: var(--area); text-decoration: none; }
+/* Keep the underline: colour alone must not be the only thing marking the
+   section in view. */
+.paper-nav a[aria-current="true"] { color: var(--area); }
 .pull { border-left-color: transparent; border-image: linear-gradient(180deg, var(--area), transparent) 1; }
 .output-links .sep { color: color-mix(in srgb, var(--area) 60%, transparent); }
 .authors .me { color: var(--fg); }

@@ -15,8 +15,8 @@
 
   /* ---- 1. the hero ------------------------------------------------------- */
   var canvas = document.querySelector('.hero-viz');
-  if (canvas && canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+  var ctx = canvas && canvas.getContext && canvas.getContext('2d');
+  if (ctx) {
 
     // Integrate Lorenz once. The trajectory is drawn as a line rather than as
     // a cloud of dots, so it can afford more steps and a smaller one: dots
@@ -189,16 +189,35 @@
       ctx.globalAlpha = 1;
     }
 
-    var t0 = null;
+    // Run only while the canvas is on screen and the tab is visible. Twenty
+    // thousand points are re-projected and stroked every frame; there is no
+    // reason to spend that on a reader who has scrolled past it, and a loop
+    // that only ever re-schedules itself never stops.
+    var t0 = null, raf = 0, onScreen = true;
     function frame(now) {
       if (t0 === null) t0 = now;
       draw(now - t0);
-      requestAnimationFrame(frame);
+      raf = requestAnimationFrame(frame);
+    }
+    function run() {
+      if (raf || reduceMotion || !onScreen || document.hidden) return;
+      raf = requestAnimationFrame(frame);
+    }
+    function halt() {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
     }
 
     resize();
-    window.addEventListener('resize', function () { resize(); draw(0); });
-    if (reduceMotion) draw(0); else requestAnimationFrame(frame);
+    // A resize while the loop is running is redrawn by the next frame anyway.
+    window.addEventListener('resize', function () { resize(); if (!raf) draw(t0 === null ? 0 : 0); });
+    document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        onScreen = es[0].isIntersecting;
+        onScreen ? run() : halt();
+      }, { rootMargin: '120px 0px' }).observe(canvas);
+    }
+    if (reduceMotion) draw(0); else run();
   }
 
   /* ---- 2. videos: play on their own, but only when they are worth it ----- */
@@ -260,14 +279,32 @@
   if (nav && 'IntersectionObserver' in window) {
     var links = {};
     nav.querySelectorAll('a[href^="#"]').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
-    var current = null;
+    var order = Object.keys(links), visible = {}, current = null;
+    // Track the whole visible set rather than latching the last section to
+    // cross the band. Latching left the marker on a section the reader had
+    // scrolled well past whenever nothing new entered the band - at the top of
+    // the page, at the bottom, and across any section taller than the band.
+    function mark() {
+      var atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      var pick = null;
+      if (atEnd) {
+        // The last section can never win the band - it sits below it once the
+        // page has stopped scrolling - so at the foot of the page mark it
+        // outright, which is where the reader has actually arrived.
+        pick = order[order.length - 1];
+      } else {
+        for (var i = 0; i < order.length; i++) if (visible[order[i]]) { pick = order[i]; break; }
+      }
+      var next = pick ? links[pick] : null;
+      if (next === current) return;
+      if (current) current.removeAttribute('aria-current');
+      current = next;
+      if (current) current.setAttribute('aria-current', 'true');
+    }
+    window.addEventListener('scroll', mark, { passive: true });
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        if (current) current.removeAttribute('aria-current');
-        current = links[e.target.id];
-        if (current) current.setAttribute('aria-current', 'true');
-      });
+      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
+      mark();
     }, { rootMargin: '-20% 0px -70% 0px' });
     Object.keys(links).forEach(function (id) {
       var el = document.getElementById(id);
