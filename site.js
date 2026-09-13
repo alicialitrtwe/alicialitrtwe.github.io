@@ -201,14 +201,25 @@
     if (reduceMotion) draw(0); else requestAnimationFrame(frame);
   }
 
-  /* ---- 2. videos: autoplay, but not against the viewer's wishes ---------- */
-  /* The markup carries autoplay, so the page plays on load with no click.
-     This only ever takes play away: it stops everything under
-     prefers-reduced-motion, and pauses clips that have scrolled off screen so
-     they are not decoding in the background. */
+  /* ---- 2. videos: play on their own, but only when they are worth it ----- */
+  /* The clips carry no autoplay attribute and preload nothing, so the observer
+     below is what starts them. That is the difference between a home page that
+     fetches 4.9 MB before the reader has scrolled and one that fetches its
+     posters and then the clip it is actually showing. Without JavaScript each
+     clip stays on its poster, which is a real frame of the thing it shows.
+     This still only ever takes play away as well: it stops everything under
+     prefers-reduced-motion, and pauses clips that have scrolled off screen. */
   // The inventory's thumbnails carry no autoplay attribute and preload
   // nothing, so for them the observer is what starts playback at all.
-  var clips = document.querySelectorAll('.area-media video, .project-media video, .output-media video, .fig video');
+  //
+  // Only silent loops qualify. The NeurIPS talk sits in a .project-media too
+  // and it has sound, so scrolling past it must not start it; being muted is
+  // what separates the two, not having controls - the viewer tour has controls
+  // because it is a hundred seconds long and worth scrubbing, and it should
+  // still start on its own.
+  var clips = [].filter.call(
+    document.querySelectorAll('.area-media video, .project-media video, .output-media video, .fig video'),
+    function (v) { return v.muted && v.loop; });
   if (clips.length) {
     if (reduceMotion) {
       clips.forEach(function (v) {
@@ -218,11 +229,26 @@
         v.pause();
       });
     } else if ('IntersectionObserver' in window) {
+      // A clip the reader stopped stays stopped. Without this, pausing the
+      // tour and scrolling away would start it again on the way back. The
+      // __auto flag marks the pauses and plays this code makes itself, so
+      // they are not mistaken for the reader's.
+      clips.forEach(function (v) {
+        v.addEventListener('pause', function () { if (!v.__auto) v.__stopped = true; });
+        v.addEventListener('play', function () { if (!v.__auto) v.__stopped = false; });
+      });
       var clipObs = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           var v = e.target;
-          if (e.isIntersecting) { var p = v.play(); if (p) p.catch(function () {}); }
-          else if (!v.paused) { v.pause(); }
+          if (e.isIntersecting) {
+            if (v.__stopped) return;
+            v.__auto = true;
+            var p = v.play();
+            if (p) p.catch(function () {});
+            setTimeout(function () { v.__auto = false; }, 0);
+          } else if (!v.paused) {
+            v.__auto = true; v.pause(); v.__auto = false;
+          }
         });
       }, { rootMargin: '200px 0px', threshold: 0.01 });
       clips.forEach(function (v) { clipObs.observe(v); });

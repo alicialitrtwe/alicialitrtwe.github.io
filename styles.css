@@ -70,7 +70,9 @@ body {
   max-width: var(--shell);
   margin: 2rem auto;
   padding: 0 1rem;
-  overflow: hidden;
+  /* clip, not hidden: `overflow: hidden` makes this a scroll container, which
+     cropped the focus ring on the footer links against the bottom edge. */
+  overflow-x: clip;
 }
 
 h1, h2, h3, p, ol, ul { margin: 0; }
@@ -198,9 +200,9 @@ a.todo:hover { color: var(--fg-dim); }
 /* ---- areas and projects --------------------------------------------------------
    One entry per area on the index, one per project on an area page: the video
    beside the title and description, entries stacked down the page rather than
-   sitting in a row. An entry is NOT a .pub--card - the card rule below
-   stretches one link over the whole card, which would swallow the per-output
-   links underneath. */
+   sitting in a row. An entry stretches one link over its whole card via the
+   title's ::after, so anything else clickable inside it needs its own
+   stacking context - see .area-extra. */
 .areas, .projects { margin-top: 1.5rem; }
 .area + .area, .project + .project { margin-top: 3.5rem; }
 .area { position: relative; }
@@ -255,163 +257,6 @@ a.todo:hover { color: var(--fg-dim); }
   .project > .outputs, .area > .outputs { grid-column: 1 / -1; margin-top: 2rem; }
 }
 
-/* ---- research cards ------------------------------------------------------------ */
-/* Three across, two on a narrow window, one on a phone — with a hairline
-   gutter, so the thumbnails read as one strip. */
-.pub-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem 0.5rem;
-  margin-top: 1rem;
-}
-@media (min-width: 30em) { .pub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 60em) { .pub-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-.pub { position: relative; }
-.thumb { position: relative; overflow: hidden; border-radius: 0.25rem; }
-/* a real figure in the thumb slot takes the same box as a .viz would */
-.thumb > img, .thumb > video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--surface); }
-/* a figure panel that must not be cropped (a word cloud) sits whole on the surface */
-.thumb--contain > img { object-fit: contain; padding: 0.75rem; box-sizing: border-box; }
-.pub-body { margin-top: 0.5rem; }
-
-/* Hover (or keyboard focus) on a card and its abstract fades in over the
-   thumbnail. It is real text in the page — screen readers get it always —
-   clipped with a fade at the bottom; the full abstract is on the paper
-   page, which the whole card links to. */
-.abstract {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  margin: 0;
-  padding: 0.75rem 0.9rem;
-  overflow: hidden;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: var(--fg);
-  background: color-mix(in srgb, var(--bg) 93%, transparent);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  -webkit-mask-image: linear-gradient(#000 72%, transparent);
-          mask-image: linear-gradient(#000 72%, transparent);
-}
-.pub:hover .abstract, .pub:focus-within .abstract { opacity: 1; }
-@media (hover: none) { .abstract { display: none; } }   /* no hover on touch: the card just links */
-.pub-title { font-weight: 400; }
-.pub-meta { color: var(--fg-dim); }
-.pub-title .pub-meta::before { content: " \2014  "; }   /* “Title — venue, year” */
-
-/* the whole card is the link, not just the words */
-.pub--card .pub-title a::after { content: ""; position: absolute; inset: 0; z-index: 2; }
-.pub--card:hover .pub-title a { opacity: 0.66; }
-
-/* Full author list, in published order. .me marks Alicia — she publishes
-   under two names (Alicia Zeng, and Xiao Zeng on the 2019 APS abstract). */
-.authors { margin-top: 0.25rem; max-width: var(--measure); font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); }
-.authors .me { color: var(--fg-dim); }
-
-.more { margin-top: 1.5rem; }
-
-/* ---- the visuals ----------------------------------------------------------------- */
-/* ABSTRACT AND DECORATIVE — not figures, data or results from the papers.
-   Each is one empty <div>; everything below is the artwork. Drawn in the
-   text colour at low opacity. */
-.viz {
-  --ink: color-mix(in srgb, var(--fg) 45%, transparent);
-  --ink-soft: color-mix(in srgb, var(--fg) 22%, transparent);
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 16 / 10;
-  background-color: var(--surface);
-  border-radius: 0.25rem;
-}
-.viz > span { display: none; }
-
-/* 1 — two ring systems drifting through each other over a fixed lattice.
-       Where they overlap they beat against each other: superposition. */
-.viz--atoms {
-  background-image: radial-gradient(circle at center, var(--ink-soft) 0.9px, transparent 1px);
-  background-size: 18px 18px;
-}
-.viz--atoms::before, .viz--atoms::after {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  background: repeating-radial-gradient(circle at 44% 52%,
-              transparent 0 25px, var(--ink) 25px 26px);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 26%, transparent 72%);
-          mask-image: radial-gradient(circle at 50% 50%, #000 26%, transparent 72%);
-  animation: viz-drift 19s ease-in-out infinite alternate;
-}
-.viz--atoms::after {
-  background: repeating-radial-gradient(circle at 58% 46%,
-              transparent 0 29px, var(--ink-soft) 29px 30px);
-  animation-duration: 27s;
-  animation-direction: alternate-reverse;
-}
-@keyframes viz-drift {
-  from { transform: translate3d(-4%, -2%, 0); }
-  to   { transform: translate3d(5%, 3%, 0); }
-}
-
-/* 2 — a pulse train riding a baseline */
-.viz--pulse {
-  background-image: linear-gradient(90deg, var(--ink), var(--ink));   /* the baseline */
-  background-size: 100% 1px;
-  background-position: 0 50%;
-  background-repeat: no-repeat;
-}
-/* a band, not the full panel, so the bars read as pulses on the trace */
-.viz--pulse::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: 31%; bottom: 31%;
-  /* two rhythms — tall bars every 50px, short every 25px — so the train
-     reads as a signal rather than a ruler. Both divide the 50px shift. */
-  background:
-    repeating-linear-gradient(90deg,
-      transparent 0 43px, var(--ink) 43px 44px, transparent 44px 50px),
-    repeating-linear-gradient(90deg,
-      transparent 0 19px, var(--ink-soft) 19px 20px, transparent 20px 25px);
-  background-size: 100% 100%, 100% 44%;
-  background-position: 0 0, 0 50%;
-  background-repeat: repeat-x, repeat-x;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
-  animation: viz-slide 9s linear infinite;
-}
-@keyframes viz-slide { to { transform: translateX(-50px); } }   /* = one period */
-
-/* 3 — two coordinate frames turning against each other over fixed points */
-.viz--basis {
-  background-image: radial-gradient(circle at center, var(--ink-soft) 0.8px, transparent 0.9px);
-  background-size: 23px 23px;
-}
-.viz--basis::before, .viz--basis::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 46%;
-  aspect-ratio: 1;
-  border: 1px solid var(--ink);
-  animation: viz-spin 36s linear infinite;
-}
-.viz--basis::after {
-  width: 29%;
-  border-color: var(--ink-soft);
-  animation-duration: 23s;
-  animation-direction: reverse;
-}
-@keyframes viz-spin { to { transform: rotate(360deg); } }
-
-/* ---- the “Also” list --------------------------------------------------------- */
-.minor-list { margin-top: 0.5rem; }
-.pub-grid + .minor-list { margin-top: 2rem; }   /* list under the cards of the same group */
-.minor + .minor { margin-top: 1rem; }
-.minor-title { max-width: var(--measure); }
-.minor .pub-links { margin-top: 0.25rem; }   /* wins over .profiles */
-.note { margin-top: 2rem; color: var(--fg-dim); }
 
 /* ---- a paper page --------------------------------------------------------- */
 /* The shape of an academic project page — title, authors, buttons, teaser
@@ -445,8 +290,10 @@ a.todo:hover { color: var(--fg-dim); }
 
 /* A paragraph sitting directly in .paper rather than inside a .paper-section
    still has to line up with the sections, which are a centred 44em column.
-   Without this a lead protrudes to the left of everything beneath it. */
-.paper > p, .paper > .prose { max-width: 44em; margin-left: auto; margin-right: auto; }
+   Without this a lead protrudes to the left of everything beneath it.
+   rem, not em: .source is 0.875rem, so as 44em it came out 616px in a 704px
+   column and sat inset 44px on each side. */
+.paper > p, .paper > .prose { max-width: 44rem; margin-left: auto; margin-right: auto; }
 /* rem, not em: the lead sets its own font-size, so 44em here would resolve
    against 1.1rem and overshoot the 44em the sections use. */
 .paper > .lead { max-width: 44rem; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); margin-bottom: 1.5rem; }
@@ -475,13 +322,18 @@ figcaption .todo { color: var(--fg); }
 .paper-section > ul { list-style: disc; }
 .paper-section > ol { list-style: decimal; }
 .paper-section > h2 + h3 { margin-top: 1rem; }
-.pull { max-width: 44em; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--accent-dim); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
+.pull { max-width: 44rem; margin: 0 auto var(--gap); padding-left: 1rem; border-left: 2px solid var(--accent-dim); font-size: 1.2rem; line-height: 1.45; color: var(--fg-dim); text-wrap: balance; }
 .pull p { margin: 0; }
-/* A source note normally tucks under the pull quote, which is why it pulls
+/* rem, not em: both of these set their own font-size, so 44em resolves against
+   THAT size and not the 1rem the 44em column is built on. As em the pull quote
+   came out 845px in a 704px column (70px over each edge) and the source note
+   616px (44px inset each side). Same trap as .paper > .lead further up.
+
+   A source note normally tucks under the pull quote, which is why it pulls
    itself up by a gap. On a page with no pull quote that negative margin slid
    it on top of the paragraph above, so the pull-up is scoped to the case it
    was written for. */
-.source { max-width: 44em; margin: 1.5rem auto var(--gap); padding-left: calc(1rem + 2px); font-size: 0.875rem; color: var(--fg-muted); }
+.source { max-width: 44rem; margin: 1.5rem auto var(--gap); padding-left: calc(1rem + 2px); font-size: 0.875rem; color: var(--fg-muted); }
 .pull + .source { margin-top: calc(-1 * var(--gap) + 1.25rem); }
 .paper-section .pub-meta, .paper-section .source { max-width: var(--measure); color: var(--fg-muted); font-size: 0.875rem; }
 .theorem, .box { max-width: var(--measure); margin: 0 0 1rem; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 0.25rem; }
@@ -494,10 +346,6 @@ figcaption .todo { color: var(--fg); }
 .stats span { display: block; margin-top: 0.2rem; font-size: 0.875rem; line-height: 1.4; color: var(--fg-muted); }
 .paper-section > p.tldr { max-width: 44em; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); }
 .paper-section math[display="block"], .theorem math[display="block"] { margin: 0.5rem 0 1rem; font-size: 1.05rem; overflow-x: auto; }
-.eq { display: flex; align-items: center; gap: 1rem; max-width: var(--measure); margin: 0.5rem 0 1rem; }
-.eq-body { flex: 1; min-width: 0; }
-.eq-body math[display="block"] { margin: 0; }
-.eq-label { color: var(--fg-muted); font-size: 0.875rem; }
 .fig--table { max-width: 44em; margin: 1.5rem 0 0; }
 .table-wrap { overflow-x: auto; }
 .fig--table table { border-collapse: collapse; width: 100%; font-size: 0.875rem; line-height: 1.4; }
@@ -563,7 +411,7 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
    than as decoration, and it separates what the site says from what the site
    knows. Mono runs large at a given size, so each is stepped down. */
 .section-label, .beat-year, .note-date, .project-years, .pub-meta,
-.area-count, .wip, .foot, .box-label, .eq-label, .paper-head .pub-meta {
+.area-count, .wip, .foot, .box-label, .paper-head .pub-meta {
   font-family: var(--mono);
 }
 .pub-meta, .project-years { font-size: 0.8125rem; letter-spacing: 0.01em; }

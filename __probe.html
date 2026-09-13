@@ -1,0 +1,46 @@
+<!doctype html><meta charset="utf-8"><title>probe</title>
+<style>html,body{margin:0}iframe{width:1280px;height:900px;border:0;display:block}</style>
+<div id="out" style="font:12px monospace;white-space:pre"></div>
+<script>
+const pages = ['research/superpositions.html','research/number.html','research/dbs.html','research/stimulation.html'];
+const H = 900;
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function run(){
+  let log = '';
+  for (const p of pages) {
+    const f = document.createElement('iframe');
+    f.src = '/' + p;
+    document.body.appendChild(f);
+    await new Promise(r => f.onload = r);
+    await sleep(400);
+    const w = f.contentWindow, d = f.contentDocument;
+    // scroll to bottom
+    w.scrollTo(0, d.documentElement.scrollHeight);
+    await sleep(600);
+    const nav = d.querySelector('.paper-nav');
+    const ids = [...nav.querySelectorAll('a[href^="#"]')].map(a=>a.getAttribute('href').slice(1));
+    const cur = nav.querySelector('a[aria-current="true"]');
+    log += '=== ' + p + '  innerH=' + w.innerHeight + ' scrollY=' + Math.round(w.scrollY) + ' scrollH=' + d.documentElement.scrollHeight + '\n';
+    log += '  aria-current at bottom: ' + (cur ? cur.getAttribute('href') : 'NONE') + '\n';
+    const band = [0.2*w.innerHeight, 0.3*w.innerHeight];
+    log += '  band = ' + band[0].toFixed(0) + '..' + band[1].toFixed(0) + '\n';
+    for (const id of ids) {
+      const el = d.getElementById(id);
+      if(!el){ log += '  #' + id + ' MISSING\n'; continue; }
+      const r = el.getBoundingClientRect();
+      const hit = r.top < band[1] && r.bottom > band[0];
+      log += '  #' + id.padEnd(14) + ' top=' + Math.round(r.top) + ' bottom=' + Math.round(r.bottom) + (hit?'  <== in band':'') + '\n';
+    }
+    // also try clicking the last link
+    const lastId = ids[ids.length-1];
+    w.location.hash = '#' + lastId;
+    await sleep(600);
+    const cur2 = nav.querySelector('a[aria-current="true"]');
+    log += '  after navigating to #' + lastId + ': scrollY=' + Math.round(w.scrollY) + ' aria-current=' + (cur2?cur2.getAttribute('href'):'NONE') + '\n';
+    f.remove();
+  }
+  document.getElementById('out').textContent = log;
+  document.title = 'DONE';
+}
+run();
+</script>

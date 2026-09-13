@@ -8,8 +8,11 @@
 <meta name="description" content="Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse Concept Atoms. NeurIPS 2025. A short, plain-language tour of the paper.">
 <meta property="og:title" content="Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse Concept Atoms">
 <meta property="og:description" content="NeurIPS 2025. Alicia Zeng and Jack Gallant.">
+<meta property="og:url" content="https://alicialitrtwe.github.io/research/superpositions.html">
 <meta property="og:type" content="article">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://alicialitrtwe.github.io/figures/talk-weights.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://alicialitrtwe.github.io/research/superpositions.html">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -99,7 +102,7 @@
 <section class="paper-section" id="tldr" aria-labelledby="h-tldr">
   <h2 id="h-tldr">The short version</h2>
 <p class="tldr">We use interpretable AI models to understand how the brain represents abstract ideas. Encoding models predict brain activity from word embeddings, and they predict well. But an embedding compresses many thousands of concepts into a few hundred dimensions, so concepts share directions, and the fitted weights cannot say which concept a voxel is actually tuned to. We unpack the embedding into 1,000 sparse <em>concept atoms</em>, one concept per axis, and refit. Prediction is unchanged; the weights become legible. The first thing they show is that time, space and number occupy the same regions of cortex.</p>
-<ul class="stats">
+<ul class="stats" role="list">
   <li><b>300 → 1,000</b><span>GloVe dimensions unpacked into concept atoms</span></li>
   <li><b>0.0005</b><span>change in <i>R</i><sup>2</sup> from switching to sparse features (not significant)</span></li>
   <li><b>0.26 vs 0.09</b><span>agreement of concept maps across people, sparse vs dense</span></li>
