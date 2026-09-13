@@ -98,7 +98,7 @@
           <a class="button" href="https://slideslive.com/39050668" id="l-video"
              aria-labelledby="l-video paper">Video</a>
           <a class="button" href="../viewer/" id="l-viewer"
-             aria-labelledby="l-viewer paper">Brain viewer</a>
+             aria-labelledby="l-viewer paper">Brain viewer (19 subjects)</a>
           <a class="button" href="https://github.com/alicialitrtwe/sparseconcept" id="l-code"
              aria-labelledby="l-code paper">Code</a>
         </p>
@@ -136,7 +136,7 @@
   <li><b>300 → 1,000</b><span>GloVe dimensions unpacked into concept atoms</span></li>
   <li><b>0.0005</b><span>change in <i>R</i><sup>2</sup> from switching to sparse features (not significant)</span></li>
   <li><b>0.26 vs 0.09</b><span>agreement of concept maps across people, sparse vs dense</span></li>
-  <li><b>IPS + IFG</b><span>where time, space and number all overlap, in both hemispheres</span></li>
+  <li><b>IPS + IFG</b><span>intraparietal sulcus and inferior frontal gyrus, where time, space and number all overlap, in both hemispheres</span></li>
 </ul>
 </section>
 
@@ -160,7 +160,7 @@
 
 <h3>From a story to a matrix</h3>
 <p>The hardest part of building an encoding model is turning something as rich as a story into numbers. The simplest choice is to one-hot encode the words, giving every word in the stories its own dimension and marking a 1 wherever it appears. That produces an enormous sparse matrix and throws away every relationship between words. Grouping words into hand-labelled categories first captures more meaning and usually predicts better.</p>
-<p>A major leap in prediction performance came when researchers began using features from machine learning: word embeddings, or activations from language models. These carry much richer structure and consistently beat hand-labelled features, and in general the larger the network the better the prediction.</p>
+<p>A major leap in prediction performance came when researchers began using features from machine learning: word embeddings, or activations from language models. These carry much richer structure and consistently beat hand-labelled features, and in general the larger the network the better the prediction. The features used here are <b>GloVe word embeddings</b>: 300 numbers per word, learned from which words occur together.</p>
 <figure class="fig">
   <a href="../figures/talk-embeddings.jpg"><img src="../figures/talk-embeddings.jpg" alt="Left, the sentence “All data in deep learning must be represented as vectors” set one word per line. Right, each of those words drawn as an arrow from a common origin in a high-dimensional space." width="1640" height="1037" loading="lazy"></a>
   <figcaption>An embedding turns each word into a direction in a few hundred dimensions, learned from which words occur together. It is Wittgenstein’s meaning-as-use, made geometric.</figcaption>
@@ -173,7 +173,7 @@
 <p>With hand-labelled features, interpretation was easy, because each dimension was a word or a category by construction. A learned representation has no such guarantee. Neural networks have to represent millions of concepts in a limited number of dimensions, so each concept is encoded as a linear combination of shared directions. In the interpretability literature this is called <b>superposition</b> (Elhage et al., 2022).</p>
 <figure class="fig">
   <a href="../figures/talk-superposition.jpg"><img src="../figures/talk-superposition.jpg" alt="Left, three orthogonal axes labelled concept 1 time, concept 2 space and concept 3 number, under the heading “features less than or equal to embedding dimensions”. Right, seven correlated directions labelled family, number, space, femaleness, colour and time under the heading “features greater than embedding dimensions”." width="1701" height="629" loading="lazy"></a>
-  <figcaption>When there are no more features than dimensions, each concept can have an axis of its own. When there are more, they have to share, and the directions lean on one another.</figcaption>
+  <figcaption>The slide’s <i>features</i> are latent semantic factors, not the columns of <i>X</i>. When there are no more of them than there are dimensions, each concept can have an axis of its own. When there are more, they have to share, and the directions lean on one another.</figcaption>
 </figure>
 <p>That undoes the readout. In such a feature space, concepts like <i>time</i> and <i>number</i> are correlated, so a weight vector that points toward <i>number</i> will also point toward <i>time</i>. Some concept pairs point in nearly opposite directions, so a negative weight may mean the voxel is suppressed by one, driven by the other, or both.</p>
 <p>This is not a theoretical worry. It shows up in the data: here is voxel selectivity from the story-listening experiment, with each voxel labelled by the words it responds to most.</p>
@@ -257,7 +257,7 @@
   <a href="../figures/talk-overlap.jpg"><img src="../figures/talk-overlap.jpg" alt="Word clouds for the time atom in green, the number atom in red and the space atom in blue, a three-circle Venn key, and cortical flatmaps for Subject 01 and Subject 02 with the three concepts overlaid, white marking where all three coincide in the intraparietal sulcus and inferior frontal gyrus of both hemispheres." width="1920" height="960" loading="lazy"></a>
   <figcaption>Number (red), time (green) and space (blue). Secondary colours are pairwise overlap; white is all three, and it sits in IPS and IFG bilaterally, in both subjects.</figcaption>
 </figure>
-<p class="more"><a href="number.html">This result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
+<p class="more">The analysis has since been extended to nineteen listeners, which is the <a href="number.html">CCN 2026 poster</a>; the maps in <a href="../viewer/">the brain viewer</a> are that larger set, not the seven here. <a href="number.html">That result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
 
 <h3>Concepts have a geometry in cortex</h3>
 <p>With 20 legible maps one can ask how they relate. Compare every pair, cluster the 20 × 20 similarity matrix in one subject, and the same block structure appears in the next; across all seven, the matrices correlate at 0.70 ± 0.08. Is this the embedding’s structure showing through? It is not: the sparse features themselves are uncorrelated (|<i>r</i>| = 0.00 ± 0.10 across the 190 pairs), while the same directions in GloVe space correlate at 0.16 ± 0.14. The geometry is cortical.</p>
