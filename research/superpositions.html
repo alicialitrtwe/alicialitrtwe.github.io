@@ -121,7 +121,7 @@
   </ol>
 </nav>
 
-<figure class="fig fig--hero">
+<figure class="fig fig--hero" id="teaser">
   <a href="../figures/talk-weights.jpg"><img src="../figures/talk-weights.jpg" alt="Two axis diagrams. Left, a concept category feature space: three orthogonal axes for time, space and number, with a voxel’s weight vector projecting cleanly onto each. Right, a dense feature space: seven correlated, non-orthogonal directions for family, number, space, femaleness, colour and time, with the same weight vector projecting onto several at once." width="1830" height="619" loading="lazy"></a>
   <figcaption>The paper in one picture. In a word embedding (right) concepts share directions, so a voxel tuned to <i>number</i> appears tuned to <i>time</i> as well. Once every concept has an axis of its own (left), the same voxel’s tuning can be read directly.</figcaption>
 </figure>
@@ -192,7 +192,7 @@
 
 <section class="paper-section" id="fix" aria-labelledby="h-fix">
   <h2 id="h-fix">The fix: give every concept its own axis</h2>
-<p>Superposition happens when too many features are crammed into too few dimensions, so the way out is to unpack them: recover the hidden semantic directions and give each one a coordinate of its own. That is the left-hand picture at the top of this page, a space whose axes are concepts, where a weight pointing at <i>number</i> means the voxel responds when numbers appear.</p>
+<p>Superposition happens when too many features are crammed into too few dimensions, so the way out is to unpack them: recover the hidden semantic directions and give each one a coordinate of its own. That is the left-hand picture <a href="#teaser">at the top of this page</a>, a space whose axes are concepts, where a weight pointing at <i>number</i> means the voxel responds when numbers appear.</p>
 <p>The tool is <b>sparse coding</b>, proposed by Olshausen and Field in 1996 as an account of how visual cortex represents natural images, and developed a few doors down from this work: find a dictionary of atoms such that each input is the sum of only a few of them. Word vectors suit it well. <i>Queen</i> is royalty together with femaleness; royalty recurs in <i>king</i> and <i>castle</i>, femaleness in <i>daughter</i> and <i>mother</i>, and most words are composed of a handful of such factors.</p>
 <p>Written out, each word vector <i>x</i> is a weighted mix of a small number of concept atoms <i>ϕ</i>. Doing that for every word at once is a matrix factorization: the dense embedding matrix becomes a coefficient matrix times a dictionary of atoms. The factorization expands the feature space into a higher-dimensional one, where different concepts can separate cleanly — 1,000 atoms living in the original 300. This works because of one key assumption, sparsity: most words connect to only a few underlying concepts, so most entries in the new representation are expected to be zero.</p>
 <figure class="fig">

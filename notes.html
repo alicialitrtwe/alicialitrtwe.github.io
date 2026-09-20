@@ -36,10 +36,12 @@
 
   <main id="main" tabindex="-1">
 
-    <h1 class="name">Notes</h1>
+    <header class="block page-head">
+      <h1 class="name">Notes</h1>
 
-    <p class="lead"><span class="todo" data-todo="notes-intro">[One line saying what this page is —
-      working notes, thinking out loud, whatever it actually is. Yours.]</span></p>
+      <p class="lead"><span class="todo" data-todo="notes-intro">[One line saying what this page
+        is — working notes, thinking out loud, whatever it actually is. Yours.]</span></p>
+    </header>
 
     <!-- A short stream: newest first, small entries, the date set bold.
          To add one, copy an <li class="note-item"> block to the TOP of the
@@ -54,6 +56,7 @@
 
          Nothing else needs touching — the spacing is handled by
          .stream / .note-item in styles.css.                                -->
+    <div class="block">
     <ol class="stream" role="list">
 
       <li class="note-item">
@@ -83,6 +86,7 @@
       </li>
 
     </ol>
+    </div>
 
   </main>
 
@@ -96,5 +100,6 @@
 
 </div>
 
+<script src="site.js"></script>
 </body>
 </html>

@@ -28,7 +28,8 @@ step, no framework.
     styles.css                      everything visual
     site.js                         the homepage attractor, the clip observer and the paper-page
                                     section nav; optional
-    styles-dark.css                 the previous design, kept for a one-line revert
+    styles-dark.css                 the previous design, kept as a record — see below; it is
+                                    not a working revert
 
 ## Running it
 
@@ -59,9 +60,11 @@ no analytics, no embeds. `site.js` is optional — with it off you lose the
 homepage animation and the highlighted section name in the paper-page nav,
 nothing else.
 
-The previous design is kept verbatim in `styles-dark.css`. To go back, point
-each page's `<link rel="stylesheet">` at it and re-add the Space Grotesk
-`<link>` tags it expects.
+`styles-dark.css` is the previous design, kept as a record. It is **not** a
+working revert any more: it styles the markup this site had before the area
+cards, the inventory's `outputs--media` list and the page grid, so pointing a
+page's `<link rel="stylesheet">` at it now would leave most of that page
+unstyled. Read it for what a rule used to be; do not swap it in.
 
 ### Animation versus real figures
 

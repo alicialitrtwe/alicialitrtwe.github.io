@@ -121,11 +121,11 @@ a[href^="http"]::after {
 }
 
 /* ---- prose ---------------------------------------------------------------- */
-.lead, .prose, .paper-body, .note-body, .contact-note, .otherwise, .note {
+.lead, .prose, .note-body, .contact-note, .otherwise, .note {
   max-width: var(--measure);
 }
-.lead, .prose > p, .paper-body > p, .note-body > p { margin-bottom: 1rem; }
-.prose > p:last-child, .paper-body > p:last-child, .note-body > p:last-child {
+.lead, .prose > p, .note-body > p { margin-bottom: 1rem; }
+.prose > p:last-child, .note-body > p:last-child {
   margin-bottom: 0;
 }
 .lead + .prose { margin-top: 0; }
@@ -280,7 +280,7 @@ a.todo:hover { color: var(--fg-dim); }
   /* The outputs sit under the text they belong to, not across both columns:
      spanning, the list started under the video and read as its caption, and
      its own 46rem cap then stopped it 112px short of the grid it was spanning. */
-  .project > .outputs, .area > .outputs {
+  .project > .outputs {
     grid-column: 1 / -1;
     max-width: none;
     align-self: start;
@@ -298,7 +298,6 @@ a.todo:hover { color: var(--fg-dim); }
 .paper-title { font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.75rem; }
 .paper-head .authors { max-width: none; margin: 0 auto; font-size: 0.95rem; }
 .paper-head .pub-meta { margin-top: 0.35rem; color: var(--fg-muted); }
-.paper-head .dedication { margin-top: 1.25rem; font-style: italic; color: var(--fg-muted); }
 
 .buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; }
 .button {
@@ -324,7 +323,7 @@ a.todo:hover { color: var(--fg-dim); }
    Without this a lead protrudes to the left of everything beneath it.
    rem, not em: .source is 0.875rem, so as 44em it came out 616px in a 704px
    column and sat inset 44px on each side. */
-.paper > p, .paper > .prose { max-width: 44rem; margin-left: auto; margin-right: auto; }
+.paper > p { max-width: 44rem; margin-left: auto; margin-right: auto; }
 /* rem, not em: the lead sets its own font-size, so 44em here would resolve
    against 1.1rem and overshoot the 44em the sections use. */
 .paper > .lead { max-width: 44rem; margin-bottom: 1.5rem; }
@@ -336,20 +335,18 @@ a.todo:hover { color: var(--fg-dim); }
 /* a figure: the image or video, then a caption. .fig-slot is the marked
    placeholder for one that does not exist yet. */
 .fig { margin: 2.25rem 0 0; }
-.fig img, .fig video, .fig iframe { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
-.fig iframe { aspect-ratio: 16 / 9; border: 0; }
+.fig img, .fig video { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
 .fig-slot { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1rem; border: 1px dashed var(--border); border-radius: 0.25rem; text-align: center; color: var(--fg-muted); }
 .fig-slot.todo { background: color-mix(in srgb, var(--highlight) 12%, var(--bg)); border-color: color-mix(in srgb, var(--placeholder) 55%, transparent); color: var(--fg-muted); }
-.output-media .fig-slot.todo, .project-media .fig-slot.todo, .area-media .fig-slot.todo {
+.output-media .fig-slot.todo, .project-media .fig-slot.todo {
   background: color-mix(in srgb, var(--highlight) 5%, var(--bg));
   border-color: color-mix(in srgb, var(--placeholder) 26%, transparent);
 }
 /* and it takes the frame's own shape - at 16/9 it sat 62px shorter than the
    clips above it, leaving a black band inside the hairline */
-.project-media .fig-slot, .area-media .fig-slot { aspect-ratio: auto; height: 100%; }
+.project-media .fig-slot { aspect-ratio: auto; height: 100%; }
 .fig--hero { max-width: 44em; margin: 0 auto var(--gap); }
 figcaption { margin-top: 0.6rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); max-width: var(--measure); }
-figcaption .todo { color: var(--fg); }
 
 /* the long-form explainer pages: sub-headings inside a section, a pulled
    sentence under the teaser, a boxed theorem, display equations (MathML,
@@ -378,16 +375,16 @@ figcaption .todo { color: var(--fg); }
    and is the column. Inside a section it is a note on the text beside it, so
    it lines up with that text instead of floating in the middle of it. */
 .paper-section > .source { margin-left: 0; margin-right: auto; }
-.theorem, .box { max-width: var(--measure); margin: 0 0 1rem; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 0.25rem; }
-.theorem p, .box p { margin-bottom: 0.75rem; }
-.theorem p:last-child, .box p:last-child { margin-bottom: 0; }
+.box { max-width: var(--measure); margin: 0 0 1rem; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 0.25rem; }
+.box p { margin-bottom: 0.75rem; }
+.box p:last-child { margin-bottom: 0; }
 .box-label { display: block; margin-bottom: 0.5rem; font-size: 0.8125rem; font-weight: 600; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .stats, .paper-section > ul.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem 1.5rem; max-width: 44em; margin: 1.5rem 0 1rem; padding: 0; list-style: none; }
 .stats li, .paper-section > ul.stats li + li { margin: 0; }
 .stats b { display: block; font-size: 1.5rem; font-weight: 600; line-height: 1.2; color: var(--fg); font-variant-numeric: tabular-nums; }
 .stats span { display: block; margin-top: 0.2rem; font-size: 0.875rem; line-height: 1.4; color: var(--fg-muted); }
 .paper-section > p.tldr { max-width: 44em; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); }
-.paper-section math[display="block"], .theorem math[display="block"] { margin: 0.5rem 0 1rem; font-size: 1.05rem; overflow-x: auto; }
+.paper-section math[display="block"] { margin: 0.5rem 0 1rem; font-size: 1.05rem; overflow-x: auto; }
 .fig--table { max-width: 44em; margin: 2.25rem 0 0; }
 .table-wrap { overflow-x: auto; }
 .fig--table table { border-collapse: collapse; width: 100%; font-size: 0.875rem; line-height: 1.4; }
@@ -397,10 +394,9 @@ figcaption .todo { color: var(--fg); }
 .fig--table th { color: var(--fg-dim); font-weight: 600; }
 .fig--table td:first-child, .fig--table th:first-child { font-family: var(--mono); white-space: nowrap; color: var(--fg-muted); }
 .fig--table tbody tr:last-child td { border-bottom: 0; }
-.fig + p, .fig--table + p { margin-top: 2.25rem; }
+.fig + p, .fig--table + p { margin-top: 2.25rem; }   /* .fig--table is superpositions' atom table */
 .fig + h3 { margin-top: 2.75rem; }
 
-.paper-section code { font-family: var(--mono); font-size: 0.9em; }
 
 pre.bibtex { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; background: var(--surface); border-radius: 0.25rem; white-space: pre; }
 
@@ -444,7 +440,7 @@ video:focus-visible, summary:focus-visible {
   .output-links a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
   .fig img, .fig video, .output-media, .area-media, .project-media { border-color: #ccc; }
   .todo { background: none; border: 1px dashed #999; }
-  figure, .box, .theorem, .paper-section { break-inside: avoid; }
+  figure, .box, .paper-section { break-inside: avoid; }
 }
 
 /* A figure legend that is long enough to bury a short page: folded by default. */
@@ -640,7 +636,7 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 /* The tint here was 3% of the area hue over transparent, which on this ground
    is a literal no-op - the box had a rule down its left and no ground at all.
    Mixed into --surface instead it is a real, still quiet, step off the page. */
-.theorem, .box {
+.box {
   border-left: 2px solid color-mix(in srgb, var(--area) 55%, transparent);
   background: color-mix(in srgb, var(--area) 8%, var(--surface));
 }
@@ -784,7 +780,6 @@ figcaption { max-width: 34rem; }
   border-radius: 0.2rem;
   border: 1px solid color-mix(in srgb, var(--area) 16%, transparent);
 }
-.output-media--plate img { background: #f4f4f2; object-fit: contain; }
 .output-media .fig-slot { aspect-ratio: 1.45; font-size: 0.8125rem; }
 /* Only the inventory's list carries thumbnails. Area pages use .outputs too,
    and their items have no media, so an unscoped grid crushed their titles into
@@ -816,7 +811,6 @@ figcaption { max-width: 34rem; }
    so the page opened with a narrow column and a third of the width empty, then
    dropped into projects that use all of it. Side by side above 68em the opening
    fills the measure it is given and the step down into the projects is even. */
-.area-intro > .lead + .prose { margin-top: 1rem; }
 @media (min-width: 68em) {
   .area-intro {
     display: grid;
@@ -878,7 +872,10 @@ figcaption { max-width: 34rem; }
    Same hairline idea, at a contrast that exists. */
 .area-media, .project-media { border-color: color-mix(in srgb, var(--area) 34%, transparent); }
 .output-media video, .output-media img { border-color: color-mix(in srgb, var(--area) 30%, transparent); }
-.fig img, .fig video, .fig iframe { border-color: color-mix(in srgb, var(--area) 26%, transparent); }
+.fig img, .fig video { border-color: color-mix(in srgb, var(--area) 26%, transparent); }
+/* A plate's edge is the box-shadow ring above; without this it draws that and
+   a border, two concentric rings a few per cent apart. */
+.fig--plate img { border-color: transparent; }
 
 /* Stacked, a clip took the whole shell, so the page grew TALLER as the window
    grew wider and then collapsed at the breakpoint. */
@@ -1010,4 +1007,13 @@ figcaption { max-width: 34rem; }
 .shell:not([data-area]) .paper-section > h2::before {
   background: linear-gradient(90deg,
     var(--c-cognition), var(--c-closed) 55%, var(--c-bayesian));
+}
+
+
+/* The print reset sets --area on :root, but nine pages set it on
+   .shell[data-area], which has the same specificity and comes later in the
+   file - so a printed paper page still asked for its screen hue. This is the
+   last word on the subject. */
+@media print {
+  [data-area] { --area: #036; }
 }

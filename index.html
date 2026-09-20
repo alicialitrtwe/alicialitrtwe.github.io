@@ -16,7 +16,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12.5' cy='16' r='7.5' fill='none' stroke='%23d4698f' stroke-width='2.6'/%3E%3Ccircle cx='19.5' cy='16' r='7.5' fill='none' stroke='%2335bcc9' stroke-width='2.6'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
 <!-- the hero is a canvas site.js paints; with no script it is an empty band -->
-<noscript><style>.hero-viz{display:none}</style></noscript>
+<noscript><style>.hero-viz{display:none}@media (min-width:60em){.hero-split{grid-template-columns:minmax(0,1fr)}}@media (min-width:68em){.hero-split{grid-template-columns:7rem minmax(0,1fr)}}</style></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -74,17 +74,17 @@
          strange attractor drawn by site.js, not data from any paper. -->
     <div class="hero-split">
       <section class="hero" aria-labelledby="h-name">
-        <p class="lead">For about ten years I've been asking a version of the same question, first in
+        <p class="lead">For about ten years I’ve been asking a version of the same question, first in
           philosophy and then in physics: how does meaning come out of mechanism, and how would you
           know if it had?</p>
 
         <div class="prose">
-          <p>The answer I've settled into is that structure lives in the data, and intelligence is
+          <p>The answer I’ve settled into is that structure lives in the data, and intelligence is
             whatever extracts it. That puts the constraint in a slightly unfashionable place. How
             clever the model is matters less than whether the measurement got made at all, and whether
             it got made somewhere rich enough that the structure survived contact with the
             experiment.</p>
-          <p>Most of what I've worked on has been messy on purpose for that reason. Stories instead of
+          <p>Most of what I’ve worked on has been messy on purpose for that reason. Stories instead of
             word lists. Actual birdsong. Patients at home rather than in a clinic room.</p>
         </div>
       </section>
@@ -129,7 +129,7 @@
           <div class="area-media">
             <video loop muted playsinline preload="none"
                    poster="figures/area-closed-loop.jpg" width="870" height="600"
-                   aria-label="Four rows scrolling together on one clock: spectrograms of precentral and postcentral cortex across the whole band the implant returns, 0 to 250 hertz, then the right wrist's acceleration spectrum, then the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
+                   aria-label="Four rows scrolling together on one clock: spectrograms of precentral and postcentral cortex across the whole band the implant returns, 0 to 250 hertz, then the right wrist’s acceleration spectrum, then the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
               <source src="figures/area-closed-loop.mp4" type="video/mp4">
             </video>
           </div>
@@ -206,11 +206,10 @@
       <p class="contact-mail"><a href="mailto:aliciaxiaozeng@gmail.com">aliciaxiaozeng@gmail.com</a></p>
       <p class="prose contact-note"><span class="todo" data-todo="invitation-line">[invitation
         line — yours]</span></p>
-      <nav class="profiles" aria-label="Profiles">
+      <p class="profiles">
         <a class="todo" data-todo="link-google-scholar">[google scholar]</a>
         <a class="todo" data-todo="link-github">[github]</a>
-        <a class="todo" data-todo="link-orcid">[orcid]</a>
-      </nav>
+        <a class="todo" data-todo="link-orcid">[orcid]</a></p>
       <!-- Demoted from its own display-scale section to one quiet line: the
            only sentence here that is not about the work, read as an aside. -->
       <p class="otherwise">Otherwise: camping, mountains, ballet, and I still read philosophy.</p>
