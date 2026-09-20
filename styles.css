@@ -54,7 +54,16 @@
 /* ---- base ---------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  /* .paper-nav is sticky, so an anchor has to stop short of it or it lands on
+     top of the heading it was aiming at. The nav wraps as the window narrows -
+     measured 41px at 1024 and up, 66px from 640, 91px at 560, 116px at 430 -
+     so the headroom steps with it. */
+  scroll-padding-top: 8.5rem;
+}
+@media (min-width: 40em) { html { scroll-padding-top: 5.5rem; } }
+@media (min-width: 64em) { html { scroll-padding-top: 4rem; } }
 
 body {
   margin: 0;
@@ -148,7 +157,6 @@ a.todo:hover { color: var(--fg-dim); }
 }
 
 /* ---- header ---------------------------------------------------------------- */
-.topbar { margin-bottom: 3.5rem; }
 .wordmark { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
 .wordmark a { text-decoration: none; }
 .wordmark a:hover { text-decoration: underline; opacity: 1; }
@@ -160,8 +168,6 @@ a.todo:hover { color: var(--fg-dim); }
   text-decoration-color: var(--accent);
   text-underline-offset: 0.3em;
 }
-
-.name { margin-bottom: 1rem; }
 
 /* ---- the hero ----------------------------------------------------------- */
 /* A canvas that site.js fills with a strange attractor tracing itself —
@@ -182,7 +188,12 @@ a.todo:hover { color: var(--fg-dim); }
 }
 
 /* ---- sections ---------------------------------------------------------------- */
-.block { margin-top: var(--gap); }
+/* 5.5rem, not --gap: a section boundary has to be the largest step on the
+   page. Two cards inside a section used to sit 96px apart while two whole
+   sections sat 64px apart, so the spacing contradicted the hierarchy. The
+   order now runs 88px between sections, 72px between entries, 48px between
+   rows of a list. */
+.block { margin-top: 5.5rem; }
 .name + .group { margin-top: 1.5rem; }   /* first group sits close under the page title */
 .section-label {
   margin-bottom: 0.75rem;
@@ -209,8 +220,7 @@ a.todo:hover { color: var(--fg-dim); }
    sitting in a row. An entry stretches one link over its whole card via the
    title's ::after, so anything else clickable inside it needs its own
    stacking context - see .area-extra. */
-.areas, .projects { margin-top: 1.5rem; }
-.area + .area, .project + .project { margin-top: 3.5rem; }
+.areas, .projects, .beats { margin-top: 1.5rem; }
 .area { position: relative; }
 .area .area-title a::after { content: ""; position: absolute; inset: 0; }
 .area:hover .area-title a { text-decoration: underline; }
@@ -232,7 +242,7 @@ a.todo:hover { color: var(--fg-dim); }
 .project-caption { margin-top: 0.6rem; font-size: 0.8125rem; line-height: 1.45; color: var(--fg-muted); }
 
 .area-body, .project-body { margin-top: 1.25rem; }
-.area-title, .project-title { font-size: 1rem; font-weight: 700; }
+.area-title, .project-title { font-size: 1.15rem; font-weight: 700; line-height: 1.35; }
 .area-title a, .project-title a { text-decoration: none; }
 .area-title a:hover, .project-title a:hover { text-decoration: underline; opacity: 1; }
 .project-years { margin-left: 0.45rem; font-weight: 400; color: var(--fg-muted); }
@@ -246,7 +256,8 @@ a.todo:hover { color: var(--fg-dim); }
 .outputs > li + li { margin-top: 1rem; }
 .output-title { font-weight: 400; }
 .output-title .pub-meta { display: block; margin-top: 0.1rem; font-size: 0.875rem; color: var(--fg-muted); }
-.output-links { margin-top: 0.15rem; font-size: 0.875rem; }
+.output-links { margin-top: 0.35rem; font-size: 0.875rem; line-height: 2; }
+.output-links a { display: inline-block; padding: 0.15rem 0; }
 .output-links a { color: var(--fg-muted); }
 .output-links a:hover { color: var(--fg); }
 .output-links .sep { padding: 0 0.4rem; color: #3d3d3d; }
@@ -254,13 +265,20 @@ a.todo:hover { color: var(--fg-dim); }
 @media (min-width: 46em) {
   .area, .project {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     gap: 0 2.5rem;
-    align-items: start;
+    align-items: center;
   }
   .area-body, .project-body { margin-top: 0; }
-  /* the outputs list runs full width under the two columns */
-  .project > .outputs, .area > .outputs { grid-column: 1 / -1; margin-top: 2rem; }
+  /* The outputs sit under the text they belong to, not across both columns:
+     spanning, the list started under the video and read as its caption, and
+     its own 46rem cap then stopped it 112px short of the grid it was spanning. */
+  .project > .outputs, .area > .outputs {
+    grid-column: 1 / -1;
+    max-width: none;
+    align-self: start;
+    margin-top: 2rem;
+  }
 }
 
 
@@ -310,11 +328,18 @@ a.todo:hover { color: var(--fg-dim); }
 
 /* a figure: the image or video, then a caption. .fig-slot is the marked
    placeholder for one that does not exist yet. */
-.fig { margin: 1.5rem 0 0; }
+.fig { margin: 2.25rem 0 0; }
 .fig img, .fig video, .fig iframe { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
 .fig iframe { aspect-ratio: 16 / 9; border: 0; }
 .fig-slot { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1rem; border: 1px dashed var(--border); border-radius: 0.25rem; text-align: center; color: var(--fg-muted); }
 .fig-slot.todo { background: color-mix(in srgb, var(--highlight) 12%, var(--bg)); border-color: color-mix(in srgb, var(--placeholder) 55%, transparent); color: var(--fg-muted); }
+.output-media .fig-slot.todo, .project-media .fig-slot.todo, .area-media .fig-slot.todo {
+  background: color-mix(in srgb, var(--highlight) 5%, var(--bg));
+  border-color: color-mix(in srgb, var(--placeholder) 26%, transparent);
+}
+/* and it takes the frame's own shape - at 16/9 it sat 62px shorter than the
+   clips above it, leaving a black band inside the hairline */
+.project-media .fig-slot, .area-media .fig-slot { aspect-ratio: auto; height: 100%; }
 .fig--hero { max-width: 44em; margin: 0 auto var(--gap); }
 figcaption { margin-top: 0.6rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); max-width: var(--measure); }
 figcaption .todo { color: var(--fg); }
@@ -352,7 +377,7 @@ figcaption .todo { color: var(--fg); }
 .stats span { display: block; margin-top: 0.2rem; font-size: 0.875rem; line-height: 1.4; color: var(--fg-muted); }
 .paper-section > p.tldr { max-width: 44em; font-size: 1.1rem; line-height: 1.5; color: var(--fg-dim); }
 .paper-section math[display="block"], .theorem math[display="block"] { margin: 0.5rem 0 1rem; font-size: 1.05rem; overflow-x: auto; }
-.fig--table { max-width: 44em; margin: 1.5rem 0 0; }
+.fig--table { max-width: 44em; margin: 2.25rem 0 0; }
 .table-wrap { overflow-x: auto; }
 .fig--table table { border-collapse: collapse; width: 100%; font-size: 0.875rem; line-height: 1.4; }
 .fig--table caption { text-align: left; caption-side: top; padding: 0 0 0.75rem; color: var(--fg-muted); }
@@ -361,7 +386,8 @@ figcaption .todo { color: var(--fg); }
 .fig--table th { color: var(--fg-dim); font-weight: 600; }
 .fig--table td:first-child, .fig--table th:first-child { font-family: var(--mono); white-space: nowrap; color: var(--fg-muted); }
 .fig--table tbody tr:last-child td { border-bottom: 0; }
-.fig + p, .fig + h3, .fig--table + p { margin-top: 1.5rem; }
+.fig + p, .fig--table + p { margin-top: 2.25rem; }
+.fig + h3 { margin-top: 2.75rem; }
 
 .paper-section code { font-family: var(--mono); font-size: 0.9em; }
 
@@ -374,7 +400,7 @@ pre.bibtex { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--mono
 .otherwise { margin-top: 1.5rem; color: var(--fg-dim); }
 
 /* ---- footer ---------------------------------------------------------------------- */
-.foot { margin-top: var(--gap); padding-top: 1.1rem; border-top: 1px solid #232323; font-size: 0.8125rem; letter-spacing: 0.01em; color: var(--fg-muted); }
+.foot { margin-top: var(--gap); font-size: 0.8125rem; letter-spacing: 0.01em; color: var(--fg-muted); }
 .foot a, .foot [aria-current="page"] { margin-right: 0.5rem; }
 .foot a { text-decoration: none; }
 .foot a:hover { text-decoration: underline; }
@@ -518,7 +544,8 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
   background: linear-gradient(90deg,
     color-mix(in srgb, var(--accent) 55%, transparent),
     var(--border) 26%,
-    transparent 92%);
+    var(--border) 82%,
+    transparent);
 }
 .foot {
   position: relative;
@@ -535,7 +562,8 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
   background: linear-gradient(90deg,
     color-mix(in srgb, var(--accent) 40%, transparent),
     var(--border) 24%,
-    transparent 92%);
+    var(--border) 82%,
+    transparent);
 }
 
 /* ---- small accents ------------------------------------------------------------ */
@@ -616,7 +644,7 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 
 /* A caption sits under a 44em figure, so a 34em measure leaves it looking
    orphaned at the left. 40em keeps it readable and squares it up. */
-figcaption { max-width: 40em; }
+figcaption { max-width: 34rem; }
 
 /* Figures take the same hairline as the clips, so a paper page and an area
    page are recognisably the same site. */
@@ -634,7 +662,7 @@ figcaption { max-width: 40em; }
 @media (min-width: 68em) {
   .block {
     display: grid;
-    grid-template-columns: 9.5rem minmax(0, 1fr);
+    grid-template-columns: 7rem minmax(0, 1fr);
     column-gap: 2.5rem;
     align-items: start;
   }
@@ -664,12 +692,18 @@ figcaption { max-width: 40em; }
 }
 
 /* Every subpage gets a standfirst, the way the index opening has one: the
-   paragraph directly under the page title is set larger and lighter. */
-.name + .lead {
+   paragraph under the page title is set larger and lighter.
+
+   Not `.name + .lead`, which is what this was: on an area page the standfirst
+   sits inside .area-intro rather than beside the title, so the adjacent
+   sibling never matched and cognition, closed-loop and bayesian all ran their
+   opening at body size. 34rem rather than 32em, so the standfirst ends on the
+   same right edge as the body under it instead of 70px past it. */
+.lead {
   font-size: 1.2rem;
   line-height: 1.45;
   color: var(--fg);
-  max-width: 32em;
+  max-width: 34rem;
   margin-bottom: 1.25rem;
 }
 
@@ -677,8 +711,8 @@ figcaption { max-width: 40em; }
    outputs list of one entry runs into the next entry's video. */
 .area + .area, .project + .project {
   border-top: 1px solid var(--border);
-  margin-top: 3rem;
-  padding-top: 3rem;
+  margin-top: 2.25rem;
+  padding-top: 2.25rem;
 }
 
 /* Section headings on a paper page were body size, which on a chapter-length
@@ -699,7 +733,7 @@ figcaption { max-width: 40em; }
   border-radius: 2px;
   background: var(--area);
 }
-.paper-section > h3 { font-size: 1.05rem; color: var(--fg); }
+.paper-section > h3 { font-size: 1.125rem; line-height: 1.35; color: var(--fg); }
 @media (max-width: 48em) {
   .paper-section > h2::before { display: none; }
 }
@@ -747,7 +781,7 @@ figcaption { max-width: 40em; }
    body content on another, and the opening paragraph on the wrong one. */
 @media (min-width: 68em) {
   .hero-split {
-    grid-template-columns: 9.5rem minmax(0, 1fr) minmax(0, 0.86fr);
+    grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 0.86fr);
     column-gap: 2.5rem;
   }
   .hero-split > .hero { grid-column: 2; }
@@ -803,3 +837,131 @@ figcaption { max-width: 40em; }
 .transcript > summary:hover { color: var(--fg); }
 .transcript > summary:focus-visible { outline: 1px solid var(--area); outline-offset: 3px; }
 .transcript > p { margin-top: 0.9rem; max-width: var(--measure); color: var(--fg-dim); }
+
+
+/* ---- the balance pass --------------------------------------------------------
+   Everything below was measured against the rendered page rather than guessed:
+   media that read as holes instead of as objects, two-column blocks whose sides
+   ended at wildly different depths, a list whose rows ran together, and the
+   leftovers that sat on the wrong axis.                                        */
+
+/* A clip's frame was 16% of the area hue over the page - between 1.15:1 and
+   1.26:1, well under the 3:1 a non-text boundary needs to be seen at all - so
+   a clip read as a hole burned in the page rather than as a framed object.
+   Same hairline idea, at a contrast that exists. */
+.area-media, .project-media { border-color: color-mix(in srgb, var(--area) 34%, transparent); }
+.output-media video, .output-media img { border-color: color-mix(in srgb, var(--area) 30%, transparent); }
+.fig img, .fig video, .fig iframe { border-color: color-mix(in srgb, var(--area) 26%, transparent); }
+
+/* Stacked, a clip took the whole shell, so the page grew TALLER as the window
+   grew wider and then collapsed at the breakpoint. */
+@media (max-width: 45.99em) {
+  .area-media, .project-media { max-width: 32rem; }
+}
+
+/* The talk is 16:9 and was letterboxed into the 1.45 frame the data clips
+   share, losing 60px of its height to black. It is a recording of a room, not
+   one of the clips, so it gets its own frame. */
+.project-media--wide { aspect-ratio: 16 / 9; }
+
+/* A card's mark is narrower than a page title's, so the two ranks are not the
+   same mark at the same width. */
+.area-title::before, .project-title::before { width: 1.5rem; }
+
+/* "All research" sat flush against the bottom of the last clip - zero margin -
+   and read as its caption. It closes the section now, with the same hairline
+   that separates one card from the next. Scoped to a .block: superpositions.html
+   uses .more for an ordinary paragraph, which must not grow a rule. */
+.block > .more {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+/* A block carrying no label of its own, sitting close under what it follows.
+   The page standfirst and the closing note on the inventory were the only two
+   things left on the masthead's axis after every section moved into column 2. */
+.block.page-head { margin-top: 0; }
+.block.page-head > .lead { margin-bottom: 0; }
+.block--tight { margin-top: 2.25rem; }
+
+/* The date column and the label gutter are now the same module, so an entry's
+   text starts one module in from its section's content, which starts one
+   module in from the label. Three axes, one interval. */
+@media (min-width: 68em) {
+  .beat, .note-item { grid-template-columns: 7rem minmax(0, 1fr); column-gap: 2.5rem; }
+}
+
+/* ---- an area page's contents -------------------------------------------------
+   The opening spread set a four-line standfirst beside a twelve-line argument
+   and hung both from the top, so 87,000px of black sat under the standfirst at
+   the point where the eye enters the page. The left column carries the area's
+   contents under the standfirst instead: it fills the column with something
+   worth having, and the two sides now end within 40px of each other.          */
+.area-toc { margin: 1.75rem 0 1.5rem; }
+.area-toc-label {
+  margin-bottom: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.area-toc ol { display: grid; gap: 0.45rem; }
+.area-toc li {
+  padding-left: 0.9rem;
+  border-left: 1px solid color-mix(in srgb, var(--area) 40%, transparent);
+}
+.area-toc a { text-decoration: none; }
+.area-toc a:hover { text-decoration: underline; opacity: 1; }
+.area-toc-years {
+  margin-left: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}
+@media (min-width: 68em) {
+  .area-intro { grid-template-rows: max-content 1fr; row-gap: 1.6rem; }
+  .area-intro > .lead { grid-column: 1; grid-row: 1; }
+  .area-intro > .area-toc { grid-column: 1; grid-row: 2; margin: 0; }
+  .area-intro > .prose { grid-column: 2; grid-row: 1 / span 2; }
+}
+
+/* ---- the inventory reads as a list of works ----------------------------------
+   Entries sat 16px apart while an entry's own thumbnail-to-text gap was 12px,
+   so the rows ran together and the eye could not find where one stopped. A
+   hairline and half a section gap, which is the device the cards already use.
+   The list also stopped 64px short of its own column at its 46rem cap; letting
+   the media variant fill the column buys the thumbnails 70% more area, which
+   is the difference between a picture and a smudge at this size.              */
+.outputs--media { max-width: none; }
+/* after .outputs > li + li, which it shares specificity with */
+.outputs--media > li + li { margin-top: 2.25rem; }
+@media (min-width: 40em) {
+  .outputs--media > li { grid-template-columns: 15rem minmax(0, 1fr); }
+  .outputs--media > li + li {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+}
+/* and the three areas are three chapters, not one ladder of eight equal items */
+.group + .group {
+  border-top: 1px solid var(--border);
+  margin-top: 2.75rem;
+  padding-top: 2.75rem;
+}
+
+/* A page that belongs to no single area wore the accent, which is byte for
+   byte the Closed loop hue - so the index, the inventory and the notes all
+   carried one area's colour as their page mark. All three, in their order,
+   is what is actually true of those pages. */
+.shell:not([data-area]) .name::before,
+.shell:not([data-area]) .block > .section-label::before {
+  background: linear-gradient(90deg,
+    var(--c-cognition), var(--c-closed) 55%, var(--c-bayesian));
+}
+/* except on the inventory, where each section IS an area and says so */
+.shell:not([data-area]) [data-area] .section-label::before {
+  background: var(--area);
+}
