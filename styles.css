@@ -100,7 +100,7 @@ a:hover { opacity: 0.66; }
 a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 
 /* an outward arrow after every link that leaves the site */
-a[href^="http"]::after {
+a[href^="http"]::after, a[target="_blank"]::after {
   content: "\2197";                       /* ↗ */
   display: inline-block;                  /* so it is not underlined */
   margin-left: 0.15em;
@@ -260,7 +260,15 @@ a.todo:hover { color: var(--fg-dim); }
    card: across the two columns of an area page it ran to 992px, about 140
    characters of author list on one line. */
 .outputs .output-title, .outputs .authors, .outputs .output-links { max-width: 46rem; }
-.outputs > li + li { margin-top: 1rem; }
+/* The same hairline and half-gap the inventory uses. Without it the three
+   publications on closed-loop.html read as one undifferentiated twelve-line
+   block: 16px between entries, and 0px between an entry's own title and its
+   author list. */
+.outputs > li + li {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
 .output-title { font-weight: 400; }
 .output-title .pub-meta { display: block; margin-top: 0.1rem; font-size: 0.875rem; color: var(--fg-muted); }
 .output-links { margin-top: 0.35rem; font-size: 0.875rem; line-height: 2; }

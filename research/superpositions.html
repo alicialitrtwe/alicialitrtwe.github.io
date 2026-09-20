@@ -87,7 +87,7 @@
       <header class="paper-head">
         <h1 class="paper-title" id="paper"><cite>Disentangling Superpositions: Interpretable Brain Encoding Model with Sparse
           Concept Atoms</cite></h1>
-        <p class="authors"><span class="me">Alicia Zeng</span>, Jack Gallant</p>
+        <p class="authors"><span class="me">Alicia Zeng</span>, Jack Gallant</p>
         <p class="pub-meta">NeurIPS <time datetime="2025">2025</time></p>
         <p class="buttons pub-links">
           <a class="button" href="https://openreview.net/forum?id=3aNvX9TQTo" id="l-openreview"
@@ -98,7 +98,7 @@
              aria-labelledby="l-poster paper">Poster</a>
           <a class="button" href="https://slideslive.com/39050668" id="l-video"
              aria-labelledby="l-video paper">Video</a>
-          <a class="button" href="../viewer/" id="l-viewer"
+          <a class="button" href="../viewer/" target="_blank" rel="noopener" id="l-viewer"
              aria-labelledby="l-viewer paper">Brain viewer (19 subjects)</a>
           <a class="button" href="https://github.com/alicialitrtwe/sparseconcept" id="l-code"
              aria-labelledby="l-code paper">Code</a>
@@ -151,11 +151,11 @@
 <section class="paper-section" id="encoding" aria-labelledby="h-encoding">
   <h2 id="h-encoding">What an encoding model does</h2>
 <p>Functional MRI measures tiny changes in blood oxygenation across the brain. To visualize data that complex, you computationally inflate the cerebral cortex and flatten it into a two-dimensional map; your own cortex, flattened, would be about the size of a large pizza. Visual areas land near the middle of that map and frontal cortex toward the edge.</p>
-<p>Seven people lay in a scanner and listened to true stories told on stage for <cite>The Moth Radio Hour</cite>: eleven stories each, a little over two hours in all (Huth et al., 2016). Ten are used for training; the eleventh, heard twice, is held out for testing. Every second or so the scanner records signals from tens of thousands of small brain volumes, called voxels. Anything you perceive in the story, whether a sound, a word, or a fleeting emotion or memory, should leave a trace somewhere in those activity patterns.</p>
-<p>The purpose of an <b>encoding model</b> is to learn a mapping between what is happening in the stimulus and how the brain responds. Every word of the story is turned into a vector of features <i>X</i>; the measured responses are <i>Y</i>. A ridge regression — regularized linear regression — is then fit from <i>X</i> to <i>Y</i> separately for every voxel, a 3 × 3 × 4 mm volume of brain, which is what makes the model <em>voxelwise</em>. It is judged only on the story it has never heard.</p>
+<p>Seven people lay in a scanner and listened to true stories told on stage for <cite>The Moth Radio Hour</cite>: eleven stories each, a little over two hours in all (Huth et al., 2016). Ten are used for training; the eleventh, heard twice, is held out for testing. Every second or so the scanner records signals from tens of thousands of small brain volumes, called voxels. Anything you perceive in the story, whether a sound, a word, or a fleeting emotion or memory, should leave a trace somewhere in those activity patterns.</p>
+<p>The purpose of an <b>encoding model</b> is to learn a mapping between what is happening in the stimulus and how the brain responds. Every word of the story is turned into a vector of features <i>X</i>; the measured responses are <i>Y</i>. A ridge regression — regularized linear regression — is then fit from <i>X</i> to <i>Y</i> separately for every voxel, a 3 × 3 × 4 mm volume of brain, which is what makes the model <em>voxelwise</em>. It is judged only on the story it has never heard.</p>
 <figure class="fig">
   <a href="../figures/talk-encoding.jpg"><img src="../figures/talk-encoding.jpg" alt="The voxelwise encoding model as a matrix product: a feature matrix X of 125 minutes by feature dimension, times a weight matrix of feature dimension by number of voxels, equals Y, 125 minutes of brain responses by number of voxels, with arrows running from a weight vector to voxels on a brain." width="1788" height="769" loading="lazy"></a>
-  <figcaption>Ŷ<sub>i</sub> = <i>X</i> · <i>W</i><sub>i</sub>, fit separately for every voxel. <i>X</i> describes the stimulus, <i>Y</i> is the measurement, and <i>W</i> is what we actually want.</figcaption>
+  <figcaption>Ŷ<sub>i</sub> = <i>X</i> · <i>W</i><sub>i</sub>, fit separately for every voxel. <i>X</i> describes the stimulus, <i>Y</i> is the measurement, and <i>W</i> is what we actually want.</figcaption>
 </figure>
 <p>The object of interest is not the prediction but the weights. When the model is trained, every voxel ends up with a weight vector: an arrow pointing through the feature space, telling us which features that voxel cares about. If the features <em>were</em> concepts, that arrow would be a tuning curve, and one could read it as a sentence — responsive to numbers, indifferent to family, suppressed by small talk.</p>
 
@@ -171,7 +171,7 @@
 <section class="paper-section" id="catch" aria-labelledby="h-catch">
   <h2 id="h-catch">The catch: more concepts than dimensions</h2>
 <p>Here is the problem with that gain. Features taken from a language model predict brain activity well, but using them to explain the brain means we end up explaining one black box with another.</p>
-<p>With hand-labelled features, interpretation was easy, because each dimension was a word or a category by construction. A learned representation has no such guarantee. Neural networks have to represent millions of concepts in a limited number of dimensions, so each concept is encoded as a linear combination of shared directions. In the interpretability literature this is called <b>superposition</b> (Elhage et al., 2022).</p>
+<p>With hand-labelled features, interpretation was easy, because each dimension was a word or a category by construction. A learned representation has no such guarantee. Neural networks have to represent millions of concepts in a limited number of dimensions, so each concept is encoded as a linear combination of shared directions. In the interpretability literature this is called <b>superposition</b> (Elhage et al., 2022).</p>
 <figure class="fig">
   <a href="../figures/talk-superposition.jpg"><img src="../figures/talk-superposition.jpg" alt="Left, three orthogonal axes labelled concept 1 time, concept 2 space and concept 3 number, under the heading “features less than or equal to embedding dimensions”. Right, seven correlated directions labelled family, number, space, femaleness, colour and time under the heading “features greater than embedding dimensions”." width="1701" height="629" loading="lazy"></a>
   <figcaption>The slide’s <i>features</i> are latent semantic factors, not the columns of <i>X</i>. When there are no more of them than there are dimensions, each concept can have an axis of its own. When there are more, they have to share, and the directions lean on one another.</figcaption>
@@ -185,7 +185,7 @@
 <p>How crowded is the space? Learn 1,000 concept directions from GloVe and measure how nearly parallel they are. In 300 dimensions, 1,000 random directions are almost orthogonal: only 0.03% of pairs have a cosine above 0.2. Among the learned concepts the figure is 2.18% — seventy times the overlap expected by chance.</p>
 <div class="box">
   <span class="box-label">For the algebra-inclined</span>
-  <p>Take unit concept directions <i>f</i><sub>1</sub> … <i>f</i><sub><i>k</i></sub> and their Gram matrix <i>G</i> (all the pairwise dot products). If a voxel’s weight vector is <i>w</i> = Σ <i>α</i><sub><i>i</i></sub> <i>f</i><sub><i>i</i></sub>, what you can measure is the projections <i>p</i> = <i>Gα</i>. When <i>G</i> is invertible you can recover <i>α</i>; when it is singular, different mixtures <i>α</i> give the same <i>w</i>, and the weights are <b>non-identifiable</b>. Orthogonal concepts mean <i>G</i> = <i>I</i> and the projections are the answer.</p>
+  <p>Take unit concept directions <i>f</i><sub>1</sub> … <i>f</i><sub><i>k</i></sub> and their Gram matrix <i>G</i> (all the pairwise dot products). If a voxel’s weight vector is <i>w</i> = Σ <i>α</i><sub><i>i</i></sub> <i>f</i><sub><i>i</i></sub>, what you can measure is the projections <i>p</i> = <i>Gα</i>. When <i>G</i> is invertible you can recover <i>α</i>; when it is singular, different mixtures <i>α</i> give the same <i>w</i>, and the weights are <b>non-identifiable</b>. Orthogonal concepts mean <i>G</i> = <i>I</i> and the projections are the answer.</p>
   <p>Seen as Bayesian regression, ridge on dense features is exactly ridge on the concept features with a correlated Gaussian prior: atoms that point the same way are pushed to share weight. Good for prediction when related concepts really do co-occur; bad for reading the weights.</p>
 </div>
 </section>
@@ -237,7 +237,7 @@
 <section class="paper-section" id="results" aria-labelledby="h-results">
   <h2 id="h-results">What follows</h2>
 <h3>Prediction: no difference detectable</h3>
-<p>The first concern is that expanding 300 dimensions to 1,000 sparse ones should cost accuracy. No cost is detectable across the seven subjects, which with seven is a weaker statement than equality: the mean difference in held-out <i>R</i><sup>2</sup> between the sparse and dense models is 0.00047 ± 0.00071, paired <i>t</i>(6) = −1.77, <i>p</i> = 0.13. Voxel for voxel, the two models lie on the diagonal.</p>
+<p>The first concern is that expanding 300 dimensions to 1,000 sparse ones should cost accuracy. No cost is detectable across the seven subjects, which with seven is a weaker statement than equality: the mean difference in held-out <i>R</i><sup>2</sup> between the sparse and dense models is 0.00047 ± 0.00071, paired <i>t</i>(6) = −1.77, <i>p</i> = 0.13. Voxel for voxel, the two models lie on the diagonal.</p>
 <figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-4.jpg"><img src="../figures/thesis-fig2-4.jpg" alt="(a) A 1,000 × 1,000 matrix of cosine similarities between concept atoms. (b–c) Cortical flatmaps for two subjects with prediction accuracy shown as colour over lateral temporal, medial parietal and prefrontal cortex. (d–e) Scatter plots of sparse-model against dense-model accuracy per voxel, lying along the diagonal." width="1428" height="745" loading="lazy"></a>
   <figcaption>(a) The 1,000 atoms are moderately correlated in GloVe space; that is the superposition. (b, c) Where the sparse model predicts well in two subjects: lateral temporal, medial parietal and prefrontal cortex. (d, e) Sparse against dense accuracy, voxel by voxel. From the paper.</figcaption>
@@ -245,7 +245,7 @@
 
 <h3>Maps you can read</h3>
 <p>A concept map is now immediate: take one atom and plot its weight in every voxel. Atom 456 (<i>standing, sitting, crouch</i>) reads as body position and atom 115 (<i>grandparents, sister, dad</i>) as family. Each gives a distributed, bilateral pattern, and the pattern is nearly the same in two different brains.</p>
-<p>The dense model has no principled way to produce such a map, only heuristics, and the one used here yields maps that are patchier, less symmetric and less consistent between people. Across the 20 most active atoms and all seven subjects, sparse maps agree between people at cosine 0.26 ± 0.04; dense heuristic maps at 0.09 ± 0.04.</p>
+<p>The dense model has no principled way to produce such a map, only heuristics, and the one used here yields maps that are patchier, less symmetric and less consistent between people. Across the 20 most active atoms and all seven subjects, sparse maps agree between people at cosine 0.26 ± 0.04; dense heuristic maps at 0.09 ± 0.04.</p>
 <figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-5.jpg"><img src="../figures/thesis-fig2-5.jpg" alt="Two rows: for the “body position” atom (456) and the “family” atom (115), a word cloud of top-activating words, then flatmaps of voxel weights for Subject 01 and Subject 02, red for positive and blue for negative, with matching bilateral patterns across the two subjects." width="1416" height="1046" loading="lazy"></a>
   <figcaption>“Body position” (top) and “family” (bottom): the words that drive each atom, then its weights in Subject 01 and Subject 02. Red is driven, blue is suppressed, and only voxels with significant weights are drawn. From the paper.</figcaption>
@@ -258,10 +258,10 @@
   <a href="../figures/talk-overlap.jpg"><img src="../figures/talk-overlap.jpg" alt="Word clouds for the time atom in green, the number atom in red and the space atom in blue, a three-circle Venn key, and cortical flatmaps for Subject 01 and Subject 02 with the three concepts overlaid, white marking where all three coincide in the intraparietal sulcus and inferior frontal gyrus of both hemispheres." width="1920" height="960" loading="lazy"></a>
   <figcaption>Number (red), time (green) and space (blue). Secondary colours are pairwise overlap; white is all three. The plate labels prefrontal, medial parietal and lateral temporal cortex; the intraparietal sulcus and inferior frontal gyrus are identified in the analysis rather than marked on the figure.</figcaption>
 </figure>
-<p class="more">The analysis has since been extended to nineteen listeners, which is the <a href="number.html">CCN 2026 poster</a>; the maps in <a href="../viewer/">the brain viewer</a> are that larger set, not the seven here. <a href="number.html">That result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
+<p class="more">The analysis has since been extended to nineteen listeners, which is the <a href="number.html">CCN 2026 poster</a>; the maps in <a href="../viewer/" target="_blank" rel="noopener">the brain viewer</a> are that larger set, not the seven here. <a href="number.html">That result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
 
 <h3>Concepts have a geometry in cortex</h3>
-<p>With 20 legible maps one can ask how they relate. Compare every pair, cluster the 20 × 20 similarity matrix in one subject, and the same block structure appears in the next; across all seven, the matrices correlate at 0.70 ± 0.08. Is this the embedding’s structure showing through? It is not: the sparse features themselves are uncorrelated (|<i>r</i>| = 0.00 ± 0.10 across the 190 pairs), while the same directions in GloVe space correlate at 0.16 ± 0.14. The geometry is cortical.</p>
+<p>With 20 legible maps one can ask how they relate. Compare every pair, cluster the 20 × 20 similarity matrix in one subject, and the same block structure appears in the next; across all seven, the matrices correlate at 0.70 ± 0.08. Is this the embedding’s structure showing through? It is not: the sparse features themselves are uncorrelated (|<i>r</i>| = 0.00 ± 0.10 across the 190 pairs), while the same directions in GloVe space correlate at 0.16 ± 0.14. The geometry is cortical.</p>
 <figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-7.jpg"><img src="../figures/thesis-fig2-7.jpg" alt="(a) A dendrogram over 20 labelled concept atoms. (b, c) Two 20 × 20 similarity matrices of cortical maps, Subject 01 and Subject 02, with the same block structure. (d) The atoms’ cosine similarities in GloVe space, showing structured correlation. (e) Pearson correlations of the sparse features, near zero off the diagonal." width="1416" height="1112" loading="lazy"></a>
   <figcaption>(a) Clustering the 20 most active atoms by how similar their cortical maps are. (b, c) The similarity matrices for two subjects, same ordering. (d) The atoms are correlated in GloVe space. (e) The sparse features are not, so the structure in (b, c) is cortical. From the paper.</figcaption>

@@ -98,7 +98,7 @@
 
       <header class="paper-head">
         <h1 class="paper-title" id="paper"><cite>A Distributed Cortical Network Integrates Semantic Representations of Number, Space, and Time</cite></h1>
-        <p class="authors">Evi Hendrikx, <span class="me">Alicia Zeng</span>, Yashaswini, Matteo Visconti di Oleggio Castello, Jack L. Gallant</p>
+        <p class="authors">Evi Hendrikx, <span class="me">Alicia Zeng</span>, Yashaswini, Matteo Visconti di Oleggio Castello, Jack L. Gallant</p>
         <p class="pub-meta">CCN <time datetime="2026">2026</time>, poster</p>
         <p class="buttons pub-links">
           <a class="button" href="https://2026.ccneuro.org/poster/?id=V6IilrmWYe" id="l-ccn"
@@ -111,7 +111,7 @@
              aria-labelledby="l-poster paper">[ccn poster]</a>
           <a class="button" href="https://slideslive.com/39050668" id="l-video"
              aria-labelledby="l-video paper">NeurIPS talk</a>
-          <a class="button" href="../viewer/" id="l-viewer"
+          <a class="button" href="../viewer/" target="_blank" rel="noopener" id="l-viewer"
              aria-labelledby="l-viewer paper">Brain viewer</a>
           <a class="button" href="superpositions.html" id="l-method"
              aria-labelledby="l-method paper">The method</a>
@@ -156,7 +156,7 @@
 <section class="paper-section" id="theory" aria-labelledby="h-theory">
   <h2 id="h-theory">The theory of magnitude</h2>
 <p>Kant counted space, time and number among the mind’s a priori intuitions. Cognitive neuroscience has a more concrete version. Vincent Walsh’s <cite>A Theory of Magnitude</cite> (2003) proposes that time, space and quantity are not three systems but one: a common metric in parietal cortex, there because acting on the world needs all three at once. How far is it, how long will it take, how many are there. Stanislas Dehaene’s <cite>The Number Sense</cite> (1997) had already put approximate number in the intraparietal sulcus; Dehaene and Brannon (2010) called the trio “a Kantian research program.”</p>
-<p>The behavioural evidence is strong: judgements of one magnitude bleed into judgements of another, as one would expect if they shared a scale. The imaging evidence is less settled: results have been inconsistent from study to study (Cona et al., 2024; Simsek et al., 2025). Part of the difficulty is method.</p>
+<p>The behavioural evidence is strong: judgements of one magnitude bleed into judgements of another, as one would expect if they shared a scale. The imaging evidence is less settled: results have been inconsistent from study to study (Cona et al., 2024; Simsek et al., 2025). Part of the difficulty is method.</p>
 </section>
 
 <section class="paper-section" id="hard" aria-labelledby="h-hard">
@@ -192,9 +192,9 @@
   <h2 id="h-results">What we found</h2>
 <h3>The three maps meet in IPS and IFG</h3>
 <p>With concept atoms, the white is clear and it lies where the theory placed it: in the intraparietal sulcus, where Dehaene located the number sense, and in the inferior frontal gyrus, in both hemispheres, in both subjects shown <a href="#teaser">at the top of this page</a>. The maps differ somewhat from person to person, as within-subject maps from naturalistic data do, but the meeting points do not move.</p>
-<p>Averaged over all seven listeners, the intersection-over-union of the top-5,000 maps is 0.34 ± 0.05 for time–space, 0.32 ± 0.07 for time–number, 0.32 ± 0.07 for space–number, and 0.18 ± 0.05 for all three together. Every pairing overlaps to about the same degree; no domain stands apart.</p>
+<p>Averaged over all seven listeners, the intersection-over-union of the top-5,000 maps is 0.34 ± 0.05 for time–space, 0.32 ± 0.07 for time–number, 0.32 ± 0.07 for space–number, and 0.18 ± 0.05 for all three together. Every pairing overlaps to about the same degree; no domain stands apart.</p>
 <h3>Not an accident of the three atoms chosen</h3>
-<p>Atoms 505, 81 and 997 are one exemplar per domain, but the dictionary has others in each domain: number atoms 394 and 505, time atoms 81, 798 and 880, space atoms 353 and 997. Cortical maps of atoms in the same domain agree with each other (cosine 0.50 ± 0.06 for the number pair, 0.50 ± 0.09 for the space pair, 0.43–0.46 among the time atoms) far more than maps of atoms from different domains, which average 0.05 ± 0.01. The domains are coherent units on cortex, not one fortunate atom apiece.</p>
+<p>Atoms 505, 81 and 997 are one exemplar per domain, but the dictionary has others in each domain: number atoms 394 and 505, time atoms 81, 798 and 880, space atoms 353 and 997. Cortical maps of atoms in the same domain agree with each other (cosine 0.50 ± 0.06 for the number pair, 0.50 ± 0.09 for the space pair, 0.43–0.46 among the time atoms) far more than maps of atoms from different domains, which average 0.05 ± 0.01. The domains are coherent units on cortex, not one fortunate atom apiece.</p>
 <h3>Number sits beside time in the larger geometry</h3>
 <p>Widen the view to the twenty most active atoms and cluster them by the similarity of their cortical maps. The two time atoms and the number atom fall into one branch, beside one another. That grouping is not inherited from the features: the sparse features themselves are uncorrelated, so the structure comes from cortex.</p>
 <figure class="fig fig--plate">
@@ -220,7 +220,7 @@
          aria-label="Screen recording of the brain viewer's eight-step guided tour: the group brain rotating under the number, time and space tuning map, then inflated and flattened, then the quantity network, then the channels toggled one at a time, then a marker placed in the right intraparietal sulcus with its voxel inspector open.">
     <source src="../figures/number-viewer-tour.mp4" type="video/mp4">
   </video>
-  <figcaption>The tour, recorded as it runs. At the end it marks one spot in the right intraparietal sulcus where number words account for 83% of the quantity response and time and space for the remaining 17%. The tour’s own caveat belongs with that number: these three kinds of word tend to turn up together in the stories, so the model cannot pull them fully apart, and a spot’s dominant colour means more than its exact split. <a href="../viewer/">Open the viewer</a> to click a spot yourself, or to compare individual subjects, whose own maps are far brighter than the average.</figcaption>
+  <figcaption>The tour, recorded as it runs. At the end it marks one spot in the right intraparietal sulcus where number words account for 83% of the quantity response and time and space for the remaining 17%. The tour’s own caveat belongs with that number: these three kinds of word tend to turn up together in the stories, so the model cannot pull them fully apart, and a spot’s dominant colour means more than its exact split. <a href="../viewer/" target="_blank" rel="noopener">Open the viewer</a> to click a spot yourself, or to compare individual subjects, whose own maps are far brighter than the average.</figcaption>
 </figure>
 </section>
 
