@@ -26,14 +26,14 @@
   <p class="wip">Work in progress — pages and figures are still being written.</p>
 
 
-  <div class="topbar">
+  <header class="topbar">
     <p class="wordmark"><a href="../index.html">Alicia Zeng</a></p>
     <nav aria-label="Site">
       <a href="../index.html">Index</a>
       <a href="../research.html">Research</a>
       <a href="../notes.html">Notes</a>
     </nav>
-  </div>
+  </header>
 
   <main id="main" tabindex="-1">
 
@@ -57,8 +57,8 @@
       <nav class="area-toc" aria-label="Projects in this area">
         <p class="area-toc-label">In this area</p>
         <ol role="list">
-          <li><a href="#p-atoms">Sparse concept atoms</a> <span class="area-toc-years">2021&ndash;2025</span></li>
-          <li><a href="#p-talk">The talk</a> <span class="area-toc-years">NeurIPS 2025</span></li>
+          <li><a href="#p-atoms" aria-label="Skip to Sparse concept atoms, on this page">Sparse concept atoms</a> <span class="area-toc-years">2021&ndash;2025</span></li>
+          <li><a href="#p-talk" aria-label="Skip to The talk, on this page">The talk</a> <span class="area-toc-years">NeurIPS 2025</span></li>
         </ol>
       </nav>
 
@@ -103,8 +103,7 @@
             <p class="output-links"><a href="https://openreview.net/forum?id=3aNvX9TQTo">OpenReview</a><span
               class="sep" aria-hidden="true">·</span><a href="https://slideslive.com/39050668">Talk</a><span
               class="sep" aria-hidden="true">·</span><a href="https://github.com/alicialitrtwe/sparseconcept">Code</a><span
-              class="sep" aria-hidden="true">·</span><a href="superpositions.html#bibtex">Cite</a><span
-              class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-superpositions">Explainer</a></p>
+              class="sep" aria-hidden="true">·</span><a href="superpositions.html#bibtex">Cite</a></p>
           </li>
         </ul>
       </article>
@@ -116,7 +115,7 @@
            does not autoplay and does not loop. -->
       <article class="project" aria-labelledby="p-talk">
         <div class="project-media project-media--wide">
-          <video controls preload="none" playsinline
+          <video controls preload="none" playsinline aria-describedby="talk-transcript"
                  poster="../figures/talk-superpositions.jpg" width="1280" height="720"
                  aria-label="Five-minute conference talk on the Sparse Concept Encoding Model, with slides on a black background.">
             <source src="../figures/talk-superpositions.mp4" type="video/mp4">
@@ -135,7 +134,7 @@
                pass; a transcript is the text equivalent that can be written
                without inventing timings. -->
           <details class="transcript">
-            <summary>Transcript of the talk</summary>
+            <summary id="talk-transcript">Transcript of the talk</summary>
             <p>We use interpretable AI models to understand how the brain represents abstract ideas — like time, space, and number. Let’s start with the basic tool behind this work: fMRI voxelwise encoding models. fMRI, or functional Magnetic Resonance Imaging, measures tiny changes in blood oxygenation levels across the brain. Every second or so, we simultaneously record signals from tens of thousands of small brain volumes, called voxels. To visualize the complex data, we computationally inflate and flatten the cerebral cortex into a 2D map. Anything you perceive in the story — whether it’s a sound, a word, or even a fleeting emotion or memory — should leave a trace somewhere in the brain’s activity patterns.</p>
             <p>The purpose of an encoding model is to learn a mapping between what’s happening in the stimulus, and how the brain responds. Mathematically, we describe this using two matrices: X, which represents the features of the stimulus, and Y, the measured brain responses. We then fit a model — typically regularized linear regression — to predict Y from X. And we do this separately for each voxel. That’s what makes it voxelwise. When the model is trained, every voxel ends up with a weight vector — an arrow pointing through the feature space, telling us which features that voxel cares about.</p>
             <p>The hardest part of building an encoding model is turning something as rich as a story into numbers. A major leap in prediction performance came when researchers began using features from machine learning, like word embeddings or activations from large language models. But we end up explaining one black box with another. The loss of interpretability comes partly from a phenomenon called superposition. Neural networks have to represent millions of concepts using only limited dimensions, so each concept is encoded as a linear combination of shared directions. In this feature space, concepts like time and number can be correlated, so a weight vector that points toward “number” will also point toward “time.”</p>

@@ -276,7 +276,11 @@
             if (p) p.catch(function () {});
             setTimeout(function () { v.__auto = false; }, 0);
           } else if (!v.paused) {
-            v.__auto = true; v.pause(); v.__auto = false;
+            v.__auto = true;
+            v.pause();
+            // pause() queues its event; clear the flag after it has fired, the
+            // same way the play branch above does.
+            setTimeout(function () { v.__auto = false; }, 0);
           }
         });
       }, { rootMargin: '200px 0px', threshold: 0.01 });
