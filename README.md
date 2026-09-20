@@ -3,18 +3,31 @@
 Static hand-written HTML, one stylesheet and one small script. No build
 step, no framework.
 
-    index.html                      homepage
-    research.html                   publication list
+    index.html                      homepage: the opening, the three areas, the arc, contact
+    research.html                   the full inventory, grouped by area
     notes.html                      working notes, newest first
+    research/cognition.html         area page: what cortex does with quantity, meaning and song
+    research/closed-loop.html       area page: recording and stimulation in one circuit
+    research/bayesian.html          area page: what a fitted weight is entitled to mean
     research/superpositions.html    the NeurIPS paper as a short tutorial (facts from thesis chapter 2)
-    research/stimulation.html       the home-recording DBS study, explained (thesis chapter 3, verbatim)
     research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
     research/dbs.html               the Nature BME aDBS paper, a short introduction (facts and two figures from the CC BY preprint)
-    research/thesis.html            the thesis
-    figures/                        real figures from the work: the NeurIPS poster, Fig. 1 of the Nature BME paper and Figs. 2 and 6 of its medRxiv preprint, thesis Figures 2.1–2.7, 2.9 and 3.1–3.6, and the 16:10 card crops (`*-thumb.*`; `number-thumb.jpg` is the number word cloud from thesis Fig. 2.6, shown whole via `.thumb--contain`)
+    research/stimulation.html       the home-recording DBS study, explained (thesis chapter 3, verbatim)
+    research/birdsong.html          the 2017–2019 Penn project, method only; the APS abstract is the published claim
+    notes/thesis.html               the thesis introduction and acknowledgments, as a note
+    viewer/                         the sparse-concept-atoms brain viewer — an rsync'd copy of a build
+                                    that lives on another machine. READ-ONLY here: fix it upstream.
+    figures/                        real material only. The area clips (`area-*.mp4` + `.jpg` poster),
+                                    the birdsong and viewer clips, the NeurIPS talk and eight slides cut
+                                    from it (`talk-*`), the NeurIPS poster, Fig. 1 of the Nature BME
+                                    paper and Figs. 2 and 6 of its CC BY preprint, thesis Figures
+                                    2.2–2.9 and 3.1–3.6, and the two DBS figures derived from her own
+                                    recordings (`dbs-ecosystem`, `dbs-kinematics`).
     files/                          the thesis PDF (33 MB)
-    styles.css                      everything visual, including the abstract artwork
-    site.js                         the homepage attractor and the paper-page section nav; optional
+    sitemap.xml, robots.txt         twelve pages; the viewer is disallowed (thousands of data files)
+    styles.css                      everything visual
+    site.js                         the homepage attractor, the clip observer and the paper-page
+                                    section nav; optional
     styles-dark.css                 the previous design, kept for a one-line revert
 
 ## Running it
@@ -63,43 +76,62 @@ The rule that decides where each kind of image goes:
   page. It always wins over the decoration: when a real image exists, the
   abstract one goes.
 
-All three cards now show real crops (the NeurIPS poster, Fig. 1 of the
-Nature BME paper, Figure 3.1 of the thesis); the abstract `.viz` stand-ins
-are still in `styles.css` for a future card with no figure yet. The
-homepage attractor stays either way: it is on the person's page, not a
-paper's, and nothing about it claims to be data.
+Every media slot on the site now holds real material, so the abstract `.viz`
+stand-ins have been deleted from `styles.css`. Where something does not exist
+yet the slot is a marked `.fig-slot.todo` placeholder rather than borrowed
+art. The homepage attractor stays either way: it is on the person's page, not
+a paper's, and nothing about it claims to be data.
 
 ### The hero
 
-`<canvas class="hero-viz">` at the top of `index.html`, filled by `site.js`
-with a Lorenz attractor point cloud that turns slowly. It is drawn in the
-text colour, uses no images, and under `prefers-reduced-motion` draws one
-still frame. Delete the canvas element to remove it.
+`<canvas class="hero-viz">` in the opening of `index.html`, filled by `site.js`
+with a Lorenz attractor — drawn as the trajectory it is, not as a point cloud,
+with a bright comet running the path so it reads as one orbit being integrated
+rather than a static tangle. Its colour is read from the three area tokens in
+`styles.css`, so the palette lives in one place: each lobe takes an end of the
+ramp and the crossing between them takes the middle. It uses no images, stops
+when it scrolls off screen or the tab is hidden, and under
+`prefers-reduced-motion` draws one still frame. Delete the canvas element to
+remove it; `<noscript>` already collapses the band when there is no script.
 
-### The research cards
+### The area cards
 
-Each card is `<div class="thumb">` holding the image and the paper's
-abstract, then the title. The abstract is the paper's own abstract,
-verbatim, and appears over the image on hover or keyboard focus (never on
-touch screens, where the whole card is simply the link). It is clipped after
-about ten lines; the full text is on the paper page.
+The homepage does not list papers. It carries three `<article class="area">`
+cards — Cognition, Closed loop, Bayesian, in that order — each a clip beside
+a title, a one-line lead and the names of what is inside it. The card's whole
+surface is the link (the title's `::after` covers it), so anything else
+clickable in there needs its own stacking context; `.area-extra` is the one
+that does.
 
-The image is either a real figure (`<img>` or a muted looping `<video>`) or
-an abstract, decorative `.viz` drawn in pure CSS (`.viz--pulse`,
-`.viz--basis`, `.viz--atoms`). Swapping one for the other is one element:
+    <article class="area" data-area="cognition">      <- sets --area for the card
+      <div class="area-media">
+        <video loop muted playsinline preload="none"
+               poster="figures/area-cognition.jpg" width="1270" height="810"
+               aria-label="…">
+          <source src="figures/area-cognition.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="area-body">
+        <h3 class="area-title"><a href="research/cognition.html">Cognition</a></h3>
+        <p class="area-lead">…</p>
+        <p class="area-count">Number, space and time · Birdsong in state space</p>
+      </div>
+    </article>
 
-```html
-<!-- decorative stand-in -->
-<div class="viz viz--pulse" aria-hidden="true"><span></span></div>
+No `autoplay` attribute and `preload="none"`: `site.js` starts a clip when it
+scrolls into view and pauses it when it leaves, which is the difference
+between a homepage that fetches 4.9 MB before a scroll and one that fetches
+its posters. With no script each clip stays on its poster, which is a real
+frame of the thing it shows.
 
-<!-- real still: crop it to 16:10 or let object-fit crop it -->
-<img src="figures/dbs-thumb.png" alt="What the figure shows" width="…" height="…">
+Every clip box is `aspect-ratio: 1.45` with `object-fit: contain`, so frames
+line up down the page and across to the inventory's thumbnails. Render a new
+clip at 870×600 and it will fill its frame exactly. The one exception is
+`.project-media--wide`, 16:9, for the conference talk — a recording of a room
+rather than one of the data clips.
 
-<!-- real looping video abstract -->
-<video src="figures/dbs-thumb.mp4" autoplay loop muted playsinline></video>
-```
-
-The same block appears on `index.html` and `research.html`; change both.
+The full inventory lives on `research.html` and each area page repeats its own
+projects; an entry is written once per page.
 
 ### Paper pages
 
@@ -109,10 +141,11 @@ then Abstract, Summary, one section per idea, BibTeX. `site.js` underlines
 the section you are in.
 
 To add a section: duplicate one `<section class="paper-section">`, give it a
-new `id`, and add a matching `<li>` to the `paper-nav` list. A figure in a
-section is a `figure.fig` with the media and a caption (no page currently
-carries a dashed `.fig-slot` placeholder, but the class is still in the CSS
-if you want one):
+new `id`, and add a matching `<li>` to the `paper-nav` list. Anchors clear the
+sticky nav: `html { scroll-padding-top }` steps with the nav's height as it
+wraps. A figure in a section is a `figure.fig` with the media and a caption
+(`.fig-slot.todo` is the dashed placeholder for one that does not exist yet;
+`research.html` uses it for the two entries with no figure):
 
 ```html
 <figure class="fig">
@@ -125,8 +158,10 @@ if you want one):
 </figure>
 ```
 
-Abstracts are duplicated on purpose — on the card (clipped, on hover) and on
-the paper page (in full) — and both copies must stay verbatim.
+Where a paper's own abstract appears it is verbatim, and it appears once: in
+an Abstract section on the paper page. The homepage and the inventory carry a
+one-line lead written for them instead, so there is no second copy to keep in
+step.
 
 ### Explainer pages
 
@@ -173,9 +208,9 @@ poster" button stays a stub; on her pointer to neurips.cc/virtual/2025/poster/12
 the page instead carries a Poster section with the NeurIPS 2025 poster of the
 method paper (same `figures/superpositions-poster.png`, whose time/space/number
 panel is this analysis) and a Video button to its SlidesLive talk. On the
-research page it is now a card (Cognition group, above the birdsong `minor`
-entry) with the CCN abstract behind the hover and the number word cloud as
-its thumb; CCN and OpenReview links live on the page itself.
+inventory it is the first entry of the Cognition group, above the brain viewer
+and the birdsong abstract, thumbnailed with the flatmap channel clip; CCN and
+OpenReview links live on the page itself.
 
 **DBS is a short introduction, not a tutorial.** You are the third of eleven
 authors on the Nature BME paper, so `research/dbs.html` describes the study
@@ -224,17 +259,21 @@ instead of 1.5 — with the PNG as fallback and "Full size" link), and the
 buttons link to OpenReview, the NeurIPS page, the poster, the SlidesLive
 video, the code (the GitHub URL from the thesis footnote) and the thesis.
 SlidesLive refuses to be embedded anywhere but neurips.cc ("Domain not
-allowed"), so the video is a link, not a frame. The card thumbnail is a crop
-of the same poster (`figures/superpositions-thumb.png`). Figures 2.1–2.7 are
-in `figures/thesis-fig2-*`.
+allowed"), so the talk is served here as her own recording
+(`figures/talk-superpositions.mp4`) with a transcript folded under it, and
+SlidesLive is a link. Eight slides cut from that recording (`figures/talk-*`)
+carry the page's argument; the thesis figures that remain are in
+`figures/thesis-fig2-*`. The inventory thumbnail is the flatmap clip the
+models are fit to (`figures/area-bayesian.mp4`).
 
 **Stimulation** (chapter 3, "Deep Brain Stimulation Amplifies
 Movement-Related Neural Modulation in Parkinson's Disease") carries Figures
 3.1–3.6 (`figures/thesis-fig3-*.jpg`, exported at 1600 px from the PDF at
 3× and cropped to the plot). Its buttons go to the thesis PDF, the thesis
-page and the Nature BME paper page; the card thumbnail is panel (a) of
-Figure 3.6 (`figures/stimulation-thumb.jpg`). Section 3.4.4's packet-merging
-detail and the supplementary patient instructions are left to the PDF.
+page and the Nature BME paper page. Section 3.4.4's packet-merging detail and
+the supplementary patient instructions are left to the PDF. The chapter is not
+in the inventory at all — it is reached from `research/dbs.html`, which links it as the
+related chapter.
 
 **DBS** has Fig. 1 of the paper as its teaser (`figures/dbs-fig1.png`, from
 the publisher's figure page, legend verbatim but folded) and a crop of it as
@@ -282,13 +321,25 @@ lists are on `research.html` and on each paper page.
 
 ### Research groups
 
-`research.html` is three groups in your order — **Bayesian inference**
-(superpositions, thesis), **Real-world data** (movement-responsive DBS,
-Bringing the Clinic Home, In-Home Video and IMU Kinematics) and
-**Cognition** (number/space/time, birdsong). Each group is a
-`<section class="block group">` holding a `pub-grid` of cards and/or a
-`minor-list`; move an entry by moving its block. The homepage keeps its
-three cards ungrouped.
+`research.html` is three groups in your order — **Cognition**
+(number/space/time, the brain viewer, birdsong), **Closed loop**
+(movement-responsive DBS, Bringing the Clinic Home, In-Home Video and IMU
+Kinematics) and **Bayesian** (sparse concept atoms, and one project not yet
+named). Each group is a `<section class="block group" data-area="…">` holding
+a `<ul class="outputs outputs--media">`; move an entry by moving its `<li>`,
+move a whole area by moving its section. `index.html` and each area page carry
+the same order.
+
+`data-area` is what sets `--area`, the one slot the three hues fill, so the
+colour follows an entry from the homepage through to its own page. A page that
+belongs to no single area — the homepage, the inventory, the notes, the thesis
+— has no `data-area`, and its title mark is a gradient across all three rather
+than one area's colour.
+
+The thesis is **not** listed as research. It is a note (`notes/thesis.html`),
+and so are its chapters: chapter 3, the unpublished stimulation study, lives at
+`research/stimulation.html` and is reached from `research/dbs.html` as the related
+chapter, not from the inventory.
 
 ### The arc
 
@@ -311,36 +362,49 @@ what turns one into a live link.
 **index.html** — `2020-2025-stimulus` (inside the one 2020–2025 sentence),
 `invitation-line`, `link-google-scholar`, `link-github`, `link-orcid`
 
-**research.html** — `research-list-incomplete`
-
 **notes.html** — `notes-intro`, then `note-1-date` / `note-1-body` and
 `note-2-date` / `note-2-body` for the two sample entries
+
+**research.html** — `thumb-bayesian-new`, `bayesian-new-project`,
+`research-list-incomplete`, and the `explainer-*` chips below
+
+**research/bayesian.html** — `bayesian-new-video`, `bayesian-new-title`,
+`bayesian-new-lead` for the project that is not announced yet, plus one
+`explainer-*`
 
 **research/dbs.html** — `link-dbs-code` only (the Code button; drop the
 button if there is no public repository).
 
-**research/superpositions.html** and **research/stimulation.html** — none.
+**research/number.html** — `link-number-poster` only (the poster file, if she
+wants to host it; nothing is published online).
 
-**research/number.html** — `link-number-poster` only (the poster file, if
-she wants to host it; nothing is published online).
+**research/superpositions.html**, **research/stimulation.html** and
+**notes/thesis.html** — none.
 
-**research/thesis.html** — `link-thesis-doi` (the eScholarship record),
-`link-thesis-code`
+The remaining `explainer-*` chips sit on `research.html` and on the area
+pages. Two of them are real work: `explainer-jove` and `explainer-techrxiv`
+have no page behind them. The rest name pages that already exist and are
+linked from the same row, so they are chips promising something the reader can
+already click.
 
 ### Adding a publication
 
-Copy an existing `<article class="pub pub--card">` block inside
-`<div class="pub-grid">` in `research.html` (and `index.html`, if it belongs
-there) and copy a paper page under `research/`, keeping the section ids and
-the nav list in step. The venue sits inside the title element as
-`<span class="pub-meta">`, and CSS puts the " — " between them. Each title is
-written **once** per page; on a paper page the links are named by
+Copy an existing `<li>` inside the right group's
+`<ul class="outputs outputs--media">` in `research.html`, and the same entry
+into its area page's `<ul class="outputs">`. An entry is a thumbnail
+(`.output-media`) beside a body: the title with its venue in
+`<span class="pub-meta">`, the full author list in published order with you
+marked `<span class="me">…</span>`, and a row of `.output-links`.
+
+If it needs a page of its own, copy one under `research/`, keeping the section
+ids and the `paper-nav` list in step. On a paper page the buttons are named by
 `aria-labelledby="<link-id> <heading-id>"`, so a screen reader reads
 "PDF, *title*" without the title being stored twice.
 
-For a co-authored paper, preprint or talk that doesn't need its own page, add
-an `<li class="minor">` to the `minor-list` of the right group instead and
-link straight out.
+A co-authored paper, preprint or talk that does not need its own page is the
+same `<li>` with its links going straight out — there is no separate minor
+list any more. Give it a thumbnail from its own material if one exists; a
+`.fig-slot.todo` if it does not.
 
 ### Adding a note
 
