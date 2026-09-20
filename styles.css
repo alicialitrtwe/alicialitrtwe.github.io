@@ -617,9 +617,12 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 .more a:hover span { transform: translateX(0.3rem); }
 
 /* A boxed aside and a figure of numbers both belong to their area. */
+/* The tint here was 3% of the area hue over transparent, which on this ground
+   is a literal no-op - the box had a rule down its left and no ground at all.
+   Mixed into --surface instead it is a real, still quiet, step off the page. */
 .theorem, .box {
   border-left: 2px solid color-mix(in srgb, var(--area) 55%, transparent);
-  background: color-mix(in srgb, var(--area) 3%, transparent);
+  background: color-mix(in srgb, var(--area) 8%, var(--surface));
 }
 .box-label { color: var(--area); letter-spacing: 0.12em; }
 .stats b { color: var(--area); }
@@ -721,22 +724,23 @@ figcaption { max-width: 34rem; }
 .paper-section > h2 {
   font-size: 1.3rem;
   line-height: 1.3;
-  position: relative;
 }
+/* The mark was a 7px dash in the left margin, at the heading's own baseline,
+   which reads as a hyphen in front of the words rather than as a rank mark -
+   and it was hidden below 48em, so the pages that most need a section marker
+   did not have one. It is the bar every other title on the site wears now,
+   above the words, at every width. */
 .paper-section > h2::before {
   content: "";
-  position: absolute;
-  left: -1.1rem;
-  top: 0.62em;
-  width: 0.45rem;
+  display: block;
+  width: 1.5rem;
   height: 2px;
+  margin-bottom: 0.7rem;
   border-radius: 2px;
   background: var(--area);
 }
 .paper-section > h3 { font-size: 1.125rem; line-height: 1.35; color: var(--fg); }
-@media (max-width: 48em) {
-  .paper-section > h2::before { display: none; }
-}
+
 
 /* A link inside an area card has to rise above the card-wide overlay that the
    area title lays down, or it cannot be clicked. */
@@ -797,8 +801,12 @@ figcaption { max-width: 34rem; }
 @media (min-width: 68em) {
   .area-intro {
     display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-    column-gap: 3rem;
+    /* the same tracks and the same gap as .area/.project below it: at
+       0.85fr/1fr over a 3rem gap the opening's two columns missed the
+       projects' by 42px on one edge and 34px on the other, which is enough to
+       read as a wobble down the left of the page */
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    column-gap: 2.5rem;
     align-items: start;
   }
   .area-intro > .lead { margin-bottom: 0; max-width: none; }
