@@ -9,7 +9,9 @@ step, no framework.
     research/cognition.html         redirects to research.html#cognition (the area pages were folded
     research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
     research/bayesian.html
-    research/superpositions.html    the NeurIPS paper as a short tutorial (facts from thesis chapter 2)
+    research/atoms.html             the NeurIPS 2026 oral (semantic-cortical atoms): short version from the
+                                    abstract, the abstract, BibTeX; no figure yet
+    research/superpositions.html    the NeurIPS 2025 paper as a short tutorial (facts from thesis chapter 2)
     research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
     research/dbs.html               the Nature BME aDBS paper, a short introduction (facts and two figures from the CC BY preprint)
     research/stimulation.html       the home-recording DBS study, explained (thesis chapter 3, verbatim)
@@ -308,6 +310,7 @@ memory:
 
 | work | link |
 |---|---|
+| Learning Sparse Semantic-Cortical Atoms (NeurIPS 2026 oral) | OpenReview `YcEZoSqrxa`, `neurips.cc/virtual/2026/loc/sydney/oral/151713` (lists one author; abstract taken from there) |
 | Disentangling superpositions | OpenReview `3aNvX9TQTo`, NeurIPS 2025 poster page, poster PNG, SlidesLive `39050668` |
 | Movement-responsive DBS | `10.1038/s41551-025-01438-0`, PubMed 40579487 |
 | Bringing the Clinic Home | `10.3791/65305` (J. Vis. Exp., 2023) |
@@ -334,7 +337,8 @@ author lists are on `research.html` and on each paper page.
 `research.html` is three groups in your order — **Cognition**
 (number/space/time, the brain viewer, birdsong), **Closed loop**
 (movement-responsive DBS, Bringing the Clinic Home, In-Home Video and IMU
-Kinematics) and **Bayesian** (sparse concept atoms). Each group is a
+Kinematics) and **Bayesian** (the NeurIPS 2026 oral on semantic-cortical
+atoms, then sparse concept atoms). Each group is a
 `<section class="block group" id="…" data-area="…">` that opens with a
 `.group-intro` (the standfirst and the two paragraphs that used to open the
 area page, saying what the area means to you) and then holds a
