@@ -5,18 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Alicia Zeng</title>
-<meta name="description" content="Alicia Zeng — computational neuroscience. Interpretable encoding models of cortex, adaptive deep brain stimulation measured at home, and how meaning comes out of mechanism.">
+<meta name="description" content="Alicia Zeng, co-founder of Erised AI. Computational neuroscientist (PhD, UC Berkeley): interpretable encoding models of cortex, adaptive deep brain stimulation measured at home, and now AI-native instruments for the nanoscale.">
 <meta property="og:title" content="Alicia Zeng">
-<meta property="og:description" content="Alicia Zeng — computational neuroscience. Interpretable encoding models of cortex, adaptive deep brain stimulation measured at home, and how meaning comes out of mechanism.">
+<meta property="og:description" content="Alicia Zeng, co-founder of Erised AI. Computational neuroscientist (PhD, UC Berkeley): interpretable encoding models of cortex, adaptive deep brain stimulation measured at home, and now AI-native instruments for the nanoscale.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/">
 <meta property="og:type" content="profile">
-<meta property="og:image" content="https://alicialitrtwe.github.io/figures/area-cognition.jpg">
+<meta property="og:image" content="https://alicialitrtwe.github.io/figures/project-birdsong.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://alicialitrtwe.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12.5' cy='16' r='7.5' fill='none' stroke='%23d4698f' stroke-width='2.6'/%3E%3Ccircle cx='19.5' cy='16' r='7.5' fill='none' stroke='%2335bcc9' stroke-width='2.6'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
-<!-- the hero is a canvas site.js paints; with no script it is an empty band -->
-<noscript><style>.hero-viz{display:none}@media (min-width:60em){.hero-split{grid-template-columns:minmax(0,1fr)}}@media (min-width:68em){.hero-split{grid-template-columns:7rem minmax(0,1fr)}}</style></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -25,7 +23,13 @@
   "alternateName": "Xiao Zeng",
   "url": "https://alicialitrtwe.github.io/",
   "email": "mailto:aliciaxiaozeng@gmail.com",
-  "jobTitle": "Computational neuroscientist",
+  "jobTitle": "Co-founder",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Erised AI",
+    "url": "https://erised-ai.com/"
+  },
+  "sameAs": ["https://github.com/alicialitrtwe"],
   "alumniOf": [
     {
       "@type": "CollegeOrUniversity",
@@ -52,9 +56,6 @@
 
 <div class="shell">
 
-  <!-- The site is being written; the notice is deliberate and sitewide. -->
-  <p class="wip">Work in progress — pages and figures are still being written.</p>
-
 
   <header class="topbar">
     <h1 class="wordmark" id="h-name">Alicia Zeng</h1>
@@ -62,18 +63,24 @@
       <span aria-current="page">Index</span>
       <a href="research.html">Research</a>
       <a href="notes.html">Notes</a>
+      <a href="https://erised-ai.com">Erised</a>
     </nav>
   </header>
 
   <main id="main" tabindex="-1">
 
-    <!-- The opening, with the attractor beside it rather than above it: on a
-         wide window the text column stops at its measure and left half the
-         page empty, and the canvas sat alone in a band of its own. Below 60em
-         they stack, text first. The canvas is decorative and aria-hidden - a
-         strange attractor drawn by site.js, not data from any paper. -->
+    <!-- The opening: who she is now, in two lines that are mine, then her own
+         opening paragraphs, verbatim. Beside it, a real figure rather than the
+         decorative attractor this slot used to hold: one zebra finch song
+         reconstructed as a trajectory in state space, her own 2018 animation,
+         which is the same picture the Lorenz canvas was standing in for. On a
+         wide window the clip sits beside the text; below 60em they stack,
+         text first. -->
     <div class="hero-split">
       <section class="hero" aria-labelledby="h-name">
+        <p class="hero-eyebrow">Co-founder, Erised AI <span class="sep" aria-hidden="true">·</span> PhD, UC Berkeley</p>
+        <p class="hero-statement">Computational neuroscientist. At Erised, building AI-native
+          instruments for the nanoscale, and the world model their measurements will train.</p>
         <p class="lead">For about ten years I’ve been asking a version of the same question, first in
           philosophy and then in physics: how does meaning come out of mechanism, and how would you
           know if it had?</p>
@@ -89,14 +96,38 @@
         </div>
       </section>
 
-      <canvas class="hero-viz" aria-hidden="true"></canvas>
+      <figure class="hero-media">
+        <video loop muted playsinline preload="none"
+               poster="figures/project-birdsong.jpg" width="870" height="600"
+               aria-label="A reconstructed attractor from a zebra finch song, turning: the trajectory traces a closed loop over and over, held faint in teal with a bright rose comet running the path it is on, and a readout of the time within the song.">
+          <source src="figures/project-birdsong.mp4" type="video/mp4">
+        </video>
+        <figcaption>One zebra finch song as a trajectory in its reconstructed state space. Penn, 2018.</figcaption>
+      </figure>
     </div>
+
+    <!-- What she does now. The two paragraphs are mine, written for this
+         page from Erised's public description (erised-ai.com) and the argument
+         of her thesis introduction; no company numbers appear here, by the
+         company's own rule for its site. -->
+    <section class="block" aria-labelledby="h-now">
+      <h2 class="section-label" id="h-now">Now</h2>
+      <div class="prose">
+        <p><a href="https://erised-ai.com">Erised AI</a> builds AI-native systems and world models
+          for nanoscience and metrology: instruments that get smarter with every measurement,
+          because the measurement and the model are designed together. I co-founded it, and I
+          lead the AI, data and computational microscopy side.</p>
+        <p>The argument that led here is the one in my thesis introduction. In neuroscience, and
+          just as much in materials and devices, the bottleneck is not the supply of hypotheses
+          but the supply of dense, well-designed measurement in the regimes where a system
+          actually operates. That constraint lives in the instrument, so the instrument is what
+          I am building. <a href="notes/thesis.html">The note says why.</a></p>
+      </div>
+    </section>
 
     <!-- Three areas, stacked, each fronted by a video that plays on its own,
          in the order she wants them read: cognition, closed loop, Bayesian.
-         research.html carries the same order. The second project under
-         Bayesian is a placeholder - it is not announced, so the card makes no
-         claims. The videos are real material: the viewer's own channel
+         research.html carries the same order. The videos are real material: the viewer's own channel
          toggles, one session of at-home recording, and the measured responses
          the semantic models are fit to. -->
     <section class="block" aria-labelledby="h-research">
@@ -113,7 +144,7 @@
             </video>
           </div>
           <div class="area-body">
-            <h3 class="area-title"><a href="research/cognition.html">Cognition</a></h3>
+            <h3 class="area-title"><a href="research.html#cognition">Cognition</a></h3>
             <p class="area-lead">What cortex does with quantity, meaning and song, measured
               from natural stimuli.</p>
             <p class="area-count">Number, space and time · Birdsong in state space</p>
@@ -134,7 +165,7 @@
             </video>
           </div>
           <div class="area-body">
-            <h3 class="area-title"><a href="research/closed-loop.html">Closed loop</a></h3>
+            <h3 class="area-title"><a href="research.html#closed-loop">Closed loop</a></h3>
             <p class="area-lead">Recording and stimulation in one circuit, measured in
               people’s homes rather than a clinic.</p>
             <p class="area-count">Parkinson’s, measured at home</p>
@@ -150,10 +181,10 @@
             </video>
           </div>
           <div class="area-body">
-            <h3 class="area-title"><a href="research/bayesian.html">Bayesian</a></h3>
+            <h3 class="area-title"><a href="research.html#bayesian">Bayesian</a></h3>
             <p class="area-lead">What a fitted weight is entitled to mean, and what the
               features have to look like before it means anything.</p>
-            <p class="area-count">Sparse concept atoms · one project not yet named</p>
+            <p class="area-count">Sparse concept atoms</p>
           </div>
         </article>
 
@@ -188,14 +219,13 @@
         <li class="beat">
           <p class="beat-year"><time datetime="2020">2020</time>–<time datetime="2025">2025</time></p>
           <p class="beat-lead">At Berkeley I built encoding models that predict cortical responses
-            from language model features, using <span class="todo" data-todo="2020-2025-stimulus">[the
-            actual stimulus — story listening, which stories, how many hours]</span> rather than
-            controlled stimuli.</p>
+            from language model features, using two hours of people listening to stories told on
+            The Moth Radio Hour rather than controlled stimuli.</p>
         </li>
 
         <li class="beat">
           <p class="beat-year">Now</p>
-          <p class="beat-lead">Now I build characterization instruments.</p>
+          <p class="beat-lead">Now I build <a href="#h-now">characterization instruments</a>.</p>
         </li>
 
       </ol>
@@ -204,12 +234,11 @@
     <section class="block" aria-labelledby="h-contact">
       <h2 class="section-label" id="h-contact">Contact</h2>
       <p class="contact-mail"><a href="mailto:aliciaxiaozeng@gmail.com">aliciaxiaozeng@gmail.com</a></p>
-      <p class="prose contact-note"><span class="todo" data-todo="invitation-line">[invitation
-        line — yours]</span></p>
+      <p class="prose contact-note">If you are building, buying or backing nanoscale measurement,
+        or want to work on the models behind it, I would like to hear from you.</p>
       <p class="profiles">
-        <a class="todo" data-todo="link-google-scholar">[google scholar]</a>
-        <a class="todo" data-todo="link-github">[github]</a>
-        <a class="todo" data-todo="link-orcid">[orcid]</a></p>
+        <a href="https://github.com/alicialitrtwe">GitHub</a>
+        <a href="https://erised-ai.com">Erised AI</a></p>
       <!-- Demoted from its own display-scale section to one quiet line: the
            only sentence here that is not about the work, read as an aside. -->
       <p class="otherwise">Otherwise: camping, mountains, ballet, and I still read philosophy.</p>
@@ -222,6 +251,7 @@
       <span aria-current="page">Index</span>
       <a href="research.html">Research</a>
       <a href="notes.html">Notes</a>
+      <a href="https://erised-ai.com">Erised</a>
     </nav>
   </footer>
 

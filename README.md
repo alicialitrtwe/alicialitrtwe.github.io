@@ -3,12 +3,12 @@
 Static hand-written HTML, one stylesheet and one small script. No build
 step, no framework.
 
-    index.html                      homepage: the opening, the three areas, the arc, contact
-    research.html                   the full inventory, grouped by area
+    index.html                      homepage: who she is now, the opening, Erised, the three areas, the arc, contact
+    research.html                   the full inventory, grouped by area, each area opened by what it means to her
     notes.html                      working notes, newest first
-    research/cognition.html         area page: what cortex does with quantity, meaning and song
-    research/closed-loop.html       area page: recording and stimulation in one circuit
-    research/bayesian.html          area page: what a fitted weight is entitled to mean
+    research/cognition.html         redirects to research.html#cognition (the area pages were folded
+    research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
+    research/bayesian.html
     research/superpositions.html    the NeurIPS paper as a short tutorial (facts from thesis chapter 2)
     research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
     research/dbs.html               the Nature BME aDBS paper, a short introduction (facts and two figures from the CC BY preprint)
@@ -26,8 +26,7 @@ step, no framework.
     files/                          the thesis PDF (33 MB)
     sitemap.xml, robots.txt         twelve pages; the viewer is disallowed (thousands of data files)
     styles.css                      everything visual
-    site.js                         the homepage attractor, the clip observer and the paper-page
-                                    section nav; optional
+    site.js                         the clip observer and the paper-page section nav; optional
     styles-dark.css                 the previous design, kept as a record — see below; it is
                                     not a working revert
 
@@ -56,9 +55,21 @@ that leaves the site. The palette is seven tokens at the top of
 than following the OS.
 
 There are **no network requests** beyond the site's own files: no web font,
-no analytics, no embeds. `site.js` is optional — with it off you lose the
-homepage animation and the highlighted section name in the paper-page nav,
+no analytics, no embeds. `site.js` is optional — with it off every clip stays
+on its poster and the paper-page nav loses its highlighted section name,
 nothing else.
+
+## Who the site is for (2026-10-22)
+
+Investors and collaborators of Erised AI, where Alicia is a co-founder, as
+much as readers of the research. So the first screen says what she does now
+(`.hero-eyebrow`, `.hero-statement`), a **Now** section on the index names
+Erised and links its public site, every nav carries an Erised link, and the
+contact line says who should write. Two rules carried over from Erised's own
+site: no company numbers anywhere here, and copy that is plain and specific.
+The eyebrow, statement, Now paragraphs, notes intro and contact line are the
+site's prose that is not hers; everything else that reads as her voice is
+verbatim.
 
 `styles-dark.css` is the previous design, kept as a record. It is **not** a
 working revert any more: it styles the markup this site had before the area
@@ -70,32 +81,29 @@ unstyled. Read it for what a rule used to be; do not swap it in.
 
 The rule that decides where each kind of image goes:
 
-- **Decorative, abstract animation** is allowed in exactly two places: the
-  homepage hero (a Lorenz attractor drawn by `site.js`) and the thumbnail
-  slot of a research card, as a stand-in until a real image exists. It is
-  never captioned, never appears on a paper page, and is `aria-hidden`.
+- **Decorative, abstract animation** is no longer anywhere on the site. The
+  homepage hero held a Lorenz attractor drawn by `site.js` until 2026-10-22;
+  it was replaced by her own birdsong animation, which is the same picture
+  drawn from real data (see "The hero").
 - **Anything from the work itself** — a figure, a poster, a video — goes in
   the same thumbnail slot on the cards and, with a caption, on the paper
   page. It always wins over the decoration: when a real image exists, the
   abstract one goes.
 
 Every media slot on the site now holds real material, so the abstract `.viz`
-stand-ins have been deleted from `styles.css`. Where something does not exist
-yet the slot is a marked `.fig-slot.todo` placeholder rather than borrowed
-art. The homepage attractor stays either way: it is on the person's page, not
-a paper's, and nothing about it claims to be data.
+stand-ins and the `.fig-slot` placeholder box have been deleted from
+`styles.css`.
 
 ### The hero
 
-`<canvas class="hero-viz">` in the opening of `index.html`, filled by `site.js`
-with a Lorenz attractor — drawn as the trajectory it is, not as a point cloud,
-with a bright comet running the path so it reads as one orbit being integrated
-rather than a static tangle. Its colour is read from the three area tokens in
-`styles.css`, so the palette lives in one place: each lobe takes an end of the
-ramp and the crossing between them takes the middle. It uses no images, stops
-when it scrolls off screen or the tab is hidden, and under
-`prefers-reduced-motion` draws one still frame. Delete the canvas element to
-remove it; `<noscript>` already collapses the band when there is no script.
+`<figure class="hero-media">` in the opening of `index.html`: her own 2018
+animation of one zebra finch song reconstructed as a trajectory in state
+space (`figures/project-birdsong.mp4`, the same clip the inventory uses as
+the birdsong thumbnail), captioned, in the clips' shared 1.45 frame. It is
+real material, so it follows the figure rule above rather than the decoration
+rule. `site.js` starts it when on screen like every other clip. Above the text
+sit two lines that are not hers: a mono eyebrow with the affiliation and a
+one-sentence statement of what she does now.
 
 ### The area cards
 
@@ -133,8 +141,8 @@ clip at 870×600 and it will fill its frame exactly. The one exception is
 `.project-media--wide`, 16:9, for the conference talk — a recording of a room
 rather than one of the data clips.
 
-The full inventory lives on `research.html` and each area page repeats its own
-projects; an entry is written once per page.
+The full inventory lives on `research.html`; the index cards link to its
+sections, so an entry is written exactly once.
 
 ### Paper pages
 
@@ -147,8 +155,7 @@ To add a section: duplicate one `<section class="paper-section">`, give it a
 new `id`, and add a matching `<li>` to the `paper-nav` list. Anchors clear the
 sticky nav: `html { scroll-padding-top }` steps with the nav's height as it
 wraps. A figure in a section is a `figure.fig` with the media and a caption
-(`.fig-slot.todo` is the dashed placeholder for one that does not exist yet;
-`research.html` uses it for the two entries with no figure):
+(every figure on the site is real material):
 
 ```html
 <figure class="fig">
@@ -319,19 +326,26 @@ published order (`<p class="authors">`), with you marked
 everywhere, and **Xiao Zeng** on the 2019 APS abstract — the markup uses
 whichever the venue printed.
 
-On the homepage the three cards show only "Title — venue, year"; the author
-lists are on `research.html` and on each paper page.
+On the homepage the three cards show only a title and a one-line lead; the
+author lists are on `research.html` and on each paper page.
 
 ### Research groups
 
 `research.html` is three groups in your order — **Cognition**
 (number/space/time, the brain viewer, birdsong), **Closed loop**
 (movement-responsive DBS, Bringing the Clinic Home, In-Home Video and IMU
-Kinematics) and **Bayesian** (sparse concept atoms, and one project not yet
-named). Each group is a `<section class="block group" data-area="…">` holding
-a `<ul class="outputs outputs--media">`; move an entry by moving its `<li>`,
-move a whole area by moving its section. `index.html` and each area page carry
-the same order.
+Kinematics) and **Bayesian** (sparse concept atoms). Each group is a
+`<section class="block group" id="…" data-area="…">` that opens with a
+`.group-intro` (the standfirst and the two paragraphs that used to open the
+area page, saying what the area means to you) and then holds a
+`<ul class="outputs outputs--media">`; move an entry by moving its `<li>`,
+move a whole area by moving its section. `index.html` carries the same order
+and its cards link to these sections.
+
+The three area pages under `research/` are redirects to those sections now
+(kept so old links land; `noindex`, and out of the sitemap). The NeurIPS talk
+that lived on the Bayesian page is a section of `research/superpositions.html`
+(`#talk`), with its transcript.
 
 `data-area` is what sets `--area`, the one slot the three hues fill, so the
 colour follows an entry from the homepage through to its own page. A page that
@@ -347,54 +361,31 @@ chapter, not from the inventory.
 ### The arc
 
 The "2017 to now" section on the homepage is one sentence per beat — the
-first sentence of each beat from your draft, nothing added. The rest of the
-draft's beat prose is not on the page; the draft is the place to recover it.
+first sentence of each beat from your draft, nothing added except the
+stimulus facts filled into the 2020–2025 sentence (two hours of Moth Radio
+Hour stories, from the superpositions page) and a link from "characterization
+instruments" to the Now section. The rest of the draft's beat prose is not on
+the page; the draft is the place to recover it.
 
-## Placeholders to fill in
+## Placeholders
 
-Bracketed text is a marked placeholder, not copy. Find every one:
+There are none left (2026-10-22): every `class="todo"` was filled or removed,
+and the `.todo` / `.fig-slot` / `.button.todo` rules went with them. Things
+that were dropped rather than filled, in case you want them back: the Google
+Scholar and ORCID chips in the contact section (no public profile was found;
+add the links as plain `<a>`s in `.profiles`), the Code button on
+`research/dbs.html` (no public repository), the poster button on
+`research/number.html` (CCN publishes none), the unnamed second Bayesian
+project, the two "Explainer" chips (the per-paper lay explainers are still
+unwritten; add a chip back when one exists), and the two sample notes.
 
-    grep -rn 'class="todo"' *.html research/
-
-Replace it and delete `class="todo"` and `data-todo`. Link placeholders are
-`<a>` elements with **no `href`** — per spec that makes them a placeholder for
-a link rather than a link, so they are not focusable and do not appear in a
-screen reader's links list as working resources. Adding the real `href` is
-what turns one into a live link.
-
-**index.html** — `2020-2025-stimulus` (inside the one 2020–2025 sentence),
-`invitation-line`, `link-google-scholar`, `link-github`, `link-orcid`
-
-**notes.html** — `notes-intro`, then `note-1-date` / `note-1-body` and
-`note-2-date` / `note-2-body` for the two sample entries
-
-**research.html** — `thumb-bayesian-new`, `bayesian-new-project`,
-`research-list-incomplete`, and the `explainer-*` chips below
-
-**research/bayesian.html** — `bayesian-new-video`, `bayesian-new-title`,
-`bayesian-new-lead` for the project that is not announced yet, plus one
-`explainer-*`
-
-**research/dbs.html** — `link-dbs-code` only (the Code button; drop the
-button if there is no public repository).
-
-**research/number.html** — `link-number-poster` only (the poster file, if she
-wants to host it; nothing is published online).
-
-**research/superpositions.html**, **research/stimulation.html** and
-**notes/thesis.html** — none.
-
-The remaining `explainer-*` chips sit on `research.html` and on the area
-pages. Two of them are real work: `explainer-jove` and `explainer-techrxiv`
-have no page behind them. The rest name pages that already exist and are
-linked from the same row, so they are chips promising something the reader can
-already click.
+If you add a placeholder again, mark it `class="todo"` so it is greppable, and
+bring back the `.todo` rule from git history (`git show c04303b:styles.css`).
 
 ### Adding a publication
 
 Copy an existing `<li>` inside the right group's
-`<ul class="outputs outputs--media">` in `research.html`, and the same entry
-into its area page's `<ul class="outputs">`. An entry is a thumbnail
+`<ul class="outputs outputs--media">` in `research.html`. An entry is a thumbnail
 (`.output-media`) beside a body: the title with its venue in
 `<span class="pub-meta">`, the full author list in published order with you
 marked `<span class="me">…</span>`, and a row of `.output-links`.
@@ -406,8 +397,7 @@ ids and the `paper-nav` list in step. On a paper page the buttons are named by
 
 A co-authored paper, preprint or talk that does not need its own page is the
 same `<li>` with its links going straight out — there is no separate minor
-list any more. Give it a thumbnail from its own material if one exists; a
-`.fig-slot.todo` if it does not.
+list any more. Give it a thumbnail from its own material.
 
 ### Adding a note
 

@@ -14,7 +14,7 @@
    art appears only in the home hero and in a card's thumbnail slot, is
    never captioned, and never appears on a paper page — see README.
 
-   Placeholders are greppable:  grep -n 'class="todo"' *.html          */
+   There are no placeholders left on the site (2026-10-22).               */
 
 /* ---- tokens -------------------------------------------------------------- */
 :root {
@@ -26,10 +26,8 @@
   --fg-muted: #8f8f8f;        /* 5.9:1 on --bg — the floor for small text */
   --surface: #1a1a1a;
   --border: #2a2a2a;
-  --highlight: #574d10;       /* placeholders */
   --accent: #35bcc9;          /* the teal the clips and the viewer share */
   --accent-dim: #1d5c66;
-  --placeholder: #8a7a1f;     /* the dashed rule under an unwritten bit */
 
   /* One hue per research area, each read off its own clip rather than picked:
      the warm half of the flatmap (hue 10-20 deg), the spectrogram teal (190),
@@ -130,32 +128,6 @@ a[href^="http"]::after, a[target="_blank"]::after {
 }
 .lead + .prose { margin-top: 0; }
 
-/* Bracketed placeholder text: marked so it cannot be mistaken for copy, but
-   quiet enough not to dominate a page. Still greppable via class="todo". */
-.todo {
-  color: var(--fg-muted);
-  background: color-mix(in srgb, var(--placeholder) 15%, transparent);
-  border-radius: 0.15rem;
-  padding: 0.05em 0.25em;
-  -webkit-box-decoration-break: clone;
-          box-decoration-break: clone;   /* keep the padding when it wraps */
-}
-a.todo { text-decoration: none; }
-a.todo:hover { color: var(--fg-dim); }
-
-/* ---- work in progress ------------------------------------------------------
-   A sitewide notice while the pages are being written. Dashed and in the
-   placeholder colour, like the other unfinished markers (.todo, .fig-slot). */
-.wip {
-  margin-bottom: 2.75rem;
-  padding-left: 0.8rem;
-  border-left: 1px solid var(--accent-dim);
-  color: var(--fg-muted);
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-
 /* ---- header ---------------------------------------------------------------- */
 .wordmark { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
 .wordmark a { text-decoration: none; }
@@ -170,26 +142,43 @@ a.todo:hover { color: var(--fg-dim); }
 }
 
 /* ---- the hero ----------------------------------------------------------- */
-/* A canvas that site.js fills with a strange attractor tracing itself —
-   ABSTRACT, decorative, aria-hidden. Under prefers-reduced-motion it is a
-   still frame; with no script at all a <noscript> rule collapses the band.
-   The halo gives the attractor something to sit in rather than a wide empty
-   strip. Everything about this element is set here; it was spread over four
-   rules, three of which only re-set what the first had already said. */
-.hero-viz {
+/* Two lines of mine above her opening: a mono eyebrow with the affiliation,
+   then one statement set at the page-title size and a lighter weight, so it
+   reads as a caption to the name rather than as a second heading. */
+.hero-eyebrow {
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.hero-eyebrow .sep { padding: 0 0.45rem; color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.hero-statement {
+  max-width: 24em;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+/* The clip beside the opening is real material (her birdsong animation) and
+   is captioned like every other figure on the site. It takes the clips' shared
+   frame and hairline. Stacked, it follows the text and is capped like the
+   cards' clips; this used to be a decorative canvas that opened the page. */
+.hero-media { margin: 2.5rem 0 0; }
+.hero-media video {
   display: block;
   width: 100%;
-  /* Stacked, this was 324px of a 390-wide phone's first screen, about half the
-     usable fold, and her opening sentence was cut in half by it. It is the one
-     element on the page that is explicitly not data, so it gives way first.
-     The 60em block below is the only place that overrides this. */
-  height: clamp(190px, 26vh, 300px);
-  margin: 0 0 1.75rem;
-  background:
-    radial-gradient(ellipse 58% 66% at 50% 50%,
-      color-mix(in srgb, var(--accent) 11%, transparent), transparent 72%),
-    var(--bg);
+  height: auto;
+  aspect-ratio: 1.45;
+  object-fit: cover;
+  background: #000;
+  border-radius: 0.25rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
 }
+.hero-media figcaption { margin-top: 0.6rem; font-size: 0.8125rem; color: var(--fg-muted); }
+@media (max-width: 59.99em) { .hero-media { max-width: 32rem; } }
 
 /* ---- sections ---------------------------------------------------------------- */
 /* 5.5rem, not --gap: a section boundary has to be the largest step on the
@@ -318,7 +307,6 @@ a.todo:hover { color: var(--fg-dim); }
   background: var(--surface);
 }
 .button:hover { opacity: 1; border-color: var(--fg-muted); }
-.button.todo { border-style: dashed; border-color: var(--placeholder); background: none; color: var(--fg-muted); }
 
 /* sticky section list; site.js marks the section in view */
 .paper-nav { position: sticky; top: 0; z-index: 3; margin: 0 -1rem 2rem; padding: 0.6rem 1rem; background: color-mix(in srgb, var(--bg) 90%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.875rem; }
@@ -340,19 +328,9 @@ a.todo:hover { color: var(--fg-dim); }
 .paper-section > h2 { margin-bottom: 0.9rem; }
 .paper-section > p { max-width: var(--measure); margin-bottom: 1rem; }
 
-/* a figure: the image or video, then a caption. .fig-slot is the marked
-   placeholder for one that does not exist yet. */
+/* a figure: the image or video, then a caption. */
 .fig { margin: 2.25rem 0 0; }
 .fig img, .fig video { display: block; width: 100%; height: auto; border-radius: 0.25rem; background: var(--surface); }
-.fig-slot { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1rem; border: 1px dashed var(--border); border-radius: 0.25rem; text-align: center; color: var(--fg-muted); }
-.fig-slot.todo { background: color-mix(in srgb, var(--highlight) 12%, var(--bg)); border-color: color-mix(in srgb, var(--placeholder) 55%, transparent); color: var(--fg-muted); }
-.output-media .fig-slot.todo, .project-media .fig-slot.todo {
-  background: color-mix(in srgb, var(--highlight) 5%, var(--bg));
-  border-color: color-mix(in srgb, var(--placeholder) 26%, transparent);
-}
-/* and it takes the frame's own shape - at 16/9 it sat 62px shorter than the
-   clips above it, leaving a black band inside the hairline */
-.project-media .fig-slot { aspect-ratio: auto; height: 100%; }
 .fig--hero { max-width: 44em; margin: 0 auto var(--gap); }
 figcaption { margin-top: 0.6rem; font-size: 0.875rem; line-height: 1.45; color: var(--fg-muted); max-width: var(--measure); }
 
@@ -441,13 +419,12 @@ video:focus-visible, summary:focus-visible {
   :root { --bg: #fff; --fg: #111; --fg-dim: #333; --fg-muted: #555; --border: #ccc;
           --surface: #f4f4f2; --accent: #036; --area: #036; }
   html, body { background: #fff; color: #111; }
-  .skip, .hero-viz, .paper-nav, .foot { display: none; }
+  .skip, .paper-nav, .foot { display: none; }
   a { text-decoration: none; color: #111; }
   /* a URL is worth having on paper, where a link cannot be followed */
   .paper-head a[href^="http"]::after,
   .output-links a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
   .fig img, .fig video, .output-media, .area-media, .project-media { border-color: #ccc; }
-  .todo { background: none; border: 1px dashed #999; }
   figure, .box, .paper-section { break-inside: avoid; }
 }
 
@@ -480,14 +457,14 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
    than as decoration, and it separates what the site says from what the site
    knows. Mono runs large at a given size, so each is stepped down. */
 .section-label, .beat-year, .note-date, .project-years, .pub-meta,
-.area-count, .wip, .foot, .box-label, .paper-head .pub-meta {
+.area-count, .foot, .box-label, .paper-head .pub-meta, .hero-eyebrow {
   font-family: var(--mono);
 }
 .pub-meta, .project-years { font-size: 0.8125rem; letter-spacing: 0.01em; }
 .output-title .pub-meta { font-size: 0.8125rem; }
 .area-count { font-size: 0.8125rem; letter-spacing: 0.01em; }
 .beat-year, .note-date { font-size: 0.9375rem; letter-spacing: 0.02em; }
-.wip, .foot { font-size: 0.75rem; letter-spacing: 0.02em; }
+.foot { font-size: 0.75rem; letter-spacing: 0.02em; }
 
 /* A section label is a label plus a rule that runs off the end of it — the
    area's own colour where there is one, the accent otherwise. */
@@ -605,12 +582,10 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 .output-links .sep { color: color-mix(in srgb, var(--area) 60%, transparent); }
 .authors .me { font-weight: 600; color: var(--fg); }
 
-/* The opening pairs the text with the attractor instead of stacking them.
+/* The opening pairs the text with the clip instead of stacking them.
    Below 60em they stack and the text comes first, which is the order the
-   markup is already in. */
+   markup is in. */
 .hero-split { display: grid; gap: 1.5rem; }
-/* Stacked, the attractor still opens the page, as it did before the split. */
-.hero-viz { order: -1; }
 @media (min-width: 60em) {
   .hero-split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
@@ -618,7 +593,7 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
     align-items: center;
     margin-bottom: 1rem;
   }
-  .hero-viz { order: 0; height: clamp(340px, 48vh, 470px); margin: 0; }
+  .hero-media { margin: 0; }
 }
 
 /* A subpage title carries its area's colour, so a reader arriving on a paper
@@ -714,17 +689,16 @@ figcaption { max-width: 34rem; }
     border-radius: 2px;
     background: var(--area);
   }
-  .block > .area-lead, .block > .areas, .block > .outputs { margin-top: 0; }
+  .block > .area-lead, .block > .group-intro, .block > .areas, .block > .outputs { margin-top: 0; }
   .block > .outputs { margin-top: 1.25rem; }
 }
 
 /* Every subpage gets a standfirst, the way the index opening has one: the
    paragraph under the page title is set larger and lighter.
 
-   Not `.name + .lead`, which is what this was: on an area page the standfirst
-   sits inside .area-intro rather than beside the title, so the adjacent
-   sibling never matched and cognition, closed-loop and bayesian all ran their
-   opening at body size. 34rem rather than 32em, so the standfirst ends on the
+   Not `.name + .lead`: on the inventory a group's standfirst sits inside
+   .group-intro rather than beside the page title, so the adjacent sibling
+   would never match. 34rem rather than 32em, so the standfirst ends on the
    same right edge as the body under it instead of 70px past it. */
 .lead {
   font-size: 1.2rem;
@@ -788,7 +762,6 @@ figcaption { max-width: 34rem; }
   border-radius: 0.2rem;
   border: 1px solid color-mix(in srgb, var(--area) 16%, transparent);
 }
-.output-media .fig-slot { aspect-ratio: 1.45; font-size: 0.8125rem; }
 /* Only the inventory's list carries thumbnails. Area pages use .outputs too,
    and their items have no media, so an unscoped grid crushed their titles into
    a 11.5rem column with the author list beside it. */
@@ -809,30 +782,10 @@ figcaption { max-width: 34rem; }
   .hero-split {
     grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 0.86fr);
     column-gap: 2.5rem;
+    align-items: center;
   }
   .hero-split > .hero { grid-column: 2; }
-  .hero-split > .hero-viz { grid-column: 3; }
-}
-
-/* ---- an area page's opening spread ---------------------------------------------
-   The standfirst ran at the 32em measure and the two paragraphs under it at 34em,
-   so the page opened with a narrow column and a third of the width empty, then
-   dropped into projects that use all of it. Side by side above 68em the opening
-   fills the measure it is given and the step down into the projects is even. */
-@media (min-width: 68em) {
-  .area-intro {
-    display: grid;
-    /* the same tracks and the same gap as .area/.project below it: at
-       0.85fr/1fr over a 3rem gap the opening's two columns missed the
-       projects' by 42px on one edge and 34px on the other, which is enough to
-       read as a wobble down the left of the page */
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    column-gap: 2.5rem;
-    align-items: start;
-  }
-  .area-intro > .lead { margin-bottom: 0; max-width: none; }
-  .area-intro > .prose { margin-top: 0; max-width: none; }
-  .area-intro > .prose > p { max-width: var(--measure); }
+  .hero-split > .hero-media { grid-column: 3; }
 }
 
 /* ---- one frame for every clip ---------------------------------------------------
@@ -895,6 +848,11 @@ figcaption { max-width: 34rem; }
    share, losing 60px of its height to black. It is a recording of a room, not
    one of the clips, so it gets its own frame. */
 .project-media--wide { aspect-ratio: 16 / 9; }
+.fig--wide video { aspect-ratio: 16 / 9; }
+/* A group's intro on the inventory: the standfirst, then the argument, then
+   the list; this is what each area page used to open with. */
+.group-intro { margin-bottom: 1.75rem; }
+.group-intro > .lead { margin-bottom: 1rem; }
 
 /* A card's mark is narrower than a page title's, so the two ranks are not the
    same mark at the same width. */
@@ -922,41 +880,6 @@ figcaption { max-width: 34rem; }
    module in from the label. Three axes, one interval. */
 @media (min-width: 68em) {
   .beat, .note-item { grid-template-columns: 7rem minmax(0, 1fr); column-gap: 2.5rem; }
-}
-
-/* ---- an area page's contents -------------------------------------------------
-   The opening spread set a four-line standfirst beside a twelve-line argument
-   and hung both from the top, so 87,000px of black sat under the standfirst at
-   the point where the eye enters the page. The left column carries the area's
-   contents under the standfirst instead: it fills the column with something
-   worth having, and the two sides now end within 40px of each other.          */
-.area-toc { margin: 1.75rem 0 1.5rem; }
-.area-toc-label {
-  margin-bottom: 0.6rem;
-  font-family: var(--mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
-.area-toc ol { display: grid; gap: 0.45rem; }
-.area-toc li {
-  padding-left: 0.9rem;
-  border-left: 1px solid color-mix(in srgb, var(--area) 40%, transparent);
-}
-.area-toc a { text-decoration: none; }
-.area-toc a:hover { text-decoration: underline; opacity: 1; }
-.area-toc-years {
-  margin-left: 0.4rem;
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--fg-muted);
-}
-@media (min-width: 68em) {
-  .area-intro { grid-template-rows: max-content 1fr; row-gap: 1.6rem; }
-  .area-intro > .lead { grid-column: 1; grid-row: 1; }
-  .area-intro > .area-toc { grid-column: 1; grid-row: 2; margin: 0; }
-  .area-intro > .prose { grid-column: 2; grid-row: 1 / span 2; }
 }
 
 /* ---- the inventory reads as a list of works ----------------------------------

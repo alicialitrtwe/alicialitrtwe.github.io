@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Research — Alicia Zeng</title>
-<meta name="description" content="Everything, grouped by area: cognition, closed loop, Bayesian.">
+<meta name="description" content="Everything by Alicia Zeng, grouped by area: cognition, closed loop, Bayesian, each opened by what the area means.">
 <meta property="og:title" content="Research — Alicia Zeng">
-<meta property="og:description" content="Everything, grouped by area: cognition, closed loop, Bayesian.">
+<meta property="og:description" content="Everything by Alicia Zeng, grouped by area: cognition, closed loop, Bayesian, each opened by what the area means.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://alicialitrtwe.github.io/figures/area-cognition.jpg">
@@ -22,9 +22,6 @@
 
 <div class="shell">
 
-  <!-- The site is being written; the notice is deliberate and sitewide. -->
-  <p class="wip">Work in progress — pages and figures are still being written.</p>
-
 
   <header class="topbar">
     <p class="wordmark"><a href="index.html">Alicia Zeng</a></p>
@@ -32,6 +29,7 @@
       <a href="index.html">Index</a>
       <span aria-current="page">Research</span>
       <a href="notes.html">Notes</a>
+      <a href="https://erised-ai.com">Erised</a>
     </nav>
   </header>
 
@@ -40,8 +38,11 @@
     <header class="block page-head">
       <h1 class="name">Research</h1>
 
-    <!-- The complete list. The index carries the same three areas with their
-         videos; this page is the full inventory underneath them. Every output
+    <!-- The complete list, and the only inventory: the area pages this used to
+         summarise (research/cognition.html, closed-loop.html, bayesian.html)
+         are redirects to the sections below, and their openings live here as
+         each group's intro. The index carries the same three areas with their
+         videos and a one-line lead each. Every output
          carries a thumbnail of its own, a clip where one exists. None of them
          are decorative: where an output has no material of its own the slot is
          a marked placeholder rather than a borrowed picture.
@@ -55,14 +56,28 @@
          Every URL is entered once on the paper page it belongs to and copied
          from there; titles, venues, years and DOIs were verified against
          Crossref and PubMed, not typed from memory. -->
-      <p class="lead">Everything, in area order. The <a href="index.html">index</a> has the short
-        version.</p>
+      <p class="lead">Everything, grouped into the three areas the work falls into, each opened by
+        what the area means to me.</p>
     </header>
 
-    <section class="block group" data-area="cognition" aria-labelledby="h-cognition">
-      <h2 class="section-label" id="h-cognition"><a href="research/cognition.html">Cognition</a></h2>
-      <p class="area-lead">What cortex does with quantity, meaning and song, measured from
-        natural stimuli.</p>
+    <section class="block group" id="cognition" data-area="cognition" aria-labelledby="h-cognition">
+      <h2 class="section-label" id="h-cognition">Cognition</h2>
+      <div class="group-intro">
+        <p class="lead">Whether two kinds of thought share machinery in the brain is usually tested with
+            one small experiment per kind, followed by a check for overlap between the regions each
+            activates.</p>
+        <div class="prose">
+          <p>That design has a flaw it cannot correct for. Each experiment arrives with its own task and
+            its own confounds, so any overlap found between them reflects how the two experiments were
+            built as much as it reflects the brain.</p>
+          <p>A stimulus that already contains all of them removes the need for that
+            comparison. Someone telling a story counts things, places them and times them continuously,
+            in one stream of words, so a single recording and a single model can produce a map for each,
+            and those maps can be compared directly. What it demands in return is a model whose features
+            are separable to begin with, which is the problem the work under
+            <a href="#bayesian">Bayesian</a> addresses.</p>
+        </div>
+      </div>
       <ul class="outputs outputs--media" role="list">
         <li>
           <div class="output-media">
@@ -118,10 +133,23 @@
       </ul>
     </section>
 
-    <section class="block group" data-area="closed-loop" aria-labelledby="h-closedloop">
-      <h2 class="section-label" id="h-closedloop"><a href="research/closed-loop.html">Closed loop</a></h2>
-      <p class="area-lead">Recording and stimulation in one circuit, measured in people’s
-        homes rather than a clinic.</p>
+    <section class="block group" id="closed-loop" data-area="closed-loop" aria-labelledby="h-closedloop">
+      <h2 class="section-label" id="h-closedloop">Closed loop</h2>
+      <div class="group-intro">
+        <p class="lead">Deep brain stimulation is set in a clinic over an afternoon and then runs
+            unchanged for months, in a disease whose symptoms move over the course of a day. Closing that
+            gap means letting the stimulator respond to the person, and that has to start with measuring
+            what the person is doing.</p>
+        <div class="prose">
+          <p>A clinic visit cannot supply that measurement. The behaviour worth responding to happens at
+            home across hours, and the neural signal you would drive the stimulator from is itself partly
+            a consequence of the stimulation already being delivered. Recording is therefore the first
+            problem: implanted electrodes, wearables and video running at once in somebody’s house, and
+            synchronized closely enough that they can be compared.</p>
+          <p>Once they can, the question is whether behaviour predicts the neural signal
+            well enough to be worth decoding from.</p>
+        </div>
+      </div>
       <ul class="outputs outputs--media" role="list">
         <li>
           <div class="output-media">
@@ -161,8 +189,7 @@
             <p class="authors">Gabrielle Strandquist, Tomasz Frączek, Tanner Dixon, Shravanan Ravi,
               Raphael Bechtold, Daryl Lawrence, <span class="me">Alicia Zeng</span>, Jack Gallant,
               Simon Little, Jeffrey Herron</p>
-            <p class="output-links"><a href="https://doi.org/10.3791/65305">DOI</a><span
-              class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-jove">Explainer</a></p>
+            <p class="output-links"><a href="https://doi.org/10.3791/65305">DOI</a></p>
           </div>
         </li>
         <li>
@@ -184,17 +211,28 @@
             <p class="authors">Gabrielle Strandquist, Tanner Dixon, Tomasz Frączek, Shravanan Ravi,
               <span class="me">Alicia Zeng</span>, Raphael Bechtold, Daryl Lawrence, Simon Little,
               Jack Gallant, Jeffrey Herron</p>
-            <p class="output-links"><a href="https://doi.org/10.36227/techrxiv.22067474">DOI</a><span
-              class="sep" aria-hidden="true">·</span><a class="todo" data-todo="explainer-techrxiv">Explainer</a></p>
+            <p class="output-links"><a href="https://doi.org/10.36227/techrxiv.22067474">DOI</a></p>
           </div>
         </li>
       </ul>
     </section>
 
-    <section class="block group" data-area="bayesian" aria-labelledby="h-bayesian">
-      <h2 class="section-label" id="h-bayesian"><a href="research/bayesian.html">Bayesian</a></h2>
-      <p class="area-lead">What a fitted weight is entitled to mean, and what the features
-        have to look like before it means anything.</p>
+    <section class="block group" id="bayesian" data-area="bayesian" aria-labelledby="h-bayesian">
+      <h2 class="section-label" id="h-bayesian">Bayesian</h2>
+      <div class="group-intro">
+        <p class="lead">Every model here is fit to predict something measured. This area is about
+            what you may then conclude from its parameters.</p>
+        <div class="prose">
+          <p>A model can predict well and still support no conclusion. When its features are correlated,
+            many different settings of the weights produce the same prediction, so the weights a fit
+            returns are one choice among many that the data cannot separate. Accuracy does not reveal
+            this, because accuracy is identical for all of them.</p>
+          <p>This is a property of the basis, not of the fit. If the features are sparse
+            and non-negative, with one interpretable direction per coordinate, the weights become
+            identifiable, and reading them off is a measurement rather than an interpretation of an
+            arbitrary point.</p>
+        </div>
+      </div>
       <ul class="outputs outputs--media" role="list">
         <li>
           <div class="output-media">
@@ -215,22 +253,8 @@
               class="sep" aria-hidden="true">·</span><a href="research/superpositions.html#bibtex">Cite</a></p>
           </div>
         </li>
-        <li>
-          <div class="output-media">
-            <div class="fig-slot todo"><span class="todo" data-todo="thumb-bayesian-new">[figure]</span></div>
-          </div>
-          <div class="output-body">
-            <p class="output-title"><span class="todo" data-todo="bayesian-new-project">[New project —
-              title, venue and one-line description go here when it is ready to be named.]</span></p>
-          </div>
-        </li>
       </ul>
     </section>
-
-    <div class="block block--tight">
-      <p class="note"><span class="todo" data-todo="research-list-incomplete">[Still not complete —
-        any remaining papers, preprints and talks go here.]</span></p>
-    </div>
 
   </main>
 
@@ -239,6 +263,7 @@
       <a href="index.html">Index</a>
       <span aria-current="page">Research</span>
       <a href="notes.html">Notes</a>
+      <a href="https://erised-ai.com">Erised</a>
     </nav>
   </footer>
 
