@@ -9,8 +9,8 @@ step, no framework.
     research/cognition.html         redirects to research.html#cognition (the area pages were folded
     research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
     research/bayesian.html
-    research/atoms.html             the NeurIPS 2026 oral (semantic-cortical atoms): short version from the
-                                    abstract, the abstract, BibTeX; no figure yet
+    research/atoms.html             the NeurIPS 2026 oral (semantic-cortical atoms): Fig. 1 of the manuscript
+                                    as the hero, short version from the abstract, the abstract, BibTeX
     research/superpositions.html    the NeurIPS 2025 paper as a short tutorial (facts from thesis chapter 2)
     research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
     research/dbs.html               the Nature BME aDBS paper, a short introduction (facts and two figures from the CC BY preprint)
@@ -25,9 +25,13 @@ step, no framework.
                                     the birdsong and viewer clips, the NeurIPS talk and eight slides cut
                                     from it (`talk-*`), the NeurIPS poster, Fig. 1 of the Nature BME
                                     paper and Figs. 2 and 6 of its CC BY preprint, thesis Figures
-                                    2.2–2.9 and 3.1–3.6, and the two DBS figures derived from her own
-                                    recordings (`dbs-ecosystem`, `dbs-kinematics`).
-    files/                          the thesis PDF (33 MB)
+                                    2.2–2.9 and 3.1–3.6, the two DBS figures derived from her own
+                                    recordings (`dbs-ecosystem`, `dbs-kinematics`), and Fig. 1 of the
+                                    NeurIPS 2026 manuscript (`atoms-fig1.jpg` + `.webp`, 1600 px from the
+                                    4110 px PNG in the sparsebrain repo, her say-so 2026-10-22).
+    files/                          the thesis PDF (33 MB) and the NeurIPS 2026 manuscript as
+                                    submitted (30 MB, line-numbered and anonymous; swap in the
+                                    camera-ready when it exists)
     sitemap.xml, robots.txt         twelve pages; the viewer is disallowed (thousands of data files)
     styles.css                      everything visual
     site.js                         the clip observer and the paper-page section nav; optional
