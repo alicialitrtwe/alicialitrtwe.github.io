@@ -1,8 +1,10 @@
-# The brain viewer is a large generated WebGL app with thousands of data
-# files; it is linked from the pages that explain it and does not need
-# crawling on its own.
+# The brain viewers are large generated WebGL apps with thousands of data
+# files; they are linked from the pages that explain them and do not need
+# crawling on their own. /atlas/ is the slot for the NeurIPS 2026 atom atlas
+# (see README, "The atom atlas").
 User-agent: *
 Allow: /
 Disallow: /viewer/
+Disallow: /atlas/
 
 Sitemap: https://alicialitrtwe.github.io/sitemap.xml

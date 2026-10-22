@@ -19,6 +19,8 @@ step, no framework.
     notes/thesis.html               the thesis introduction and acknowledgments, as a note
     viewer/                         the sparse-concept-atoms brain viewer — an rsync'd copy of a build
                                     that lives on another machine. READ-ONLY here: fix it upstream.
+    atlas/                          (not yet present) the NeurIPS 2026 atom atlas, the same way —
+                                    a copy of a build from the sparsebrain repo; see "The atom atlas"
     figures/                        real material only. The area clips (`area-*.mp4` + `.jpg` poster),
                                     the birdsong and viewer clips, the NeurIPS talk and eight slides cut
                                     from it (`talk-*`), the NeurIPS poster, Fig. 1 of the Nature BME
@@ -174,6 +176,49 @@ Where a paper's own abstract appears it is verbatim, and it appears once: in
 an Abstract section on the paper page. The homepage and the inventory carry a
 one-line lead written for them instead, so there is no second copy to keep in
 step.
+
+### The atom atlas (the NeurIPS 2026 viewer)
+
+The viewer for the semantic-cortical atoms paper is built by the private
+`alicialitrtwe/sparsebrain` repo: `scripts/50_build_atom_viewer.py` writes a
+static pycortex site (`index.html` atlas, `viewer.html`, `about.html`, packed
+volume PNGs under `data/`, `thumbs/`, `atoms.json`, a `.nojekyll`), and
+`scripts/51_build_story_player.py` adds `story.html` with `story/*.bin` and an
+MP3 of the story. Its design notes are `reports/atom_viewer_design.md` and
+`reports/story_player_design.md` there. The build is not committed anywhere
+(`outputs/atom_viewer/<name>/`, ~100 MB plus the story player), so it travels
+to this site the way `viewer/` does: as a copied build, read-only here.
+
+To serve it from this site, at `https://alicialitrtwe.github.io/atlas/`:
+
+1. Build it on the machine that has the checkpoint, with the site URL it will
+   live at, so any absolute link it writes is right:
+
+       uv run python scripts/50_build_atom_viewer.py --site_url https://alicialitrtwe.github.io/atlas/
+       uv run python scripts/51_build_story_player.py   # same out_dir
+
+   Do not run `scripts/experiments/add_site_banner.py` on it: that bar is for
+   builds of a model other than the published one.
+2. Copy the build in, keeping the `.nojekyll` (Jekyll would drop the
+   `data/__*.png` files without it):
+
+       rsync -az --delete <machine>:<path to the build>/ ./atlas/
+
+3. Check it before pushing: no single file over 100 MB (GitHub's hard limit;
+   `find atlas -size +95M`), the whole repository well under 1 GB
+   (`du -sh .git atlas viewer figures files`), and `atlas/index.html`,
+   `atlas/viewer.html#atom=1` and `atlas/story.html` opening from
+   `python3 -m http.server`. The story's audio needs HTTP Range to scrub;
+   Pages serves 206 responses (checked against `viewer/` on 2026-10-22), so a
+   local run that cannot scrub is the local server, not the build (use the
+   repo's `scripts/serve_viewer.py` to preview).
+4. Then link it, in the same commit as the copy and never before: an "Atom
+   atlas" button on `research/atoms.html` (`id="l-atlas"`, like the viewer
+   button on `number.html`), an "Atom atlas" link in the paper's
+   `.output-links` row on `research.html`, and "Play with it yourself" as an
+   `.area-extra` on the index's Bayesian card if you want it there. Pushing
+   master deploys it; `robots.txt` already disallows `/atlas/`, as it does
+   `/viewer/`.
 
 ### Explainer pages
 
