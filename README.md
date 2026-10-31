@@ -3,7 +3,7 @@
 Static hand-written HTML, one stylesheet and one small script. No build
 step, no framework.
 
-    index.html                      homepage: who she is now, the opening, Erised, the three areas, the arc, contact
+    index.html                      homepage: who she is now, her opening, Erised, the three areas, contact
     research.html                   the full inventory, grouped by area, each area opened by what it means to her
     notes.html                      working notes, newest first
     research/cognition.html         redirects to research.html#cognition (the area pages were folded
@@ -75,9 +75,18 @@ much as readers of the research. So the first screen says what she does now
 Erised and links its public site, every nav carries an Erised link, and the
 contact line says who should write. Two rules carried over from Erised's own
 site: no company numbers anywhere here, and copy that is plain and specific.
-The eyebrow, statement, Now paragraphs, notes intro and contact line are the
+The eyebrow, statement, Now paragraph, notes intro and contact line are the
 site's prose that is not hers; everything else that reads as her voice is
 verbatim.
+
+**Her opening (2026-10-31).** The lead and three paragraphs under the
+statement are hers, written with her over 2026-10-27 to 29 in the voice of the
+thesis note and approved sentence by sentence: decoding thought from the
+magnetism of blood, the question of how meaning arises from matter, the path
+from Peking University to Berkeley and the Redwood Center, and the conclusion
+that progress comes from better measurement, which is what Erised is for. Do
+not smooth or shorten it without her. The "2017 to now" arc section is gone;
+the opening carries that story.
 
 `styles-dark.css` is the previous design, kept as a record. It is **not** a
 working revert any more: it styles the markup this site had before the area
@@ -91,8 +100,8 @@ The rule that decides where each kind of image goes:
 
 - **Decorative, abstract animation** is no longer anywhere on the site. The
   homepage hero held a Lorenz attractor drawn by `site.js` until 2026-10-22;
-  it was replaced by her own birdsong animation, which is the same picture
-  drawn from real data (see "The hero").
+  it was replaced by her birdsong animation and then, on 2026-10-29, by the
+  brain viewer's cortex (see "The hero").
 - **Anything from the work itself** — a figure, a poster, a video — goes in
   the same thumbnail slot on the cards and, with a caption, on the paper
   page. It always wins over the decoration: when a real image exists, the
@@ -104,14 +113,17 @@ stand-ins and the `.fig-slot` placeholder box have been deleted from
 
 ### The hero
 
-`<figure class="hero-media">` in the opening of `index.html`: her own 2018
-animation of one zebra finch song reconstructed as a trajectory in state
-space (`figures/project-birdsong.mp4`, the same clip the inventory uses as
-the birdsong thumbnail), captioned, in the clips' shared 1.45 frame. It is
-real material, so it follows the figure rule above rather than the decoration
-rule. `site.js` starts it when on screen like every other clip. Above the text
-sit two lines that are not hers: a mono eyebrow with the affiliation and a
-one-sentence statement of what she does now.
+`<figure class="hero-media">` in the opening of `index.html`: the brain
+viewer's rotating cortex (`figures/viewer-thumb.mp4`, poster
+`viewer-thumb.jpg`, also the og:image), captioned as where number, time and
+space are represented in one listener's cortex. It replaced the birdsong
+attractor, which she found ugly at hero size; the birdsong clip is still the
+inventory thumbnail. `site.js` starts it when on screen like every other clip.
+Above 60em the split is top-aligned and the clip drops by `margin-top: 3.4rem`
+to sit beside the statement, since centring it against the four-paragraph
+opening left it floating mid-column. Above the text sit two lines that are not
+hers: a mono eyebrow with the affiliation and a one-sentence statement of
+what she does now.
 
 ### The area cards
 

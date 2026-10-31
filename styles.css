@@ -590,9 +590,12 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
   .hero-split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
     gap: 0 3rem;
-    align-items: center;
+    /* start, not center: the opening is four paragraphs tall now, and a
+       centred clip floated halfway down them with a column of black above */
+    align-items: start;
     margin-bottom: 1rem;
   }
+  .hero-media { margin-top: 3.4rem; }
   .hero-media { margin: 0; }
 }
 
@@ -782,7 +785,7 @@ figcaption { max-width: 34rem; }
   .hero-split {
     grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 0.86fr);
     column-gap: 2.5rem;
-    align-items: center;
+    align-items: start;
   }
   .hero-split > .hero { grid-column: 2; }
   .hero-split > .hero-media { grid-column: 3; }
