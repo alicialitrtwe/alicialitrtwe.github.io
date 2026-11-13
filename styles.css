@@ -162,23 +162,37 @@ a[href^="http"]::after, a[target="_blank"]::after {
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
-/* The clip beside the opening is real material (her birdsong animation) and
-   is captioned like every other figure on the site. It takes the clips' shared
-   frame and hairline. Stacked, it follows the text and is capped like the
-   cards' clips; this used to be a decorative canvas that opened the page. */
-.hero-media { margin: 2.5rem 0 0; }
+/* The line of venues under the statement: metadata, so mono and muted like
+   the eyebrow, but each one is a link to the page that backs it. */
+.hero-proof {
+  margin: -0.5rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--fg-dim);
+}
+.hero-proof a { white-space: nowrap; color: inherit; text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent); text-underline-offset: 0.2em; }
+.hero-proof a:hover { color: var(--fg); }
+.hero-proof .sep { padding: 0 0.5rem; color: color-mix(in srgb, var(--accent) 60%, transparent); }
+/* The viewer clip runs the width of the column between the statement and her
+   opening, since it is the thing a first-time reader should see. It is real
+   material and captioned like every other figure; the frame is cropped a
+   little wider than the clip so statement and cortex share a first screen. */
+.hero-media { margin: 2.25rem 0 2.75rem; }
 .hero-media video {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1.45;
+  aspect-ratio: 1.9;
   object-fit: cover;
   background: #000;
   border-radius: 0.25rem;
   border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
 }
-.hero-media figcaption { margin-top: 0.6rem; font-size: 0.8125rem; color: var(--fg-muted); }
-@media (max-width: 59.99em) { .hero-media { max-width: 32rem; } }
+.hero-media figcaption { margin-top: 0.7rem; max-width: none; font-size: 0.875rem; color: var(--fg-muted); }
+.hero-cta { margin-left: 0.4rem; color: var(--fg); white-space: nowrap; }
+.hero-cta span { display: inline-block; transition: transform 0.2s ease; }
+.hero-cta:hover span { transform: translateX(0.3rem); }
 
 /* ---- sections ---------------------------------------------------------------- */
 /* 5.5rem, not --gap: a section boundary has to be the largest step on the
@@ -582,23 +596,6 @@ figcaption details.legend p { margin: 0.4rem 0 0; }
 .output-links .sep { color: color-mix(in srgb, var(--area) 60%, transparent); }
 .authors .me { font-weight: 600; color: var(--fg); }
 
-/* The opening pairs the text with the clip instead of stacking them.
-   Below 60em they stack and the text comes first, which is the order the
-   markup is in. */
-.hero-split { display: grid; gap: 1.5rem; }
-@media (min-width: 60em) {
-  .hero-split {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-    gap: 0 3rem;
-    /* start, not center: the opening is four paragraphs tall now, and a
-       centred clip floated halfway down them with a column of black above */
-    align-items: start;
-    margin-bottom: 1rem;
-  }
-  .hero-media { margin-top: 3.4rem; }
-  .hero-media { margin: 0; }
-}
-
 /* A subpage title carries its area's colour, so a reader arriving on a paper
    page knows which of the three it belongs to before reading a word. */
 .name::before {
@@ -746,7 +743,9 @@ figcaption { max-width: 34rem; }
 /* A link inside an area card has to rise above the card-wide overlay that the
    area title lays down, or it cannot be clicked. */
 .area-extra { margin-top: 0.6rem; font-size: 0.875rem; }
-.area-extra a { position: relative; z-index: 2; }
+.area-extra a, .area-count a { position: relative; z-index: 2; }
+.area-count a { color: inherit; }
+.area-count a:hover { color: var(--fg); }
 .area-extra a span { display: inline-block; transition: transform 0.2s ease; text-decoration: none; }
 .area-extra a:hover span { transform: translateX(0.3rem); }
 
@@ -777,18 +776,10 @@ figcaption { max-width: 34rem; }
   .outputs--media .output-media { margin-bottom: 0; }
 }
 
-/* The opening joins the same grid above 68em: an empty gutter, then the text
-   on the axis every other section's content starts from, then the attractor.
-   Without this the page had two left edges — the masthead and labels on one,
-   body content on another, and the opening paragraph on the wrong one. */
+/* The opening joins the same grid above 68em: it starts on the axis every
+   other section's content starts from (the 7rem label gutter plus its gap). */
 @media (min-width: 68em) {
-  .hero-split {
-    grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 0.86fr);
-    column-gap: 2.5rem;
-    align-items: start;
-  }
-  .hero-split > .hero { grid-column: 2; }
-  .hero-split > .hero-media { grid-column: 3; }
+  .hero { margin-left: 9.5rem; }
 }
 
 /* ---- one frame for every clip ---------------------------------------------------

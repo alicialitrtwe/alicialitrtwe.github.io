@@ -9,7 +9,7 @@ step, no framework.
     research/cognition.html         redirects to research.html#cognition (the area pages were folded
     research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
     research/bayesian.html
-    research/atoms.html             the NeurIPS 2026 oral (semantic-cortical atoms): Fig. 1 of the manuscript
+    research/components.html        the NeurIPS 2026 oral (semantic-cortical components): Fig. 1 of the manuscript
                                     as the hero, short version from the abstract, the abstract, BibTeX
     research/superpositions.html    the NeurIPS 2025 paper as a short tutorial (facts from thesis chapter 2)
     research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
@@ -37,6 +37,24 @@ step, no framework.
     site.js                         the clip observer and the paper-page section nav; optional
     styles-dark.css                 the previous design, kept as a record — see below; it is
                                     not a working revert
+
+## The three works on sparse semantic bases (2026-11-12)
+
+Keep these apart; links between them must say which one they point at.
+
+- **NeurIPS 2025**, `research/superpositions.html`: *Disentangling Superpositions*, Zeng and
+  Gallant. Sparse coding of a word embedding into 1,000 concept atoms, then a voxelwise
+  encoding model on them. The method.
+- **CCN 2026 poster**, `research/number.html`: Hendrikx, Zeng et al. The number, space and
+  time atoms of the 2025 model, extended to 19 listeners. The brain viewer (`viewer/`) shows
+  these maps.
+- **NeurIPS 2026 oral**, `research/components.html` (`atoms.html` redirects there):
+  *Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable
+  Language Encoding in fMRI*, Zeng alone. One sparse autoencoder trained jointly on
+  language-model features and every subject's brain responses. Submitted under the title
+  "Learning Sparse Semantic-Cortical Atoms…", which the unlinked PDF in `files/` and neurips.cc still
+  carry, and which called the components "atoms"; the quoted abstract and Fig. 1 caption on
+  its page keep that wording.
 
 ## Running it
 
@@ -69,7 +87,7 @@ nothing else.
 
 ## Who the site is for (2026-10-22)
 
-Investors and collaborators of Erised AI, where Alicia is a co-founder, as
+Investors and collaborators of Erised AI, where Alicia is co-founder and CTO, as
 much as readers of the research. So the first screen says what she does now
 (`.hero-eyebrow`, `.hero-statement`), a **Now** section on the index names
 Erised and links its public site, every nav carries an Erised link, and the
@@ -113,22 +131,28 @@ stand-ins and the `.fig-slot` placeholder box have been deleted from
 
 ### The hero
 
-`<figure class="hero-media">` in the opening of `index.html`: the brain
+Reordered 2026-11-12 for an investor who gives the page fifteen seconds: the
+claim, the evidence, the instrument, then her essay. In `<section class="hero">`
+on `index.html`, in order: the mono eyebrow; `.hero-statement` (the thesis,
+"We understand only what we can measure…", which is not hers verbatim and is
+still open to her rewording); `.hero-proof`, one mono line of venues, each a
+link to the page that backs it; `<figure class="hero-media">`, the brain
 viewer's rotating cortex (`figures/viewer-thumb.mp4`, poster
-`viewer-thumb.jpg`, also the og:image), captioned as where number, time and
-space are represented in one listener's cortex. It replaced the birdsong
-attractor, which she found ugly at hero size; the birdsong clip is still the
-inventory thumbnail. `site.js` starts it when on screen like every other clip.
-Above 60em the split is top-aligned and the clip drops by `margin-top: 3.4rem`
-to sit beside the statement, since centring it against the four-paragraph
-opening left it floating mid-column. Above the text sit two lines that are not
-hers: a mono eyebrow with the affiliation and a one-sentence statement of
-what she does now.
+`viewer-thumb.jpg`, also the og:image) at the full width of the column, cropped
+to 1.9:1, with the caption carrying the one prominent link to the viewer; then
+her opening, verbatim and at full length (she wants the detail kept; LinkedIn
+is the short version). The clip replaced the birdsong attractor, which she
+found ugly at hero size. `site.js` starts it when on screen like every other
+clip. Above 68em the whole section starts on the content axis
+(`margin-left: 9.5rem`).
 
 ### The area cards
 
 The homepage does not list papers. It carries three `<article class="area">`
-cards — Cognition, Closed loop, Bayesian, in that order — each a clip beside
+cards — shown as Dense measurement, Closed-loop instruments and Interpretable
+models since 2026-11-12, named for what each shows an Erised reader; the
+anchors, `data-area` values and file names keep the old names (cognition,
+closed-loop, bayesian), in that order — each a clip beside
 a title, a one-line lead and the names of what is inside it. The card's whole
 surface is the link (the title's `::after` covers it), so anything else
 clickable in there needs its own stacking context; `.area-extra` is the one
@@ -229,7 +253,7 @@ To serve it from this site, at `https://alicialitrtwe.github.io/atlas/`:
    local run that cannot scrub is the local server, not the build (use the
    repo's `scripts/serve_viewer.py` to preview).
 4. Then link it, in the same commit as the copy and never before: an "Atom
-   atlas" button on `research/atoms.html` (`id="l-atlas"`, like the viewer
+   atlas" button on `research/components.html` (`id="l-atlas"`, like the viewer
    button on `number.html`), an "Atom atlas" link in the paper's
    `.output-links` row on `research.html`, and "Play with it yourself" as an
    `.area-extra` on the index's Bayesian card if you want it there. Pushing
@@ -371,7 +395,7 @@ memory:
 
 | work | link |
 |---|---|
-| Learning Sparse Semantic-Cortical Atoms (NeurIPS 2026 oral) | OpenReview `YcEZoSqrxa`, `neurips.cc/virtual/2026/loc/sydney/oral/151713` (lists one author; abstract taken from there) |
+| Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI (NeurIPS 2026 oral; submitted as "Learning Sparse Semantic-Cortical Atoms for Multisubject Naturalistic fMRI Encoding", the title neurips.cc still shows) | OpenReview `YcEZoSqrxa`, `neurips.cc/virtual/2026/loc/sydney/oral/151713` (lists one author; abstract taken from there) |
 | Disentangling superpositions | OpenReview `3aNvX9TQTo`, NeurIPS 2025 poster page, poster PNG, SlidesLive `39050668` |
 | Movement-responsive DBS | `10.1038/s41551-025-01438-0`, PubMed 40579487 |
 | Bringing the Clinic Home | `10.3791/65305` (J. Vis. Exp., 2023) |
