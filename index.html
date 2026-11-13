@@ -81,14 +81,14 @@
          here first, and she found it ugly), then her own opening paragraphs,
          verbatim and at full length: she wants the detail kept. -->
     <section class="hero" aria-labelledby="h-name">
-      <p class="hero-eyebrow">Co-founder and CTO, Erised AI</p>
-      <p class="hero-statement">We understand only what we can measure. I build instruments for
-        the nanoscale, and the models that learn to read them.</p>
+      <p class="hero-eyebrow">Co-founder and CTO, Erised AI<span class="sep" aria-hidden="true">·</span>PhD Biophysics, UC&nbsp;Berkeley</p>
+      <p class="hero-statement">I build AI that doesn’t just predict, but explains how complex
+        physical and biological systems actually work.</p>
       <p class="hero-proof">
         <a href="research/components.html">NeurIPS 2026 oral, sole author</a><span class="sep" aria-hidden="true">·</span>
         <a href="research/superpositions.html">NeurIPS 2025</a><span class="sep" aria-hidden="true">·</span>
         <a href="research/dbs.html">Nature Biomedical Engineering 2026</a><span class="sep" aria-hidden="true">·</span>
-        <a href="notes/thesis.html">PhD in biophysics, UC&nbsp;Berkeley</a></p>
+        <a href="notes/thesis.html">Thesis</a></p>
 
       <figure class="hero-media">
         <video loop muted playsinline preload="none"
@@ -155,7 +155,7 @@
     </section>
 
     <!-- Three areas, stacked, each fronted by a video that plays on its own,
-         in the order she wants them read: cognition, closed loop, Bayesian
+         in the order she wants them read: Bayesian, cognition, closed loop
          (shown since 2026-11-12 as Dense measurement, Closed-loop instruments,
          Interpretable models; the anchors and data-area keep the old names).
          research.html carries the same order. The videos are real material: the viewer's own channel
@@ -165,6 +165,27 @@
       <h2 class="section-label" id="h-research">Research</h2>
 
       <div class="areas">
+
+        <article class="area" data-area="bayesian">
+          <div class="area-media">
+            <video loop muted playsinline preload="none"
+                   poster="figures/area-bayesian.jpg" width="762" height="526"
+                   aria-label="Measured cortical responses to a story, on a pair of flattened hemispheres, changing frame by frame.">
+              <source src="figures/area-bayesian.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="area-body">
+            <h3 class="area-title"><a href="research.html#bayesian">Interpretable models</a></h3>
+            <p class="area-lead">Models whose parameters can be read as measurements: one
+              learned axis, one meaning, so a fit says something about the system and not
+              only about the prediction.</p>
+            <p class="area-count"><a href="research/components.html">Semantic-cortical components, NeurIPS 2026 oral</a> · <a href="research/superpositions.html">Sparse concept atoms, NeurIPS 2025</a> · <a href="research/birdsong.html">Birdsong in state space</a></p>
+            <!-- Its own stacking context, like the viewer link on the first
+                 card: the area title's ::after covers the whole card. -->
+            <p class="area-extra"><a href="research/components.html">New: an oral at NeurIPS 2026
+              <span aria-hidden="true">&#8594;</span></a></p>
+          </div>
+        </article>
 
         <article class="area" data-area="cognition">
           <div class="area-media">
@@ -179,7 +200,7 @@
             <p class="area-lead">One rich recording in place of many narrow experiments: how
               cortex represents number, space and time, mapped from people listening to
               stories.</p>
-            <p class="area-count"><a href="research/number.html">Number, space and time</a> · <a href="research/birdsong.html">Birdsong in state space</a></p>
+            <p class="area-count"><a href="research/number.html">Number, space and time</a></p>
             <!-- The clip is the viewer's own channel toggles, so the viewer is
                  the obvious next click. It needs its own stacking context: the
                  area title's ::after covers the whole card. -->
@@ -202,27 +223,6 @@
               movement as it records and adjusts Parkinson’s therapy in real time, in
               people’s homes rather than a clinic.</p>
             <p class="area-count"><a href="research/dbs.html">Nature Biomedical Engineering 2026</a> · <a href="research/stimulation.html">Parkinson’s, measured at home</a></p>
-          </div>
-        </article>
-
-        <article class="area" data-area="bayesian">
-          <div class="area-media">
-            <video loop muted playsinline preload="none"
-                   poster="figures/area-bayesian.jpg" width="762" height="526"
-                   aria-label="Measured cortical responses to a story, on a pair of flattened hemispheres, changing frame by frame.">
-              <source src="figures/area-bayesian.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="area-body">
-            <h3 class="area-title"><a href="research.html#bayesian">Interpretable models</a></h3>
-            <p class="area-lead">Models whose parameters can be read as measurements: one
-              learned axis, one meaning, so a fit says something about the system and not
-              only about the prediction.</p>
-            <p class="area-count"><a href="research/components.html">Semantic-cortical components, NeurIPS 2026 oral</a> · <a href="research/superpositions.html">Sparse concept atoms, NeurIPS 2025</a></p>
-            <!-- Its own stacking context, like the viewer link on the first
-                 card: the area title's ::after covers the whole card. -->
-            <p class="area-extra"><a href="research/components.html">New: an oral at NeurIPS 2026
-              <span aria-hidden="true">&#8594;</span></a></p>
           </div>
         </article>
 

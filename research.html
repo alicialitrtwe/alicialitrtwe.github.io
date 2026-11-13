@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Research — Alicia Zeng</title>
-<meta name="description" content="Everything by Alicia Zeng, grouped by area: dense measurement, closed-loop instruments, interpretable models, each opened by what the area means.">
+<meta name="description" content="Everything by Alicia Zeng, grouped by area: interpretable models, dense measurement, closed-loop instruments, each opened by what the area means.">
 <meta property="og:title" content="Research — Alicia Zeng">
-<meta property="og:description" content="Everything by Alicia Zeng, grouped by area: dense measurement, closed-loop instruments, interpretable models, each opened by what the area means.">
+<meta property="og:description" content="Everything by Alicia Zeng, grouped by area: interpretable models, dense measurement, closed-loop instruments, each opened by what the area means.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://alicialitrtwe.github.io/figures/area-cognition.jpg">
@@ -60,6 +60,85 @@
         what the area means to me.</p>
     </header>
 
+    <section class="block group" id="bayesian" data-area="bayesian" aria-labelledby="h-bayesian">
+      <h2 class="section-label" id="h-bayesian">Interpretable models</h2>
+      <div class="group-intro">
+        <p class="lead">Every model here is fit to predict something measured. This area is about
+            what you may then conclude from its parameters.</p>
+        <div class="prose">
+          <p>A model can predict well and still support no conclusion. When its features are correlated,
+            many different settings of the weights produce the same prediction, so the weights a fit
+            returns are one choice among many that the data cannot separate. Accuracy does not reveal
+            this, because accuracy is identical for all of them.</p>
+          <p>This is a property of the basis, not of the fit. If the features are sparse
+            and non-negative, with one interpretable direction per coordinate, the weights become
+            identifiable, and reading them off is a measurement rather than an interpretation of an
+            arbitrary point.</p>
+        </div>
+      </div>
+      <ul class="outputs outputs--media" role="list">
+        <li>
+          <div class="output-media">
+            <video loop muted playsinline preload="none"
+                   poster="figures/area-bayesian.jpg" width="762" height="526"
+                   aria-label="Measured cortical responses to a story on a pair of flattened hemispheres, changing frame by frame.">
+              <source src="figures/area-bayesian.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="output-body">
+            <p class="output-title"><a href="research/components.html"><cite>Semantic-Cortical
+              Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language
+              Encoding in fMRI</cite></a> <span class="pub-meta">NeurIPS <time datetime="2026">2026</time>, oral</span></p>
+            <p class="authors"><span class="me">Alicia&nbsp;Zeng</span></p>
+            <p class="output-links"><a href="https://openreview.net/pdf?id=YcEZoSqrxa">PDF</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://openreview.net/forum?id=YcEZoSqrxa">OpenReview</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://neurips.cc/virtual/2026/loc/sydney/oral/151713">NeurIPS</a><span
+              class="sep" aria-hidden="true">·</span><a href="research/components.html#bibtex">Cite</a></p>
+          </div>
+        </li>
+        <li>
+          <!-- The 2025 paper's own poster, served as WebP with the PNG behind it
+               as on its page; the flatmap clip above went to its successor. -->
+          <div class="output-media">
+            <picture>
+              <source srcset="figures/superpositions-poster.webp" type="image/webp">
+              <img src="figures/superpositions-poster.png" width="2592" height="1296" loading="lazy"
+                   alt="The NeurIPS 2025 poster: the sparse concept encoding model, its atoms, and the time, space and number maps laid over cortex.">
+            </picture>
+          </div>
+          <div class="output-body">
+            <p class="output-title"><a href="research/superpositions.html"><cite>Disentangling
+              Superpositions: Interpretable Brain Encoding Model with Sparse Concept
+              Atoms</cite></a> <span class="pub-meta">NeurIPS <time datetime="2025">2025</time></span></p>
+            <p class="authors"><span class="me">Alicia Zeng</span>, Jack Gallant</p>
+            <p class="output-links"><a href="https://openreview.net/forum?id=3aNvX9TQTo">OpenReview</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://neurips.cc/virtual/2025/poster/120024">NeurIPS</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://slideslive.com/39050668">Talk</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://github.com/alicialitrtwe/sparseconcept">Code</a><span
+              class="sep" aria-hidden="true">·</span><a href="research/superpositions.html#bibtex">Cite</a></p>
+          </div>
+        </li>
+        <li>
+          <div class="output-media">
+            <video loop muted playsinline preload="none"
+                   poster="figures/project-birdsong.jpg" width="870" height="600"
+                   aria-label="A reconstructed attractor from a zebra finch song: the trajectory tracing a closed loop, turning.">
+              <source src="figures/project-birdsong.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="output-body">
+            <p class="output-title"><a href="research/birdsong.html"><cite>A Nonlinear
+              Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
+            <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong,
+              Vijay Balasubramanian</p>
+            <p class="output-links"><a href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">APS abstract</a><span
+              class="sep" aria-hidden="true">·</span><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
+              Attractor (video)</a></p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
     <section class="block group" id="cognition" data-area="cognition" aria-labelledby="h-cognition">
       <h2 class="section-label" id="h-cognition">Dense measurement</h2>
       <div class="group-intro">
@@ -111,24 +190,6 @@
             <p class="output-links"><a href="viewer/" target="_blank" rel="noopener">Open</a><span
               class="sep" aria-hidden="true">·</span><a href="research/number.html#viewer">Recorded tour</a><span
               class="sep" aria-hidden="true">·</span><a href="research/superpositions.html">The model (NeurIPS 2025)</a></p>
-          </div>
-        </li>
-        <li>
-          <div class="output-media">
-            <video loop muted playsinline preload="none"
-                   poster="figures/project-birdsong.jpg" width="870" height="600"
-                   aria-label="A reconstructed attractor from a zebra finch song: the trajectory tracing a closed loop, turning.">
-              <source src="figures/project-birdsong.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="output-body">
-            <p class="output-title"><a href="research/birdsong.html"><cite>A Nonlinear
-              Dynamical System Approach to Bird Song Analysis</cite></a> <span class="pub-meta">APS March Meeting, <time datetime="2019">2019</time></span></p>
-            <p class="authors"><span class="me">Xiao Zeng</span>, Eve Armstrong,
-              Vijay Balasubramanian</p>
-            <p class="output-links"><a href="https://ui.adsabs.harvard.edu/abs/2019APS..MARL70298Z/abstract">APS abstract</a><span
-              class="sep" aria-hidden="true">·</span><a href="https://www.youtube.com/watch?v=2mlbTtkJ0uw">Song
-              Attractor (video)</a></p>
           </div>
         </li>
       </ul>
@@ -213,67 +274,6 @@
               <span class="me">Alicia Zeng</span>, Raphael Bechtold, Daryl Lawrence, Simon Little,
               Jack Gallant, Jeffrey Herron</p>
             <p class="output-links"><a href="https://doi.org/10.36227/techrxiv.22067474">DOI</a></p>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <section class="block group" id="bayesian" data-area="bayesian" aria-labelledby="h-bayesian">
-      <h2 class="section-label" id="h-bayesian">Interpretable models</h2>
-      <div class="group-intro">
-        <p class="lead">Every model here is fit to predict something measured. This area is about
-            what you may then conclude from its parameters.</p>
-        <div class="prose">
-          <p>A model can predict well and still support no conclusion. When its features are correlated,
-            many different settings of the weights produce the same prediction, so the weights a fit
-            returns are one choice among many that the data cannot separate. Accuracy does not reveal
-            this, because accuracy is identical for all of them.</p>
-          <p>This is a property of the basis, not of the fit. If the features are sparse
-            and non-negative, with one interpretable direction per coordinate, the weights become
-            identifiable, and reading them off is a measurement rather than an interpretation of an
-            arbitrary point.</p>
-        </div>
-      </div>
-      <ul class="outputs outputs--media" role="list">
-        <li>
-          <div class="output-media">
-            <video loop muted playsinline preload="none"
-                   poster="figures/area-bayesian.jpg" width="762" height="526"
-                   aria-label="Measured cortical responses to a story on a pair of flattened hemispheres, changing frame by frame.">
-              <source src="figures/area-bayesian.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="output-body">
-            <p class="output-title"><a href="research/components.html"><cite>Semantic-Cortical
-              Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language
-              Encoding in fMRI</cite></a> <span class="pub-meta">NeurIPS <time datetime="2026">2026</time>, oral</span></p>
-            <p class="authors"><span class="me">Alicia&nbsp;Zeng</span></p>
-            <p class="output-links"><a href="https://openreview.net/pdf?id=YcEZoSqrxa">PDF</a><span
-              class="sep" aria-hidden="true">·</span><a href="https://openreview.net/forum?id=YcEZoSqrxa">OpenReview</a><span
-              class="sep" aria-hidden="true">·</span><a href="https://neurips.cc/virtual/2026/loc/sydney/oral/151713">NeurIPS</a><span
-              class="sep" aria-hidden="true">·</span><a href="research/components.html#bibtex">Cite</a></p>
-          </div>
-        </li>
-        <li>
-          <!-- The 2025 paper's own poster, served as WebP with the PNG behind it
-               as on its page; the flatmap clip above went to its successor. -->
-          <div class="output-media">
-            <picture>
-              <source srcset="figures/superpositions-poster.webp" type="image/webp">
-              <img src="figures/superpositions-poster.png" width="2592" height="1296" loading="lazy"
-                   alt="The NeurIPS 2025 poster: the sparse concept encoding model, its atoms, and the time, space and number maps laid over cortex.">
-            </picture>
-          </div>
-          <div class="output-body">
-            <p class="output-title"><a href="research/superpositions.html"><cite>Disentangling
-              Superpositions: Interpretable Brain Encoding Model with Sparse Concept
-              Atoms</cite></a> <span class="pub-meta">NeurIPS <time datetime="2025">2025</time></span></p>
-            <p class="authors"><span class="me">Alicia Zeng</span>, Jack Gallant</p>
-            <p class="output-links"><a href="https://openreview.net/forum?id=3aNvX9TQTo">OpenReview</a><span
-              class="sep" aria-hidden="true">·</span><a href="https://neurips.cc/virtual/2025/poster/120024">NeurIPS</a><span
-              class="sep" aria-hidden="true">·</span><a href="https://slideslive.com/39050668">Talk</a><span
-              class="sep" aria-hidden="true">·</span><a href="https://github.com/alicialitrtwe/sparseconcept">Code</a><span
-              class="sep" aria-hidden="true">·</span><a href="research/superpositions.html#bibtex">Cite</a></p>
           </div>
         </li>
       </ul>
