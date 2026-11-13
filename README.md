@@ -133,9 +133,9 @@ stand-ins and the `.fig-slot` placeholder box have been deleted from
 
 Reordered 2026-11-12 for an investor who gives the page fifteen seconds: the
 claim, the evidence, the instrument, then her essay. In `<section class="hero">`
-on `index.html`, in order: the mono eyebrow; `.hero-statement` (the thesis,
-"We understand only what we can measure…", which is not hers verbatim and is
-still open to her rewording); `.hero-proof`, one mono line of venues, each a
+on `index.html`, in order: the mono eyebrow; `.hero-statement` ("I build AI that doesn’t just predict, but explains how
+complex physical and biological systems actually work", in the voice of her
+LinkedIn summary, her pick on 2026-11-12; the eyebrow adds the PhD); `.hero-proof`, one mono line of venues, each a
 link to the page that backs it; `<figure class="hero-media">`, the brain
 viewer's rotating cortex (`figures/viewer-thumb.mp4`, poster
 `viewer-thumb.jpg`, also the og:image) at the full width of the column, cropped
@@ -149,10 +149,10 @@ clip. Above 68em the whole section starts on the content axis
 ### The area cards
 
 The homepage does not list papers. It carries three `<article class="area">`
-cards — shown as Dense measurement, Closed-loop instruments and Interpretable
-models since 2026-11-12, named for what each shows an Erised reader; the
-anchors, `data-area` values and file names keep the old names (cognition,
-closed-loop, bayesian), in that order — each a clip beside
+cards — Interpretable models, Dense measurement and Closed-loop instruments,
+in that order since 2026-11-12, named for what each shows an Erised reader; the
+anchors, `data-area` values and file names keep the old names (bayesian,
+cognition, closed-loop) — each a clip beside
 a title, a one-line lead and the names of what is inside it. The card's whole
 surface is the link (the title's `::after` covers it), so anything else
 clickable in there needs its own stacking context; `.area-extra` is the one
@@ -305,8 +305,8 @@ poster" button stays a stub; on her pointer to neurips.cc/virtual/2025/poster/12
 the page instead carries a Poster section with the NeurIPS 2025 poster of the
 method paper (same `figures/superpositions-poster.png`, whose time/space/number
 panel is this analysis) and a Video button to its SlidesLive talk. On the
-inventory it is the first entry of the Cognition group, above the brain viewer
-and the birdsong abstract, thumbnailed with the flatmap channel clip; CCN and
+inventory it is the first entry of the Dense measurement group, above the brain
+viewer, thumbnailed with the flatmap channel clip; CCN and
 OpenReview links live on the page itself.
 
 **DBS is a short introduction, not a tutorial.** You are the third of eleven
@@ -419,11 +419,12 @@ author lists are on `research.html` and on each paper page.
 
 ### Research groups
 
-`research.html` is three groups in your order — **Cognition**
-(number/space/time, the brain viewer, birdsong), **Closed loop**
-(movement-responsive DBS, Bringing the Clinic Home, In-Home Video and IMU
-Kinematics) and **Bayesian** (the NeurIPS 2026 oral on semantic-cortical
-atoms, then sparse concept atoms). Each group is a
+`research.html` is three groups in her order (2026-11-12) — **Interpretable
+models** (`#bayesian`: the NeurIPS 2026 oral on semantic-cortical components,
+the NeurIPS 2025 sparse concept atoms, then the birdsong abstract), **Dense
+measurement** (`#cognition`: number/space/time and the brain viewer) and
+**Closed-loop instruments** (`#closed-loop`: movement-responsive DBS, Bringing
+the Clinic Home, In-Home Video and IMU Kinematics). Each group is a
 `<section class="block group" id="…" data-area="…">` that opens with a
 `.group-intro` (the standfirst and the two paragraphs that used to open the
 area page, saying what the area means to you) and then holds a

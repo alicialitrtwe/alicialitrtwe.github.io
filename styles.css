@@ -184,7 +184,9 @@ a[href^="http"]::after, a[target="_blank"]::after {
   width: 100%;
   height: auto;
   aspect-ratio: 1.9;
-  object-fit: cover;
+  /* contain, not cover: the whole frame shows, so the cortex sits a little
+     further back with black either side, as she asked on 2026-11-12. */
+  object-fit: contain;
   background: #000;
   border-radius: 0.25rem;
   border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);

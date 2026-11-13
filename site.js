@@ -30,6 +30,13 @@
   var clips = [].filter.call(
     document.querySelectorAll('.hero-media video, .area-media video, .project-media video, .output-media video, .fig video'),
     function (v) { return v.muted && v.loop; });
+  // A clip may ask to run slower than it was recorded (data-rate="0.6"):
+  // the hero's turning cortex reads better at a calmer pace. Set as the
+  // default rate too, so a reload of the media does not undo it.
+  clips.forEach(function (v) {
+    var r = parseFloat(v.getAttribute('data-rate'));
+    if (r > 0) { v.defaultPlaybackRate = r; v.playbackRate = r; }
+  });
   if (clips.length) {
     if (reduceMotion) {
       clips.forEach(function (v) {
