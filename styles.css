@@ -1105,3 +1105,84 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-
 .paper-nav a { display: inline-block; padding: 0.15rem 0; }
 /* the list is one row now, so an anchor needs the same headroom everywhere */
 html { scroll-padding-top: 4rem; }
+
+
+/* ---- the design pass, second round (2026-11-17) --------------------------------
+   From her own browser: the hero clip read as an empty black box with a small
+   cortex in it. The recording carries 91px of black under the cortex and 11px
+   over it, and the frame was wider than the clip, so most of the box was
+   ground. Three changes:
+
+   - no frame. The clip's ground is pure black and the page is #0a0a0a, so the
+     clip is screened onto the page and the cortex floats on it;
+   - the dead band under the cortex is cropped (the frame shows the top 520 of
+     the clip's 600 rows), which centres the cortex and gives back about 60px;
+   - the way into the viewer is a button beside the caption, not a text link
+     trailing it.                                                              */
+.hero-media { margin: 1.5rem 0 2.5rem; }
+.hero-clip {
+  position: relative;
+  aspect-ratio: 2.1;
+  overflow: hidden;
+}
+.hero-media .hero-clip video {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: auto;
+  height: calc(100% * 600 / 520);
+  aspect-ratio: 1.45;
+  transform: translateX(-50%);
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  mix-blend-mode: screen;
+}
+/* Under reduced motion site.js gives the clip its controls, which sit in the
+   band the crop removes; show the whole frame there. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-clip { aspect-ratio: 1.9; }
+  .hero-media .hero-clip video { height: 100%; }
+}
+.hero-media figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+.hero-cta {
+  margin-left: 0;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--fg);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.hero-cta:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+
+/* Her standfirst ran 32px wider than the paragraphs under it. One right edge. */
+.hero .lead { max-width: 34rem; }
+
+/* The footer: the way around the site on the left, the way to reach her on the
+   right, so a reader who lands on a paper page has an address without going
+   back to the index. */
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-bottom: 1rem;
+}
+.foot-meta .sep { padding: 0 0.5rem; color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.foot-meta a { margin-right: 0; text-decoration: underline; }

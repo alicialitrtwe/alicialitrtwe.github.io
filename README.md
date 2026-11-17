@@ -6,6 +6,7 @@ step, no framework.
     index.html                      homepage: who she is now, her opening, Erised, the three areas, contact
     research.html                   the full inventory, grouped by area, each area opened by what it means to her
     notes.html                      working notes, newest first
+    404.html                        the not-found page (absolute paths; served by Pages at any depth)
     research/cognition.html         redirects to research.html#cognition (the area pages were folded
     research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
     research/bayesian.html
@@ -107,6 +108,22 @@ changes, made against screenshots at 1440, 800 and 390 px:
   view. `scroll-padding-top` is 4rem everywhere as a result.
 - **Contact:** the address is set larger, as the call to action.
 - Every page declares `theme-color` so a phone's browser bar matches the page.
+
+**Second round, same day**, from her own screenshot of the live page:
+
+- **The hero clip has no frame.** It read as an empty black box with a small
+  cortex in it. The clip is screened onto the page (`mix-blend-mode: screen`;
+  its ground is pure black) and `.hero-clip` crops the 91px of black under the
+  cortex (it shows the top 520 of the clip's 600 rows), so the cortex floats
+  on the page and sits centred. This supersedes the 1.9:1 bordered frame
+  described under "The hero". A re-rendered clip must keep a pure black
+  ground and the same 870×600 frame, or the `600 / 520` in the rule changes.
+- **The way into the viewer is a button** at the right of the caption row.
+- **The footer** carries a contact line on every page, so a reader on a paper
+  page has an address without going back to the index.
+- **`404.html`** is the site's own not-found page. It uses absolute paths
+  because GitHub Pages serves it at any depth; it is not in the sitemap.
+- Her standfirst and the paragraphs under it share one right edge (34rem).
 
 ## Who the site is for (2026-10-22)
 
