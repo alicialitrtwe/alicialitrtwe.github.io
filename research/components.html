@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Semantic-cortical components — Alicia Zeng</title>
-<meta name="description" content="Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI, an oral at NeurIPS 2026: one model that learns a sparse basis of semantic-cortical components shared across subjects, keeping 88% of dense ridge prediction with 50 components.">
+<meta name="description" content="Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI, an oral at NeurIPS 2026: one model that learns a sparse basis of semantic-cortical components shared across subjects, keeping about 82% of dense ridge prediction with 50 components.">
 <meta property="og:title" content="Semantic-cortical components — Alicia Zeng">
-<meta property="og:description" content="Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI, an oral at NeurIPS 2026: one model that learns a sparse basis of semantic-cortical components shared across subjects, keeping 88% of dense ridge prediction with 50 components.">
+<meta property="og:description" content="Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI, an oral at NeurIPS 2026: one model that learns a sparse basis of semantic-cortical components shared across subjects, keeping about 82% of dense ridge prediction with 50 components.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research/components.html">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://alicialitrtwe.github.io/figures/atoms-fig1.jpg">
+<meta property="og:image" content="https://alicialitrtwe.github.io/figures/components-fig2.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://alicialitrtwe.github.io/research/components.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12.5' cy='16' r='7.5' fill='none' stroke='%23d4698f' stroke-width='2.6'/%3E%3Ccircle cx='19.5' cy='16' r='7.5' fill='none' stroke='%2335bcc9' stroke-width='2.6'/%3E%3C/svg%3E">
@@ -65,13 +65,14 @@
       Interpretable models</a><span class="sep" aria-hidden="true">·</span><a href="../research.html">All
       research</a></p>
 
-    <!-- The NeurIPS 2026 oral. Everything factual here is from the abstract on
-         the conference page (neurips.cc/virtual/2026/loc/sydney/oral/151713),
-         which lists one author; the short version is written for this page
-         from that abstract and claims nothing beyond it. The hero is Fig. 1
-         of the manuscript as submitted, and the PDF button serves that same
-         manuscript (anonymous, line-numbered), both from her sparsebrain repo
-         on her say-so (2026-10-22); swap in the camera-ready when it exists. -->
+    <!-- The NeurIPS 2026 oral. Since 2026-11-17 everything factual here is
+         from the camera-ready paper (sparsebrain repo,
+         paper/neurips_2026/neurips_2026.tex, commit 5e2e31e of 2026-11-07):
+         the abstract verbatim, the short version written for this page from
+         the abstract and the contributions list, and Fig. 2
+         (paper/figures/fig2_components_v2.png). Before that the page carried
+         the submitted version's abstract (88%, "atoms") and its Fig. 1,
+         which is still in figures/ as atoms-fig1.*, unlinked. -->
     <article class="paper">
 
       <header class="paper-head">
@@ -99,71 +100,83 @@
         </ol>
       </nav>
 
-      <!-- Fig. 1 of the manuscript: a white plate, served as WebP with the
-           JPEG behind it, 1600 px from the 4110 px original. The legend is
-           the manuscript's, verbatim, folded under a one-line caption. -->
+      <!-- Fig. 2 of the camera-ready paper: a white plate, served as WebP with
+           the JPEG behind it, 1600 px from the 3300 px original. The legend is
+           the paper's, folded under a one-line caption. -->
       <figure class="fig fig--hero fig--plate">
-        <a href="../figures/atoms-fig1.jpg"><picture>
-          <source srcset="../figures/atoms-fig1.webp" type="image/webp">
-          <img src="../figures/atoms-fig1.jpg" width="1600" height="2158"
-               alt="Four rows, one per component: food and meals, family members and relatives, numerical measurements, and religion and identity. Each row shows the atom’s brain decoder map on the flattened cortex of three subjects and the fsaverage mean, six story excerpts with the words that drove the atom highlighted, and a summary of its AutoInterp AUC, semantic coherence, best Neurosynth term and Yeo7 networks.">
+        <a href="../figures/components-fig2.jpg"><picture>
+          <source srcset="../figures/components-fig2.webp" type="image/webp">
+          <img src="../figures/components-fig2.jpg" width="1600" height="1969"
+               alt="Four rows, one per component: spoken numbers and quantities; references to family members and personal relations; clothing, outfits and physical appearance; natural landscape and scenery. Each row shows the component’s map on the flattened cortex of three subjects and on the average of six, four story excerpts with the words that drove it highlighted, and its scores: nameability, stability across seeds, consistency across subjects, Yeo 7 networks and best Neurosynth term. Below, a chart of all 50 components ordered by how stable their cortical map is across seeds.">
         </picture></a>
-        <figcaption><b>Fig. 1: Four example semantic-cortical components.</b> Each row is one component:
-          its map in three subjects and on the average brain, the story moments that drive it,
-          and how it scores. From the manuscript.
-          <details class="legend"><summary>The manuscript’s legend, verbatim</summary>
-          <p><b>Figure 1: Four example semantic-cortical atoms.</b> Each row shows brain decoder
-          maps for three example subjects together with the strongest activating TRs and
-          surrounding context. The summary panels show the mean fsaverage map, AutoInterp AUC,
-          semantic coherence z, the best-matching Neurosynth term and brain-map correlation, and
-          significant Yeo7 network affiliations. Food and meals (a18) strongly activates posterior
-          temporal cortex and lateral prefrontal cortex; family members (a23) and religion and
-          identity (a10) activate medial prefrontal cortex and temporoparietal regions; and
-          numerical measurements (a8) strongly activates right intraparietal sulcus and lateral
-          prefrontal cortex, consistent with prior cognitive neuroscience findings. Because brain
-          decoders are fit independently for each subject, any cross-subject consistency must
-          arise from the common encoder. Yeo7 networks: DMN = Default Mode, FPN = Frontoparietal,
-          DAN = Dorsal Attention, SMN = Somatomotor.</p></details></figcaption>
+        <figcaption><b>Fig. 2: Each component pairs a nameable description with a cortical map in
+          every subject.</b> Four example components, each with its map in three subjects and on
+          the average brain, the story moments that drive it, and its scores; then all 50
+          components ordered by stability. From the camera-ready paper.
+          <details class="legend"><summary>The paper’s legend (appendix references omitted)</summary>
+          <p><b>Figure 2: Each component pairs a nameable description with a cortical map in
+          every subject.</b> (a) c8, (b) c23, (c) c2 and (d) c45 of the seed-0 model. Each row
+          shows the AutoInterp judge’s description, the component’s cortical map in three
+          subjects and averaged on fsaverage (a common cortical surface), and top-activating
+          excerpts with the firing TR highlighted. Each map has its own colour scale, with its
+          maximum given below it, because the average map is weaker than any single-subject map.
+          Side column: nameability (AutoInterp AUC); cross-seed stability of the cortical map;
+          cross-subject <i>r</i> of the cortical maps; cross-seed stability of the semantic
+          decoder; active % of time points; significant Yeo&nbsp;7 networks (DMN = default mode,
+          FPN = frontoparietal, DAN = dorsal attention); the best Neurosynth term and its map
+          correlation <i>r</i> (*: <i>q</i> &lt; 0.05). (e) All 50 components, ordered by
+          cross-seed stability of the cortical map. Filled orange markers show the cross-seed
+          stability of the cortical map and hollow blue markers that of the semantic decoder,
+          each over 20 seeds (best-match cosine). Orange diamonds show the cross-subject
+          consistency <i>r</i> of the cortical map, open if <i>q</i> ≥ 0.05. Components a–d are
+          highlighted.</p></details></figcaption>
       </figure>
 
-<blockquote class="pull"><p>Semantic selectivity is fundamentally non-identifiable in high-dimensional correlated feature spaces.</p></blockquote>
+<blockquote class="pull"><p>Each of the 50 code dimensions, which we call semantic-cortical components, pairs a semantic direction with a cortical map in every subject.</p></blockquote>
 
-<p class="source">Written for this page from the paper’s abstract. The paper is <a href="https://openreview.net/forum?id=YcEZoSqrxa">on OpenReview</a> and is presented as an oral at NeurIPS 2026 in Sydney, with a poster in Poster Session&nbsp;2. The PDF is the OpenReview version. Fig.&nbsp;1 here is from the manuscript as submitted, under its submitted title, <cite>Learning Sparse Semantic-Cortical Atoms for Multisubject Naturalistic fMRI Encoding</cite>, which called the components “atoms”; the abstract below is quoted from that version.</p>
+<p class="source">Written for this page from the camera-ready paper. The paper is <a href="https://openreview.net/forum?id=YcEZoSqrxa">on OpenReview</a> and is presented as an oral at NeurIPS 2026 in Sydney, with a poster in Poster Session&nbsp;2. The abstract and Fig.&nbsp;2 here are the camera-ready version’s. The paper was submitted under the title <cite>Learning Sparse Semantic-Cortical Atoms for Multisubject Naturalistic fMRI Encoding</cite>, which called the components “atoms”; the conference listing may still show that title and the submitted abstract.</p>
 
 <section class="paper-section" id="tldr" aria-labelledby="h-tldr">
   <h2 id="h-tldr">The short version</h2>
-<p class="tldr">Encoding models built on language-model features predict cortical responses to natural speech well but are hard to interpret. Three things stand in the way: selectivity is not identifiable in a correlated, high-dimensional feature space; the organization of cortex stays implicit in voxelwise weight maps; and correspondence across people is handled only after the model is fit. This paper handles all three in one model.</p>
-<p>A multisubject coupled sparse autoencoder reconstructs the language-model features and predicts each subject’s brain responses at the same time. What it learns is a sparse basis of <em>semantic-cortical components</em>: each component is a direction in meaning and, by construction, the pattern of cortical response that goes with it, in every subject at once. Semantic structure, cortical organization and cross-subject correspondence are therefore explicit in the model itself.</p>
+<p class="tldr">Encoding models built on language-model activations predict cortical responses to natural language well but are hard to interpret. There are three reasons: semantic selectivity is not identifiable in a dense, correlated activation space; cortical organization stays implicit in voxelwise weights; and correspondence across subjects is usually worked out only after fitting. This paper addresses all three in one model.</p>
+<p>A multisubject coupled sparse autoencoder is trained jointly to reconstruct the language-model activations and to predict the brain responses of six subjects from one sparse code. Each of the 50 code dimensions is a <em>semantic-cortical component</em>: a semantic direction paired with a cortical map in every subject.</p>
 <ul class="stats" role="list">
-  <li><b>88%</b><span>of a matched dense-feature ridge model’s prediction performance, retained</span></li>
-  <li><b>50</b><span>components in the learned basis</span></li>
+  <li><b>≈82%</b><span>of the brain-prediction accuracy of ridge regression on all 2,304 activation dimensions</span></li>
+  <li><b>50</b><span>components, learned jointly from six subjects</span></li>
   <li><b><i>k</i>&nbsp;=&nbsp;5</b><span>components active per time point</span></li>
+  <li><b>87%, 102%</b><span>of ridge accuracy for two new subjects, with about 2% of its parameters</span></li>
 </ul>
-<p>In naturalistic story-listening fMRI, that basis keeps 88% of the prediction performance of the dense model with fifty components and five active per TR. Against matched two-stage baselines, which learn the basis first and fit the brain second, joint training gives the strongest overall trade-off between prediction and interpretability. The components are semantically coherent; they give more reproducible cross-subject maps than standard post hoc encoding-model analyses; they align with large-scale cortical structure from the Yeo&nbsp;7 networks and from Neurosynth; and they transfer better than ridge to held-out subjects when data are scarce.</p>
-<p>It is the successor to <a href="superpositions.html">the 2025 paper</a>, which unpacked the embedding into sparse concept atoms first and fit the encoding model second. Here the two steps are trained together, and all subjects are modeled jointly.</p>
+<p>The components are evaluated on three properties. Nameability: an LLM judge’s one-sentence description of a component predicts which held-out text activates it. Cross-subject consistency: the cortical maps agree across subjects, and many also align with the Yeo&nbsp;7 resting-state networks and with Neurosynth meta-analytic maps. Cross-seed stability: many components recur when the model is retrained, though not all.</p>
+<p>Only the coupled model does well on all three properties and on both objectives. Matched models trained on the two objectives in sequence do not. A brain-only basis predicts brain responses slightly better but is worse on semantic reconstruction, nameability and cross-seed stability. A semantics-only basis reconstructs the activations slightly better but is 19% worse on brain prediction and less consistent across subjects.</p>
+<p>The code also transfers to new subjects. For two subjects unseen in training, a linear readout from the frozen code, fit on 22 stories each, recovers 87% and 102% of the accuracy of ridge with about 2% of its parameters.</p>
+<p>It is the successor to <a href="superpositions.html">the 2025 paper</a>, which unpacked a word embedding into sparse concept atoms first and fit the encoding model second. Here the two steps are trained together, and all subjects are modeled jointly.</p>
 </section>
 
       <section class="paper-section" id="abstract" aria-labelledby="h-abstract">
         <h2 id="h-abstract">Abstract</h2>
-        <p>Naturalistic language encoding models based on large language model features can predict
-          cortical responses well, but their learned representations remain difficult to interpret.
-          Three challenges are central: semantic selectivity is fundamentally non-identifiable in
-          high-dimensional correlated feature spaces, cortical organization remains implicit in
-          voxelwise weight maps, and cross-subject structure is usually addressed only after model
-          fitting. We introduce a multisubject coupled sparse autoencoder that jointly reconstructs
-          language-model features and predicts subject-specific brain responses, learning a sparse
-          basis of semantic-cortical atoms that makes semantic structure, cortical organization, and
-          cross-subject correspondence explicit within a single model. In naturalistic
-          story-listening fMRI, the model retains 88% of matched dense-feature ridge brain
-          prediction performance using 50 atoms and <i>k</i>&nbsp;=&nbsp;5 active atoms per TR.
-          Relative to matched two-stage baselines, joint training yields the strongest overall
-          tradeoff between prediction and interpretability. The learned atoms are semantically
-          coherent and interpretable, recover more reproducible cross-subject brain maps than
-          standard post hoc encoding-model analyses, align with large-scale cortical structure from
-          Yeo&nbsp;7 and Neurosynth, and transfer better than ridge to held-out subjects in the
-          low-data regime. This framework provides a more interpretable basis for cognitive
-          neuroscience analyses of semantic-to-brain encoding by linking semantic features to
-          corresponding cortical response patterns across subjects.</p>
+        <p>Encoding models built on language-model activations predict cortical responses to
+          natural language well but are hard to interpret: semantic selectivity is not identifiable
+          in a dense, correlated activation space; cortical organization stays implicit in
+          voxelwise weights; and correspondence across subjects is usually established only after
+          fitting. To address all three, we introduce a multisubject coupled sparse autoencoder
+          (SAE), trained jointly to reconstruct language-model activations and to predict the brain
+          responses of six subjects from one sparse code. Each of the 50 code dimensions, which we
+          call semantic-cortical components, pairs a semantic direction with a cortical map in
+          every subject. On story-listening fMRI, the code retains about 82% of the
+          brain-prediction accuracy of a ridge regression fit on all 2,304 activation dimensions,
+          with only five components active per time point. We evaluate the components on three
+          properties. First, nameability: an LLM judge’s one-sentence description of a component
+          predicts which held-out text activates it. Second, cross-subject consistency: their
+          cortical maps agree across subjects. Many maps also align with resting-state networks and
+          meta-analytic maps of published studies. Third, cross-seed stability: many components
+          recur when the model is retrained, though not all. Only the coupled SAE does well on all
+          three properties; matched models trained on the two objectives in sequence do not. The
+          code also transfers to new subjects: for two subjects unseen in training, a linear
+          readout from the frozen code, fit on 22 stories each, recovers 87% and 102% of the
+          brain-prediction accuracy of ridge with about 2% of its parameters. Together, the
+          components give cognitive neuroscience an interpretable unit of analysis for
+          semantic-to-brain encoding: each links a semantic feature to its cortical response
+          pattern in every subject.</p>
       </section>
 
       <section class="paper-section" id="bibtex" aria-labelledby="h-bibtex">

@@ -9,7 +9,7 @@ step, no framework.
     research/cognition.html         redirects to research.html#cognition (the area pages were folded
     research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
     research/bayesian.html
-    research/components.html        the NeurIPS 2026 oral (semantic-cortical components): Fig. 1 of the manuscript
+    research/components.html        the NeurIPS 2026 oral (semantic-cortical components): Fig. 2 of the camera-ready
                                     as the hero, short version from the abstract, the abstract, BibTeX
     research/superpositions.html    the NeurIPS 2025 paper as a short tutorial (facts from thesis chapter 2)
     research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
@@ -53,8 +53,10 @@ Keep these apart; links between them must say which one they point at.
   Language Encoding in fMRI*, Zeng alone. One sparse autoencoder trained jointly on
   language-model features and every subject's brain responses. Submitted under the title
   "Learning Sparse Semantic-Cortical Atoms…", which the unlinked PDF in `files/` and neurips.cc still
-  carry, and which called the components "atoms"; the quoted abstract and Fig. 1 caption on
-  its page keep that wording.
+  carry, and which called the components "atoms". Since 2026-11-17 its page carries the
+  camera-ready abstract, numbers (about 82% of ridge, 87% and 102% for two new subjects) and
+  Fig. 2 (`figures/components-fig2.*`, from `paper/figures/fig2_components_v2.png` in the
+  sparsebrain repo); the submitted Fig. 1 (`figures/atoms-fig1.*`) is no longer linked.
 
 ## Running it
 
@@ -102,8 +104,8 @@ statement are hers, written with her over 2026-10-27 to 29 in the voice of the
 thesis note and approved sentence by sentence: decoding thought from the
 magnetism of blood, the question of how meaning arises from matter, the path
 from Peking University to Berkeley and the Redwood Center, and the conclusion
-that progress comes from better measurement, which is what Erised is for. Do
-not smooth or shorten it without her. The "2017 to now" arc section is gone;
+that progress comes from better measurement, which is what Erised is for. Lightly edited for plain language on 2026-11-17 at her request, every detail kept. Do not
+smooth or shorten it further without her. The "2017 to now" arc section is gone;
 the opening carries that story.
 
 `styles-dark.css` is the previous design, kept as a record. It is **not** a
