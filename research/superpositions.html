@@ -146,7 +146,7 @@
   <h2 id="h-loop">Where this comes from</h2>
 <p>Artificial intelligence began as an imitation of the brain. In the 1940s Donald Hebb proposed that neurons which fire together wire together. That was the first biological learning rule, and it became the ancestor of the earliest artificial neural networks.</p>
 <p>In the 1960s Hubel and Wiesel found neurons in a cat’s visual cortex that respond to particular edge orientations, behaving like small feature detectors. That observation became the convolutional network, which still powers most computer vision.</p>
-<p>The loop is now closing in the other direction. Neuroscientists increasingly use the models to study the brain, and this work sits on that return path: it takes a representation learned by a language model and asks what it can honestly tell us about cortex.</p>
+<p>Neuroscientists now use these models the other way round, to study the brain. This work takes a representation learned by a language model and asks what it can tell us about cortex.</p>
 </section>
 
 <section class="paper-section" id="encoding" aria-labelledby="h-encoding">
@@ -158,7 +158,7 @@
   <a href="../figures/talk-encoding.jpg"><img src="../figures/talk-encoding.jpg" alt="The voxelwise encoding model as a matrix product: a feature matrix X of 125 minutes by feature dimension, times a weight matrix of feature dimension by number of voxels, equals Y, 125 minutes of brain responses by number of voxels, with arrows running from a weight vector to voxels on a brain." width="1788" height="769" loading="lazy"></a>
   <figcaption>Ŷ<sub>i</sub> = <i>X</i> · <i>W</i><sub>i</sub>, fit separately for every voxel. <i>X</i> describes the stimulus, <i>Y</i> is the measurement, and <i>W</i> is what we actually want.</figcaption>
 </figure>
-<p>The object of interest is not the prediction but the weights. When the model is trained, every voxel ends up with a weight vector: an arrow pointing through the feature space, telling us which features that voxel cares about. If the features <em>were</em> concepts, that arrow would be a tuning curve, and one could read it as a sentence — responsive to numbers, indifferent to family, suppressed by small talk.</p>
+<p>What we want from the model is its weights, more than its predictions. When the model is trained, every voxel ends up with a weight vector: an arrow pointing through the feature space, telling us which features that voxel cares about. If the features <em>were</em> concepts, that arrow would be a tuning curve, and it could be read like a sentence: responsive to numbers, indifferent to family, suppressed by small talk.</p>
 
 <h3>From a story to a matrix</h3>
 <p>The hardest part of building an encoding model is turning something as rich as a story into numbers. The simplest choice is to one-hot encode the words, giving every word in the stories its own dimension and marking a 1 wherever it appears. That produces an enormous sparse matrix and throws away every relationship between words. Grouping words into hand-labelled categories first captures more meaning and usually predicts better.</p>
@@ -171,14 +171,14 @@
 
 <section class="paper-section" id="catch" aria-labelledby="h-catch">
   <h2 id="h-catch">The catch: more concepts than dimensions</h2>
-<p>Here is the problem with that gain. Features taken from a language model predict brain activity well, but using them to explain the brain means we end up explaining one black box with another.</p>
+<p>That gain has a cost. Features taken from a language model predict brain activity well, but using them to explain the brain means explaining one black box with another.</p>
 <p>With hand-labelled features, interpretation was easy, because each dimension was a word or a category by construction. A learned representation has no such guarantee. Neural networks have to represent millions of concepts in a limited number of dimensions, so each concept is encoded as a linear combination of shared directions. In the interpretability literature this is called <b>superposition</b> (Elhage et al., 2022).</p>
 <figure class="fig">
   <a href="../figures/talk-superposition.jpg"><img src="../figures/talk-superposition.jpg" alt="Left, three orthogonal axes labelled concept 1 time, concept 2 space and concept 3 number, under the heading “features less than or equal to embedding dimensions”. Right, seven correlated directions labelled family, number, space, femaleness, colour and time under the heading “features greater than embedding dimensions”." width="1701" height="629" loading="lazy"></a>
   <figcaption>The slide’s <i>features</i> are latent semantic factors, not the columns of <i>X</i>. When there are no more of them than there are dimensions, each concept can have an axis of its own. When there are more, they have to share, and the directions lean on one another.</figcaption>
 </figure>
-<p>That undoes the readout. In such a feature space, concepts like <i>time</i> and <i>number</i> are correlated, so a weight vector that points toward <i>number</i> will also point toward <i>time</i>. Some concept pairs point in nearly opposite directions, so a negative weight may mean the voxel is suppressed by one, driven by the other, or both.</p>
-<p>This is not a theoretical worry. It shows up in the data: here is voxel selectivity from the story-listening experiment, with each voxel labelled by the words it responds to most.</p>
+<p>That breaks the readout. In such a feature space, concepts like <i>time</i> and <i>number</i> are correlated, so a weight vector that points toward <i>number</i> will also point toward <i>time</i>. Some concept pairs point in nearly opposite directions, so a negative weight may mean the voxel is suppressed by one, driven by the other, or both.</p>
+<p>This shows up in the data. Here is voxel selectivity from the story-listening experiment, with each voxel labelled by the words it responds to most.</p>
 <figure class="fig">
   <a href="../figures/talk-cortex-words.jpg"><img src="../figures/talk-cortex-words.jpg" alt="A patch of cortical flatmap covered in thousands of small coloured words, each placed at the voxel that responds to it most, with different colour families intermingled across the whole patch." width="1920" height="1080" loading="lazy"></a>
   <figcaption>Some regions respond to time, number and space words all at once. Whether that overlap reflects a shared neural code or just correlations in the embedding space, the weights cannot say.</figcaption>
@@ -262,7 +262,7 @@
 <p class="more">The analysis has since been extended to nineteen listeners, which is the <a href="number.html">CCN 2026 poster</a>; the maps in <a href="../viewer/" target="_blank" rel="noopener">the brain viewer</a> are that larger set, not the seven here. <a href="number.html">That result has its own page, starting from the theory of magnitude <span aria-hidden="true">→</span></a></p>
 
 <h3>Concepts have a geometry in cortex</h3>
-<p>With 20 legible maps one can ask how they relate. Compare every pair, cluster the 20 × 20 similarity matrix in one subject, and the same block structure appears in the next; across all seven, the matrices correlate at 0.70 ± 0.08. Is this the embedding’s structure showing through? It is not: the sparse features themselves are uncorrelated (|<i>r</i>| = 0.00 ± 0.10 across the 190 pairs), while the same directions in GloVe space correlate at 0.16 ± 0.14. The geometry is cortical.</p>
+<p>With 20 legible maps one can ask how they relate. Compare every pair, cluster the 20 × 20 similarity matrix in one subject, and the same block structure appears in the next; across all seven, the matrices correlate at 0.70 ± 0.08. This structure does not come from the embedding: the sparse features themselves are uncorrelated (|<i>r</i>| = 0.00 ± 0.10 across the 190 pairs), while the same directions in GloVe space correlate at 0.16 ± 0.14. It comes from cortex.</p>
 <figure class="fig fig--plate">
   <a href="../figures/thesis-fig2-7.jpg"><img src="../figures/thesis-fig2-7.jpg" alt="(a) A dendrogram over 20 labelled concept atoms. (b, c) Two 20 × 20 similarity matrices of cortical maps, Subject 01 and Subject 02, with the same block structure. (d) The atoms’ cosine similarities in GloVe space, showing structured correlation. (e) Pearson correlations of the sparse features, near zero off the diagonal." width="1416" height="1112" loading="lazy"></a>
   <figcaption>(a) Clustering the 20 most active atoms by how similar their cortical maps are. (b, c) The similarity matrices for two subjects, same ordering. (d) The atoms are correlated in GloVe space. (e) The sparse features are not, so the structure in (b, c) is cortical. From the paper.</figcaption>
@@ -273,12 +273,12 @@
 <section class="paper-section" id="takeaways" aria-labelledby="h-takeaways">
   <h2 id="h-takeaways">Takeaways</h2>
 <ul>
-  <li>Weights on dense embedding features are not tuning curves. Superposition makes them non-identifiable, so a positive projection onto a concept establishes nothing.</li>
-  <li>Sparse coding is a factorial design for data one could not design. When the stimulus is a story rather than a controlled experiment, it decorrelates the features of interest after the fact.</li>
-  <li>It costs nothing in prediction, and it turns a black-box encoding model into a set of concept maps that can be compared.</li>
+  <li>Weights on dense embedding features are not tuning curves. Superposition makes them non-identifiable, so a positive projection onto a concept does not show that the voxel is tuned to it.</li>
+  <li>Sparse coding does the job of a factorial design when the experiment cannot be designed. When the stimulus is a story, it decorrelates the features of interest after the fact.</li>
+  <li>No cost in prediction was detectable, and a black-box encoding model becomes a set of concept maps that can be compared.</li>
 </ul>
 <p>By unpacking these dense representations we are beginning to see how abstract ideas like time, space and number are organized across the cortex.</p>
-<p>The limits should be stated. The word vectors are static and context-free, and contextual features from language models are the natural next step; 1,000 atoms was a choice rather than a result; and atoms inherit whatever biases the embedding carries. Better semantic decoding is also a double-edged instrument, and the questions it raises about mental privacy are real.</p>
+<p>Limits: the word vectors are static and context-free, and contextual features from language models are the natural next step; 1,000 atoms was a choice, not a result; and atoms inherit whatever biases the embedding carries. Better semantic decoding also raises real questions about mental privacy.</p>
 </section>
 
 <section class="paper-section" id="talk" aria-labelledby="h-talk">
