@@ -101,7 +101,17 @@
       if (next === current) return;
       if (current) current.removeAttribute('aria-current');
       current = next;
-      if (current) current.setAttribute('aria-current', 'true');
+      if (current) {
+        current.setAttribute('aria-current', 'true');
+        // On a narrow screen the list is one row that scrolls sideways, so
+        // keep the marked section in sight. scrollLeft on the list itself,
+        // not scrollIntoView, which can also move the page.
+        var row = nav.querySelector('ol');
+        if (row && row.scrollWidth > row.clientWidth) {
+          var item = current.parentNode;
+          row.scrollLeft = item.offsetLeft - (row.clientWidth - item.offsetWidth) / 2;
+        }
+      }
     }
     window.addEventListener('scroll', mark, { passive: true });
     var io = new IntersectionObserver(function (entries) {
