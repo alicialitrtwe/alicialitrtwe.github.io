@@ -87,6 +87,27 @@ no analytics, no embeds. `site.js` is optional — with it off every clip stays
 on its poster and the paper-page nav loses its highlighted section name,
 nothing else.
 
+### The design pass (2026-11-17)
+
+The last block of `styles.css` ("the design pass") holds one audit's worth of
+changes, made against screenshots at 1440, 800 and 390 px:
+
+- **Scale.** The homepage statement, page titles and paper titles are set
+  larger with `clamp()`, so the top of each page leads it. Body text is still
+  one size; running text has 1.6 line height.
+- **The evidence line** under the statement (`.hero-proof`) is a row of chips,
+  not underlined mono text with dots. The first chip takes its area's colour.
+- **Links** keep their underline, but it is 1px and at 42% strength until
+  hovered. A hover brightens the underline; it no longer dims the text.
+- **The masthead** puts the name left and the navigation right from 40em up.
+- **The inventory** (`.outputs--media`): the title is semibold and leads the
+  entry; authors and links step down.
+- **The sticky section list** on paper pages is one row at every width and
+  scrolls sideways when it does not fit. `site.js` keeps the marked section in
+  view. `scroll-padding-top` is 4rem everywhere as a result.
+- **Contact:** the address is set larger, as the call to action.
+- Every page declares `theme-color` so a phone's browser bar matches the page.
+
 ## Who the site is for (2026-10-22)
 
 Investors and collaborators of Erised AI, where Alicia is co-founder and CTO, as

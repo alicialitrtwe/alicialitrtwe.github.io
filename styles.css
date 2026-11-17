@@ -944,3 +944,164 @@ figcaption { max-width: 34rem; }
 @media print {
   [data-area] { --area: #036; }
 }
+
+
+/* ---- the design pass, 2026-11-17 ----------------------------------------------
+   An audit of the rendered pages at 1440 and 390 found five things, and this
+   block fixes them in one place:
+
+   1. No masthead scale. The homepage statement was 24px against a 19px
+      standfirst and 16px body, so the claim of the page did not lead it.
+   2. Evidence set as fine print. The line of venues under the statement was
+      small underlined mono with dots, and on a phone each dot stranded at a
+      line end. They are chips now.
+   3. Underlines at full strength on every link, which on the inventory put a
+      solid rule under every long title. Underlines are quiet until hovered.
+   4. On the inventory the author's name was the boldest thing in an entry.
+      The title leads now.
+   5. On a phone the sticky section list wrapped to three or four rows and
+      covered up to 116px of the page. It is one row that scrolls sideways. */
+
+/* -- 1. scale ------------------------------------------------------------- */
+.hero-statement {
+  max-width: 19em;
+  margin-bottom: 1.4rem;
+  font-size: clamp(1.75rem, 1.15rem + 2.4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+}
+.hero-eyebrow { margin-bottom: 1.1rem; }
+.name {
+  font-size: clamp(1.75rem, 1.3rem + 1.5vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.paper-title {
+  font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  margin-bottom: 1rem;
+}
+.paper-section > h2 { font-size: 1.4rem; letter-spacing: -0.012em; }
+.area-title { font-size: 1.3rem; letter-spacing: -0.012em; }
+
+/* Running text gets a little more leading: light text on black closes up. */
+.prose > p, .note-body > p, .paper-section > p, .paper-section > ul li,
+.paper-section > ol li, .box p, .transcript > p, .area-lead { line-height: 1.6; }
+
+/* The short version of a paper ran 88 characters to the line, dimmed, for up
+   to twelve lines. At a 38rem measure and full strength it is a standfirst. */
+.paper-section > p.tldr {
+  max-width: 38rem;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+/* -- 2. the evidence line as chips ---------------------------------------- */
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+.hero-proof .sep { display: none; }
+.hero-proof a {
+  padding: 0.36rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg-dim);
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+.hero-proof a:hover {
+  opacity: 1;
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+/* the first one is the newest and strongest, so it wears its area's colour */
+.hero-proof a:first-child {
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--c-bayesian) 55%, transparent);
+}
+.hero-media { margin-top: 2rem; }
+/* on a phone, small enough that the four sit two to a row */
+@media (max-width: 30em) {
+  .hero-proof { gap: 0.4rem; font-size: 0.7rem; }
+  .hero-proof a { padding: 0.32rem 0.6rem; }
+}
+
+/* -- 3. links -------------------------------------------------------------- */
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+a:hover { opacity: 1; text-decoration-color: currentColor; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.topbar nav [aria-current="page"] { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.button { transition: border-color 0.15s ease, background-color 0.15s ease; }
+
+/* -- the masthead: name left, navigation right ----------------------------- */
+.topbar nav a { color: var(--fg-dim); }
+.topbar nav a:hover { color: var(--fg); }
+@media (min-width: 40em) {
+  .topbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .wordmark { margin-bottom: 0; }
+  .topbar nav a, .topbar nav [aria-current="page"] { margin: 0 0 0 1.4rem; }
+}
+
+/* -- 4. the inventory: the title leads ------------------------------------- */
+.outputs--media .output-title { font-size: 1.0625rem; line-height: 1.35; }
+.outputs--media .output-title > a { font-weight: 600; text-decoration: none; }
+.outputs--media .output-title > a:hover { text-decoration: underline; text-decoration-color: currentColor; }
+.outputs--media .output-title .pub-meta { margin-top: 0.4rem; }
+.outputs--media .authors { margin-top: 0.3rem; font-size: 0.9375rem; line-height: 1.5; }
+.outputs--media .output-links { margin-top: 0.3rem; }
+
+/* A page title and its first section sat 88px apart with nothing between
+   them; on the notes page that was most of the screen. */
+.block.page-head + .block { margin-top: 3.25rem; }
+.block.page-head + .block > .stream { margin-top: 0; }
+
+/* -- contact: the address is the call to action ---------------------------- */
+.contact-mail { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.012em; }
+.contact-note { margin-top: 0.75rem; line-height: 1.6; }
+.profiles { margin-top: 1.25rem; }
+.profiles a { margin-right: 0.9rem; color: var(--fg-dim); }
+.profiles a:hover { color: var(--fg); }
+
+/* -- 5. the section list on a narrow screen -------------------------------- */
+/* One row at every width. Auto margins on the first and last items centre the
+   row when it fits and collapse to nothing when it does not, so an overflowing
+   row starts at its first item and scrolls; `justify-content: center` would
+   put the first items out of reach to the left. */
+.paper-nav ol {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 0 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+          mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+}
+.paper-nav ol::-webkit-scrollbar { display: none; }
+.paper-nav li { flex: none; white-space: nowrap; }
+.paper-nav li:first-child { margin-left: auto; }
+.paper-nav li:last-child { margin-right: auto; }
+/* room for the last item to scroll clear of the fade, where a row can overflow */
+@media (max-width: 63.99em) { .paper-nav li:last-child { padding-right: 2rem; } }
+.paper-nav a { display: inline-block; padding: 0.15rem 0; }
+/* the list is one row now, so an anchor needs the same headroom everywhere */
+html { scroll-padding-top: 4rem; }
