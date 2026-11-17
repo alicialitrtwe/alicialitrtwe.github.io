@@ -132,15 +132,15 @@
 
 <section class="paper-section" id="tldr" aria-labelledby="h-tldr">
   <h2 id="h-tldr">The short version</h2>
-<p class="tldr">Encoding models built on language-model features predict cortical responses to natural speech well, and they remain hard to read. Three things stand in the way: selectivity is not identifiable in a correlated, high-dimensional feature space; the organisation of cortex stays implicit in voxelwise weight maps; and correspondence across people is handled only after the model is fit. This paper puts all three inside one model.</p>
-<p>A multisubject coupled sparse autoencoder reconstructs the language-model features and predicts each subject’s brain responses at the same time. What it learns is a sparse basis of <em>semantic-cortical components</em>: each component is a direction in meaning and, by construction, the pattern of cortical response that goes with it, in every subject at once. Semantic structure, cortical organisation and cross-subject correspondence are therefore explicit in the fitted object rather than recovered from it afterwards.</p>
+<p class="tldr">Encoding models built on language-model features predict cortical responses to natural speech well but are hard to interpret. Three things stand in the way: selectivity is not identifiable in a correlated, high-dimensional feature space; the organization of cortex stays implicit in voxelwise weight maps; and correspondence across people is handled only after the model is fit. This paper handles all three in one model.</p>
+<p>A multisubject coupled sparse autoencoder reconstructs the language-model features and predicts each subject’s brain responses at the same time. What it learns is a sparse basis of <em>semantic-cortical components</em>: each component is a direction in meaning and, by construction, the pattern of cortical response that goes with it, in every subject at once. Semantic structure, cortical organization and cross-subject correspondence are therefore explicit in the model itself.</p>
 <ul class="stats" role="list">
   <li><b>88%</b><span>of a matched dense-feature ridge model’s prediction performance, retained</span></li>
   <li><b>50</b><span>components in the learned basis</span></li>
   <li><b><i>k</i>&nbsp;=&nbsp;5</b><span>components active per time point</span></li>
 </ul>
 <p>In naturalistic story-listening fMRI, that basis keeps 88% of the prediction performance of the dense model with fifty components and five active per TR. Against matched two-stage baselines, which learn the basis first and fit the brain second, joint training gives the strongest overall trade-off between prediction and interpretability. The components are semantically coherent; they give more reproducible cross-subject maps than standard post hoc encoding-model analyses; they align with large-scale cortical structure from the Yeo&nbsp;7 networks and from Neurosynth; and they transfer better than ridge to held-out subjects when data are scarce.</p>
-<p>It is the successor to <a href="superpositions.html">the 2025 paper</a>, which unpacked the embedding into sparse concept atoms first and fit the encoding model second. Here the two steps are one, and the subjects are modelled together rather than one at a time.</p>
+<p>It is the successor to <a href="superpositions.html">the 2025 paper</a>, which unpacked the embedding into sparse concept atoms first and fit the encoding model second. Here the two steps are trained together, and all subjects are modeled jointly.</p>
 </section>
 
       <section class="paper-section" id="abstract" aria-labelledby="h-abstract">

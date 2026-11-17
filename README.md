@@ -133,9 +133,7 @@ stand-ins and the `.fig-slot` placeholder box have been deleted from
 
 Reordered 2026-11-12 for an investor who gives the page fifteen seconds: the
 claim, the evidence, the instrument, then her essay. In `<section class="hero">`
-on `index.html`, in order: the mono eyebrow; `.hero-statement` ("I build AI that doesn’t just predict, but explains how
-complex physical and biological systems actually work", in the voice of her
-LinkedIn summary, her pick on 2026-11-12; the eyebrow adds the PhD); `.hero-proof`, one mono line of venues, each a
+on `index.html`, in order: the mono eyebrow; `.hero-statement` ("I build AI that explains how complex physical and biological systems work", shortened on 2026-11-17 from her LinkedIn line "doesn’t just predict, but explains … actually work", her pick on 2026-11-12; the eyebrow adds the PhD); `.hero-proof`, one mono line of venues, each a
 link to the page that backs it; `<figure class="hero-media">`, the brain
 viewer's rotating cortex (`figures/viewer-thumb.mp4`, poster
 `viewer-thumb.jpg`, also the og:image) at the full width of the column, cropped

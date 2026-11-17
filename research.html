@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Research — Alicia Zeng</title>
-<meta name="description" content="Everything by Alicia Zeng, grouped by area: interpretable models, dense measurement, closed-loop instruments, each opened by what the area means.">
+<meta name="description" content="Research by Alicia Zeng: papers, talks and tools on interpretable models, dense measurement and closed-loop instruments.">
 <meta property="og:title" content="Research — Alicia Zeng">
-<meta property="og:description" content="Everything by Alicia Zeng, grouped by area: interpretable models, dense measurement, closed-loop instruments, each opened by what the area means.">
+<meta property="og:description" content="Research by Alicia Zeng: papers, talks and tools on interpretable models, dense measurement and closed-loop instruments.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://alicialitrtwe.github.io/figures/area-cognition.jpg">
@@ -56,24 +56,24 @@
          Every URL is entered once on the paper page it belongs to and copied
          from there; titles, venues, years and DOIs were verified against
          Crossref and PubMed, not typed from memory. -->
-      <p class="lead">Everything, grouped into the three areas the work falls into, each opened by
-        what the area means to me.</p>
+      <p class="lead">Papers, talks and tools, grouped into three areas.</p>
     </header>
 
     <section class="block group" id="bayesian" data-area="bayesian" aria-labelledby="h-bayesian">
       <h2 class="section-label" id="h-bayesian">Interpretable models</h2>
       <div class="group-intro">
-        <p class="lead">Every model here is fit to predict something measured. This area is about
-            what you may then conclude from its parameters.</p>
+        <p class="lead">Models whose fitted parameters can be read, as well as their
+            predictions checked.</p>
         <div class="prose">
-          <p>A model can predict well and still support no conclusion. When its features are correlated,
-            many different settings of the weights produce the same prediction, so the weights a fit
-            returns are one choice among many that the data cannot separate. Accuracy does not reveal
-            this, because accuracy is identical for all of them.</p>
-          <p>This is a property of the basis, not of the fit. If the features are sparse
-            and non-negative, with one interpretable direction per coordinate, the weights become
-            identifiable, and reading them off is a measurement rather than an interpretation of an
-            arbitrary point.</p>
+          <p>The models that predict brain activity best use features taken from language models.
+            Those features are correlated, so many different sets of weights give the same
+            prediction, and prediction accuracy cannot tell them apart. The weights a fit returns
+            are one arbitrary pick among them.</p>
+          <p>In these papers I replace those features with sparse ones, one concept per axis. Each
+            weight then has one meaning, and a map of that weight across the brain shows where the
+            concept is represented. The birdsong project is earlier work with the same aim on a
+            different signal: recover the dynamics that produced a song from the recording
+            alone.</p>
         </div>
       </div>
       <ul class="outputs outputs--media" role="list">
@@ -142,19 +142,17 @@
     <section class="block group" id="cognition" data-area="cognition" aria-labelledby="h-cognition">
       <h2 class="section-label" id="h-cognition">Dense measurement</h2>
       <div class="group-intro">
-        <p class="lead">Whether two kinds of thought share machinery in the brain is usually tested with
-            one small experiment per kind, followed by a check for overlap between the regions each
-            activates.</p>
+        <p class="lead">One long, natural recording in place of many small experiments.</p>
         <div class="prose">
-          <p>That design has a flaw it cannot correct for. Each experiment arrives with its own task and
-            its own confounds, so any overlap found between them reflects how the two experiments were
-            built as much as it reflects the brain.</p>
-          <p>A stimulus that already contains all of them removes the need for that
-            comparison. Someone telling a story counts things, places them and times them continuously,
-            in one stream of words, so a single recording and a single model can produce a map for each,
-            and those maps can be compared directly. What it demands in return is a model whose features
-            are separable to begin with, which is the problem the work under
-            <a href="#bayesian">Interpretable models</a> addresses.</p>
+          <p>The usual way to test whether two kinds of thought share brain regions is to run one
+            experiment for each and compare the regions each one activates. Each experiment has its
+            own task and its own confounds, so the overlap depends partly on how the experiments
+            were designed.</p>
+          <p>A story avoids this. A person telling a story mentions numbers, places and times in
+            the same stream of words, so one recording and one model give a map for each, and the
+            maps can be compared directly. This only works if the model’s features can be
+            separated, which is what the papers under
+            <a href="#bayesian">Interpretable models</a> are for.</p>
         </div>
       </div>
       <ul class="outputs outputs--media" role="list">
@@ -198,18 +196,16 @@
     <section class="block group" id="closed-loop" data-area="closed-loop" aria-labelledby="h-closedloop">
       <h2 class="section-label" id="h-closedloop">Closed-loop instruments</h2>
       <div class="group-intro">
-        <p class="lead">Deep brain stimulation is set in a clinic over an afternoon and then runs
-            unchanged for months, in a disease whose symptoms move over the course of a day. Closing that
-            gap means letting the stimulator respond to the person, and that has to start with measuring
-            what the person is doing.</p>
+        <p class="lead">Deep brain stimulation for Parkinson’s disease is set during a clinic
+            visit and then runs unchanged for months, while the symptoms change through the day. A
+            stimulator that adapts has to know what the person is doing.</p>
         <div class="prose">
-          <p>A clinic visit cannot supply that measurement. The behaviour worth responding to happens at
-            home across hours, and the neural signal you would drive the stimulator from is itself partly
-            a consequence of the stimulation already being delivered. Recording is therefore the first
-            problem: implanted electrodes, wearables and video running at once in somebody’s house, and
-            synchronized closely enough that they can be compared.</p>
-          <p>Once they can, the question is whether behaviour predicts the neural signal
-            well enough to be worth decoding from.</p>
+          <p>A clinic visit cannot measure that. The behavior that matters happens at home, over
+            hours, and the brain signal used to control the stimulator is itself changed by the
+            stimulation. So the first job was recording: implanted electrodes, wrist watches and
+            video running together in a person’s home, synchronized closely enough to compare.</p>
+          <p>The second was to test whether movement and the brain signal track each other well
+            enough to drive the stimulator.</p>
         </div>
       </div>
       <ul class="outputs outputs--media" role="list">
