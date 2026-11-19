@@ -1186,3 +1186,500 @@ html { scroll-padding-top: 4rem; }
 }
 .foot-meta .sep { padding: 0 0.5rem; color: color-mix(in srgb, var(--accent) 60%, transparent); }
 .foot-meta a { margin-right: 0; text-decoration: underline; }
+
+
+/* ==== agent:reading ==== */
+/* The reading pass: the long paper and explainer pages, audited at 1440, 800
+   and 390 px. Two halves. The first is plain CSS on the existing markup and
+   needs no script: heading rhythm, sub/superscripts, lists, tables, the one
+   display equation, folded legends, stat tiles, asides, print. The second
+   styles what site.js injects (everything prefixed rd-): the figure zoom, the
+   BibTeX copy button, the reading-progress line and the back-to-top button.
+   Nothing here animates, so there is nothing to switch off under
+   prefers-reduced-motion.                                                    */
+
+/* -- 1. running text ------------------------------------------------------- */
+/* A sub- or superscript has its own line box, and in a 1.6 line it pushed its
+   line 3-4px away from the one above: every "p2", "R2" and footnote mark
+   opened a visible gap in the paragraph. With no line height of its own it
+   hangs off the line it is in. */
+sub, sup { line-height: 0; }
+
+/* Headings shared the 44em figure column while the text under them is 34em,
+   so a long h3 on the chapter page ran 60px past its own paragraph and broke
+   the column edge the eye follows. Same measure as the text (rem, since a
+   heading sets its own size). */
+.paper-section > h2, .paper-section > h3 { max-width: 34rem; }
+
+/* Three ranks of space, so the 36,000px chapter can be navigated by its
+   whitespace: 16px between paragraphs, 40px above a sub-heading, 64px and a
+   mark above a section. The sub-heading sat 32px from the paragraph above and
+   10px from its own text, which read as a bold line in the flow. */
+.paper-section > h3 { margin: 2.5rem 0 0.5rem; }
+.paper-section > h2 + h3 { margin-top: 1.1rem; }
+.fig + h3, .fig--table + h3 { margin-top: 2.75rem; }
+
+/* Bullets and list numbers are scaffolding: muted, and numbers lined up. */
+.paper-section > ul:not(.outputs):not(.stats) > li::marker,
+.paper-section > ol > li::marker { color: var(--fg-muted); }
+.paper-section > ol > li::marker { font-variant-numeric: tabular-nums; }
+.paper-section > ol { padding-left: 1.5rem; }
+
+/* On a phone the measure is about 40 characters and the chapter is full of
+   words like "electrocorticography": unhyphenated, single lines came up a
+   third short. Long words only, and never a two-letter stub. */
+@media (max-width: 30em) {
+  .paper-section > p, .paper-section > ul:not(.outputs):not(.stats) li,
+  .paper-section > ol li, .box p, .transcript > p {
+    -webkit-hyphens: auto;
+            hyphens: auto;
+    hyphenate-limit-chars: 12 5 5;
+  }
+  /* not the standfirst: it is set larger, and a broken word shows */
+  .paper-section > p.tldr { -webkit-hyphens: manual; hyphens: manual; }
+}
+
+/* A standfirst that runs straight into the first section (the thesis note,
+   birdsong) sat 24px above that section's mark while every later section gets
+   64px, so the first heading looked attached to the paragraph before it. */
+.paper > .lead { margin-bottom: 2.75rem; }
+
+/* A pull quote inside a section took the between-sections gap below it and a
+   paragraph gap above (16px over, 64px under). It is a pause in the middle of
+   an argument: the same air on both sides, and no wider than the page's
+   other quotes. */
+.paper-section > .pull { margin: 2.25rem 0; max-width: 40rem; }
+
+/* An aside is not a paragraph; it gets a little more room than one, and a
+   table or figure directly above it no longer touches it (the atom table and
+   the box under it shared an edge). */
+.paper-section > .box { margin: 1.75rem 0; }
+.fig + .box, .fig--table + .box { margin-top: 2.25rem; }
+.fig + ul, .fig + ol, .fig--table + ul, .fig--table + ol { margin-top: 2.25rem; }
+
+/* -- 2. figures and captions ------------------------------------------------ */
+/* The figure's own title, where a caption opens with one, steps up from the
+   caption grey so "Figure 3.2: ..." can be found when scanning. */
+.fig figcaption > b:first-child { color: var(--fg-dim); }
+
+/* -- 3. folded content ------------------------------------------------------ */
+/* Two kinds of fold (a figure's full legend, the talk's transcript) had two
+   treatments, both resting on the browser's small grey triangle. One
+   affordance for both: a chevron in the area's colour that turns when open, a
+   label that brightens under the pointer, the site's focus ring, and a rule
+   down the left of what has been unfolded so its extent is visible. */
+:is(figcaption, .rd-lb-cap) details.legend, .transcript { margin-top: 0.5rem; }
+:is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2rem;
+  padding: 0.15rem 0.5rem 0.15rem 0.2rem;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-dim);
+  border-radius: 0.2rem;
+}
+:is(figcaption, .rd-lb-cap) details.legend > summary::-webkit-details-marker,
+.transcript > summary::-webkit-details-marker { display: none; }
+:is(figcaption, .rd-lb-cap) details.legend > summary::before, .transcript > summary::before {
+  content: "";
+  flex: none;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-left: 0.1rem;
+  border-right: 1.5px solid var(--area);
+  border-bottom: 1.5px solid var(--area);
+  transform: translateX(-0.1rem) rotate(-45deg);
+}
+:is(figcaption, .rd-lb-cap) details.legend[open] > summary::before, .transcript[open] > summary::before {
+  transform: translateY(-0.12rem) rotate(45deg);
+}
+:is(figcaption, .rd-lb-cap) details.legend > summary:hover, .transcript > summary:hover { color: var(--fg); }
+:is(figcaption, .rd-lb-cap) details.legend > summary:focus-visible, .transcript > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+:is(figcaption, .rd-lb-cap) details.legend > p, .transcript > p {
+  margin: 0;
+  padding: 0.45rem 0 0.45rem 0.95rem;
+  border-left: 1px solid color-mix(in srgb, var(--area) 35%, var(--border));
+}
+:is(figcaption, .rd-lb-cap) details.legend > p:first-of-type, .transcript > p:first-of-type { margin-top: 0.35rem; }
+@media (pointer: coarse) {
+  :is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary { min-height: 2.5rem; }
+}
+
+/* -- 4. tables -------------------------------------------------------------- */
+/* Column heads are labels, set like every other label on the site, over a
+   rule that is the table's one strong line. Numerals line up; a column that
+   holds only numbers is set flush right (site.js marks those cells rd-num).
+   A table wider than its column scrolls inside .table-wrap, and the edge it
+   can be scrolled towards is shaded: the shades are painted on the wrap and
+   covered at each end by a patch that travels with the content. */
+.fig--table table { font-variant-numeric: tabular-nums lining-nums; }
+.fig--table thead th {
+  padding-bottom: 0.5rem;
+  vertical-align: bottom;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border-bottom-color: color-mix(in srgb, var(--area) 45%, var(--border));
+}
+.fig--table td { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.fig--table td, .fig--table th { padding-right: 1rem; }
+.fig--table td:last-child, .fig--table th:last-child { padding-right: 0; }
+.fig--table .rd-num { text-align: right; white-space: nowrap; }
+.table-wrap {
+  background:
+    linear-gradient(90deg, var(--bg) 40%, transparent) left center / 2.5rem 100% no-repeat local,
+    linear-gradient(270deg, var(--bg) 40%, transparent) right center / 2.5rem 100% no-repeat local,
+    linear-gradient(90deg, color-mix(in srgb, var(--area) 34%, transparent), transparent) left center / 0.9rem 100% no-repeat scroll,
+    linear-gradient(270deg, color-mix(in srgb, var(--area) 34%, transparent), transparent) right center / 0.9rem 100% no-repeat scroll;
+}
+.table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* -- 5. display equations ---------------------------------------------------- */
+/* Centred on the text it belongs to, not on the wider figure column (it sat
+   80px right of the paragraph's centre), a size up so the fraction's indices
+   are legible, and unable to push the page sideways on a phone. */
+.paper-section math[display="block"] {
+  max-width: min(100%, 34rem);
+  margin: 1.4rem 0 1.5rem;
+  font-size: 1.2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.rd-math { max-width: 34rem; margin: 1.4rem 0 1.5rem; overflow-x: auto; overflow-y: hidden; }
+.rd-math > math[display="block"] { max-width: none; margin: 0; overflow: visible; }
+
+/* -- 6. stat tiles ----------------------------------------------------------- */
+/* Four bare numbers read as stray headings. A hairline over each, in the
+   area's colour, makes them tiles in one strip. No value wraps today at any
+   width down to 390px; if a longer one ever does, it breaks evenly. A strip
+   in the middle of a section keeps the same distance from the text after it
+   as from the text before it (it sat 24px under and 16px over). */
+.stats li, .paper-section > ul.stats li + li {
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--area) 30%, var(--border));
+}
+.stats, .paper-section > ul.stats { gap: 1.5rem 1.5rem; margin-top: 1.75rem; margin-bottom: 1.75rem; }
+.paper-section > ul.stats:last-child { margin-bottom: 0; }
+.stats b { letter-spacing: -0.01em; text-wrap: balance; }
+.stats span { margin-top: 0.35rem; }
+
+/* -- 7. BibTeX ---------------------------------------------------------------- */
+/* site.js wraps the block and adds a Copy button. Under a heading (every
+   BibTeX block on the site) the button sits at the right of the heading's own
+   row, so it never lies on the entry; anywhere else it takes a band at the
+   top of the block. */
+.rd-code { position: relative; }
+.rd-copy {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 5.6rem;
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg-dim);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  cursor: pointer;
+}
+.rd-code--band > pre.bibtex { padding-top: 3rem; }
+.rd-code--band > .rd-copy { top: 0.45rem; right: 0.45rem; bottom: auto; margin: 0; background: var(--bg); }
+.rd-copy svg { width: 0.85rem; height: 0.85rem; flex: none; }
+.rd-copy:hover { color: var(--fg); border-color: color-mix(in srgb, var(--area) 55%, transparent); }
+.rd-copy:focus-visible, .rd-zoom:focus-visible, .rd-top:focus-visible,
+.rd-lb-btn:focus-visible, .rd-lb-stage:focus-visible, .fig img.rd-zoom-img:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.rd-copy[data-state="done"] {
+  color: var(--area);
+  border-color: color-mix(in srgb, var(--area) 60%, transparent);
+  background: color-mix(in srgb, var(--area) 10%, var(--surface));
+}
+.rd-copy[data-state="failed"] { color: var(--fg); border-color: var(--fg-muted); }
+@media (pointer: coarse), (max-width: 40em) {
+  .rd-copy { min-height: 2.5rem; margin-bottom: 0.55rem; }
+  .rd-code--band > pre.bibtex { padding-top: 3.4rem; }
+}
+
+/* -- 8. the figure zoom -------------------------------------------------------- */
+/* A plate is set 704px wide on a desk and 358px on a phone, and most of them
+   are multi-panel figures drawn for a printed page. The image itself opens
+   the enlarged view (the pointer says so), and a labelled control does the
+   same for the keyboard and for anyone who does not guess. The control sits
+   under the picture's right-hand corner, level with the first line of the
+   caption: in the 160px the caption leaves free on a desk, and as an icon the
+   caption makes room for on a phone. It never lies on the figure. */
+.fig.rd-zoomable { position: relative; container-type: inline-size; }
+.fig img.rd-zoom-img { cursor: zoom-in; }
+.rd-zoom {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  height: 1.9rem;
+  margin-top: 0.3rem;
+  padding: 0 0.1rem 0 0.5rem;
+  border: 0;
+  border-radius: 0.2rem;
+  background: none;
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  cursor: zoom-in;
+}
+.rd-zoom svg { width: 0.85rem; height: 0.85rem; flex: none; }
+.rd-zoom:hover { color: var(--fg); }
+/* a figure with no caption has nothing to stand beside: it gets a row */
+.fig.rd-zoomable:not(:has(> figcaption)) { padding-bottom: 2.5rem; }
+/* narrower than the caption's measure plus the label: icon only, and the
+   caption keeps clear of it */
+@media (max-width: 39em) {
+  .rd-zoom > span { display: none; }
+  .rd-zoom { width: 2.5rem; height: 2.5rem; margin-top: 0; padding: 0; color: var(--fg-dim); }
+  /* an empty float: the caption's first two lines step round the icon and
+     the rest run the full width */
+  .fig.rd-zoomable > figcaption::before { content: ""; float: right; width: 2.5rem; height: 1.7rem; }
+}
+@container (max-width: 39rem) {
+  .rd-zoom > span { display: none; }
+  .rd-zoom { width: 2.5rem; height: 2.5rem; margin-top: 0; padding: 0; color: var(--fg-dim); }
+  .fig.rd-zoomable > figcaption::before { content: ""; float: right; width: 2.5rem; height: 1.7rem; }
+}
+
+/* The enlarged view is a native <dialog>: the browser traps focus in it,
+   closes it on Esc and makes the page behind it inert. It fills the viewport;
+   the figure opens at the width of the window and scrolls down if it is
+   taller, a click or tap takes it to full size, and the stage scrolls (wheel,
+   touch, arrow keys, or drag) to pan. Pinch-zoom is left to the browser. */
+dialog.rd-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  overflow: hidden;
+}
+dialog.rd-lightbox[open] { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; }
+dialog.rd-lightbox::backdrop { background: var(--bg); }
+.rd-lb-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 0.5rem 0.6rem;
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.rd-lb-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: auto;
+  padding-left: 0.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+.rd-lb-scale {
+  min-width: 3.2rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-dim);
+}
+.rd-lb-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg);
+  text-decoration: none;
+  transition: none;
+  cursor: pointer;
+}
+.rd-lb-btn svg { width: 1rem; height: 1rem; }
+.rd-lb-btn:hover { border-color: color-mix(in srgb, var(--area) 60%, transparent); }
+.rd-lb-btn[aria-disabled="true"] { color: color-mix(in srgb, var(--fg-muted) 55%, transparent); cursor: default; border-color: var(--border); }
+.rd-lb-btn::after { content: none !important; }   /* no outward arrow: the icon is the arrow */
+.rd-lb-close { margin-left: 0.5rem; }
+.rd-lb-stage {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  padding: 1rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  cursor: zoom-out;
+}
+.rd-lb-img {
+  display: block;
+  flex: none;
+  margin: auto;                 /* centred while it fits; scrolls safely when it does not */
+  max-width: none;
+  border-radius: 0.2rem;
+  background: var(--surface);
+  cursor: zoom-in;
+  -webkit-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
+}
+.rd-lightbox[data-plate] .rd-lb-img { background: #f4f4f2; }   /* the plate's own matte, as .fig--plate */
+.rd-lightbox[data-zoomed] .rd-lb-img { cursor: grab; }
+.rd-lightbox[data-dragging] .rd-lb-img { cursor: grabbing; }
+.rd-lb-cap {
+  max-height: 26vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.8rem 1rem;
+  padding-bottom: max(0.8rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+.rd-lb-cap > div { max-width: 44rem; margin: 0 auto; }
+.rd-lb-cap b:first-child { color: var(--fg); }
+.rd-lb-cap[hidden], .rd-lightbox[data-zoomed] .rd-lb-cap { display: none; }
+/* On a phone there is no room for the figure's title and no pointer to say
+   that the picture can be tapped, so the bar says that instead. */
+.rd-lb-hint { display: none; }
+@media (max-width: 34em), (pointer: coarse) {
+  .rd-lb-title { display: none; }
+  .rd-lb-hint {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-left: 0.4rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--fg-muted);
+  }
+}
+
+/* -- 9. wayfinding ------------------------------------------------------------- */
+/* How far through the page: a 2px line in the area's colour along the bottom
+   edge of the sticky section list, drawn over its hairline, so it takes no
+   room and moves nothing. A page with no section list (the thesis note)
+   carries the same line at the top of the window. site.js scales it; a scale
+   is composited, so a scroll costs no layout. */
+.rd-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--area);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.rd-progress--page { position: fixed; top: 0; bottom: auto; z-index: 4; }
+.rd-progress--all {
+  background: linear-gradient(90deg, var(--c-cognition), var(--c-closed) 55%, var(--c-bayesian));
+}
+
+/* Back to the top, on a page more than a few screens long. Where the window
+   is wide enough for it to stand in the margin it stays; on a narrow screen
+   it would sit on the text, so it shows only while the reader is scrolling
+   back up, or has reached the end. */
+.rd-top {
+  position: fixed;
+  right: max(1.1rem, env(safe-area-inset-right));
+  bottom: max(1.1rem, env(safe-area-inset-bottom));
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--fg-dim);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+.rd-top svg { width: 1rem; height: 1rem; }
+.rd-top:hover { color: var(--fg); border-color: color-mix(in srgb, var(--area) 60%, transparent); }
+.rd-top[hidden] { display: none; }
+.rd-top--lift { bottom: var(--rd-lift, 5.25rem); }   /* clear of the footer at the foot of the page */
+
+/* -- 10. print ------------------------------------------------------------------ */
+/* A paper page on paper: none of the controls, a white ground under every
+   plate, figures that fit a sheet with their caption, headings that stay with
+   their text, and a BibTeX entry that wraps instead of running off the edge.
+   site.js opens the folded legends and the transcript for the print run and
+   folds them again afterwards. */
+@media print {
+  .rd-zoom, .rd-copy, .rd-top, .rd-progress, dialog.rd-lightbox { display: none !important; }
+  .fig.rd-zoomable > figcaption::before { content: none; }
+  /* a section taller than a sheet cannot avoid a break, and asking it to only
+     pushed each section to a fresh page */
+  .paper-section { break-inside: auto; margin-bottom: 2rem; }
+  .paper-section > h2, .paper-section > h3 { break-after: avoid; }
+  .paper-section > p, .box p, .transcript > p, li { orphans: 3; widows: 3; }
+  .fig, .fig--table, .box, .stats, pre.bibtex, .pull { break-inside: avoid; }
+  /* a figure with its whole legend unfolded can be longer than what is left
+     of the sheet: the picture keeps its caption, and the legend may run on */
+  .fig:has(details.legend[open]) { break-inside: auto; }
+  .fig figcaption { break-before: avoid; }
+  .fig img { width: auto; max-width: 100%; max-height: 6.5in; margin: 0; }
+  .fig--plate img { padding: 0; box-shadow: none; background: none; border: 1px solid #ccc; }
+  .fig video { display: none; }
+  .rd-code > pre.bibtex, pre.bibtex { padding: 0.75rem; white-space: pre-wrap; overflow: visible; border: 1px solid #ccc; }
+  .table-wrap { overflow: visible; background: none; }
+  .stats li, .paper-section > ul.stats li + li { border-top-color: #ccc; }
+  :is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary { color: #555; }
+  :is(figcaption, .rd-lb-cap) details.legend > summary::before, .transcript > summary::before { display: none; }
+  :is(figcaption, .rd-lb-cap) details.legend > p, .transcript > p { border-left-color: #ccc; }
+}
