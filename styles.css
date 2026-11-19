@@ -2151,4 +2151,193 @@ dialog.rd-lightbox::backdrop { background: var(--bg); }
   :is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary { color: #555; }
   :is(figcaption, .rd-lb-cap) details.legend > summary::before, .transcript > summary::before { display: none; }
   :is(figcaption, .rd-lb-cap) details.legend > p, .transcript > p { border-left-color: #ccc; }
+/* ==== agent:motion ==== */
+/* ---- the motion system (2026-11-19) -------------------------------------------
+   One block for everything that moves, so it can be read, tuned or removed in
+   one place. site.js carries the other half (its last block). The rules:
+
+   1. Motion orients or answers. An entrance says "this is new to the screen",
+      a hover says "this responds to you", a press says "taken". Nothing loops,
+      nothing follows the cursor, nothing is tied to the scroll position.
+   2. Nothing makes a reader wait. Entrances are under half a second and
+      front-loaded; a reader who jumps (an anchor, find-in-page, the scrollbar,
+      a fast fling) gets the content already in place, without the entrance.
+   3. Only opacity and position animate (`opacity`, `translate`, `transform`),
+      plus colour on hover. Nothing here changes layout, so nothing shifts.
+   4. The page never depends on it. Content is hidden only by a class that
+      site.js adds, only well below the screen, only once the reader starts to
+      scroll, and only when motion is allowed; with no script, or under
+      prefers-reduced-motion, every rule that hides or moves anything is
+      switched off by the media queries around it.
+
+   Entrances use the `translate` property rather than `transform`, so they
+   compose with a transform an element already has (the hero clip is centred
+   with one) instead of replacing it.                                          */
+
+/* -- tokens ------------------------------------------------------------------ */
+:root {
+  --m-fast: 110ms;      /* a press */
+  --m-base: 180ms;      /* hover and focus: a state changing */
+  --m-page: 200ms;      /* the cross-fade between two pages */
+  --m-slow: 440ms;      /* an entrance */
+  --m-step: 50ms;       /* between neighbours arriving together */
+  --m-rise: 0.75rem;    /* how far an entrance travels */
+  --m-ease: cubic-bezier(0.2, 0, 0, 1);          /* state changes */
+  --m-ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* entrances: arrive fast, settle long */
+}
+
+/* An entrance has no `to`: it ends on whatever the element's own style is. */
+@keyframes m-rise { from { opacity: 0; translate: 0 var(--m-rise); } }
+
+/* -- entrance on scroll ------------------------------------------------------- */
+/* When the reader first starts to scroll, site.js puts .m-pre on each section,
+   card, row, figure and stat tile that is still well below the screen, and
+   swaps it for .m-in the first time the element reaches the viewport; .m-in is
+   taken off again when the animation ends. --m-i is the element's place among
+   those arriving with it. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .m-pre { opacity: 0; }
+  .m-in {
+    animation: m-rise var(--m-slow) var(--m-ease-out) backwards;
+    animation-delay: calc(var(--m-i, 0) * var(--m-step));
+  }
+}
+
+/* -- the homepage opening ------------------------------------------------------ */
+/* Eyebrow, statement, chips, clip, caption, in reading order: 440ms each,
+   the last starting at 190ms, so the whole arrival is 630ms and the statement
+   is readable inside the first 150. It is CSS alone, so it starts with the
+   first paint and cannot flash; `scripting: enabled` keeps a no-script render
+   still from its first frame, and a browser without that media feature simply
+   shows the opening in place. */
+@media screen and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .hero-eyebrow, .hero-statement, .hero-proof, .hero-clip > *, .hero-media figcaption {
+    animation: m-rise var(--m-slow) var(--m-ease-out) backwards;
+  }
+  .hero-statement { animation-delay: 40ms; }
+  .hero-proof { animation-delay: 90ms; }
+  .hero-clip > * { animation-delay: 150ms; }
+  .hero-media figcaption { animation-delay: 190ms; }
+}
+
+/* -- from page to page ---------------------------------------------------------- */
+/* A short cross-fade where the browser supports cross-document view
+   transitions; everywhere else a link is a plain navigation. Only the root is
+   named, so the sticky section list is part of the picture being faded and
+   is never animated on its own. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--m-page, 200ms);
+    animation-timing-function: linear;
+  }
+  /* In-page anchors glide. `:focus-within` limits it to a jump the reader
+     asked for from the page (a click or a key on a link): a hash in the
+     address at load and find-in-page still land at once. */
+  html:focus-within { scroll-behavior: smooth; }
+}
+
+/* -- hover, focus, press --------------------------------------------------------
+   One timing for every state change. A keyboard focus gets what a hover gets;
+   the focus ring itself is never animated. */
+a, .button, .hero-proof a, .hero-cta, summary {
+  transition:
+    color var(--m-base) var(--m-ease),
+    text-decoration-color var(--m-base) var(--m-ease),
+    border-color var(--m-base) var(--m-ease),
+    background-color var(--m-base) var(--m-ease),
+    transform var(--m-fast) var(--m-ease);
+}
+
+/* Links that show an underline only when hovered or current drew it at once
+   while everything else on the page faded. The underline is always there now,
+   transparent at rest, so it fades like the rest. The rules that set the
+   hovered and current states are untouched. */
+@media screen {
+  .wordmark a, .topbar nav a, .foot nav a, .paper-nav a,
+  .area-title a, .project-title a, .outputs--media .output-title > a {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+  }
+}
+
+/* Pills: a keyboard focus lights them as a hover does. */
+.button:focus-visible {
+  border-color: color-mix(in srgb, var(--area) 55%, transparent);
+  background: color-mix(in srgb, var(--area) 8%, var(--surface));
+}
+.hero-proof a:focus-visible {
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+.hero-cta:focus-visible {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+
+/* The clip frames: the same hairline-and-glow as before, on the shared timing.
+   The shadow keeps its geometry at rest and only its colour changes. */
+.area-media, .project-media {
+  box-shadow: 0 12px 44px -20px transparent;
+  transition:
+    border-color var(--m-base) var(--m-ease),
+    box-shadow var(--m-base) var(--m-ease),
+    translate var(--m-base) var(--m-ease);
+}
+/* An inventory row lights its thumbnail's hairline while the pointer or the
+   focus is in it: which entry you are in, not a promise that the row is a link. */
+.output-media video, .output-media img {
+  transition: border-color var(--m-base) var(--m-ease);
+}
+.outputs > li:hover .output-media video,
+.outputs > li:hover .output-media img,
+.outputs > li:focus-within .output-media video,
+.outputs > li:focus-within .output-media img {
+  border-color: color-mix(in srgb, var(--area) 62%, transparent);
+}
+
+/* The arrows: one timing, and they answer a keyboard focus too. */
+.hero-cta span, .more a span, .area-extra a span, .backlink span {
+  display: inline-block;
+  transition: transform var(--m-base) var(--m-ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-cta:focus-visible span, .more a:focus-visible span, .area-extra a:focus-visible span {
+    transform: translateX(0.3rem);
+  }
+  /* the way back points the other way */
+  .backlink:hover span, .backlink:focus-visible span { transform: translateX(-0.25rem); }
+
+  /* A press: pills give by 3%. */
+  .button:active, .hero-proof a:active, .hero-cta:active { transform: scale(0.97); }
+
+  /* A card is one link, so the whole card answers: the frame lifts 2px into
+     its glow and the area's mark over the title runs out. A press sets the
+     frame back down. */
+  .area-title::before, .project-title::before {
+    transform-origin: 0 50%;
+    transition: transform var(--m-base) var(--m-ease);
+  }
+  .area:focus-within .area-media, .project:focus-within .project-media { translate: 0 -2px; }
+  .area:focus-within .area-title::before,
+  .project:focus-within .project-title::before { transform: scaleX(1.75); }
+  @media (hover: hover) {
+    .area:hover .area-media, .project:hover .project-media { translate: 0 -2px; }
+    .area:hover .area-title::before,
+    .project:hover .project-title::before { transform: scaleX(1.75); }
+  }
+  .area:active .area-media, .project:active .project-media {
+    translate: 0 0;
+    transition-duration: var(--m-fast);
+  }
+}
+
+/* Under reduced motion a state still changes, at once and in place: the
+   transitions are already off (the rule further up this file), and the arrows
+   that slide on hover stay where they are. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta:hover span, .more a:hover span, .area-extra a:hover span { transform: none; }
 }
