@@ -123,7 +123,7 @@ clear in one participant only. Source: the thesis PDF.
 
 **Birdsong** (`birdsong.html`). APS March Meeting 2019 abstract, published
 under Xiao Zeng, with Eve Armstrong and Vijay Balasubramanian. The page
-describes the method only; its figure is a coded Lorenz illustration.
+describes the method only; its figure is a coded Lorenz illustration. The page leads with her own attractor clip (`figures/project-birdsong.*`), restored on 2026-11-19 at her request after a rewrite had reduced it to a link; the coded delay-embedding illustration sits lower, in "The approach".
 
 Venue labels used everywhere: "NeurIPS 2026, oral", "NeurIPS 2025", "CCN 2026,
 poster", "Nature Biomedical Engineering 2026", "Thesis, chapter 3". Contact
