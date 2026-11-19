@@ -1186,3 +1186,239 @@ html { scroll-padding-top: 4rem; }
 }
 .foot-meta .sep { padding: 0 0.5rem; color: color-mix(in srgb, var(--accent) 60%, transparent); }
 .foot-meta a { margin-right: 0; text-decoration: underline; }
+
+
+/* ==== agent:homepage ==== */
+/* ---- the homepage, 2026-11-19 -------------------------------------------------
+   index.html was reordered for a reader who gives it fifteen seconds: the
+   claim and the cortex, then Now (the company), then the three areas, then
+   her essay whole, then contact. Everything here is scoped to the homepage's
+   own classes (.hero, .now, .area-works, .essay, .contact); no other page
+   uses them. Four things the audit of the rendered page found:
+
+   1. The work was buried: the first area card started 2,214px down at
+      1440x900 and 2,726px down on a phone, under a four-paragraph essay.
+   2. Every text section ran a 34rem measure in a 52.5rem column, so a third
+      of each row was empty while the media ran full width. Now, the essay
+      and Contact are two columns from 50em: a statement and its side column.
+   3. What is inside an area was one line of small underlined mono text with
+      dots, which wrapped badly and did not read as links. It is a list of
+      rows, one per work, title left and venue right.
+   4. Now and Contact, the two sections a reader acts on, were plain
+      paragraphs. Each is a panel with one primary button.                    */
+
+/* -- the one button ---------------------------------------------------------
+   The shape and colours of .hero-cta (the way into the viewer), so the page
+   has a single idea of what a primary action looks like. --quiet is the same
+   shape without the accent, for a way onward that is not the main action.  */
+.cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--fg);
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.cta:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+.cta--quiet { border-color: var(--border); background: var(--surface); }
+.cta--quiet:hover { border-color: var(--fg-muted); background: var(--surface); }
+.cta[href^="http"]::after { margin-left: 0; }
+
+/* -- the hero ----------------------------------------------------------------
+   The section ends on the clip's caption row now, so the figure gives up its
+   bottom margin to the section gap under it. */
+.hero > .hero-media:last-child { margin-bottom: 0; }
+/* and Now sits a step closer to the opening than one section sits to the
+   next: it finishes the answer to "who is this", and at 1440x900 its panel
+   then shows above the fold. */
+.hero + .block { margin-top: 4.25rem; }
+
+/* The eyebrow is two facts. Where they do not fit one line they broke after
+   "PhD", in the middle of the second; each takes its own line instead. */
+@media (max-width: 34em) {
+  .hero-eyebrow { line-height: 1.75; }
+  .hero-role { display: block; }
+  .hero-eyebrow .sep { display: none; }
+}
+
+/* On a phone the 2.1:1 frame left the cortex 130px tall with a third of the
+   row empty either side. The frame takes the clip's own shape there (870 by
+   the 520 rows the crop keeps), so the clip fills the column. */
+@media (max-width: 39.99em) and (prefers-reduced-motion: no-preference) {
+  .hero-clip { aspect-ratio: 870 / 520; }
+}
+@media (max-width: 39.99em) and (prefers-reduced-motion: reduce) {
+  .hero-clip { aspect-ratio: 1.45; }
+}
+@media (max-width: 39.99em) {
+  .hero-media figcaption { gap: 0.7rem 1.5rem; }
+}
+
+/* -- panels: the two sections a reader acts on ------------------------------ */
+.now-panel, .contact-panel {
+  display: grid;
+  gap: 1.5rem 2.5rem;
+  padding: 1.4rem 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--surface) 42%, var(--bg));
+}
+@media (min-width: 50em) {
+  .now-panel, .contact-panel { padding: 2rem 2.25rem 2.1rem; }
+  .now-panel { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: end; }
+  .contact-panel { grid-template-columns: minmax(0, 1fr) 11.5rem; }
+  .now-side, .contact-side { padding-left: 2.25rem; border-left: 1px solid var(--border); }
+}
+
+/* -- Now ---------------------------------------------------------------------
+   Label, company name, what it builds, her part in it, the way out. */
+.now-title {
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.now-statement {
+  max-width: 31rem;
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+  line-height: 1.45;
+}
+.now-role { max-width: 30rem; line-height: 1.6; color: var(--fg-dim); }
+.now-out { margin-top: 1.1rem; }
+
+/* -- the area cards: what is inside each ---------------------------------------
+   One row per work, a hairline over each: the title, its venue under it in
+   mono (the inventory's own pairing), an arrow at the end of the row. Title
+   and venue are stacked at every width, since the longest pair never fits one
+   line and a list that mixes the two reads as two kinds of row. The anchors
+   keep the stacking context .area-count a gives them, above the card-wide
+   link. */
+.area-works {
+  max-width: var(--measure);
+  margin-top: 1.1rem;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  color: var(--fg);
+}
+.area-works li { border-top: 1px solid var(--border); }
+.area-works a {
+  display: block;
+  padding: 0.6rem 1.8rem 0.65rem 0;
+  color: var(--fg);
+  text-decoration: none;
+}
+.area-works a::after,
+.area-works a[target="_blank"]::after {
+  content: "\2192";
+  position: absolute;
+  right: 0.1rem;
+  top: 50%;
+  margin: 0;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--fg-muted);
+  vertical-align: baseline;
+}
+.area-works a[target="_blank"]::after { content: "\2197"; }
+.work-title { display: block; font-weight: 500; line-height: 1.4; }
+.work-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  color: var(--fg-muted);
+}
+.work-new {
+  margin-right: 0.45rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--area) 50%, transparent);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--area);
+}
+.area-works a:hover .work-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.area-works a:hover::after { color: var(--area); }
+/* With the rows a card's text is taller than its clip, so the two start on
+   one line (the clip's top edge, the title's mark) instead of centring. */
+@media (min-width: 46em) {
+  .area { align-items: start; }
+}
+/* A row is its own link: pointing at one must not also underline the area
+   title, which goes somewhere else. */
+.area:has(.area-works a:hover) .area-title a { text-decoration: none; }
+
+/* -- the essay -----------------------------------------------------------------
+   Her standfirst and three paragraphs, whole. From 50em the standfirst holds
+   the left column and stays in view while the paragraphs it opens run down
+   the right at about 65 characters to the line (the 34em measure still caps
+   them where the column is wider than that, just under the 68em grid). */
+.essay .lead { margin-bottom: 1.5rem; }
+.essay-more {
+  max-width: var(--measure);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--fg-dim);
+}
+@media (min-width: 50em) {
+  .essay-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    column-gap: 2.5rem;
+    align-items: start;
+  }
+  .essay .lead {
+    position: sticky;
+    top: 1.5rem;
+    max-width: none;
+    margin-bottom: 0;
+    font-size: 1.3rem;
+    line-height: 1.42;
+  }
+  /* the two columns share a first baseline */
+  .essay-body { padding-top: 0.22rem; }
+}
+
+/* -- contact: the closing section ---------------------------------------------- */
+.contact .contact-note {
+  max-width: 26em;
+  margin-top: 0;
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
+}
+.contact .contact-mail { margin-top: 1.4rem; font-size: 1rem; letter-spacing: 0; }
+.contact-mail .cta { padding: 0.7rem 1.3rem; font-size: 1.0625rem; font-weight: 600; }
+.contact-label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.contact .profiles { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-top: 0.7rem; }
+.contact .profiles a { margin-right: 0; }
+@media (min-width: 50em) {
+  .contact .profiles { display: block; }
+  .contact .profiles li + li { margin-top: 0.45rem; }
+}
+.contact .otherwise { margin-top: 1.25rem; font-size: 0.9375rem; color: var(--fg-muted); }
