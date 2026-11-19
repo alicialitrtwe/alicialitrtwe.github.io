@@ -79,12 +79,15 @@
       </div>
       <ul class="outputs outputs--media" role="list">
         <li>
+          <!-- The paper's own material: a crop of its Fig. 2a, one subject's
+               cortical map of component c8, at the 1.45 frame. The flatmap
+               clip that stood here is the homepage card's. -->
           <div class="output-media">
-            <video loop muted playsinline preload="none"
-                   poster="figures/area-bayesian.jpg" width="762" height="526"
-                   aria-label="Measured cortical responses to a story on a pair of flattened hemispheres, changing frame by frame.">
-              <source src="figures/area-bayesian.mp4" type="video/mp4">
-            </video>
+            <picture>
+              <source srcset="figures/components-thumb.webp" type="image/webp">
+              <img src="figures/components-thumb.jpg" width="596" height="411"
+                   alt="The cortical map of one component, c8 (spoken numbers and quantities), in one subject, on that subject’s two flattened hemispheres: bright patches on dark cortex, on the white ground of the paper’s plate. The label “max 0.11” gives the top of its colour scale. A crop of Fig. 2a of the paper.">
+            </picture>
           </div>
           <div class="output-body">
             <p class="output-title"><a href="research/components.html"><cite>Semantic-Cortical
