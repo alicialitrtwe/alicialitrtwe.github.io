@@ -1,10 +1,20 @@
-/* Alicia Zeng — the two things on this site that need a script.
-   Neither is load-bearing: without JavaScript every clip stays on its poster
-   and the section list on a paper page is a plain list of links.
+/* Alicia Zeng: the shared script, loaded on every page except 404.html and
+   the redirect pages. Nothing on the site depends on it: without JavaScript
+   every clip stays on its poster, every figure and fold is visible, and the
+   section list on a paper page is a plain list of links. Three parts, each
+   its own closure:
 
-   1. The clips: play when on screen, pause when not, never under
-      prefers-reduced-motion.
-   2. On a paper page, the sticky section list marks the section in view.  */
+   1. (this first block) The clips play when on screen and pause when not,
+      never under prefers-reduced-motion; on a paper page, the sticky section
+      list marks the section in view.
+   2. agent:reading  - reading aids on pages with an <article class="paper">:
+      figure zoom, the BibTeX copy button, the reading-progress line and
+      back-to-top, table and equation handling, print preparation.
+   3. agent:motion   - a clip starts on the frame its poster shows, and blocks
+      below the fold settle in once as they are scrolled to.
+
+   Page-specific interactions (switchers, illustrations) live in viz/, one
+   file per page, loaded only by that page.  */
 
 (function () {
   'use strict';
@@ -123,4 +133,775 @@
       if (el) io.observe(el);
     });
   }
+})();
+
+
+/* ==== agent:reading ==== */
+/* Reading aids for the long paper pages. Every one decorates markup that is
+   already complete without it, and none runs anywhere but on a page with an
+   <article class="paper">:
+
+   1. figure zoom   - figure.fig img opens enlarged in a native <dialog>
+   2. BibTeX        - a Copy button on pre.bibtex
+   3. wayfinding    - a reading-progress line on the sticky section list and a
+                      back-to-top button, on pages more than three screens long
+   4. tables        - numeric columns flush right; a wide table can be
+                      scrolled from the keyboard
+   5. equations     - a display equation wider than the column scrolls in a box
+   6. print         - folded legends and the transcript are opened for printing
+
+   Nothing here animates. The one scroll listener is passive, does its work at
+   most once a frame, and only reads scrollY and writes a transform. */
+(function () {
+  'use strict';
+
+  var doc = document, root = doc.documentElement;
+  var paper = doc.querySelector('article.paper');
+  if (!paper || !('querySelector' in doc) || !window.requestAnimationFrame) return;
+
+  var shell = doc.querySelector('.shell');
+  var area = shell ? shell.getAttribute('data-area') : null;
+
+  function make(tag, cls, attrs, html) {
+    var n = doc.createElement(tag), k;
+    if (cls) n.className = cls;
+    if (attrs) for (k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) n.setAttribute(k, attrs[k]);
+    if (html) n.innerHTML = html;
+    return n;
+  }
+  // Things appended to <body> sit outside .shell, so they are told the area
+  // themselves and take its colour through the same [data-area] rules.
+  function wearArea(n) { if (area) n.setAttribute('data-area', area); return n; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  function svg(path) {
+    return '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + path + '</svg>';
+  }
+  var ICON = {
+    expand: svg('<path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9"/>'),
+    close:  svg('<path d="m3.5 3.5 9 9M12.5 3.5l-9 9"/>'),
+    plus:   svg('<path d="M8 3v10M3 8h10"/>'),
+    minus:  svg('<path d="M3 8h10"/>'),
+    out:    svg('<path d="M6.5 3.5h-3v9h9v-3M9.5 2.5h4v4M13.5 2.5 7.5 8.5"/>'),
+    up:     svg('<path d="M8 13V3.5M3.5 8 8 3.5 12.5 8"/>'),
+    copy:   svg('<rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2"/>'),
+    check:  svg('<path d="m3 8.5 3.2 3.2L13 4.8"/>')
+  };
+
+  // One polite live region for everything this block has to say.
+  var live = null, liveTimer = 0;
+  function announce(text) {
+    if (!live) {
+      live = make('span', 'vh', { role: 'status', 'aria-live': 'polite' });
+      doc.body.appendChild(live);
+    }
+    live.textContent = '';
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(function () { live.textContent = text; }, 60);
+  }
+
+  /* ---- 1. figure zoom --------------------------------------------------- */
+  var IMG_URL = /\.(?:png|jpe?g|webp|avif|gif|svg)(?:[?#].*)?$/i;
+  function stem(url) { return String(url).replace(/[?#].*$/, '').replace(/\.[a-z0-9]+$/i, ''); }
+
+  // Where the best copy of a figure lives: the file its link points at, or a
+  // "Full size" link in its caption. The copy already on screen is shown at
+  // once; a genuinely different file replaces it when it has loaded.
+  function sources(img) {
+    var shown = img.currentSrc || img.src;
+    var link = img.closest('a[href]');
+    var full = link && IMG_URL.test(link.href) ? link.href : null;
+    if (!full) {
+      var fig = img.closest('figure');
+      var cap = fig && fig.querySelector('figcaption a[href]');
+      if (cap && IMG_URL.test(cap.href)) full = cap.href;
+    }
+    return { shown: shown, full: full || shown };
+  }
+
+  var lb = null, lbImg, lbStage, lbCap, lbCapIn, lbScale, lbIn, lbOut, lbOrig, lbClose, lbTitle, lbHint;
+  var lbTrigger = null, lbLock = null;
+  var view = { nw: 1, nh: 1, base: 1, whole: 1, max: 2, scale: 1 };
+  var PAD = 16;                                   // .rd-lb-stage padding, 1rem
+
+  function buildLightbox() {
+    lb = wearArea(make('dialog', 'rd-lightbox', { 'aria-label': 'Enlarged figure' }));
+    var bar = make('div', 'rd-lb-bar');
+    lbTitle = make('span', 'rd-lb-title', { 'aria-hidden': 'true' });
+    lbHint = make('span', 'rd-lb-hint', { 'aria-hidden': 'true' });
+    lbOut = make('button', 'rd-lb-btn', { type: 'button', 'aria-label': 'Zoom out', title: 'Zoom out (−)' }, ICON.minus);
+    lbScale = make('span', 'rd-lb-scale', { 'aria-hidden': 'true' });
+    lbIn = make('button', 'rd-lb-btn', { type: 'button', 'aria-label': 'Zoom in', title: 'Zoom in (+)' }, ICON.plus);
+    lbOrig = make('a', 'rd-lb-btn', { target: '_blank', rel: 'noopener', 'aria-label': 'Open the image file in a new tab', title: 'Open the image file' }, ICON.out);
+    lbClose = make('button', 'rd-lb-btn rd-lb-close', { type: 'button', 'aria-label': 'Close', title: 'Close (Esc)' }, ICON.close);
+    bar.appendChild(lbTitle); bar.appendChild(lbHint); bar.appendChild(lbOut); bar.appendChild(lbScale); bar.appendChild(lbIn);
+    bar.appendChild(lbOrig); bar.appendChild(lbClose);
+    lbStage = make('div', 'rd-lb-stage', { tabindex: '0', role: 'group', 'aria-label': 'Figure. Scroll or use the arrow keys to pan when zoomed.' });
+    lbImg = make('img', 'rd-lb-img', { alt: '', draggable: 'false' });
+    lbStage.appendChild(lbImg);
+    lbCap = make('div', 'rd-lb-cap', { id: 'rd-lb-cap' });
+    lbCapIn = make('div');
+    lbCap.appendChild(lbCapIn);
+    lb.appendChild(bar); lb.appendChild(lbStage); lb.appendChild(lbCap);
+    doc.body.appendChild(lb);
+
+    lbClose.addEventListener('click', function () { lb.close(); });
+    lbIn.addEventListener('click', function () { zoomTo(view.scale * 1.5); });
+    lbOut.addEventListener('click', function () { zoomTo(view.scale / 1.5); });
+    // The stage around the image is the backdrop: a click there closes.
+    lbStage.addEventListener('click', function (e) { if (e.target === lbStage) lb.close(); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
+    lb.addEventListener('close', onClose);
+    lb.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === '+' || e.key === '=') { zoomTo(view.scale * 1.5); e.preventDefault(); }
+      else if (e.key === '-' || e.key === '_') { zoomTo(view.scale / 1.5); e.preventDefault(); }
+      else if (e.key === '0') { toBase(); e.preventDefault(); }
+    });
+
+    // Click or tap: opening size <-> full size, about the point that was clicked.
+    // With a mouse, a press that moves is a drag and pans the stage instead.
+    var drag = null, dragged = false;
+    lbImg.addEventListener('click', function (e) {
+      if (dragged) { dragged = false; return; }
+      if (lb.hasAttribute('data-zoomed')) { toBase(); return; }
+      // Full size, where that is a real step up. On a phone "full size" is
+      // four screens of upscaled pixels, so there the step is two and a half
+      // times the opening size, or one image pixel per screen pixel if larger.
+      var full = Math.min(1, Math.max(view.base * 2.5, 1 / (window.devicePixelRatio || 1)));
+      zoomTo(full / view.base >= 1.5 ? full : Math.min(view.max, view.base * 2), e.clientX, e.clientY);
+    });
+    lbImg.addEventListener('pointerdown', function (e) {
+      dragged = false;
+      if (e.pointerType !== 'mouse' || e.button !== 0 || !lb.hasAttribute('data-zoomed')) return;
+      drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop, id: e.pointerId };
+      e.preventDefault();
+    });
+    lbImg.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!dragged && Math.abs(dx) + Math.abs(dy) < 5) return;
+      if (!dragged) {
+        dragged = true;
+        lb.setAttribute('data-dragging', '');
+        try { lbImg.setPointerCapture(drag.id); } catch (err) {}
+      }
+      lbStage.scrollLeft = drag.l - dx;
+      lbStage.scrollTop = drag.t - dy;
+    });
+    function endDrag() { drag = null; lb.removeAttribute('data-dragging'); }
+    lbImg.addEventListener('pointerup', endDrag);
+    lbImg.addEventListener('pointercancel', endDrag);
+    // A trackpad pinch arrives as ctrl+wheel; without this it zooms the page.
+    lbStage.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      zoomTo(view.scale * Math.exp(-e.deltaY / 120), e.clientX, e.clientY);
+    }, { passive: false });
+    window.addEventListener('resize', function () { if (lb.open) toBase(); });
+  }
+
+  // Two reference sizes. "whole" shows the entire figure; "base" fills the
+  // width of the stage (never past the file's own size), so a tall plate
+  // opens larger than it is on the page and scrolls down, like a document.
+  // The view opens at base; zooming runs from whole up to twice full size.
+  function sizes() {
+    var w = lbStage.clientWidth - 2 * PAD, h = lbStage.clientHeight - 2 * PAD;
+    view.base = clamp(w / view.nw, 0.01, 1);
+    view.whole = Math.min(view.base, clamp(h / view.nh, 0.01, 1));
+    view.max = Math.max(2, view.base * 2);
+  }
+  function paint() {
+    lbImg.style.width = Math.round(view.nw * view.scale) + 'px';
+    lbImg.style.height = Math.round(view.nh * view.scale) + 'px';
+    lbScale.textContent = Math.round(view.scale * 100) + '%';
+    lbHint.textContent = lb.hasAttribute('data-zoomed') ? 'Tap to fit' : 'Tap to zoom';
+    lbOut.setAttribute('aria-disabled', view.scale <= view.whole + 0.001 ? 'true' : 'false');
+    lbIn.setAttribute('aria-disabled', view.scale >= view.max - 0.001 ? 'true' : 'false');
+  }
+  function toBase() {
+    lb.removeAttribute('data-zoomed');          // the caption comes back first: it changes the stage
+    sizes();
+    view.scale = view.base;
+    paint();
+    lbStage.scrollLeft = 0; lbStage.scrollTop = 0;
+  }
+  // Zoom keeping the point (cx, cy) of the picture under the pointer.
+  function zoomTo(next, cx, cy) {
+    next = clamp(next, view.whole, view.max);
+    if (Math.abs(next - view.base) <= view.base * 0.02) { toBase(); return; }
+    var st = lbStage.getBoundingClientRect(), r0 = lbImg.getBoundingClientRect();
+    if (cx == null) { cx = st.left + st.width / 2; cy = st.top + st.height / 2; }
+    var fx = clamp((cx - r0.left) / r0.width, 0, 1), fy = clamp((cy - r0.top) / r0.height, 0, 1);
+    view.scale = next;
+    // past the opening size the caption steps aside and the stage takes the window
+    if (next > view.base) lb.setAttribute('data-zoomed', ''); else lb.removeAttribute('data-zoomed');
+    paint();
+    var r1 = lbImg.getBoundingClientRect();
+    lbStage.scrollLeft += (r1.left + fx * r1.width) - cx;
+    lbStage.scrollTop += (r1.top + fy * r1.height) - cy;
+  }
+
+  function openLightbox(img, trigger) {
+    if (!('HTMLDialogElement' in window)) return false;
+    if (!lb) buildLightbox();
+    if (lb.open) return true;
+    var fig = img.closest('figure'), src = sources(img);
+    lbTrigger = trigger || null;
+
+    view.nw = img.naturalWidth || +img.getAttribute('width') || img.width || 1;
+    view.nh = img.naturalHeight || +img.getAttribute('height') || img.height || 1;
+    lbImg.alt = img.alt || '';
+    lbImg.src = src.shown;
+    lbOrig.href = src.full;
+    if (fig && fig.classList.contains('fig--plate')) lb.setAttribute('data-plate', ''); else lb.removeAttribute('data-plate');
+
+    // The caption comes along, legend and all; ids are dropped so none repeats.
+    var cap = fig && fig.querySelector('figcaption');
+    var text = cap ? cap.textContent.replace(/\s+/g, ' ').trim() : '';
+    lbCapIn.textContent = '';
+    if (cap && text.length > 14) {              // not the poster's bare "Full size." link
+      [].forEach.call(cap.childNodes, function (n) { lbCapIn.appendChild(n.cloneNode(true)); });
+      [].forEach.call(lbCapIn.querySelectorAll('[id]'), function (n) { n.removeAttribute('id'); });
+      lbCap.hidden = false;
+      lb.setAttribute('aria-describedby', 'rd-lb-cap');
+    } else {
+      lbCap.hidden = true;
+      lb.removeAttribute('aria-describedby');
+    }
+    var lead = cap && cap.querySelector('b');
+    lbTitle.textContent = lead && cap.firstElementChild === lead
+      ? lead.textContent.replace(/\s+/g, ' ').replace(/[.:]\s*$/, '') : '';
+
+    // Hold the page still behind the dialog without letting it jump sideways
+    // when its scrollbar goes.
+    var gutter = window.innerWidth - root.clientWidth;
+    lbLock = { overflow: root.style.overflow, pad: root.style.paddingRight };
+    root.style.overflow = 'hidden';
+    if (gutter > 0) root.style.paddingRight = gutter + 'px';
+
+    lb.showModal();
+    toBase();
+    lbClose.focus();
+
+    // A larger file than the one on the page, if there is one.
+    if (stem(src.full) !== stem(src.shown)) {
+      var big = new Image();
+      big.onload = function () {
+        if (!lb.open || lbOrig.href !== src.full || big.naturalWidth <= view.nw) return;
+        view.nw = big.naturalWidth; view.nh = big.naturalHeight;
+        lbImg.src = src.full;
+        toBase();
+      };
+      big.src = src.full;
+    }
+    return true;
+  }
+  function onClose() {
+    if (lbLock) { root.style.overflow = lbLock.overflow; root.style.paddingRight = lbLock.pad; lbLock = null; }
+    lb.removeAttribute('data-zoomed');
+    lb.removeAttribute('data-dragging');
+    var t = lbTrigger; lbTrigger = null;
+    if (t && doc.contains(t)) { try { t.focus({ preventScroll: true }); } catch (err) { t.focus(); } }
+  }
+
+  if ('HTMLDialogElement' in window && 'closest' in doc.body) {
+    [].forEach.call(paper.querySelectorAll('figure.fig'), function (fig) {
+      // data-no-zoom on a figure or an image opts it out (a figure that has
+      // its own interaction, say)
+      if (fig.classList.contains('fig--table') || fig.hasAttribute('data-no-zoom')) return;
+      var imgs = [].filter.call(fig.querySelectorAll('img'), function (img) {
+        if (img.hasAttribute('data-no-zoom') || img.closest('figcaption, video')) return false;
+        var w = +img.getAttribute('width') || img.naturalWidth || 0;
+        return w === 0 || w >= 480;               // not an icon or an inline glyph
+      });
+      if (!imgs.length) return;
+      // One visible control, in the corner of the picture, when the figure is
+      // one picture that opens the figure (every figure on the site today).
+      var first = fig.firstElementChild;
+      var solo = imgs.length === 1 && first && first.tagName !== 'FIGCAPTION' &&
+        (first === imgs[0] || first.contains(imgs[0]));
+      imgs.forEach(function (img) {
+        img.classList.add('rd-zoom-img');
+        var link = img.closest('a[href]');
+        if (link && fig.contains(link)) {
+          // The link to the file keeps working as a link: with no script, in a
+          // new tab, or with a modifier key. A plain click enlarges in place.
+          link.addEventListener('click', function (e) {
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (openLightbox(img, link)) e.preventDefault();
+          });
+        } else {
+          img.addEventListener('click', function (e) {
+            if (e.button === 0) openLightbox(img, fig.querySelector('.rd-zoom') || img);
+          });
+          if (!solo) {
+            // no link and no corner control: the picture itself takes focus
+            img.setAttribute('tabindex', '0');
+            img.setAttribute('role', 'button');
+            img.setAttribute('aria-label', 'Enlarge figure' + (img.alt ? ': ' + img.alt : ''));
+            img.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(img, img); }
+            });
+          }
+        }
+      });
+      if (solo) {
+        var btn = make('button', 'rd-zoom', { type: 'button' }, '<span>Enlarge<span class="vh"> figure</span></span>' + ICON.expand);
+        var cap = fig.querySelector('figcaption');
+        if (cap) {
+          if (!cap.id) cap.id = 'rd-cap-' + Math.random().toString(36).slice(2, 8);
+          btn.setAttribute('aria-describedby', cap.id);
+        }
+        btn.addEventListener('click', function () { openLightbox(imgs[0], btn); });
+        fig.classList.add('rd-zoomable');
+        // straight after the picture: unpositioned, it lands under the
+        // picture's bottom edge, whatever the figure's padding or matte
+        fig.insertBefore(btn, first.nextSibling);
+      }
+    });
+  }
+
+  /* ---- 2. BibTeX: a Copy button ----------------------------------------- */
+  function legacyCopy(text) {
+    var ta = make('textarea', null, { readonly: '', 'aria-hidden': 'true', tabindex: '-1' });
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;';
+    doc.body.appendChild(ta);
+    var ok = false;
+    try { ta.select(); ta.setSelectionRange(0, text.length); ok = doc.execCommand('copy'); } catch (err) { ok = false; }
+    doc.body.removeChild(ta);
+    return ok;
+  }
+  function copyText(text, done) {
+    function fallback() { done(legacyCopy(text)); }
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    } else fallback();
+  }
+  [].forEach.call(paper.querySelectorAll('pre.bibtex'), function (pre) {
+    if (pre.parentNode.classList.contains('rd-code')) return;
+    var prev = pre.previousElementSibling;
+    var wrap = make('div', 'rd-code' + (prev && /^H[1-6]$/.test(prev.tagName) ? '' : ' rd-code--band'));
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(pre);
+    var btn = make('button', 'rd-copy', { type: 'button' });
+    var timer = 0;
+    function face(state) {
+      btn.innerHTML = state === 'done' ? ICON.check + '<span>Copied</span>'
+        : state === 'failed' ? '<span>Press ' + (/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl+') + 'C</span>'
+        : ICON.copy + '<span>Copy<span class="vh"> BibTeX</span></span>';
+      if (state) btn.setAttribute('data-state', state); else btn.removeAttribute('data-state');
+    }
+    face('');
+    btn.addEventListener('click', function () {
+      copyText(pre.textContent, function (ok) {
+        clearTimeout(timer);
+        if (ok) {
+          face('done');
+          announce('BibTeX copied to the clipboard.');
+        } else {
+          // Last resort: select the entry so one keystroke copies it.
+          var sel = window.getSelection(), range = doc.createRange();
+          range.selectNodeContents(pre);
+          sel.removeAllRanges(); sel.addRange(range);
+          face('failed');
+          announce('Could not copy. The BibTeX entry is selected; press Control or Command C.');
+        }
+        btn.focus();
+        timer = setTimeout(function () { face(''); }, 2400);
+      });
+    });
+    wrap.insertBefore(btn, pre);
+  });
+
+  /* ---- 3. wayfinding: reading progress and back to top ------------------ */
+  var nav = paper.querySelector('.paper-nav') || doc.querySelector('.paper-nav');
+  var bar = make('span', 'rd-progress' + (area ? '' : ' rd-progress--all'), { 'aria-hidden': 'true' });
+  if (nav) nav.appendChild(bar);
+  else { bar.className += ' rd-progress--page'; doc.body.appendChild(wearArea(bar)); }
+
+  var topBtn = wearArea(make('button', 'rd-top', { type: 'button', 'aria-label': 'Back to top', title: 'Back to top', hidden: '' }, ICON.up));
+  doc.body.appendChild(topBtn);
+  topBtn.addEventListener('click', function () {
+    window.scrollTo(0, 0);                       // a jump, not a glide: 36,000px of glide is a blur
+    var main = doc.getElementById('main');
+    if (main) { try { main.focus({ preventScroll: true }); } catch (err) { main.focus(); } }
+  });
+
+  var foot = doc.querySelector('.foot');
+  var roomy = window.matchMedia('(min-width: 60em)');
+  var maxY = 0, isLong = false, lastY = window.pageYOffset, run = 0, goingUp = false;
+  var shown = false, queued = false, lastP = -1;
+  function measure() {
+    var vh = window.innerHeight;
+    maxY = Math.max(0, root.scrollHeight - vh);
+    isLong = root.scrollHeight > vh * 3;
+    if (foot) topBtn.style.setProperty('--rd-lift', (root.scrollHeight - (foot.offsetTop || 0) + 12) + 'px');
+    bar.style.display = isLong ? '' : 'none';
+    lastP = -1;
+    frame();
+  }
+  function frame() {
+    queued = false;
+    var y = window.pageYOffset;
+    if (isLong) {
+      var p = maxY > 0 ? clamp(y / maxY, 0, 1) : 0;
+      p = Math.round(p * 2000) / 2000;
+      if (p !== lastP) { lastP = p; bar.style.transform = 'scaleX(' + p + ')'; }
+    }
+    var d = y - lastY;
+    lastY = y;
+    if (d) {
+      if ((d < 0) !== (run < 0)) run = 0;        // a change of direction starts the count again
+      run += d;
+      if (Math.abs(run) > 32) goingUp = run < 0;
+    }
+    var show = isLong && y > window.innerHeight * 1.5 && (roomy.matches || goingUp || y >= maxY - 48);
+    if (show !== shown) { shown = show; topBtn.hidden = !show; }
+  }
+  window.addEventListener('scroll', function () {
+    if (!queued) { queued = true; window.requestAnimationFrame(frame); }
+  }, { passive: true });
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
+  if ('ResizeObserver' in window) {
+    // A legend unfolding or an image arriving changes how long the page is.
+    new ResizeObserver(function () { measure(); }).observe(doc.body);
+  }
+  measure();
+  // At the foot of the page the button would sit on the footer's contact line.
+  if (foot && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      topBtn.classList.toggle('rd-top--lift', entries[entries.length - 1].isIntersecting);
+    }).observe(foot);
+  }
+
+  /* ---- 4. tables --------------------------------------------------------- */
+  var NUMERIC = /^[\s−–+\-±~≈<>≤≥]*[\d.,]+\s*(?:%|[a-zA-Zµ°]{0,3})?(?:\s*[±–\/]\s*[\d.,]+\s*%?)?$/;
+  [].forEach.call(paper.querySelectorAll('.fig--table table'), function (table) {
+    var rows = [].slice.call(table.tBodies[0] ? table.tBodies[0].rows : []);
+    if (!rows.length) return;
+    var cols = rows[0].cells.length;
+    // A column of numbers is set flush right. Not the first column: that is
+    // the row's name even when the name is a number (an atom's id).
+    for (var c = 1; c < cols; c++) {
+      var all = rows.every(function (r) {
+        var cell = r.cells[c];
+        return cell && r.cells.length === cols && cell.colSpan === 1 && NUMERIC.test(cell.textContent.trim());
+      });
+      if (!all) continue;
+      rows.forEach(function (r) { r.cells[c].classList.add('rd-num'); });
+      if (table.tHead) [].forEach.call(table.tHead.rows, function (r) {
+        if (r.cells.length === cols) r.cells[c].classList.add('rd-num');
+      });
+    }
+  });
+  var wraps = [].slice.call(paper.querySelectorAll('.table-wrap'));
+  function tableScroll() {
+    wraps.forEach(function (w) {
+      var over = w.scrollWidth > w.clientWidth + 1;
+      if (over && !w.hasAttribute('tabindex')) {
+        var cap = w.querySelector('caption');
+        w.setAttribute('tabindex', '0');
+        w.setAttribute('role', 'region');
+        w.setAttribute('aria-label', (cap ? cap.textContent.replace(/\s+/g, ' ').trim().slice(0, 80) : 'Table') + ' (scrolls sideways)');
+      } else if (!over && w.getAttribute('role') === 'region') {
+        w.removeAttribute('tabindex'); w.removeAttribute('role'); w.removeAttribute('aria-label');
+      }
+    });
+  }
+  if (wraps.length) { tableScroll(); window.addEventListener('resize', tableScroll); }
+
+  /* ---- 5. display equations ---------------------------------------------- */
+  // MathML does not scroll by itself in every engine. Where an equation is
+  // wider than its column, it is given a box that does.
+  var maths = [].slice.call(paper.querySelectorAll('math[display="block"]'));
+  function mathFit() {
+    maths.forEach(function (m) {
+      if (m.parentNode.classList.contains('rd-math')) return;
+      var col = m.parentNode.clientWidth;
+      if (!col || m.scrollWidth <= col + 1 && m.getBoundingClientRect().width <= col + 1) return;
+      var box = make('div', 'rd-math', { tabindex: '0', role: 'group', 'aria-label': 'Equation (scrolls sideways)' });
+      m.parentNode.insertBefore(box, m);
+      box.appendChild(m);
+    });
+  }
+  if (maths.length) { mathFit(); window.addEventListener('resize', mathFit); }
+
+  /* ---- 6. print ------------------------------------------------------------ */
+  // A folded legend is part of the figure on paper. Open them for the print
+  // run and fold the ones that were folded again afterwards.
+  var folded = [];
+  window.addEventListener('beforeprint', function () {
+    [].forEach.call(paper.querySelectorAll('details:not([open])'), function (d) { folded.push(d); d.open = true; });
+  });
+  window.addEventListener('afterprint', function () {
+    folded.forEach(function (d) { d.open = false; });
+    folded = [];
+  });
+})();
+
+
+/* ==== agent:motion ==== */
+/* The script half of the motion system (the CSS half is the last block of
+   styles.css). Two things. A clip starts at the frame its poster shows, so
+   the still starts to move instead of cutting to another picture. And
+   sections, cards, rows, figures and stat tiles that are below the fold
+   settle in, once, the first time they reach the viewport.
+
+   The entrances only ever hide what the reader cannot see yet, and they are
+   built so that nothing can stay hidden:
+   - nothing is hidden at load. The first sign that the reader is about to
+     scroll (a wheel, a touch, a key, a scroll) is what arms it, and only
+     elements at least 160px below the screen are taken. A page that is only
+     looked at, printed or captured whole is never touched;
+   - no script, reduced motion, print, or no IntersectionObserver: nothing is
+     hidden at all (the .m-pre rule sits inside a media query, and this code
+     returns before adding the class);
+   - a jump (a hash in the address, an in-page link, find-in-page, the
+     scrollbar, a fast fling, a restored scroll position) shows what it lands
+     on at once, with no entrance;
+   - a keyboard focus inside a hidden element shows it at once;
+   - if the observer never reports, or anything here throws, everything is
+     shown.
+   It reads layout once, when it arms, and uses IntersectionObserver after
+   that; the only scroll listener is the one-shot that arms it. Each element
+   is unobserved as it is shown.                                             */
+(function () {
+  'use strict';
+
+  var w = window, d = document;
+
+  /* ---- clips: the poster and the first moving frame are the same frame ---- */
+  /* Each clip's poster is a frame from inside the clip, not its first, so a
+     clip that started from the top cut from one picture to another the moment
+     it began to play. A silent loop has no beginning that matters: start it at
+     the frame its poster shows and the still simply starts to move. Setting
+     currentTime before anything has loaded only records where playback should
+     begin; it fetches nothing and does not touch how the clips are started
+     and paused further up this file. Each time is the presentation time of the
+     frame the poster was cut from, plus half a frame (found by comparing the
+     poster with every frame of its clip); a re-rendered clip can carry its
+     own in data-poster-at, and a clip not listed here starts at its first
+     frame as before. The browser has to be able to seek, so the server must
+     answer Range requests: GitHub Pages does, python's http.server does not,
+     and there a clip starts from the top exactly as it used to. */
+  // Only clips still on a page are listed (2026-11-19). The clips made for
+  // the homepage and research list (home-*, thumb-viewer) take their poster
+  // from their first frame and need no entry.
+  var POSTER_AT = {
+    'project-birdsong': 7.683
+  };
+  [].forEach.call(d.querySelectorAll('video[poster][muted][loop]'), function (v) {
+    if (v.readyState !== 0 || v.currentTime) return;
+    var src = (v.querySelector('source') || v).getAttribute('src') || '';
+    var name = src.split(/[?#]/)[0].split('/').pop().replace(/\.[a-z0-9]+$/i, '');
+    var t = parseFloat(v.getAttribute('data-poster-at'));
+    if (!(t >= 0)) t = POSTER_AT[name];
+    if (t > 0) { try { v.currentTime = t; } catch (e) {} }
+  });
+
+  /* ---- entrances -------------------------------------------------------- */
+  var main = d.querySelector('main');
+  if (!main || !('IntersectionObserver' in w) || !w.matchMedia || !main.matches || !main.closest) return;
+  var reduce = w.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduce.matches) return;
+  // Coming back to a page with the back button is not arriving at it.
+  var entry = w.performance && performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  if (entry && entry.type === 'back_forward') return;
+
+  // What settles in. Containers are opened and their children taken one by
+  // one; anything else directly inside them is a unit as it stands. The head
+  // of a paper page, the sticky section list and the homepage opening (which
+  // has its own entrance in CSS) are never touched.
+  var OPEN = '.hero, .block, .paper, .areas, .projects, .outputs, .stream, .beats';
+  var SKIP = '.paper-head, .paper-nav, script, style, template';
+  var STAGED = '.hero-eyebrow, .hero-statement, .hero-proof, .hero-media';
+  var INNER = '.paper-section .fig, .paper-section .stats > li, .paper-section .box';
+  var ARM = ['wheel', 'touchstart', 'keydown', 'scroll'];
+  var LEAD = 160;      // px below the screen left alone: a first wheel notch can cover it before this runs
+  var TRAVEL = 0.6;    // an element first seen above this share of the viewport got there by a jump
+  var FLING = 2.4;     // px per ms; faster than this nobody is reading
+  var MAX_STEPS = 4;   // the stagger stops growing after this many neighbours
+
+  var armed = false, pending = [], io = null, endIo = null, alive = false, lastT = 0, lastY = 0;
+  var wanted = hashTarget(w.location.hash);   // where a hash or an in-page link is taking the reader
+
+  function hashTarget(hash) {
+    if (!hash || hash.length < 2) return null;
+    try { return d.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return null; }
+  }
+
+  function clear(el) {
+    el.classList.remove('m-pre');
+    if (!el.getAttribute('class')) el.removeAttribute('class');
+  }
+
+  // Show one element. With `step` undefined it is simply there; with a number
+  // it settles in, that many stagger steps after the first of its group.
+  function show(el, step) {
+    var k = pending.indexOf(el);
+    if (k > -1) pending.splice(k, 1);
+    if (io) io.unobserve(el);
+    if (step !== undefined) {
+      var timer;
+      var done = function (ev) {
+        if (ev && (ev.target !== el || ev.animationName !== 'm-rise')) return;
+        clearTimeout(timer);
+        el.removeEventListener('animationend', done);
+        el.removeEventListener('animationcancel', done);
+        el.classList.remove('m-in');
+        el.style.removeProperty('--m-i');
+        if (!el.getAttribute('style')) el.removeAttribute('style');
+        if (!el.getAttribute('class')) el.removeAttribute('class');
+      };
+      if (step) el.style.setProperty('--m-i', String(step));
+      el.classList.add('m-in');
+      el.addEventListener('animationend', done);
+      el.addEventListener('animationcancel', done);
+      timer = setTimeout(done, 1500);
+    }
+    clear(el);
+    if (!pending.length) finish();
+  }
+
+  function showAll() { pending.slice().forEach(function (el) { show(el); }); }
+
+  // Everything from the top of the page down to one screen past `target`.
+  function showThrough(target) {
+    if (!target || !pending.length) return;
+    var limit = target.getBoundingClientRect().top + w.innerHeight;
+    pending.slice().forEach(function (el) {
+      if (el.getBoundingClientRect().top < limit || el.contains(target) || target.contains(el)) show(el);
+    });
+  }
+
+  function settle(batch) {
+    batch.sort(function (a, b) { return (a.top - b.top) || (a.left - b.left); });
+    batch.forEach(function (o, i) { show(o.el, Math.min(i, MAX_STEPS)); });
+  }
+
+  function onCross(entries) {
+    alive = true;
+    var now = performance.now(), y = w.pageYOffset, vh = w.innerHeight;
+    var dt = now - lastT;
+    var jumped = dt > 0 && dt < 250 && Math.abs(y - lastY) / dt > FLING;
+    lastT = now; lastY = y;
+    var batch = [];
+    entries.forEach(function (e) {
+      if (!e.isIntersecting || pending.indexOf(e.target) < 0) return;
+      var r = e.boundingClientRect;
+      if (r.top < vh * TRAVEL) jumped = true;
+      batch.push({ el: e.target, top: r.top, left: r.left });
+    });
+    if (!batch.length) return;
+    if (jumped) batch.forEach(function (o) { show(o.el); });
+    else settle(batch);
+  }
+
+  // The observer's line sits a little inside the viewport, so the last
+  // elements of a page might never cross it. When the footer shows, whatever
+  // is on screen and still waiting settles in.
+  function onEnd(entries) {
+    if (!entries.some(function (e) { return e.isIntersecting; })) return;
+    var vh = w.innerHeight, batch = [];
+    pending.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < vh) batch.push({ el: el, top: r.top, left: r.left });
+    });
+    settle(batch);
+  }
+
+  function onHash() { wanted = hashTarget(w.location.hash); showThrough(wanted); }
+  function onClick(ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href*="#"]') : null;
+    if (!a || a.hostname !== w.location.hostname || a.pathname !== w.location.pathname) return;
+    var t = hashTarget(a.hash);
+    if (t) { wanted = t; showThrough(t); }
+  }
+  function onFocus(ev) {
+    var t = ev.target, u;
+    if (!t || !t.closest) return;
+    while ((u = t.closest('.m-pre'))) show(u);
+  }
+  function onReduce() { if (reduce.matches) showAll(); }
+
+  function disarm() { ARM.forEach(function (type) { w.removeEventListener(type, arm); }); }
+
+  function finish() {
+    disarm();
+    if (io) { io.disconnect(); io = null; }
+    if (endIo) { endIo.disconnect(); endIo = null; }
+    w.removeEventListener('hashchange', onHash);
+    w.removeEventListener('beforeprint', showAll);
+    d.removeEventListener('click', onClick, true);
+    d.removeEventListener('focusin', onFocus);
+    if (reduce.removeEventListener) reduce.removeEventListener('change', onReduce);
+  }
+
+  // If the observer has not reported at all a second and a half after the
+  // page became visible, it is not going to: show everything.
+  function watchdog() {
+    setTimeout(function () {
+      if (alive || !pending.length) return;
+      if (d.hidden) { d.addEventListener('visibilitychange', watchdog, { once: true }); return; }
+      showAll();
+    }, 1500);
+  }
+
+  function arm() {
+    if (armed) return;
+    armed = true;
+    disarm();
+    if (reduce.matches) return finish();
+    try {
+      var units = [];
+      (function collect(parent, depth) {
+        [].forEach.call(parent.children, function (el) {
+          var open = depth < 5 && el.matches(OPEN);
+          if (el.matches(SKIP) || el.matches(STAGED)) return;
+          if (open) collect(el, depth + 1);
+          else if (!el.querySelector(STAGED)) units.push(el);
+        });
+      })(main, 0);
+      [].forEach.call(main.querySelectorAll(INNER), function (el) {
+        if (units.indexOf(el) < 0) units.push(el);
+      });
+
+      // One read of the layout. The fold is the bottom of the screen the
+      // reader is looking at or being taken to, plus the lead.
+      var vh = w.innerHeight;
+      var fold = vh + Math.max(LEAD, wanted ? wanted.getBoundingClientRect().top : 0);
+      units.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < fold || !(r.width || r.height)) return;
+        if (wanted && (el.contains(wanted) || wanted.contains(el))) return;
+        pending.push(el);
+      });
+      if (!pending.length) return finish();
+      pending.forEach(function (el) { el.classList.add('m-pre'); });
+
+      // The top margin reaches far above the viewport, so an element the
+      // reader jumped past counts as arrived too, and nothing is left hidden
+      // above the screen.
+      io = new IntersectionObserver(onCross, { rootMargin: '100000px 0px -4% 0px', threshold: 0 });
+      pending.forEach(function (el) { io.observe(el); });
+      var end = d.querySelector('.foot') || main.lastElementChild;
+      if (end) { endIo = new IntersectionObserver(onEnd); endIo.observe(end); }
+      watchdog();
+    } catch (err) {
+      [].forEach.call(d.querySelectorAll('.m-pre'), clear);
+      pending = [];
+      finish();
+    }
+  }
+
+  ARM.forEach(function (type) { w.addEventListener(type, arm, { passive: true }); });
+  w.addEventListener('hashchange', onHash);
+  w.addEventListener('beforeprint', showAll);
+  d.addEventListener('click', onClick, true);
+  d.addEventListener('focusin', onFocus);
+  if (reduce.addEventListener) reduce.addEventListener('change', onReduce);
 })();

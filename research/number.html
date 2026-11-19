@@ -6,9 +6,9 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0a0a0a">
 <title>Number, Space and Time — Alicia Zeng</title>
-<meta name="description" content="A Distributed Cortical Network Integrates Semantic Representations of Number, Space, and Time. CCN 2026. A short tour, starting from the theory of magnitude.">
+<meta name="description" content="An introduction to the CCN 2026 poster by Hendrikx, Zeng and colleagues, which maps where words about number, space and time drive the cortex and finds a shared network.">
 <meta property="og:title" content="A Distributed Cortical Network Integrates Semantic Representations of Number, Space, and Time">
-<meta property="og:description" content="CCN 2026. Evi Hendrikx, Alicia Zeng, Yashaswini, Matteo Visconti di Oleggio Castello and Jack L. Gallant.">
+<meta property="og:description" content="An introduction to the CCN 2026 poster by Hendrikx, Zeng and colleagues, which maps where words about number, space and time drive the cortex and finds a shared network.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research/number.html">
 <meta property="og:type" content="article">
 <meta property="og:image" content="https://alicialitrtwe.github.io/figures/talk-overlap.jpg">
@@ -80,19 +80,13 @@
       Dense measurement</a><span class="sep" aria-hidden="true">·</span><a href="../research.html">All
       research</a></p>
 
-    <!-- A tutorial-style project page, opened from the theory of magnitude
-         (Walsh 2003) rather than from the method. The running text was
-         written for the page. Every number and figure comes from the
-         time/space/number case study in chapter 2 of the thesis (Section
-         2.6.5, Figures 2.1, 2.6, 2.7, 2.9 and the supplementary atom-pair
-         similarities). The abstract is verbatim from the CCN 2026 site
-         (poster C46, https://2026.ccneuro.org/poster/?id=V6IilrmWYe), which
-         is also where the poster session details come from; OpenReview
-         itself blocks fetching. The poster's own figures are not on the
-         page and no poster file or video is published, so the Poster button
-         stays a placeholder; the NeurIPS 2025 poster and SlidesLive talk
-         (https://neurips.cc/virtual/2025/poster/120024) are on the page
-         instead, since their time/space/number panel is this analysis. -->
+    <!-- A short introduction to the CCN 2026 poster (rewritten 2026-11-19).
+         The method is left to superpositions.html. Two findings: the
+         seven-listener overlap (thesis section 2.6.5, shown with the talk
+         slide) and the 19-listener network from the abstract, shown with the
+         group map from the brain viewer (viewer/assets/thumb_group_rgb.png,
+         background darkened, saved as figures/num-group-map.jpg). The
+         abstract, its source line and the BibTeX are verbatim. -->
     <article class="paper">
 
       <header class="paper-head">
@@ -118,127 +112,71 @@
 <nav class="paper-nav" aria-label="Sections">
   <ol>
       <li><a href="#tldr">Short version</a></li>
-      <li><a href="#theory">The theory</a></li>
-      <li><a href="#hard">The difficulty</a></li>
-      <li><a href="#test">A test from stories</a></li>
-      <li><a href="#results">What we found</a></li>
-      <li><a href="#viewer">The maps in the browser</a></li>
-      <li><a href="#caveats">Caveats</a></li>
-      <li><a href="#poster">Poster</a></li>
+      <li><a href="#question">The question</a></li>
+      <li><a href="#obstacle">The obstacle</a></li>
+      <li><a href="#idea">The idea</a></li>
+      <li><a href="#found">What we found</a></li>
+      <li><a href="#meaning">What it means</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#abstract">Abstract</a></li>
       <li><a href="#bibtex">BibTeX</a></li>
   </ol>
 </nav>
 
-<figure class="fig fig--hero" id="teaser">
-  <a href="../figures/talk-overlap.jpg"><img src="../figures/talk-overlap.jpg" alt="Word clouds for the time atom in green, the number atom in red and the space atom in blue, a three-circle Venn key, and cortical flatmaps for Subject 01 and Subject 02 with the three concepts overlaid, white marking where all three coincide in the intraparietal sulcus and inferior frontal gyrus of both hemispheres." width="1920" height="960" loading="lazy"></a>
-  <figcaption>The words that drive each atom, then the three laid over the cortex of two listeners: number in red, time in green, space in blue. Secondary colours are pairwise overlap; white is all three. The plate labels prefrontal, medial parietal and lateral temporal cortex; the intraparietal sulcus and inferior frontal gyrus named in the text are identified in the analysis rather than marked here. From <a href="superpositions.html#talk">the talk</a>.</figcaption>
-</figure>
-
-<blockquote class="pull"><p>This pattern is consistent with the hypothesis that these domains rely on a shared magnitude system in the human brain.</p></blockquote>
-
-<p class="source">A short tour written for this page. The analysis and figures are the time–space–number case study of <a href="superpositions.html">the NeurIPS 2025 paper</a>; the CCN 2026 poster (C46, presented by Evi Hendrikx) builds on it, extending the analysis to 19 participants and asking how far a voxel’s tuning is selective for one quantity or shared across all three; its abstract is below, and the extended abstract is <a href="https://openreview.net/forum?id=V6IilrmWYe">on OpenReview</a>. The figures and numbers on this page are from the earlier seven-listener analysis.</p>
-
 <section class="paper-section" id="tldr" aria-labelledby="h-tldr">
   <h2 id="h-tldr">The short version</h2>
-<p class="tldr">A theory from 2003 holds that the brain measures <em>how many</em>, <em>how far</em> and <em>how long</em> with one shared system. Behaviour supports it; imaging studies have disagreed with one another. We tested it differently: people listened to stories, and we mapped where cortex responds to words about number, space and time, each on its own axis, so that the three maps can be laid over one another. They overlap, in the same two regions, in both hemispheres, across listeners.</p>
-<ul class="stats" role="list">
-  <li><b>3</b><span>domains, one axis each: number, time, space</span></li>
-  <li><b>7</b><span>listeners, about two hours of stories apiece</span></li>
-  <li><b>0.18</b><span>three-way overlap of the top-5,000-voxel maps (intersection over union)</span></li>
-  <li><b>IPS + IFG</b><span>where all three meet, bilaterally</span></li>
-</ul>
+<p class="tldr">Words about number, space and time drive a shared network in the cortex, in which some regions respond to all three and others prefer one.</p>
 </section>
 
-<section class="paper-section" id="theory" aria-labelledby="h-theory">
-  <h2 id="h-theory">The theory of magnitude</h2>
-<p>Kant counted space, time and number among the mind’s a priori intuitions. Cognitive neuroscience has a more concrete version. Vincent Walsh’s <cite>A Theory of Magnitude</cite> (2003) proposes that time, space and quantity are not three systems but one: a common metric in parietal cortex, there because acting on the world needs all three at once. How far is it, how long will it take, how many are there. Stanislas Dehaene’s <cite>The Number Sense</cite> (1997) had already put approximate number in the intraparietal sulcus; Dehaene and Brannon (2010) called the trio “a Kantian research program.”</p>
-<p>The behavioural evidence is strong: judgements of one magnitude bleed into judgements of another, as one would expect if they shared a scale. The imaging evidence is less settled: results have been inconsistent from study to study (Cona et al., 2024; Simsek et al., 2025). Part of the difficulty is method.</p>
+<section class="paper-section" id="question" aria-labelledby="h-question">
+  <h2 id="h-question">The question</h2>
+<p>Researchers have long suspected that the brain judges <em>how many</em>, <em>how far</em> and <em>how long</em> with one shared system. Vincent Walsh’s theory of magnitude (2003) proposed a common system for the three in parietal cortex. Behavioral experiments support the idea, but brain-imaging studies have disagreed with one another.</p>
+<p>Most of that imaging work measured how people perceive quantities. We asked about language instead: do words about number, space and time drive the same parts of the cortex?</p>
 </section>
 
-<section class="paper-section" id="hard" aria-labelledby="h-hard">
-  <h2 id="h-hard">Why it is hard to test</h2>
-<p>The usual test runs three small experiments, one per magnitude, and asks whether the activated regions coincide. Each experiment brings its own task, its own stimuli and its own confounds, so “overlap” is partly a statement about how the experiments were built.</p>
-<p>Stories avoid this. Someone telling a true story on stage counts things, places things and times things continually, all in words. An fMRI encoding model fit to story listening (see <a href="superpositions.html">the method page</a>) gives every voxel a weight for every feature of the words it hears. If there were a feature for <em>number</em>, one for <em>time</em> and one for <em>space</em>, the three maps would come from one experiment, one stimulus stream and one model, and could be compared directly.</p>
-<p>The difficulty is in the features. Those that predict brain activity best are word embeddings, and in an embedding <em>number</em>, <em>time</em> and <em>space</em> are not separate dimensions. They are correlated directions compressed into a shared space. A voxel tuned to number will appear tuned to time as well because of the geometry of the embedding, and any overlap then found on cortex could be an artifact of the features.</p>
+<section class="paper-section" id="obstacle" aria-labelledby="h-obstacle">
+  <h2 id="h-obstacle">The obstacle</h2>
+<p>Stories are full of all three kinds of word, so a single experiment, people listening to stories in an fMRI scanner, can map them together. The difficulty lies in the model. The word features that predict brain activity best pack number, space and time into overlapping directions, so a patch of cortex that responds to numbers also appears to respond to time. An overlap found on the brain could then come from the features rather than from the brain.</p>
+</section>
+
+<section class="paper-section" id="idea" aria-labelledby="h-idea">
+  <h2 id="h-idea">The idea</h2>
+<p>The <a href="superpositions.html">NeurIPS 2025 paper</a> removes that problem by rewriting the word features as concept atoms, one concept to each axis. Number, time and space each get an atom of their own, so their maps can be laid over one another and compared fairly.</p>
+</section>
+
+<section class="paper-section" id="found" aria-labelledby="h-found">
+  <h2 id="h-found">What we found</h2>
+<h3>In each listener, the three maps meet in parietal and frontal cortex</h3>
+<p>The first analysis, in seven listeners, took the voxels (small cubes of brain) most strongly tuned to each atom and colored them red for number, green for time and blue for space. White marks voxels tuned to all three. The white falls in the intraparietal sulcus and the inferior frontal gyrus, in both hemispheres: regions that earlier studies of magnitude have pointed to.</p>
+<figure class="fig" id="teaser">
+  <a href="../figures/talk-overlap.jpg"><img src="../figures/talk-overlap.jpg" alt="Left, word clouds for a time atom in green (months, weeks, days, years), a number atom in red (eleven, sixteen, twenty) and a space atom in blue (distance, airport, near). Middle, a three-circle color key. Right, flattened cortex of two listeners with the three maps overlaid; white patches mark voxels tuned to all three." width="1920" height="960" loading="lazy"></a>
+  <figcaption>Number in red, time in green, space in blue, in two of the seven listeners, with the cortex of each hemisphere flattened. Where two maps overlap the colors mix (yellow, magenta, cyan); white marks voxels tuned to all three. At left, the words that drive each atom. A slide from the <a href="superpositions.html#talk">NeurIPS 2025 talk</a>.</figcaption>
+</figure>
+
+<h3>Across nineteen listeners, the sharing is a matter of degree</h3>
+<p>The CCN poster repeats the analysis in 19 listeners and asks how each voxel divides its response among the three quantities. Quantity words drive a network spread over temporal, parietal and frontal cortex. Within it, tuning falls along a continuum: voxels in some regions respond mostly to one quantity, and voxels in others respond to all three.</p>
 <figure class="fig">
-  <a href="../figures/talk-weights.jpg"><img src="../figures/talk-weights.jpg" alt="Two axis diagrams. Left, a concept category feature space: three orthogonal axes for time, space and number, with a voxel’s weight vector projecting cleanly onto each. Right, a dense feature space: seven correlated, non-orthogonal directions for family, number, space, femaleness, colour and time, with the same weight vector projecting onto several at once." width="1830" height="619" loading="lazy"></a>
-  <figcaption>In the embedding (right) the number, time and space directions lean on one another, so a voxel’s weight vector projects onto all three at once. Once every concept has an axis of its own (left), each projection means one thing.</figcaption>
-</figure>
-
-</section>
-
-<section class="paper-section" id="test" aria-labelledby="h-test">
-  <h2 id="h-test">A test from stories</h2>
-<p>The fix is the Sparse Concept Encoding Model: unpack the 300-dimensional embedding into 1,000 sparse, non-negative <em>concept atoms</em>, each a single interpretable direction, and fit the encoding model on those instead. Prediction is unchanged, and now the weights can be read atom by atom. Three of the atoms are exactly the three the theory calls for:</p>
-<ul>
-  <li><b>Atom 505, number:</b> eleven, sixteen, nineteen, fifteen, seventeen, twenty, ten, eighteen, thirty, sixty.</li>
-  <li><b>Atom 81, time:</b> morning, afternoon, evening, weekends, monday, tuesday, lunch, night, hour, day.</li>
-  <li><b>Atom 997, space:</b> near, close, distance, airport, center, miles, opposite, minutes, village, mile.</li>
-</ul>
-<p>For each atom we take the 5,000 voxels with the largest significant positive weights — the same count for each, so that no domain prevails by extent — colour them red, green and blue, and look for white.</p>
-<p>The dense model cannot do this in a principled way, but it can do it approximately: call a voxel selective for a concept if that concept is among its top ten cosine matches. The same three-colour test run on those heuristic maps is the control.</p>
-<figure class="fig fig--plate">
-  <a href="../figures/thesis-fig2-9.jpg"><img src="../figures/thesis-fig2-9.jpg" alt="The same layout as the sparse-model figure: word clouds for the number, time and space atoms, then flatmaps for Subject 01 and Subject 02 coloured red, green and blue by the dense model’s heuristic selectivity. The colours are scattered and there is very little white." width="1376" height="900" loading="lazy"></a>
-  <figcaption>The control: the same three concepts mapped from the dense model’s heuristic. The atom IDs printed on this plate are wrong and do not match the atoms listed above: (a) is the number atom, 505, and (c) the space atom, 997, while 81 — the time atom, correctly labelled in (b) — is printed twice. The word clouds identify each panel. The colours scatter and rarely meet; whatever overlap exists is far harder to see, which is what entangled features do to a map.</figcaption>
-</figure>
-
-</section>
-
-<section class="paper-section" id="results" aria-labelledby="h-results">
-  <h2 id="h-results">What we found</h2>
-<h3>The three maps meet in IPS and IFG</h3>
-<p>With concept atoms, the white is clear and it lies where the theory placed it: in the intraparietal sulcus, where Dehaene located the number sense, and in the inferior frontal gyrus, in both hemispheres, in both subjects shown <a href="#teaser">at the top of this page</a>. The maps differ somewhat from person to person, as within-subject maps from naturalistic data do, but the meeting points do not move.</p>
-<p>Averaged over all seven listeners, the intersection-over-union of the top-5,000 maps is 0.34 ± 0.05 for time–space, 0.32 ± 0.07 for time–number, 0.32 ± 0.07 for space–number, and 0.18 ± 0.05 for all three together. Every pairing overlaps to about the same degree; no domain stands apart.</p>
-<h3>Not an accident of the three atoms chosen</h3>
-<p>Atoms 505, 81 and 997 are one exemplar per domain, but the dictionary has others in each domain: number atoms 394 and 505, time atoms 81, 798 and 880, space atoms 353 and 997. Cortical maps of atoms in the same domain agree with each other (cosine 0.50 ± 0.06 for the number pair, 0.50 ± 0.09 for the space pair, 0.43–0.46 among the time atoms) far more than maps of atoms from different domains, which average 0.05 ± 0.01. Each domain is carried by several atoms with similar maps, so the result does not depend on the three atoms chosen.</p>
-<h3>Number sits beside time in the larger geometry</h3>
-<p>Widen the view to the twenty most active atoms and cluster them by the similarity of their cortical maps. The two time atoms and the number atom fall into one branch, beside one another. That grouping is not inherited from the features: the sparse features themselves are uncorrelated, so the structure comes from cortex.</p>
-<figure class="fig fig--plate">
-  <a href="../figures/thesis-fig2-7.jpg"><img src="../figures/thesis-fig2-7.jpg" alt="(a) A dendrogram over 20 labelled concept atoms. (b, c) Two 20 × 20 similarity matrices of cortical maps, Subject 01 and Subject 02, with the same block structure. (d) The atoms’ cosine similarities in GloVe space, showing structured correlation. (e) Pearson correlations of the sparse features, near zero off the diagonal." width="1416" height="1112" loading="lazy"></a>
-  <figcaption>(a) Twenty concept atoms clustered by the similarity of their cortical maps in Subject 01; atoms 798 (time, durations), 81 (time, moments) and 505 (numbers) share a branch. (b, c) The same block structure in two subjects. (d, e) The atoms are correlated in the embedding but the sparse features are not, so the clustering is the brain’s.</figcaption>
-</figure>
-
-</section>
-
-<!-- The interactive viewer (Gallant Lab, built with pycortex make_static) and
-     the recording of its guided tour. The viewer is the 19-listener CCN
-     analysis, not the seven-listener thesis analysis the figures above come
-     from; the section says so. The numbers in the caption are the viewer's
-     own readout for the vertex its tour marks (right IPS, fsaverage vertex
-     51986). The video is a screen capture of the tour as it runs, nothing
-     staged or re-cut. -->
-<section class="paper-section" id="viewer" aria-labelledby="h-viewer">
-  <h2 id="h-viewer">The maps in the browser</h2>
-<p>Everything above is the seven-listener analysis from the thesis. The CCN extension, nineteen listeners averaged onto one shared surface, is published as an interactive viewer. A guided tour runs through it in about two minutes: the question, cortex inflated and then flattened into a sheet, the quantity network, and the difference between cortex that answers to all three quantities and cortex that prefers one.</p>
-<figure class="fig">
-  <video loop muted controls playsinline preload="none" width="1600" height="900"
-         poster="../figures/number-viewer-tour.jpg"
-         aria-label="Screen recording of the brain viewer's eight-step guided tour: the group brain rotating under the number, time and space tuning map, then inflated and flattened, then the quantity network, then the channels toggled one at a time, then a marker placed in the right intraparietal sulcus with its voxel inspector open.">
-    <source src="../figures/number-viewer-tour.mp4" type="video/mp4">
-  </video>
-  <figcaption>The tour, recorded as it runs. At the end it marks one spot in the right intraparietal sulcus where number words account for 83% of the quantity response and time and space for the remaining 17%. The tour’s own caveat belongs with that number: these three kinds of word tend to turn up together in the stories, so the model cannot pull them fully apart, and a spot’s dominant colour means more than its exact split. <a href="../viewer/" target="_blank" rel="noopener">Open the viewer</a> to click a spot yourself, or to compare individual subjects, whose own maps are far brighter than the average.</figcaption>
+  <a href="../figures/num-group-map.jpg"><img src="../figures/num-group-map.jpg" alt="Flattened cortex of both hemispheres, averaged over 19 listeners, dark gray with colored patches: rose patches for number, blue patches for space, faint green for time, and whitish patches where all three mix, scattered across parietal, frontal and temporal regions in both hemispheres." width="1651" height="751" loading="lazy"></a>
+  <ul class="num-key" aria-label="Color key">
+    <li><i style="background:#e76889"></i>number</li>
+    <li><i style="background:#80a925"></i>time</li>
+    <li><i style="background:#2b9ff4"></i>space</li>
+    <li><i style="background:#ffffff"></i>all three</li>
+  </ul>
+  <figcaption>The average of 19 listeners on a common brain surface, both hemispheres flattened, with the back of the brain at the center. Rose is number, green is time, blue is space. A spot that prefers one quantity keeps a single hue; a spot that responds to all three alike turns white; brighter means the three explain more of the response there. Time shows mostly in the mixtures; the viewer’s legend explains why it looks faint in the average. From the <a href="../viewer/" target="_blank" rel="noopener">brain viewer</a>, where each channel can be switched on and off.</figcaption>
 </figure>
 </section>
 
-<section class="paper-section" id="caveats" aria-labelledby="h-caveats">
-  <h2 id="h-caveats">Caveats</h2>
-<ul>
-  <li>This is <em>semantic</em> magnitude: cortex responding to words about how many, how far and how long, not to dots, lines and durations. The theory is about magnitude for action; the language route is a new angle on it, not a substitute for the psychophysics.</li>
-  <li>“Selective” here means “among the 5,000 voxels with the largest positive weights.” The count is a choice; the ranking is the data.</li>
-  <li>Composite maps are shown for two subjects; the overlap statistics are over seven.</li>
-  <li>The atoms come from a static word embedding and inherit whatever it carries. The numbers and figures on this page are the thesis chapter’s; the CCN poster extends the analysis to 19 participants, and its abstract is below.</li>
-</ul>
+<section class="paper-section" id="meaning" aria-labelledby="h-meaning">
+  <h2 id="h-meaning">What it means</h2>
+<p>The results fit the idea of a shared magnitude system, with a qualification: the sharing is spread over a network, and its degree varies from region to region. The poster suggests such a network may support the flexible use of quantity concepts in everyday tasks. These are maps of word meaning, so they say how the brain represents the concepts of number, space and time, and do not test the perception of quantities directly.</p>
 </section>
 
-<section class="paper-section" id="poster" aria-labelledby="h-poster">
-  <h2 id="h-poster">Poster</h2>
-<p>The NeurIPS 2025 poster for <a href="superpositions.html">the method paper</a>, whose time–space–number panel is the analysis told on this page. The talk is <a href="https://slideslive.com/39050668">on SlidesLive</a>; the poster page is <a href="https://neurips.cc/virtual/2025/poster/120024">on neurips.cc</a>. The CCN 2026 poster itself is not published online.</p>
-<figure class="fig fig--plate">
-  <picture><source srcset="../figures/superpositions-poster.webp" type="image/webp"><img src="../figures/superpositions-poster.png" alt="The NeurIPS 2025 poster: dense embeddings put concepts in superposition; the Sparse Concept Encoding Model replaces dense features with sparse concept-atom activations; the model reveals overlapping cortical representations of time, space and number, consistent maps for individual concepts, and consistent concept-level structure across subjects." width="2592" height="1296" loading="lazy"></picture>
-  <figcaption><a href="../figures/superpositions-poster.png">Full size</a>.</figcaption>
-</figure>
+<section class="paper-section" id="details" aria-labelledby="h-details">
+  <h2 id="h-details">For the details</h2>
+<p>The extended abstract is <a href="https://openreview.net/forum?id=V6IilrmWYe">on OpenReview</a>. The seven-listener analysis is section 2.6.5 of <a href="../files/Thesis-Alicia_Zeng.pdf">my thesis</a>. The <a href="../viewer/" target="_blank" rel="noopener">brain viewer</a> shows the 19-listener maps for the group and for three individual listeners, with a guided tour. The method has <a href="superpositions.html">its own page</a>, with a five-minute talk.</p>
 </section>
+
 
 <section class="paper-section" id="abstract" aria-labelledby="h-abstract">
   <h2 id="h-abstract">Abstract</h2>
@@ -271,6 +209,7 @@
       <a href="../notes.html">Notes</a>
       <a href="https://erised-ai.com">Erised</a>
     </nav>
+    <p class="foot-meta">Alicia Zeng<span class="sep" aria-hidden="true">·</span><a href="mailto:alicia@erised-ai.com">alicia@erised-ai.com</a></p>
   </footer>
 
 </div>

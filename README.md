@@ -1,516 +1,269 @@
-# Alicia Zeng — personal site
+# Alicia Zeng: personal site
 
-Static hand-written HTML, one stylesheet and one small script. No build
-step, no framework.
+Hand-written static HTML, one stylesheet (`styles.css`), one shared script
+(`site.js`) and three small page scripts under `viz/`. No build step, no
+framework, no requests to any host but the site itself. Served by GitHub Pages
+from the default branch (`master`) of `alicialitrtwe/alicialitrtwe.github.io`;
+pushing to `master` deploys.
 
-    index.html                      homepage: who she is now, her opening, Erised, the three areas, contact
-    research.html                   the full inventory, grouped by area, each area opened by what it means to her
-    notes.html                      working notes, newest first
-    research/cognition.html         redirects to research.html#cognition (the area pages were folded
-    research/closed-loop.html       into the inventory on 2026-10-22; the files stay so old links land)
-    research/bayesian.html
-    research/components.html        the NeurIPS 2026 oral (semantic-cortical components): Fig. 2 of the camera-ready
-                                    as the hero, short version from the abstract, the abstract, BibTeX
-    research/superpositions.html    the NeurIPS 2025 paper as a short tutorial (facts from thesis chapter 2)
-    research/number.html            the time–space–number result, told from the theory of magnitude (CCN 2026 poster page)
-    research/dbs.html               the Nature BME aDBS paper, a short introduction (facts and two figures from the CC BY preprint)
-    research/stimulation.html       the home-recording DBS study, explained (thesis chapter 3, verbatim)
-    research/birdsong.html          the 2017–2019 Penn project, method only; the APS abstract is the published claim
+Readers are investors and research collaborators of Erised AI, where the owner
+is co-founder and CTO, as much as specialists. Most are not from her field.
+
+## Files
+
+    index.html                      homepage (order below)
+    research.html                   every paper, talk and tool, in three groups
+    notes.html                      working notes, newest first (one so far)
     notes/thesis.html               the thesis introduction and acknowledgments, as a note
-    viewer/                         the sparse-concept-atoms brain viewer — an rsync'd copy of a build
-                                    that lives on another machine. READ-ONLY here: fix it upstream.
-    atlas/                          (not yet present) the NeurIPS 2026 atom atlas, the same way —
-                                    a copy of a build from the sparsebrain repo; see "The atom atlas"
-    figures/                        real material only. The area clips (`area-*.mp4` + `.jpg` poster),
-                                    the birdsong and viewer clips, the NeurIPS talk and eight slides cut
-                                    from it (`talk-*`), the NeurIPS poster, Fig. 1 of the Nature BME
-                                    paper and Figs. 2 and 6 of its CC BY preprint, thesis Figures
-                                    2.2–2.9 and 3.1–3.6, the two DBS figures derived from her own
-                                    recordings (`dbs-ecosystem`, `dbs-kinematics`), and Fig. 1 of the
-                                    NeurIPS 2026 manuscript (`atoms-fig1.jpg` + `.webp`, 1600 px from the
-                                    4110 px PNG in the sparsebrain repo, her say-so 2026-10-22).
+    404.html                        not-found page; absolute paths, no site.js, not in the sitemap
+    research/components.html        NeurIPS 2026 oral, semantic-cortical components (viz/components.js)
+    research/superpositions.html    NeurIPS 2025, sparse concept atoms (viz/superpositions.js)
+    research/number.html            CCN 2026 poster, number, space and time
+    research/dbs.html               Nature Biomedical Engineering 2026, movement-responsive DBS (viz/dbs.js)
+    research/stimulation.html       thesis chapter 3, unpublished; reached from dbs.html only
+    research/birdsong.html          2017–2019 Penn project; the APS abstract is its only published claim
+    research/atoms.html             redirect -> components.html (the paper's old "atoms" title)
+    research/jointsae.html          redirect -> components.html#components (the camera-ready
+                                    prints this address for its "interactive viewer" of the 50)
+    research/bayesian.html          redirects -> research.html#bayesian, #cognition, #closed-loop
+    research/cognition.html         (the area pages folded into research.html on 2026-10-22)
+    research/closed-loop.html
+    viz/                            one script per page that needs one; loaded only by that page
+    viewer/                         the CCN 2026 brain viewer, a copied build. READ-ONLY: fix upstream
+    figures/                        every image and clip (families below)
     files/                          the thesis PDF (33 MB) and the NeurIPS 2026 manuscript as
-                                    submitted (30 MB, line-numbered and anonymous; swap in the
-                                    camera-ready when it exists)
-    sitemap.xml, robots.txt         twelve pages; the viewer is disallowed (thousands of data files)
-    styles.css                      everything visual
-    site.js                         the clip observer and the paper-page section nav; optional
-    styles-dark.css                 the previous design, kept as a record — see below; it is
-                                    not a working revert
+                                    submitted (unlinked)
+    sitemap.xml, robots.txt         the ten real pages; redirects, 404, viewer/ and atlas/ left out
+    styles-dark.css                 an earlier design, kept as a record; not a working revert
 
-## The three works on sparse semantic bases (2026-11-12)
+Every redirect page carries `noindex` and a canonical link to its target. The
+anchors `#bayesian`, `#cognition` and `#closed-loop` and the `data-area`
+values keep the areas' old names; the visible names are Interpretable models,
+Dense measurement and Closed-loop instruments.
 
-Keep these apart; links between them must say which one they point at.
+## The owner's direction (2026-11-19)
 
-- **NeurIPS 2025**, `research/superpositions.html`: *Disentangling Superpositions*, Zeng and
-  Gallant. Sparse coding of a word embedding into 1,000 concept atoms, then a voxelwise
-  encoding model on them. The method.
-- **CCN 2026 poster**, `research/number.html`: Hendrikx, Zeng et al. The number, space and
-  time atoms of the 2025 model, extended to 19 listeners. The brain viewer (`viewer/`) shows
-  these maps.
-- **NeurIPS 2026 oral**, `research/components.html` (`atoms.html` redirects there):
-  *Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable
-  Language Encoding in fMRI*, Zeng alone. One sparse autoencoder trained jointly on
-  language-model features and every subject's brain responses. Submitted under the title
-  "Learning Sparse Semantic-Cortical Atoms…", which the unlinked PDF in `files/` and neurips.cc still
-  carry, and which called the components "atoms". Since 2026-11-17 its page carries the
-  camera-ready abstract, numbers (about 82% of ridge, 87% and 102% for two new subjects) and
-  Fig. 2 (`figures/components-fig2.*`, from `paper/figures/fig2_components_v2.png` in the
-  sparsebrain repo); the submitted Fig. 1 (`figures/atoms-fig1.*`) is no longer linked.
+- Research pages are short, intuitive introductions, not a repeat of the
+  paper: a one-sentence takeaway, the question, the obstacle, the idea, two to
+  four findings each with one visual, why it matters, then a pointer to the
+  paper. Leave out statistics and test results, hyperparameters, procedures and
+  caveat lists. At most three headline numbers per page, each one a lay reader
+  understands and each checked against the source.
+- Visuals come from the publication (crops credited in the caption), from
+  public data already on disk (the viewer), or are coded illustrations, which
+  are labelled as illustrations and never look like measured data.
+- Where sources disagree on a number, the camera-ready paper wins.
+- Plain prose, American spelling, no AI-sounding constructions (no "not X but
+  Y", no rhetorical questions, no intensifiers, no em dashes as pauses). First
+  person where the owner did the work; the DBS paper, where she is third of
+  eleven authors, is described from outside with her part stated plainly.
+- No startup numbers (funding, customers, headcount) anywhere.
+- Dark only; colours from the tokens at the top of `styles.css`; text
+  contrast at least 4.5:1; colour never the only signal. Complete without
+  JavaScript; all motion stops under `prefers-reduced-motion`.
+
+## What is verbatim (do not edit)
+
+- Every paper abstract, in the Abstract section of its page.
+- Every BibTeX block (`pre.bibtex`).
+- The talk transcript on `superpositions.html` (`details.transcript`).
+- The published legend of Fig. 1 on `dbs.html` (`details.legend`).
+- The owner's essay on `index.html`: the `.lead` and `.prose` in
+  `section.essay` (shown as "Background"). Written with her and approved
+  sentence by sentence; lightly edited for plain language on 2026-11-17 at her
+  request. Do not smooth it further without her.
+- The body of `notes/thesis.html`, adapted from the thesis introduction and
+  acknowledgments. It still prints "behaviour" twice; the thesis PDF prints
+  "behavior", but neither sentence appears in the PDF word for word, so the
+  spelling was left for her to decide.
+
+Everything else is written for the site and may be edited, as long as the
+facts below do not drift.
+
+## Facts that must not drift
+
+**NeurIPS 2026 oral** (`components.html`). *Semantic-Cortical Components: A
+Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in
+fMRI*, the owner alone; Sydney. Source of truth: the camera-ready
+`paper/neurips_2026/neurips_2026.tex` in the private `sparsebrain` repo. The
+unit is a **component** (submitted as "atoms"; the conference listing may still
+show the old title). 50 components, five active per time point, six training
+listeners (UTS01–06), Gemma-2-2b activations of 2,304 dimensions. About 82% of
+the matched ridge model's brain prediction (20 seeds). For two new listeners a
+readout from the frozen code recovers 87% and 102% of ridge with about 2% of
+its parameters. Five components track speech timing. The brain-first two-stage
+model predicts the brain slightly *better* than the jointly trained one; never
+say joint training is needed for brain prediction, and never claim accuracy
+superiority over a dense model. The list of 50 and Table 15 are generated from
+the tex (`<!-- cx rows -->`, `<!-- tab:catalog rows -->`).
+
+**NeurIPS 2025** (`superpositions.html`). *Disentangling Superpositions:
+Interpretable Brain Encoding Model with Sparse Concept Atoms*, Zeng and
+Gallant. The unit is a **concept atom**: 1,000 atoms learned by sparse coding
+from GloVe. Seven listeners of The Moth Radio Hour stories (Huth et al. 2016).
+Prediction matches the dense model (no measurable difference). Number, time
+and space atoms overlap in the intraparietal sulcus and inferior frontal gyrus
+of both hemispheres. Source: thesis chapter 2.
+
+**CCN 2026 poster** (`number.html`). Hendrikx, Zeng, Yashaswini, Visconti di
+Oleggio Castello, Gallant; poster C46. The 19-listener network and tuning
+continuum are from the abstract; the seven-listener overlap is thesis section
+2.6.5. The brain viewer shows the 19-listener group map and three individuals.
+
+**Nature Biomedical Engineering 2026** (`dbs.html`). Dixon et al., eleven
+authors, the owner third. One participant; a decoder tuned from home
+recordings; blinded comparison against an inverted control and constant
+stimulation. Results sentences follow the abstract; the two body figures are
+from the CC BY 4.0 medRxiv preprint (10.1101/2024.08.14.24312002); Fig. 1 is
+the publisher's.
+
+**Thesis chapter 3** (`stimulation.html`). Unpublished. Two participants, six
+home recording days each, three stimulation levels; the stimulation effect was
+clear in one participant only. Source: the thesis PDF.
+
+**Birdsong** (`birdsong.html`). APS March Meeting 2019 abstract, published
+under Xiao Zeng, with Eve Armstrong and Vijay Balasubramanian. The page
+describes the method only; its figure is a coded Lorenz illustration. The page leads with her own attractor clip (`figures/project-birdsong.*`), restored on 2026-11-19 at her request after a rewrite had reduced it to a link; the coded delay-embedding illustration sits lower, in "The approach".
+
+Venue labels used everywhere: "NeurIPS 2026, oral", "NeurIPS 2025", "CCN 2026,
+poster", "Nature Biomedical Engineering 2026", "Thesis, chapter 3". Contact
+address: alicia@erised-ai.com.
+
+## The homepage, top to bottom
+
+1. Hero: eyebrow (role, PhD), the one-line statement, the line of venues (each
+   a link to its page), then the brain viewer's group map turning
+   (`home-hero.mp4`) with a colour key and the button into the viewer.
+2. Now: Erised AI, from its public description.
+3. Research: three area cards (Interpretable models, Dense measurement,
+   Closed-loop instruments), each a clip or image, a one-line lead and one row
+   per work with its venue. The card's surface is the title's link.
+4. Background: the essay, verbatim.
+5. Contact: who should write, the address, profiles, one line about life
+   outside work.
+
+`research.html` has the same three groups in the same order, each opened by a
+short introduction and followed by its entries (thumbnail, title and venue,
+authors, links).
+
+## Figures
+
+Real material is credited in its caption; coded illustrations say so. Families
+in use:
+
+- `home-*`: homepage media. `home-hero` (viewer capture, group map),
+  `home-components` (four components cut from Fig. 2 of the 2026 paper; also
+  on research.html), `home-dense` (the viewer's channel toggles, labelled).
+- `thumb-*`: research.html thumbnails. `thumb-superpositions` (a slide of the
+  2025 talk), `thumb-viewer` (clip), `thumb-dbs` (preprint Fig. 2b, light and
+  dark swapped, also on the index), `thumb-jove` and `thumb-kinematics` (drawn
+  illustrations; the charts they replaced used unpublished recordings).
+- `components-*`: Fig. 1 and Fig. 2 of the camera-ready, the per-component map
+  tiles (`components-c<N>-uts02|uts03|uts06|avg.jpg`, cut from Fig. 2 and the
+  appendix example figures), `components-og.jpg`.
+- `sp-*`: `sp-family-maps.jpg`, a crop of thesis Figure 2.5.
+- `num-*`: `num-group-map.jpg`, the viewer's group map on a darker ground.
+- `dbs-*`: `dbs-fig1.png` (published Fig. 1), `dbs-threshold.png` (its panels
+  a and b), `dbs-home-signal.jpg` and `dbs-results.jpg` (preprint Figs. 2b and
+  6a/e).
+- `stim-*`: crops of thesis Figures 3.1, 3.3, 3.4 and 3.6.
+- `talk-*`: the 2025 talk (`talk-superpositions.mp4`, the only clip with sound,
+  with controls and a transcript) and slides cut from it (`talk-overlap`,
+  `talk-weights`).
+- `superpositions-poster.*`, `project-birdsong.*` (the 2018 attractor clip).
+
+No longer referenced by any page, kept on disk: `area-*`, `viewer-thumb.*`,
+`number-viewer-tour.*`, `atoms-fig1.*`, `components-thumb.*`,
+`components-fig2.webp`, `dbs-preprint-fig2/6.jpg`, `talk-*` slides other than
+the two above, `thesis-fig2-*`, `thesis-fig3-*`, `dbs-ecosystem.jpg`,
+`dbs-kinematics.jpg`. Files on disk are still public once pushed:
+`dbs-ecosystem.jpg`, `dbs-kinematics.jpg` and `area-closed-loop.*` were made
+from unpublished recordings and should be deleted before the next deploy if the
+owner agrees.
+
+Clip conventions: `loop muted playsinline preload="none"`, a poster, `width`
+and `height`, an `aria-label`; no `autoplay`. `site.js` starts a clip when it
+is on screen and never under reduced motion. Media slots are 870 by 600 (the
+1.45 frame); the hero is 1160 by 580. A poster should be the clip's first
+frame; if it is not, add the frame time to `POSTER_AT` in `site.js` or put
+`data-poster-at` on the video (only `project-birdsong` needs one now).
+
+## CSS and JS
+
+`styles.css` is one file in layers: tokens and base at the top, then the
+site's earlier passes (sections headed `/* ---- … ---- */`, including the two
+design passes of 2026-11-17), then one block per later pass, each opened by
+`/* ==== agent:<name> ==== */`:
+
+- `homepage` (hero, Now, cards with work rows, Contact), `viz` (charts and the
+  component list base), `reading` (figure zoom, BibTeX copy, progress line,
+  back-to-top, long-form type), `motion` (entrances, hover and press states,
+  page cross-fade), `components`, `lang` (superpositions and number),
+  `clinical` (dbs, stimulation, birdsong), `media` (hero and card media).
+
+Each block uses its own class prefixes (`cs-`, `cx-`, `il-`, `cmp-`, `sp-`,
+`num-`, `dbs-`, `bird-`, `rd-`, `m-`). Later blocks override earlier ones; add
+new rules in a new block at the end rather than editing inside an old one.
+
+`site.js` has three closures: the core (clip playback; the sticky section
+list marks the section in view), `agent:reading` (runs only on pages with
+`article.paper`) and `agent:motion` (poster-frame starts; entrances that hide
+nothing until the reader scrolls, never on a jump, a hash, print or reduced
+motion). A figure with its own interaction carries `data-no-zoom`. Page
+scripts in `viz/` are self-contained: `components.js` (the component
+switchers, deep links such as `#comp-c24`, the folding list of 50),
+`superpositions.js` (the superposition illustration's buttons), `dbs.js` (the
+loop illustration's playhead).
+
+## Adding things
+
+- **A page.** Copy the closest page under `research/`. Keep `article.paper`,
+  `.paper-head` (buttons named by `aria-labelledby="<link-id> paper"`),
+  `.paper-nav` with one `<a href="#id">` per `section.paper-section[id]`,
+  `figure.fig` with `figcaption` (`fig--plate` for a white-ground figure). Add
+  it to `sitemap.xml`, link it from `research.html` and, if it belongs there,
+  from an index card.
+- **A figure.** Put the file in `figures/`, give the `img` `width`, `height`,
+  accurate `alt` and `loading="lazy"` below the fold, and a caption that says
+  what to look at and where it came from.
+- **A publication.** Copy an `<li>` in the right group of `research.html`:
+  thumbnail, title with venue in `.pub-meta`, the full author list in
+  published order with the owner in `<span class="me">`, and `.output-links`.
+- **A note.** Copy an `<li class="note-item">` to the top of the list in
+  `notes.html` and set both the `datetime` and the visible date.
+
+After any change, check every internal link and `#fragment` resolves (the
+QA script that did this is not in the repo; a 40-line HTML parser does it).
 
 ## Running it
 
-Open `index.html` in a browser and it works. To serve it over `http://` —
-worth doing to check it on a phone:
+    python3 -m http.server 8000
 
-    cd ~/projects/website && python3 -m http.server 8000
+then `http://localhost:8000`. Python's server does not answer Range
+requests, so clips start from their first frame there; on Pages they start on
+their poster frame.
 
-Then `http://localhost:8000`, or `http://<your-mac's-LAN-IP>:8000` from a
-phone on the same wifi.
+## The atom atlas (not yet present)
 
-## Deploying it
+`robots.txt` reserves `/atlas/` for a viewer of the NeurIPS 2026 components,
+built by `scripts/50_build_atom_viewer.py` and `51_build_story_player.py` in
+the `sparsebrain` repo (`--site_url https://alicialitrtwe.github.io/atlas/`),
+copied in like `viewer/` with its `.nojekyll`. Keep every file under 100 MB.
+Until it exists, `research/jointsae.html` sends the paper's printed address to
+the list of 50 on `components.html`.
 
-Any static host. Upload the whole directory, keeping `research/` as a
-subdirectory — the paper pages link back out with `../`, so the structure has
-to survive.
+## Links verified
 
-## Design notes
-
-Black, after szymonkaliski.com: the system sans, one text size, bold for
-headings, underlined links, gray for metadata, and a `↗` after every link
-that leaves the site. The palette is seven tokens at the top of
-`styles.css`; the page is committed to dark (`color-scheme: dark`) rather
-than following the OS.
-
-There are **no network requests** beyond the site's own files: no web font,
-no analytics, no embeds. `site.js` is optional — with it off every clip stays
-on its poster and the paper-page nav loses its highlighted section name,
-nothing else.
-
-### The design pass (2026-11-17)
-
-The last block of `styles.css` ("the design pass") holds one audit's worth of
-changes, made against screenshots at 1440, 800 and 390 px:
-
-- **Scale.** The homepage statement, page titles and paper titles are set
-  larger with `clamp()`, so the top of each page leads it. Body text is still
-  one size; running text has 1.6 line height.
-- **The evidence line** under the statement (`.hero-proof`) is a row of chips,
-  not underlined mono text with dots. The first chip takes its area's colour.
-- **Links** keep their underline, but it is 1px and at 42% strength until
-  hovered. A hover brightens the underline; it no longer dims the text.
-- **The masthead** puts the name left and the navigation right from 40em up.
-- **The inventory** (`.outputs--media`): the title is semibold and leads the
-  entry; authors and links step down.
-- **The sticky section list** on paper pages is one row at every width and
-  scrolls sideways when it does not fit. `site.js` keeps the marked section in
-  view. `scroll-padding-top` is 4rem everywhere as a result.
-- **Contact:** the address is set larger, as the call to action.
-- Every page declares `theme-color` so a phone's browser bar matches the page.
-
-## Who the site is for (2026-10-22)
-
-Investors and collaborators of Erised AI, where Alicia is co-founder and CTO, as
-much as readers of the research. So the first screen says what she does now
-(`.hero-eyebrow`, `.hero-statement`), a **Now** section on the index names
-Erised and links its public site, every nav carries an Erised link, and the
-contact line says who should write. Two rules carried over from Erised's own
-site: no company numbers anywhere here, and copy that is plain and specific.
-The eyebrow, statement, Now paragraph, notes intro and contact line are the
-site's prose that is not hers; everything else that reads as her voice is
-verbatim.
-
-**Her opening (2026-10-31).** The lead and three paragraphs under the
-statement are hers, written with her over 2026-10-27 to 29 in the voice of the
-thesis note and approved sentence by sentence: decoding thought from the
-magnetism of blood, the question of how meaning arises from matter, the path
-from Peking University to Berkeley and the Redwood Center, and the conclusion
-that progress comes from better measurement, which is what Erised is for. Lightly edited for plain language on 2026-11-17 at her request, every detail kept. Do not
-smooth or shorten it further without her. The "2017 to now" arc section is gone;
-the opening carries that story.
-
-`styles-dark.css` is the previous design, kept as a record. It is **not** a
-working revert any more: it styles the markup this site had before the area
-cards, the inventory's `outputs--media` list and the page grid, so pointing a
-page's `<link rel="stylesheet">` at it now would leave most of that page
-unstyled. Read it for what a rule used to be; do not swap it in.
-
-### Animation versus real figures
-
-The rule that decides where each kind of image goes:
-
-- **Decorative, abstract animation** is no longer anywhere on the site. The
-  homepage hero held a Lorenz attractor drawn by `site.js` until 2026-10-22;
-  it was replaced by her birdsong animation and then, on 2026-10-29, by the
-  brain viewer's cortex (see "The hero").
-- **Anything from the work itself** — a figure, a poster, a video — goes in
-  the same thumbnail slot on the cards and, with a caption, on the paper
-  page. It always wins over the decoration: when a real image exists, the
-  abstract one goes.
-
-Every media slot on the site now holds real material, so the abstract `.viz`
-stand-ins and the `.fig-slot` placeholder box have been deleted from
-`styles.css`.
-
-### The hero
-
-Reordered 2026-11-12 for an investor who gives the page fifteen seconds: the
-claim, the evidence, the instrument, then her essay. In `<section class="hero">`
-on `index.html`, in order: the mono eyebrow; `.hero-statement` ("I build AI that explains how complex physical and biological systems work", shortened on 2026-11-17 from her LinkedIn line "doesn’t just predict, but explains … actually work", her pick on 2026-11-12; the eyebrow adds the PhD); `.hero-proof`, one mono line of venues, each a
-link to the page that backs it; `<figure class="hero-media">`, the brain
-viewer's rotating cortex (`figures/viewer-thumb.mp4`, poster
-`viewer-thumb.jpg`, also the og:image) at the full width of the column, cropped
-to 1.9:1, with the caption carrying the one prominent link to the viewer; then
-her opening, verbatim and at full length (she wants the detail kept; LinkedIn
-is the short version). The clip replaced the birdsong attractor, which she
-found ugly at hero size. `site.js` starts it when on screen like every other
-clip. Above 68em the whole section starts on the content axis
-(`margin-left: 9.5rem`).
-
-### The area cards
-
-The homepage does not list papers. It carries three `<article class="area">`
-cards — Interpretable models, Dense measurement and Closed-loop instruments,
-in that order since 2026-11-12, named for what each shows an Erised reader; the
-anchors, `data-area` values and file names keep the old names (bayesian,
-cognition, closed-loop) — each a clip beside
-a title, a one-line lead and the names of what is inside it. The card's whole
-surface is the link (the title's `::after` covers it), so anything else
-clickable in there needs its own stacking context; `.area-extra` is the one
-that does.
-
-    <article class="area" data-area="cognition">      <- sets --area for the card
-      <div class="area-media">
-        <video loop muted playsinline preload="none"
-               poster="figures/area-cognition.jpg" width="1270" height="810"
-               aria-label="…">
-          <source src="figures/area-cognition.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="area-body">
-        <h3 class="area-title"><a href="research/cognition.html">Cognition</a></h3>
-        <p class="area-lead">…</p>
-        <p class="area-count">Number, space and time · Birdsong in state space</p>
-      </div>
-    </article>
-
-No `autoplay` attribute and `preload="none"`: `site.js` starts a clip when it
-scrolls into view and pauses it when it leaves, which is the difference
-between a homepage that fetches 4.9 MB before a scroll and one that fetches
-its posters. With no script each clip stays on its poster, which is a real
-frame of the thing it shows.
-
-Every clip box is `aspect-ratio: 1.45` with `object-fit: contain`, so frames
-line up down the page and across to the inventory's thumbnails. Render a new
-clip at 870×600 and it will fill its frame exactly. The one exception is
-`.project-media--wide`, 16:9, for the conference talk — a recording of a room
-rather than one of the data clips.
-
-The full inventory lives on `research.html`; the index cards link to its
-sections, so an entry is written exactly once.
-
-### Paper pages
-
-Each paper page is the Nerfies / Waller-lab shape: centred title, authors,
-venue, a row of pill buttons, a sticky section list, one teaser figure,
-then Abstract, Summary, one section per idea, BibTeX. `site.js` underlines
-the section you are in.
-
-To add a section: duplicate one `<section class="paper-section">`, give it a
-new `id`, and add a matching `<li>` to the `paper-nav` list. Anchors clear the
-sticky nav: `html { scroll-padding-top }` steps with the nav's height as it
-wraps. A figure in a section is a `figure.fig` with the media and a caption
-(every figure on the site is real material):
-
-```html
-<figure class="fig">
-  <img src="../figures/dbs-decoder.png" alt="…" width="…" height="…">
-  <!-- or -->
-  <video src="../figures/dbs-decoder.mp4" autoplay loop muted playsinline></video>
-  <!-- or, for a hosted video that allows embedding -->
-  <iframe src="https://www.youtube.com/embed/…" title="…" allowfullscreen></iframe>
-  <figcaption>What the reader should see in it.</figcaption>
-</figure>
-```
-
-Where a paper's own abstract appears it is verbatim, and it appears once: in
-an Abstract section on the paper page. The homepage and the inventory carry a
-one-line lead written for them instead, so there is no second copy to keep in
-step.
-
-### The atom atlas (the NeurIPS 2026 viewer)
-
-The viewer for the semantic-cortical atoms paper is built by the private
-`alicialitrtwe/sparsebrain` repo: `scripts/50_build_atom_viewer.py` writes a
-static pycortex site (`index.html` atlas, `viewer.html`, `about.html`, packed
-volume PNGs under `data/`, `thumbs/`, `atoms.json`, a `.nojekyll`), and
-`scripts/51_build_story_player.py` adds `story.html` with `story/*.bin` and an
-MP3 of the story. Its design notes are `reports/atom_viewer_design.md` and
-`reports/story_player_design.md` there. The build is not committed anywhere
-(`outputs/atom_viewer/<name>/`, ~100 MB plus the story player), so it travels
-to this site the way `viewer/` does: as a copied build, read-only here.
-
-To serve it from this site, at `https://alicialitrtwe.github.io/atlas/`:
-
-1. Build it on the machine that has the checkpoint, with the site URL it will
-   live at, so any absolute link it writes is right:
-
-       uv run python scripts/50_build_atom_viewer.py --site_url https://alicialitrtwe.github.io/atlas/
-       uv run python scripts/51_build_story_player.py   # same out_dir
-
-   Do not run `scripts/experiments/add_site_banner.py` on it: that bar is for
-   builds of a model other than the published one.
-2. Copy the build in, keeping the `.nojekyll` (Jekyll would drop the
-   `data/__*.png` files without it):
-
-       rsync -az --delete <machine>:<path to the build>/ ./atlas/
-
-3. Check it before pushing: no single file over 100 MB (GitHub's hard limit;
-   `find atlas -size +95M`), the whole repository well under 1 GB
-   (`du -sh .git atlas viewer figures files`), and `atlas/index.html`,
-   `atlas/viewer.html#atom=1` and `atlas/story.html` opening from
-   `python3 -m http.server`. The story's audio needs HTTP Range to scrub;
-   Pages serves 206 responses (checked against `viewer/` on 2026-10-22), so a
-   local run that cannot scrub is the local server, not the build (use the
-   repo's `scripts/serve_viewer.py` to preview).
-4. Then link it, in the same commit as the copy and never before: an "Atom
-   atlas" button on `research/components.html` (`id="l-atlas"`, like the viewer
-   button on `number.html`), an "Atom atlas" link in the paper's
-   `.output-links` row on `research.html`, and "Play with it yourself" as an
-   `.area-extra` on the index's Bayesian card if you want it there. Pushing
-   master deploys it; `robots.txt` already disallows `/atlas/`, as it does
-   `/viewer/`.
-
-### Explainer pages
-
-`research/superpositions.html`, `research/number.html`,
-`research/stimulation.html` and `research/dbs.html` are explainers in the
-shape of John Hewitt's structural-probe page and the Waller lab's
-EncodingInformation site: title, buttons, hero figure, one pulled sentence,
-then the work told in sections with the figures interleaved. They differ in
-who wrote the words and in how much they say.
-
-**Superpositions is a short tutorial.** Its running text was written for the
-page (plain language, no equations beyond a boxed "for the algebra-inclined"
-note), so it is *not* thesis text and can be edited freely; what must not
-drift are the facts. Every number on it — 300 → 1,000 atoms, the 0.03 % vs
-2.18 % cosine overlap, ΔR² = 0.00047 ± 0.00071 with t(6) = −1.77, p = 0.13,
-inter-subject map consistency 0.26 ± 0.04 vs 0.09 ± 0.04, the top-5,000-voxel
-overlaps (IoU 0.32–0.34 pairwise, 0.18 three-way), the 0.70 ± 0.08
-cross-subject similarity, |r| = 0.00 ± 0.10 vs 0.16 ± 0.14 — and every word
-list in the eight-row atom table comes from chapter 2 of the thesis (Table 2.1
-for the word lists). The Abstract section is the paper's abstract verbatim and
-must match the research card. Stat tiles use `ul.stats`, the boxed note
-`.box` + `.box-label`, the opening paragraph `p.tldr`.
-
-**Number is a tutorial too.** `research/number.html` is the page for the CCN
-2026 poster ("A Distributed Cortical Network Integrates Semantic
-Representations of Number, Space, and Time", Hendrikx, Zeng, Yashaswini,
-Visconti di Oleggio Castello, Gallant). It opens from Walsh's theory of
-magnitude (2003), Dehaene (1997) and Dehaene & Brannon (2010), then tells the
-time–space–number case study of thesis chapter 2 (Section 2.6.5): atoms 505 /
-81 / 997, top-5,000-voxel composite maps, IoU 0.34 / 0.32 / 0.32 pairwise and
-0.18 three-way, the within-domain atom-pair map similarities from the
-supplement (0.50, 0.50, 0.43–0.46 vs 0.05 across domains), and the 798–81–505
-branch of the Figure 2.7 dendrogram. Figures: 2.6 (hero), 2.1, 2.9 (the
-dense-model control, newly exported to `figures/thesis-fig2-9.jpg`) and 2.7.
-The poster's abstract is on the page verbatim from the CCN 2026 site
-(`https://2026.ccneuro.org/poster/?id=V6IilrmWYe` — the conference's own
-listing; OpenReview blocks fetching but the CCN page links its PDF), with a
-source line giving the session (C46, Session C, Wednesday 5 August). Note the
-abstract describes a 19-participant analysis and a tuning continuum, while the
-page's figures and numbers are the seven-listener thesis case study — the
-source line says so explicitly. No poster file or video is published anywhere
-(CCN 2026 hosts neither, and there is no NeurIPS entry for it), so the "CCN
-poster" button stays a stub; on her pointer to neurips.cc/virtual/2025/poster/120024
-the page instead carries a Poster section with the NeurIPS 2025 poster of the
-method paper (same `figures/superpositions-poster.png`, whose time/space/number
-panel is this analysis) and a Video button to its SlidesLive talk. On the
-inventory it is the first entry of the Dense measurement group, above the brain
-viewer, thumbnailed with the flatmap channel clip; CCN and
-OpenReview links live on the page itself.
-
-**DBS is a short introduction, not a tutorial.** You are the third of eleven
-authors on the Nature BME paper, so `research/dbs.html` describes the study
-rather than narrating it as "we", in the register of the thesis introduction
-(measured, systems-minded, no jokes — she asked for exactly that; on
-2026-09-04 the same register was applied, lightly, to the prose of the
-superpositions and number pages, with every number and all verbatim blocks
-unchanged): five short
-sections (short version, closing the loop, optimized at home, the blinded
-comparison, my part), the last one stating your
-contribution from the paper's author-contribution statement (designed the
-data-collection infrastructure with G.S., T.F. and R.B.; analysed the data
-with T.C.D., G.S. and R.B.), linking the JoVE platform paper and thesis
-chapter 3. The published article is not open access, so every number on the
-page — 6 home sessions of ~25 min, 682 candidate models, personalized bands
-+6 % / +3 %, held-out 83 % / 76 %, 12 blinded sessions over 154 days with the
-last 435 days after training, 82 % / 76 % online, 1.6 / 1.9 / 2.2 mA,
-r = 0.52 and −0.44, 0.33 keypresses/s — and the pull quote come from the
-CC BY 4.0 medRxiv preprint (10.1101/2024.08.14.24312002), and its Figures 2
-and 6 are on the page as `figures/dbs-preprint-fig2.jpg` and
-`dbs-preprint-fig6.jpg`, credited in their captions. If the published
-version's numbers differ, the preprint's stand until you change them. The
-hero is still the publisher's Fig. 1; its long legend is kept verbatim inside
-a folded `<details class="legend">` under a one-line caption of mine.
-
-**Stimulation is verbatim.** Every sentence of its body text is thesis
-chapter 3, from the PDF; the only words that are not hers are the short
-`.source` line under the pull quote, the image `alt` texts and the BibTeX
-`note`. Equations are hand-transcribed into MathML from the rendered PDF
-pages (check the ridge objective and the pose `cos θ` formula against the
-PDF). It was generated, not hand-written: the builders live outside the repo
-in the session scratchpad (`build/lib.py`, `build_stim.py` alongside the
-extracted `thesis/text.txt`), so edit the HTML directly; if you ever need to
-regenerate, the recipe is: extract the PDF text with the PDFKit script,
-choose paragraph line ranges, and let the library strip page headers, rejoin
-hyphenated line breaks and fix the PDF's spacing artifacts. Hyphenation at
-line breaks was decided word by word ("counterbalanced",
-"electrophysiological" joined; "multi-output", "leave-one-day-out",
-"keystroke-based" kept).
-
-**Superpositions** has its real material: the hero is thesis Figure 2.1,
-the poster sits in its own section
-(`figures/superpositions-poster.png`, 2592 × 1296, from neurips.cc, served
-through `<picture>` as `superpositions-poster.webp` — cwebp q88, 0.6 MB
-instead of 1.5 — with the PNG as fallback and "Full size" link), and the
-buttons link to OpenReview, the NeurIPS page, the poster, the SlidesLive
-video, the code (the GitHub URL from the thesis footnote) and the thesis.
-SlidesLive refuses to be embedded anywhere but neurips.cc ("Domain not
-allowed"), so the talk is served here as her own recording
-(`figures/talk-superpositions.mp4`) with a transcript folded under it, and
-SlidesLive is a link. Eight slides cut from that recording (`figures/talk-*`)
-carry the page's argument; the thesis figures that remain are in
-`figures/thesis-fig2-*`. The inventory thumbnail is the flatmap clip the
-models are fit to (`figures/area-bayesian.mp4`).
-
-**Stimulation** (chapter 3, "Deep Brain Stimulation Amplifies
-Movement-Related Neural Modulation in Parkinson's Disease") carries Figures
-3.1–3.6 (`figures/thesis-fig3-*.jpg`, exported at 1600 px from the PDF at
-3× and cropped to the plot). Its buttons go to the thesis PDF, the thesis
-page and the Nature BME paper page. Section 3.4.4's packet-merging detail and
-the supplementary patient instructions are left to the PDF. The chapter is not
-in the inventory at all — it is reached from `research/dbs.html`, which links it as the
-related chapter.
-
-**DBS** has Fig. 1 of the paper as its teaser (`figures/dbs-fig1.png`, from
-the publisher's figure page, legend verbatim but folded) and a crop of it as
-the card thumbnail. The article itself is not open access; the figure is here
-on the strength of your being an author — your call whether that is fine. The
-two body figures are from the CC BY preprint and need no permission.
-
-**Thesis** is built entirely from the PDF (`files/Thesis-Alicia_Zeng.pdf`):
-the abstract, the introduction (chapter 1, split into Introduction /
-Chapter 2 / Chapter 3 / Summary and Motivation), the acknowledgments and
-the dedication, all verbatim, with Figures 3.1 (teaser), 2.1 and 3.6 and
-their captions. The card thumbnail is the spectrogram block of Figure 3.1.
-Each chapter section ends with a link to its explainer page, and the
-buttons include "Chapter 2 as a paper" and "Chapter 3 in full".
-
-Motion respects `prefers-reduced-motion`. There is no scroll-driven reveal.
-
-## Links that are already real
-
-Verified against Crossref, PubMed and the NeurIPS site — not typed from
-memory:
+Titles, venues, years and DOIs were checked against Crossref, PubMed and the
+conference sites (OpenReview and ADS by hand). Each external URL is entered
+once on its paper page and copied from there.
 
 | work | link |
 |---|---|
-| Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI (NeurIPS 2026 oral; submitted as "Learning Sparse Semantic-Cortical Atoms for Multisubject Naturalistic fMRI Encoding", the title neurips.cc still shows) | OpenReview `YcEZoSqrxa`, `neurips.cc/virtual/2026/loc/sydney/oral/151713` (lists one author; abstract taken from there) |
-| Disentangling superpositions | OpenReview `3aNvX9TQTo`, NeurIPS 2025 poster page, poster PNG, SlidesLive `39050668` |
+| Semantic-Cortical Components (NeurIPS 2026 oral) | OpenReview `YcEZoSqrxa`, `neurips.cc/virtual/2026/loc/sydney/oral/151713` |
+| Disentangling Superpositions (NeurIPS 2025) | OpenReview `3aNvX9TQTo`, NeurIPS poster 120024, SlidesLive `39050668` |
 | Movement-responsive DBS | `10.1038/s41551-025-01438-0`, PubMed 40579487 |
 | Bringing the Clinic Home | `10.3791/65305` (J. Vis. Exp., 2023) |
 | In-Home Video and IMU Kinematics | `10.36227/techrxiv.22067474` (preprint, 2023) |
-| A Distributed Cortical Network Integrates … Number, Space, and Time | OpenReview `V6IilrmWYe` (CCN 2026 poster) |
-| A Nonlinear Dynamical System Approach to Bird Song Analysis | ADS `2019APS..MARL70298Z`, plus the *Song Attractor* video on YouTube |
-
-The OpenReview and ADS entries were checked by you, not by a script — those
-two sites block automated access.
-
-### Titles and author lists
-
-Titles are the published ones. Every entry carries its full author list in
-published order (`<p class="authors">`), with you marked
-`<span class="me">…</span>`. You publish under two names: **Alicia Zeng**
-everywhere, and **Xiao Zeng** on the 2019 APS abstract — the markup uses
-whichever the venue printed.
-
-On the homepage the three cards show only a title and a one-line lead; the
-author lists are on `research.html` and on each paper page.
-
-### Research groups
-
-`research.html` is three groups in her order (2026-11-12) — **Interpretable
-models** (`#bayesian`: the NeurIPS 2026 oral on semantic-cortical components,
-the NeurIPS 2025 sparse concept atoms, then the birdsong abstract), **Dense
-measurement** (`#cognition`: number/space/time and the brain viewer) and
-**Closed-loop instruments** (`#closed-loop`: movement-responsive DBS, Bringing
-the Clinic Home, In-Home Video and IMU Kinematics). Each group is a
-`<section class="block group" id="…" data-area="…">` that opens with a
-`.group-intro` (the standfirst and the two paragraphs that used to open the
-area page, saying what the area means to you) and then holds a
-`<ul class="outputs outputs--media">`; move an entry by moving its `<li>`,
-move a whole area by moving its section. `index.html` carries the same order
-and its cards link to these sections.
-
-The three area pages under `research/` are redirects to those sections now
-(kept so old links land; `noindex`, and out of the sitemap). The NeurIPS talk
-that lived on the Bayesian page is a section of `research/superpositions.html`
-(`#talk`), with its transcript.
-
-`data-area` is what sets `--area`, the one slot the three hues fill, so the
-colour follows an entry from the homepage through to its own page. A page that
-belongs to no single area — the homepage, the inventory, the notes, the thesis
-— has no `data-area`, and its title mark is a gradient across all three rather
-than one area's colour.
-
-The thesis is **not** listed as research. It is a note (`notes/thesis.html`),
-and so are its chapters: chapter 3, the unpublished stimulation study, lives at
-`research/stimulation.html` and is reached from `research/dbs.html` as the related
-chapter, not from the inventory.
-
-### The arc
-
-The "2017 to now" section on the homepage is one sentence per beat — the
-first sentence of each beat from your draft, nothing added except the
-stimulus facts filled into the 2020–2025 sentence (two hours of Moth Radio
-Hour stories, from the superpositions page) and a link from "characterization
-instruments" to the Now section. The rest of the draft's beat prose is not on
-the page; the draft is the place to recover it.
-
-## Placeholders
-
-There are none left (2026-10-22): every `class="todo"` was filled or removed,
-and the `.todo` / `.fig-slot` / `.button.todo` rules went with them. Things
-that were dropped rather than filled, in case you want them back: the Google
-Scholar and ORCID chips in the contact section (no public profile was found;
-add the links as plain `<a>`s in `.profiles`), the Code button on
-`research/dbs.html` (no public repository), the poster button on
-`research/number.html` (CCN publishes none), the unnamed second Bayesian
-project, the two "Explainer" chips (the per-paper lay explainers are still
-unwritten; add a chip back when one exists), and the two sample notes.
-
-If you add a placeholder again, mark it `class="todo"` so it is greppable, and
-bring back the `.todo` rule from git history (`git show c04303b:styles.css`).
-
-### Adding a publication
-
-Copy an existing `<li>` inside the right group's
-`<ul class="outputs outputs--media">` in `research.html`. An entry is a thumbnail
-(`.output-media`) beside a body: the title with its venue in
-`<span class="pub-meta">`, the full author list in published order with you
-marked `<span class="me">…</span>`, and a row of `.output-links`.
-
-If it needs a page of its own, copy one under `research/`, keeping the section
-ids and the `paper-nav` list in step. On a paper page the buttons are named by
-`aria-labelledby="<link-id> <heading-id>"`, so a screen reader reads
-"PDF, *title*" without the title being stored twice.
-
-A co-authored paper, preprint or talk that does not need its own page is the
-same `<li>` with its links going straight out — there is no separate minor
-list any more. Give it a thumbnail from its own material.
-
-### Adding a note
-
-Copy an `<li class="note-item">` to the **top** of `<ol class="stream">` in
-`notes.html` and set both the `datetime` attribute and the visible date.
+| Number, Space, and Time (CCN 2026) | OpenReview `V6IilrmWYe`, `2026.ccneuro.org/poster/?id=V6IilrmWYe` |
+| Bird Song Analysis (APS 2019) | ADS `2019APS..MARL70298Z`, Song Attractor video on YouTube |

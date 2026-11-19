@@ -1,20 +1,16 @@
-/* Alicia Zeng — personal site.
-   Plain, after szymonkaliski.com — the system sans, one text size, bold
-   for headings, underlined links, gray for metadata — but on black,
-   committed: there is no light variant. No build step, no framework, no
-   network requests; the one script (site.js) draws the hero and is
-   optional — the page is complete without it.
+/* Alicia Zeng: personal site.
+   Plain, after szymonkaliski.com (the system sans, one text size, bold for
+   headings, underlined links, gray for metadata) but on black, committed:
+   there is no light variant. No build step, no framework, no network
+   requests. Every page is complete without site.js.
 
-   The three research visuals are PURE CSS and ABSTRACT. They are
-   decorative: they are not figures, data or results from the papers.
-   They live here rather than in the markup so the art is written once
-   and every page shares it. See README.md to swap one for a real image.
+   Layers: the tokens and base rules first, then the site's earlier passes,
+   then one block per later pass, each opened by a comment of the form
+   "==== agent:<name> ====". Later blocks override earlier ones; add new
+   rules in a new block at the end. README.md lists the blocks.
 
-   The visuals and the real work are kept apart on purpose: decorative
-   art appears only in the home hero and in a card's thumbnail slot, is
-   never captioned, and never appears on a paper page — see README.
-
-   There are no placeholders left on the site (2026-10-22).               */
+   Every image on the site is real material from the work or a coded
+   illustration labelled as one in its caption; nothing is decorative.     */
 
 /* ---- tokens -------------------------------------------------------------- */
 :root {
@@ -1105,3 +1101,1738 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-
 .paper-nav a { display: inline-block; padding: 0.15rem 0; }
 /* the list is one row now, so an anchor needs the same headroom everywhere */
 html { scroll-padding-top: 4rem; }
+
+
+/* ---- the design pass, second round (2026-11-17) --------------------------------
+   From her own browser: the hero clip read as an empty black box with a small
+   cortex in it. The recording carries 91px of black under the cortex and 11px
+   over it, and the frame was wider than the clip, so most of the box was
+   ground. Three changes:
+
+   - no frame. The clip's ground is pure black and the page is #0a0a0a, so the
+     clip is screened onto the page and the cortex floats on it;
+   - the dead band under the cortex is cropped (the frame shows the top 520 of
+     the clip's 600 rows), which centres the cortex and gives back about 60px;
+   - the way into the viewer is a button beside the caption, not a text link
+     trailing it.                                                              */
+.hero-media { margin: 1.5rem 0 2.5rem; }
+.hero-clip {
+  position: relative;
+  aspect-ratio: 2.1;
+  overflow: hidden;
+}
+.hero-media .hero-clip video {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: auto;
+  height: calc(100% * 600 / 520);
+  aspect-ratio: 1.45;
+  transform: translateX(-50%);
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  mix-blend-mode: screen;
+}
+/* Under reduced motion site.js gives the clip its controls, which sit in the
+   band the crop removes; show the whole frame there. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-clip { aspect-ratio: 1.9; }
+  .hero-media .hero-clip video { height: 100%; }
+}
+.hero-media figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+.hero-cta {
+  margin-left: 0;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--fg);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.hero-cta:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+
+/* Her standfirst ran 32px wider than the paragraphs under it. One right edge. */
+.hero .lead { max-width: 34rem; }
+
+/* The footer: the way around the site on the left, the way to reach her on the
+   right, so a reader who lands on a paper page has an address without going
+   back to the index. */
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-bottom: 1rem;
+}
+.foot-meta .sep { padding: 0 0.5rem; color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.foot-meta a { margin-right: 0; text-decoration: underline; }
+
+
+/* ==== agent:homepage ==== */
+/* ---- the homepage, 2026-11-19 -------------------------------------------------
+   index.html was reordered for a reader who gives it fifteen seconds: the
+   claim and the cortex, then Now (the company), then the three areas, then
+   her essay whole, then contact. Everything here is scoped to the homepage's
+   own classes (.hero, .now, .area-works, .essay, .contact); no other page
+   uses them. Four things the audit of the rendered page found:
+
+   1. The work was buried: the first area card started 2,214px down at
+      1440x900 and 2,726px down on a phone, under a four-paragraph essay.
+   2. Every text section ran a 34rem measure in a 52.5rem column, so a third
+      of each row was empty while the media ran full width. Now, the essay
+      and Contact are two columns from 50em: a statement and its side column.
+   3. What is inside an area was one line of small underlined mono text with
+      dots, which wrapped badly and did not read as links. It is a list of
+      rows, one per work, title left and venue right.
+   4. Now and Contact, the two sections a reader acts on, were plain
+      paragraphs. Each is a panel with one primary button.                    */
+
+/* -- the one button ---------------------------------------------------------
+   The shape and colours of .hero-cta (the way into the viewer), so the page
+   has a single idea of what a primary action looks like. --quiet is the same
+   shape without the accent, for a way onward that is not the main action.  */
+.cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--fg);
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.cta:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+.cta--quiet { border-color: var(--border); background: var(--surface); }
+.cta--quiet:hover { border-color: var(--fg-muted); background: var(--surface); }
+.cta[href^="http"]::after { margin-left: 0; }
+
+/* -- the hero ----------------------------------------------------------------
+   The section ends on the clip's caption row now, so the figure gives up its
+   bottom margin to the section gap under it. */
+.hero > .hero-media:last-child { margin-bottom: 0; }
+/* and Now sits a step closer to the opening than one section sits to the
+   next: it finishes the answer to "who is this", and at 1440x900 its panel
+   then shows above the fold. */
+.hero + .block { margin-top: 4.25rem; }
+
+/* The eyebrow is two facts. Where they do not fit one line they broke after
+   "PhD", in the middle of the second; each takes its own line instead. */
+@media (max-width: 34em) {
+  .hero-eyebrow { line-height: 1.75; }
+  .hero-role { display: block; }
+  .hero-eyebrow .sep { display: none; }
+}
+
+/* On a phone the 2.1:1 frame left the cortex 130px tall with a third of the
+   row empty either side. The frame takes the clip's own shape there (870 by
+   the 520 rows the crop keeps), so the clip fills the column. */
+@media (max-width: 39.99em) and (prefers-reduced-motion: no-preference) {
+  .hero-clip { aspect-ratio: 870 / 520; }
+}
+@media (max-width: 39.99em) and (prefers-reduced-motion: reduce) {
+  .hero-clip { aspect-ratio: 1.45; }
+}
+@media (max-width: 39.99em) {
+  .hero-media figcaption { gap: 0.7rem 1.5rem; }
+}
+
+/* -- panels: the two sections a reader acts on ------------------------------ */
+.now-panel, .contact-panel {
+  display: grid;
+  gap: 1.5rem 2.5rem;
+  padding: 1.4rem 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--surface) 42%, var(--bg));
+}
+@media (min-width: 50em) {
+  .now-panel, .contact-panel { padding: 2rem 2.25rem 2.1rem; }
+  .now-panel { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: end; }
+  .contact-panel { grid-template-columns: minmax(0, 1fr) 11.5rem; }
+  .now-side, .contact-side { padding-left: 2.25rem; border-left: 1px solid var(--border); }
+}
+
+/* -- Now ---------------------------------------------------------------------
+   Label, company name, what it builds, her part in it, the way out. */
+.now-title {
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.now-statement {
+  max-width: 31rem;
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+  line-height: 1.45;
+}
+.now-role { max-width: 30rem; line-height: 1.6; color: var(--fg-dim); }
+.now-out { margin-top: 1.1rem; }
+
+/* -- the area cards: what is inside each ---------------------------------------
+   One row per work, a hairline over each: the title, its venue under it in
+   mono (the inventory's own pairing), an arrow at the end of the row. Title
+   and venue are stacked at every width, since the longest pair never fits one
+   line and a list that mixes the two reads as two kinds of row. The anchors
+   keep the stacking context .area-count a gives them, above the card-wide
+   link. */
+.area-works {
+  max-width: var(--measure);
+  margin-top: 1.1rem;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  color: var(--fg);
+}
+.area-works li { border-top: 1px solid var(--border); }
+.area-works a {
+  display: block;
+  padding: 0.6rem 1.8rem 0.65rem 0;
+  color: var(--fg);
+  text-decoration: none;
+}
+.area-works a::after,
+.area-works a[target="_blank"]::after {
+  content: "\2192";
+  position: absolute;
+  right: 0.1rem;
+  top: 50%;
+  margin: 0;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--fg-muted);
+  vertical-align: baseline;
+}
+.area-works a[target="_blank"]::after { content: "\2197"; }
+.work-title { display: block; font-weight: 500; line-height: 1.4; }
+.work-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  color: var(--fg-muted);
+}
+.work-new {
+  margin-right: 0.45rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--area) 50%, transparent);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--area);
+}
+.area-works a:hover .work-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.area-works a:hover::after { color: var(--area); }
+/* With the rows a card's text is taller than its clip, so the two start on
+   one line (the clip's top edge, the title's mark) instead of centring. */
+@media (min-width: 46em) {
+  .area { align-items: start; }
+}
+/* A row is its own link: pointing at one must not also underline the area
+   title, which goes somewhere else. */
+.area:has(.area-works a:hover) .area-title a { text-decoration: none; }
+
+/* -- the essay -----------------------------------------------------------------
+   Her standfirst and three paragraphs, whole. From 50em the standfirst holds
+   the left column and stays in view while the paragraphs it opens run down
+   the right at about 65 characters to the line (the 34em measure still caps
+   them where the column is wider than that, just under the 68em grid). */
+.essay .lead { margin-bottom: 1.5rem; }
+.essay-more {
+  max-width: var(--measure);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--fg-dim);
+}
+@media (min-width: 50em) {
+  .essay-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    column-gap: 2.5rem;
+    align-items: start;
+  }
+  .essay .lead {
+    position: sticky;
+    top: 1.5rem;
+    max-width: none;
+    margin-bottom: 0;
+    font-size: 1.3rem;
+    line-height: 1.42;
+  }
+  /* the two columns share a first baseline */
+  .essay-body { padding-top: 0.22rem; }
+}
+
+/* -- contact: the closing section ---------------------------------------------- */
+.contact .contact-note {
+  max-width: 26em;
+  margin-top: 0;
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
+}
+.contact .contact-mail { margin-top: 1.4rem; font-size: 1rem; letter-spacing: 0; }
+.contact-mail .cta { padding: 0.7rem 1.3rem; font-size: 1.0625rem; font-weight: 600; }
+.contact-label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.contact .profiles { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-top: 0.7rem; }
+.contact .profiles a { margin-right: 0; }
+@media (min-width: 50em) {
+  .contact .profiles { display: block; }
+  .contact .profiles li + li { margin-top: 0.45rem; }
+}
+.contact .otherwise { margin-top: 1.25rem; font-size: 0.9375rem; color: var(--fg-muted); }
+
+
+/* ==== agent:viz ==== */
+/* research/components.html (2026-11-19): the list of the 50 components (#cx)
+   and the grid of ticks that sets joint training against two-stage training
+   (#cmp). Both are plain HTML, complete without script; viz/components.js
+   adds the buttons and the fold to the list. Everything here is scoped to
+   .viz, .viz-*, .cx-* and .cmp-* and is used on that page only.
+
+   Colour: the page's area hue is the one data colour. In the list it draws
+   both marks, as the paper's own Fig. 2e does, and the two are told apart by
+   shape (circle, diamond) and by a lighter tint, never by hue. In the grid it
+   is the tick; a cell that falls short is a grey ring and says so in words.
+   The dataviz palette check passes for separation and contrast on #0a0a0a;
+   the area token is lighter than that check's dark-mode band, which is the
+   site's choice of token, not this block's.                                 */
+.viz {
+  --viz-a: var(--c-bayesian);
+  --viz-b: color-mix(in srgb, var(--c-bayesian) 42%, #fff);
+  --viz-track: 15rem;                 /* the width of the 0-to-1 scale */
+  --viz-over: 2.4rem;                 /* room right of 1 for a value label */
+}
+/* a section that is a heading and a figure: no paragraph between them */
+#model > h2 + .fig, #components > h2 + .fig, #coupling > h2 + .fig { margin-top: 1.25rem; }
+
+/* -- the buttons the script adds: one row for the order, one for what shows -- */
+.cx-controls { display: grid; gap: 0.55rem; margin-bottom: 1.1rem; }
+.cx-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.4rem; }
+.cx-ctl-label {
+  flex: none;
+  min-width: 3.6rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.cx-chip, .cx-more {
+  display: inline-flex;
+  align-items: baseline;
+  min-height: 1.85rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.cx-chip:hover, .cx-more:hover { border-color: color-mix(in srgb, var(--area) 60%, transparent); color: var(--fg); }
+.cx-chip[aria-pressed="true"] {
+  border-color: var(--area);
+  background: color-mix(in srgb, var(--area) 16%, var(--surface));
+  color: var(--fg);
+}
+.cx-chip-n { margin-left: 0.4rem; font-family: var(--mono); font-size: 0.72rem; color: var(--fg-muted); }
+.cx-chip[aria-pressed="true"] .cx-chip-n { color: var(--fg-dim); }
+.cx-chip:focus-visible, .cx-more:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (pointer: coarse) {
+  .cx-chip, .cx-more { min-height: 2.3rem; padding: 0.45rem 0.85rem; }
+}
+.cx-summary { min-height: 2.9em; margin: 0.3rem 0 0; font-size: 0.875rem; line-height: 1.45; color: var(--fg-dim); max-width: 34rem; }
+.cx-more {
+  margin-top: 0.9rem;
+  border-color: color-mix(in srgb, var(--area) 55%, transparent);
+  background: color-mix(in srgb, var(--area) 10%, var(--surface));
+  color: var(--fg);
+}
+.cx-more[hidden] { display: none; }
+
+/* -- the legend and the scale, which sits over the tracks -- */
+.cx-head { display: grid; gap: 0.6rem 1rem; align-items: end; padding-bottom: 0.45rem; border-bottom: 1px solid var(--border); }
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--fg-dim);
+}
+.viz-legend li { display: inline-flex; align-items: center; gap: 0.45rem; }
+.viz-legend svg { flex: none; }
+.cx-g { display: block; width: 0.75rem; height: 0.75rem; overflow: visible; }
+.cx-g--dot { fill: var(--viz-a); }
+.cx-g--dia { fill: var(--viz-b); stroke: var(--viz-b); stroke-width: 1.1; stroke-linejoin: round; }
+.cx-g--open { fill: var(--bg); }
+.cx-axis {
+  position: relative;
+  height: 1.9rem;
+  margin-left: 3.4rem;                /* the row's inset, its number and the gap */
+  margin-right: var(--viz-over);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--fg-muted);
+}
+.cx-axis span { position: absolute; bottom: 0; transform: translateX(-50%); }
+.cx-axis span:nth-child(1) { left: 0; }
+.cx-axis span:nth-child(2) { left: 50%; }
+.cx-axis span:nth-child(3) { left: 100%; }
+.cx-axis i { position: absolute; top: 0; right: 0; font-style: normal; font-family: var(--sans); white-space: nowrap; }
+
+/* -- the list: one line per component -- */
+.cx-list { margin: 0; padding: 0; list-style: none; }
+.cx-row {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: 0.3rem 0.5rem;
+  align-items: start;
+  padding: 0.6rem 0 0.7rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  outline: none;
+}
+.cx-row[hidden] { display: none; }
+.viz-on .cx-row { cursor: default; }
+.cx-row.is-on { background: color-mix(in srgb, var(--area) 7%, transparent); }
+.cx-row:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; border-radius: 2px; }
+.cx-id { padding-top: 0.2em; font-family: var(--mono); font-size: 0.75rem; color: var(--fg-muted); }
+.cx-what { line-height: 1.4; color: var(--fg); }
+.cx-tag {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--area) 45%, transparent);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--fg-dim);
+  white-space: nowrap;
+  vertical-align: 0.08em;
+}
+/* the scale from 0 to 1: a hairline with a tick at 0, a half and 1 */
+.cx-track {
+  position: relative;
+  grid-column: 2;
+  height: 1.5rem;
+  margin-right: var(--viz-over);
+  background:
+    linear-gradient(var(--border), var(--border)) 0 50% / 100% 1px no-repeat,
+    linear-gradient(#3a3a3a, #3a3a3a) 0 50% / 1px 9px no-repeat,
+    linear-gradient(#3a3a3a, #3a3a3a) 50% 50% / 1px 9px no-repeat,
+    linear-gradient(#3a3a3a, #3a3a3a) 100% 50% / 1px 9px no-repeat;
+}
+.cx-link { position: absolute; top: 50%; height: 1px; background: color-mix(in srgb, var(--viz-a) 45%, var(--bg)); }
+.cx-m { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.cx-m .cx-g { box-sizing: content-box; }
+.cx-row.is-on .cx-g { transform: scale(1.25); }
+/* the value, printed just right of its mark on the open line (and, without
+   the script, on the line under the pointer) */
+.cx-val {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0.3rem;
+  padding: 0 0.15rem;
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--fg);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.cx-row.is-on .cx-val, .cx-row:focus-visible .cx-val, .viz:not(.viz-on) .cx-row:hover .cx-val { opacity: 1; }
+.cx-row.is-on .cx-val { background: color-mix(in srgb, var(--area) 7%, var(--bg)); }
+
+@media (min-width: 40em) {
+  .cx-head { grid-template-columns: minmax(0, 1fr) calc(var(--viz-track) + var(--viz-over)); }
+  .cx-axis { margin-left: 0; }
+  .cx-row { grid-template-columns: 2.4rem minmax(0, 1fr) calc(var(--viz-track) + var(--viz-over)); gap: 0 0.75rem; align-items: center; padding: 0.5rem 0 0.5rem 0.5rem; }
+  .cx-id { padding-top: 0; }
+  .cx-track { grid-column: 3; }
+}
+
+/* -- joint training against two-stage training: a grid of ticks -- */
+.cmp-grid { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.35; }
+.cmp-grid th, .cmp-grid td { padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); text-align: center; vertical-align: middle; }
+.cmp-grid thead th { width: 22%; padding-top: 0; font-weight: 600; color: var(--fg); vertical-align: bottom; }
+.cmp-grid thead th span { display: block; margin-top: 0.2rem; font-size: 0.75rem; font-weight: 400; color: var(--fg-muted); }
+.cmp-grid thead td { border-bottom: 1px solid var(--border); }
+.cmp-grid tbody th { padding-left: 0; text-align: left; font-weight: 400; color: var(--fg-dim); }
+.cmp-grid .cmp-grp th {
+  padding: 1.1rem 0 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.cmp-grid tbody tr:last-child th, .cmp-grid tbody tr:last-child td { border-bottom: 0; }
+/* the first column of ticks is the model the paper is about */
+.cmp-grid th:nth-child(2), .cmp-grid td:nth-child(2) { background: color-mix(in srgb, var(--area) 7%, transparent); }
+.cmp-i { display: block; margin: 0 auto; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cmp-yes .cmp-i circle { fill: var(--viz-a); stroke: none; }
+.cmp-yes .cmp-i path { stroke: #141414; stroke-width: 2.2; }
+.cmp-no .cmp-i circle { stroke: var(--fg-muted); stroke-width: 1.5; }
+.cmp-short { display: block; margin-top: 0.15rem; font-size: 0.6875rem; line-height: 1.2; color: var(--fg-muted); }
+@media (max-width: 30em) {
+  .cmp-grid { font-size: 0.875rem; }
+  .cmp-grid th, .cmp-grid td { padding: 0.55rem 0.25rem; }
+  .cmp-grid thead th { width: 21%; font-size: 0.8125rem; }
+}
+
+/* -- Table 15 in full, folded under the list -- */
+.viz-data { max-width: 44em; margin-top: 1.25rem; }
+.viz-data > summary { padding: 0.3rem 0; font-size: 0.875rem; color: var(--fg-dim); cursor: pointer; }
+.viz-data > summary:hover { color: var(--fg); }
+.viz-data > summary:focus-visible { outline: 1px solid var(--area); outline-offset: 3px; }
+.viz-data .table-wrap { margin-top: 0.75rem; }
+.viz-data .table-wrap:focus-visible { outline: 1px solid var(--area); outline-offset: 3px; }
+.viz-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.viz-table caption { caption-side: top; padding: 0 0 0.6rem; text-align: left; font-weight: 600; color: var(--fg-dim); }
+.viz-table th, .viz-table td {
+  padding: 0.35rem 0.9rem 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.viz-table th:last-child, .viz-table td:last-child { padding-right: 0; }
+.viz-table thead th { font-weight: 600; color: var(--fg-dim); vertical-align: bottom; }
+.viz-table tbody th { font-family: var(--mono); font-weight: 400; color: var(--fg-muted); }
+.viz-table tbody tr:last-child th, .viz-table tbody tr:last-child td { border-bottom: 0; }
+.viz-table td:nth-child(2) { min-width: 15rem; white-space: normal; color: var(--fg); }
+.viz-notes { max-width: 40rem; margin: 0.9rem 0 0; font-size: 0.8125rem; line-height: 1.5; color: var(--fg-muted); }
+
+@media print {
+  .cx-controls, .cx-more { display: none; }
+  .cx-row[hidden] { display: grid; }
+}
+
+
+/* ==== agent:reading ==== */
+/* The reading pass: the long paper and explainer pages, audited at 1440, 800
+   and 390 px. Two halves. The first is plain CSS on the existing markup and
+   needs no script: heading rhythm, sub/superscripts, lists, tables, the one
+   display equation, folded legends, stat tiles, asides, print. The second
+   styles what site.js injects (everything prefixed rd-): the figure zoom, the
+   BibTeX copy button, the reading-progress line and the back-to-top button.
+   Nothing here animates, so there is nothing to switch off under
+   prefers-reduced-motion.                                                    */
+
+/* -- 1. running text ------------------------------------------------------- */
+/* A sub- or superscript has its own line box, and in a 1.6 line it pushed its
+   line 3-4px away from the one above: every "p2", "R2" and footnote mark
+   opened a visible gap in the paragraph. With no line height of its own it
+   hangs off the line it is in. */
+sub, sup { line-height: 0; }
+
+/* Headings shared the 44em figure column while the text under them is 34em,
+   so a long h3 on the chapter page ran 60px past its own paragraph and broke
+   the column edge the eye follows. Same measure as the text (rem, since a
+   heading sets its own size). */
+.paper-section > h2, .paper-section > h3 { max-width: 34rem; }
+
+/* Three ranks of space, so the 36,000px chapter can be navigated by its
+   whitespace: 16px between paragraphs, 40px above a sub-heading, 64px and a
+   mark above a section. The sub-heading sat 32px from the paragraph above and
+   10px from its own text, which read as a bold line in the flow. */
+.paper-section > h3 { margin: 2.5rem 0 0.5rem; }
+.paper-section > h2 + h3 { margin-top: 1.1rem; }
+.fig + h3, .fig--table + h3 { margin-top: 2.75rem; }
+
+/* Bullets and list numbers are scaffolding: muted, and numbers lined up. */
+.paper-section > ul:not(.outputs):not(.stats) > li::marker,
+.paper-section > ol > li::marker { color: var(--fg-muted); }
+.paper-section > ol > li::marker { font-variant-numeric: tabular-nums; }
+.paper-section > ol { padding-left: 1.5rem; }
+
+/* On a phone the measure is about 40 characters and the chapter is full of
+   words like "electrocorticography": unhyphenated, single lines came up a
+   third short. Long words only, and never a two-letter stub. */
+@media (max-width: 30em) {
+  .paper-section > p, .paper-section > ul:not(.outputs):not(.stats) li,
+  .paper-section > ol li, .box p, .transcript > p {
+    -webkit-hyphens: auto;
+            hyphens: auto;
+    hyphenate-limit-chars: 12 5 5;
+  }
+  /* not the standfirst: it is set larger, and a broken word shows */
+  .paper-section > p.tldr { -webkit-hyphens: manual; hyphens: manual; }
+}
+
+/* A standfirst that runs straight into the first section (the thesis note,
+   birdsong) sat 24px above that section's mark while every later section gets
+   64px, so the first heading looked attached to the paragraph before it. */
+.paper > .lead { margin-bottom: 2.75rem; }
+
+/* A pull quote inside a section took the between-sections gap below it and a
+   paragraph gap above (16px over, 64px under). It is a pause in the middle of
+   an argument: the same air on both sides, and no wider than the page's
+   other quotes. */
+.paper-section > .pull { margin: 2.25rem 0; max-width: 40rem; }
+
+/* An aside is not a paragraph; it gets a little more room than one, and a
+   table or figure directly above it no longer touches it (the atom table and
+   the box under it shared an edge). */
+.paper-section > .box { margin: 1.75rem 0; }
+.fig + .box, .fig--table + .box { margin-top: 2.25rem; }
+.fig + ul, .fig + ol, .fig--table + ul, .fig--table + ol { margin-top: 2.25rem; }
+
+/* -- 2. figures and captions ------------------------------------------------ */
+/* The figure's own title, where a caption opens with one, steps up from the
+   caption grey so "Figure 3.2: ..." can be found when scanning. */
+.fig figcaption > b:first-child { color: var(--fg-dim); }
+
+/* -- 3. folded content ------------------------------------------------------ */
+/* Two kinds of fold (a figure's full legend, the talk's transcript) had two
+   treatments, both resting on the browser's small grey triangle. One
+   affordance for both: a chevron in the area's colour that turns when open, a
+   label that brightens under the pointer, the site's focus ring, and a rule
+   down the left of what has been unfolded so its extent is visible. */
+:is(figcaption, .rd-lb-cap) details.legend, .transcript { margin-top: 0.5rem; }
+:is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2rem;
+  padding: 0.15rem 0.5rem 0.15rem 0.2rem;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-dim);
+  border-radius: 0.2rem;
+}
+:is(figcaption, .rd-lb-cap) details.legend > summary::-webkit-details-marker,
+.transcript > summary::-webkit-details-marker { display: none; }
+:is(figcaption, .rd-lb-cap) details.legend > summary::before, .transcript > summary::before {
+  content: "";
+  flex: none;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-left: 0.1rem;
+  border-right: 1.5px solid var(--area);
+  border-bottom: 1.5px solid var(--area);
+  transform: translateX(-0.1rem) rotate(-45deg);
+}
+:is(figcaption, .rd-lb-cap) details.legend[open] > summary::before, .transcript[open] > summary::before {
+  transform: translateY(-0.12rem) rotate(45deg);
+}
+:is(figcaption, .rd-lb-cap) details.legend > summary:hover, .transcript > summary:hover { color: var(--fg); }
+:is(figcaption, .rd-lb-cap) details.legend > summary:focus-visible, .transcript > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+:is(figcaption, .rd-lb-cap) details.legend > p, .transcript > p {
+  margin: 0;
+  padding: 0.45rem 0 0.45rem 0.95rem;
+  border-left: 1px solid color-mix(in srgb, var(--area) 35%, var(--border));
+}
+:is(figcaption, .rd-lb-cap) details.legend > p:first-of-type, .transcript > p:first-of-type { margin-top: 0.35rem; }
+@media (pointer: coarse) {
+  :is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary { min-height: 2.5rem; }
+}
+
+/* -- 4. tables -------------------------------------------------------------- */
+/* Column heads are labels, set like every other label on the site, over a
+   rule that is the table's one strong line. Numerals line up; a column that
+   holds only numbers is set flush right (site.js marks those cells rd-num).
+   A table wider than its column scrolls inside .table-wrap, and the edge it
+   can be scrolled towards is shaded: the shades are painted on the wrap and
+   covered at each end by a patch that travels with the content. */
+.fig--table table { font-variant-numeric: tabular-nums lining-nums; }
+.fig--table thead th {
+  padding-bottom: 0.5rem;
+  vertical-align: bottom;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border-bottom-color: color-mix(in srgb, var(--area) 45%, var(--border));
+}
+.fig--table td { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.fig--table td, .fig--table th { padding-right: 1rem; }
+.fig--table td:last-child, .fig--table th:last-child { padding-right: 0; }
+.fig--table .rd-num { text-align: right; white-space: nowrap; }
+.table-wrap {
+  background:
+    linear-gradient(90deg, var(--bg) 40%, transparent) left center / 2.5rem 100% no-repeat local,
+    linear-gradient(270deg, var(--bg) 40%, transparent) right center / 2.5rem 100% no-repeat local,
+    linear-gradient(90deg, color-mix(in srgb, var(--area) 34%, transparent), transparent) left center / 0.9rem 100% no-repeat scroll,
+    linear-gradient(270deg, color-mix(in srgb, var(--area) 34%, transparent), transparent) right center / 0.9rem 100% no-repeat scroll;
+}
+.table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* -- 5. display equations ---------------------------------------------------- */
+/* Centred on the text it belongs to, not on the wider figure column (it sat
+   80px right of the paragraph's centre), a size up so the fraction's indices
+   are legible, and unable to push the page sideways on a phone. */
+.paper-section math[display="block"] {
+  max-width: min(100%, 34rem);
+  margin: 1.4rem 0 1.5rem;
+  font-size: 1.2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.rd-math { max-width: 34rem; margin: 1.4rem 0 1.5rem; overflow-x: auto; overflow-y: hidden; }
+.rd-math > math[display="block"] { max-width: none; margin: 0; overflow: visible; }
+
+/* -- 6. stat tiles ----------------------------------------------------------- */
+/* Four bare numbers read as stray headings. A hairline over each, in the
+   area's colour, makes them tiles in one strip. No value wraps today at any
+   width down to 390px; if a longer one ever does, it breaks evenly. A strip
+   in the middle of a section keeps the same distance from the text after it
+   as from the text before it (it sat 24px under and 16px over). */
+.stats li, .paper-section > ul.stats li + li {
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--area) 30%, var(--border));
+}
+.stats, .paper-section > ul.stats { gap: 1.5rem 1.5rem; margin-top: 1.75rem; margin-bottom: 1.75rem; }
+.paper-section > ul.stats:last-child { margin-bottom: 0; }
+.stats b { letter-spacing: -0.01em; text-wrap: balance; }
+.stats span { margin-top: 0.35rem; }
+
+/* -- 7. BibTeX ---------------------------------------------------------------- */
+/* site.js wraps the block and adds a Copy button. Under a heading (every
+   BibTeX block on the site) the button sits at the right of the heading's own
+   row, so it never lies on the entry; anywhere else it takes a band at the
+   top of the block. */
+.rd-code { position: relative; }
+.rd-copy {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 5.6rem;
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg-dim);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  cursor: pointer;
+}
+.rd-code--band > pre.bibtex { padding-top: 3rem; }
+.rd-code--band > .rd-copy { top: 0.45rem; right: 0.45rem; bottom: auto; margin: 0; background: var(--bg); }
+.rd-copy svg { width: 0.85rem; height: 0.85rem; flex: none; }
+.rd-copy:hover { color: var(--fg); border-color: color-mix(in srgb, var(--area) 55%, transparent); }
+.rd-copy:focus-visible, .rd-zoom:focus-visible, .rd-top:focus-visible,
+.rd-lb-btn:focus-visible, .rd-lb-stage:focus-visible, .fig img.rd-zoom-img:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.rd-copy[data-state="done"] {
+  color: var(--area);
+  border-color: color-mix(in srgb, var(--area) 60%, transparent);
+  background: color-mix(in srgb, var(--area) 10%, var(--surface));
+}
+.rd-copy[data-state="failed"] { color: var(--fg); border-color: var(--fg-muted); }
+@media (pointer: coarse), (max-width: 40em) {
+  .rd-copy { min-height: 2.5rem; margin-bottom: 0.55rem; }
+  .rd-code--band > pre.bibtex { padding-top: 3.4rem; }
+}
+
+/* -- 8. the figure zoom -------------------------------------------------------- */
+/* A plate is set 704px wide on a desk and 358px on a phone, and most of them
+   are multi-panel figures drawn for a printed page. The image itself opens
+   the enlarged view (the pointer says so), and a labelled control does the
+   same for the keyboard and for anyone who does not guess. The control sits
+   under the picture's right-hand corner, level with the first line of the
+   caption: in the 160px the caption leaves free on a desk, and as an icon the
+   caption makes room for on a phone. It never lies on the figure. */
+.fig.rd-zoomable { position: relative; container-type: inline-size; }
+.fig img.rd-zoom-img { cursor: zoom-in; }
+.rd-zoom {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  height: 1.9rem;
+  margin-top: 0.3rem;
+  padding: 0 0.1rem 0 0.5rem;
+  border: 0;
+  border-radius: 0.2rem;
+  background: none;
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  cursor: zoom-in;
+}
+.rd-zoom svg { width: 0.85rem; height: 0.85rem; flex: none; }
+.rd-zoom:hover { color: var(--fg); }
+/* a figure with no caption has nothing to stand beside: it gets a row */
+.fig.rd-zoomable:not(:has(> figcaption)) { padding-bottom: 2.5rem; }
+/* narrower than the caption's measure plus the label: icon only, and the
+   caption keeps clear of it */
+@media (max-width: 39em) {
+  .rd-zoom > span { display: none; }
+  .rd-zoom { width: 2.5rem; height: 2.5rem; margin-top: 0; padding: 0; color: var(--fg-dim); }
+  /* an empty float: the caption's first two lines step round the icon and
+     the rest run the full width */
+  .fig.rd-zoomable > figcaption::before { content: ""; float: right; width: 2.5rem; height: 1.7rem; }
+}
+@container (max-width: 39rem) {
+  .rd-zoom > span { display: none; }
+  .rd-zoom { width: 2.5rem; height: 2.5rem; margin-top: 0; padding: 0; color: var(--fg-dim); }
+  .fig.rd-zoomable > figcaption::before { content: ""; float: right; width: 2.5rem; height: 1.7rem; }
+}
+
+/* The enlarged view is a native <dialog>: the browser traps focus in it,
+   closes it on Esc and makes the page behind it inert. It fills the viewport;
+   the figure opens at the width of the window and scrolls down if it is
+   taller, a click or tap takes it to full size, and the stage scrolls (wheel,
+   touch, arrow keys, or drag) to pan. Pinch-zoom is left to the browser. */
+dialog.rd-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  overflow: hidden;
+}
+dialog.rd-lightbox[open] { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; }
+dialog.rd-lightbox::backdrop { background: var(--bg); }
+.rd-lb-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 0.5rem 0.6rem;
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.rd-lb-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: auto;
+  padding-left: 0.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+.rd-lb-scale {
+  min-width: 3.2rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-dim);
+}
+.rd-lb-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg);
+  text-decoration: none;
+  transition: none;
+  cursor: pointer;
+}
+.rd-lb-btn svg { width: 1rem; height: 1rem; }
+.rd-lb-btn:hover { border-color: color-mix(in srgb, var(--area) 60%, transparent); }
+.rd-lb-btn[aria-disabled="true"] { color: color-mix(in srgb, var(--fg-muted) 55%, transparent); cursor: default; border-color: var(--border); }
+.rd-lb-btn::after { content: none !important; }   /* no outward arrow: the icon is the arrow */
+.rd-lb-close { margin-left: 0.5rem; }
+.rd-lb-stage {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  padding: 1rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  cursor: zoom-out;
+}
+.rd-lb-img {
+  display: block;
+  flex: none;
+  margin: auto;                 /* centred while it fits; scrolls safely when it does not */
+  max-width: none;
+  border-radius: 0.2rem;
+  background: var(--surface);
+  cursor: zoom-in;
+  -webkit-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
+}
+.rd-lightbox[data-plate] .rd-lb-img { background: #f4f4f2; }   /* the plate's own matte, as .fig--plate */
+.rd-lightbox[data-zoomed] .rd-lb-img { cursor: grab; }
+.rd-lightbox[data-dragging] .rd-lb-img { cursor: grabbing; }
+.rd-lb-cap {
+  max-height: 26vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.8rem 1rem;
+  padding-bottom: max(0.8rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+.rd-lb-cap > div { max-width: 44rem; margin: 0 auto; }
+.rd-lb-cap b:first-child { color: var(--fg); }
+.rd-lb-cap[hidden], .rd-lightbox[data-zoomed] .rd-lb-cap { display: none; }
+/* On a phone there is no room for the figure's title and no pointer to say
+   that the picture can be tapped, so the bar says that instead. */
+.rd-lb-hint { display: none; }
+@media (max-width: 34em), (pointer: coarse) {
+  .rd-lb-title { display: none; }
+  .rd-lb-hint {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-left: 0.4rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--fg-muted);
+  }
+}
+
+/* -- 9. wayfinding ------------------------------------------------------------- */
+/* How far through the page: a 2px line in the area's colour along the bottom
+   edge of the sticky section list, drawn over its hairline, so it takes no
+   room and moves nothing. A page with no section list (the thesis note)
+   carries the same line at the top of the window. site.js scales it; a scale
+   is composited, so a scroll costs no layout. */
+.rd-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--area);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.rd-progress--page { position: fixed; top: 0; bottom: auto; z-index: 4; }
+.rd-progress--all {
+  background: linear-gradient(90deg, var(--c-cognition), var(--c-closed) 55%, var(--c-bayesian));
+}
+
+/* Back to the top, on a page more than a few screens long. Where the window
+   is wide enough for it to stand in the margin it stays; on a narrow screen
+   it would sit on the text, so it shows only while the reader is scrolling
+   back up, or has reached the end. */
+.rd-top {
+  position: fixed;
+  right: max(1.1rem, env(safe-area-inset-right));
+  bottom: max(1.1rem, env(safe-area-inset-bottom));
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--fg-dim);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+.rd-top svg { width: 1rem; height: 1rem; }
+.rd-top:hover { color: var(--fg); border-color: color-mix(in srgb, var(--area) 60%, transparent); }
+.rd-top[hidden] { display: none; }
+.rd-top--lift { bottom: var(--rd-lift, 5.25rem); }   /* clear of the footer at the foot of the page */
+
+/* -- 10. print ------------------------------------------------------------------ */
+/* A paper page on paper: none of the controls, a white ground under every
+   plate, figures that fit a sheet with their caption, headings that stay with
+   their text, and a BibTeX entry that wraps instead of running off the edge.
+   site.js opens the folded legends and the transcript for the print run and
+   folds them again afterwards. */
+@media print {
+  .rd-zoom, .rd-copy, .rd-top, .rd-progress, dialog.rd-lightbox { display: none !important; }
+  .fig.rd-zoomable > figcaption::before { content: none; }
+  /* a section taller than a sheet cannot avoid a break, and asking it to only
+     pushed each section to a fresh page */
+  .paper-section { break-inside: auto; margin-bottom: 2rem; }
+  .paper-section > h2, .paper-section > h3 { break-after: avoid; }
+  .paper-section > p, .box p, .transcript > p, li { orphans: 3; widows: 3; }
+  .fig, .fig--table, .box, .stats, pre.bibtex, .pull { break-inside: avoid; }
+  /* a figure with its whole legend unfolded can be longer than what is left
+     of the sheet: the picture keeps its caption, and the legend may run on */
+  .fig:has(details.legend[open]) { break-inside: auto; }
+  .fig figcaption { break-before: avoid; }
+  .fig img { width: auto; max-width: 100%; max-height: 6.5in; margin: 0; }
+  .fig--plate img { padding: 0; box-shadow: none; background: none; border: 1px solid #ccc; }
+  .fig video { display: none; }
+  .rd-code > pre.bibtex, pre.bibtex { padding: 0.75rem; white-space: pre-wrap; overflow: visible; border: 1px solid #ccc; }
+  .table-wrap { overflow: visible; background: none; }
+  .stats li, .paper-section > ul.stats li + li { border-top-color: #ccc; }
+  :is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary { color: #555; }
+  :is(figcaption, .rd-lb-cap) details.legend > summary::before, .transcript > summary::before { display: none; }
+  :is(figcaption, .rd-lb-cap) details.legend > p, .transcript > p { border-left-color: #ccc; }
+}
+
+
+/* ==== agent:motion ==== */
+/* ---- the motion system (2026-11-19) -------------------------------------------
+   One block for everything that moves, so it can be read, tuned or removed in
+   one place. site.js carries the other half (its last block). The rules:
+
+   1. Motion orients or answers. An entrance says "this is new to the screen",
+      a hover says "this responds to you", a press says "taken". Nothing loops,
+      nothing follows the cursor, nothing is tied to the scroll position.
+   2. Nothing makes a reader wait. Entrances are under half a second and
+      front-loaded; a reader who jumps (an anchor, find-in-page, the scrollbar,
+      a fast fling) gets the content already in place, without the entrance.
+   3. Only opacity and position animate (`opacity`, `translate`, `transform`),
+      plus colour on hover. Nothing here changes layout, so nothing shifts.
+   4. The page never depends on it. Content is hidden only by a class that
+      site.js adds, only well below the screen, only once the reader starts to
+      scroll, and only when motion is allowed; with no script, or under
+      prefers-reduced-motion, every rule that hides or moves anything is
+      switched off by the media queries around it.
+
+   Entrances use the `translate` property rather than `transform`, so they
+   compose with a transform an element already has (the hero clip is centred
+   with one) instead of replacing it.                                          */
+
+/* -- tokens ------------------------------------------------------------------ */
+:root {
+  --m-fast: 110ms;      /* a press */
+  --m-base: 180ms;      /* hover and focus: a state changing */
+  --m-page: 200ms;      /* the cross-fade between two pages */
+  --m-slow: 440ms;      /* an entrance */
+  --m-step: 50ms;       /* between neighbours arriving together */
+  --m-rise: 0.75rem;    /* how far an entrance travels */
+  --m-ease: cubic-bezier(0.2, 0, 0, 1);          /* state changes */
+  --m-ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* entrances: arrive fast, settle long */
+}
+
+/* An entrance has no `to`: it ends on whatever the element's own style is. */
+@keyframes m-rise { from { opacity: 0; translate: 0 var(--m-rise); } }
+
+/* -- entrance on scroll ------------------------------------------------------- */
+/* When the reader first starts to scroll, site.js puts .m-pre on each section,
+   card, row, figure and stat tile that is still well below the screen, and
+   swaps it for .m-in the first time the element reaches the viewport; .m-in is
+   taken off again when the animation ends. --m-i is the element's place among
+   those arriving with it. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .m-pre { opacity: 0; }
+  .m-in {
+    animation: m-rise var(--m-slow) var(--m-ease-out) backwards;
+    animation-delay: calc(var(--m-i, 0) * var(--m-step));
+  }
+}
+
+/* -- the homepage opening ------------------------------------------------------ */
+/* Eyebrow, statement, chips, clip, caption, in reading order: 440ms each,
+   the last starting at 190ms, so the whole arrival is 630ms and the statement
+   is readable inside the first 150. It is CSS alone, so it starts with the
+   first paint and cannot flash; `scripting: enabled` keeps a no-script render
+   still from its first frame, and a browser without that media feature simply
+   shows the opening in place. */
+@media screen and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .hero-eyebrow, .hero-statement, .hero-proof, .hero-clip > *, .hero-media figcaption {
+    animation: m-rise var(--m-slow) var(--m-ease-out) backwards;
+  }
+  .hero-statement { animation-delay: 40ms; }
+  .hero-proof { animation-delay: 90ms; }
+  .hero-clip > * { animation-delay: 150ms; }
+  .hero-media figcaption { animation-delay: 190ms; }
+}
+
+/* -- from page to page ---------------------------------------------------------- */
+/* A short cross-fade where the browser supports cross-document view
+   transitions; everywhere else a link is a plain navigation. Only the root is
+   named, so the sticky section list is part of the picture being faded and
+   is never animated on its own. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--m-page, 200ms);
+    animation-timing-function: linear;
+  }
+  /* In-page anchors glide. `:focus-within` limits it to a jump the reader
+     asked for from the page (a click or a key on a link): a hash in the
+     address at load and find-in-page still land at once. */
+  html:focus-within { scroll-behavior: smooth; }
+}
+
+/* -- hover, focus, press --------------------------------------------------------
+   One timing for every state change. A keyboard focus gets what a hover gets;
+   the focus ring itself is never animated. */
+a, .button, .hero-proof a, .hero-cta, summary {
+  transition:
+    color var(--m-base) var(--m-ease),
+    text-decoration-color var(--m-base) var(--m-ease),
+    border-color var(--m-base) var(--m-ease),
+    background-color var(--m-base) var(--m-ease),
+    transform var(--m-fast) var(--m-ease);
+}
+
+/* Links that show an underline only when hovered or current drew it at once
+   while everything else on the page faded. The underline is always there now,
+   transparent at rest, so it fades like the rest. The rules that set the
+   hovered and current states are untouched. */
+@media screen {
+  .wordmark a, .topbar nav a, .foot nav a, .paper-nav a,
+  .area-title a, .project-title a, .outputs--media .output-title > a {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+  }
+}
+
+/* Pills: a keyboard focus lights them as a hover does. */
+.button:focus-visible {
+  border-color: color-mix(in srgb, var(--area) 55%, transparent);
+  background: color-mix(in srgb, var(--area) 8%, var(--surface));
+}
+.hero-proof a:focus-visible {
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+.hero-cta:focus-visible {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+
+/* The clip frames: the same hairline-and-glow as before, on the shared timing.
+   The shadow keeps its geometry at rest and only its colour changes. */
+.area-media, .project-media {
+  box-shadow: 0 12px 44px -20px transparent;
+  transition:
+    border-color var(--m-base) var(--m-ease),
+    box-shadow var(--m-base) var(--m-ease),
+    translate var(--m-base) var(--m-ease);
+}
+/* An inventory row lights its thumbnail's hairline while the pointer or the
+   focus is in it: which entry you are in, not a promise that the row is a link. */
+.output-media video, .output-media img {
+  transition: border-color var(--m-base) var(--m-ease);
+}
+.outputs > li:hover .output-media video,
+.outputs > li:hover .output-media img,
+.outputs > li:focus-within .output-media video,
+.outputs > li:focus-within .output-media img {
+  border-color: color-mix(in srgb, var(--area) 62%, transparent);
+}
+
+/* The arrows: one timing, and they answer a keyboard focus too. */
+.hero-cta span, .more a span, .area-extra a span, .backlink span {
+  display: inline-block;
+  transition: transform var(--m-base) var(--m-ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-cta:focus-visible span, .more a:focus-visible span, .area-extra a:focus-visible span {
+    transform: translateX(0.3rem);
+  }
+  /* the way back points the other way */
+  .backlink:hover span, .backlink:focus-visible span { transform: translateX(-0.25rem); }
+
+  /* A press: pills give by 3%. */
+  .button:active, .hero-proof a:active, .hero-cta:active { transform: scale(0.97); }
+
+  /* A card is one link, so the whole card answers: the frame lifts 2px into
+     its glow and the area's mark over the title runs out. A press sets the
+     frame back down. */
+  .area-title::before, .project-title::before {
+    transform-origin: 0 50%;
+    transition: transform var(--m-base) var(--m-ease);
+  }
+  .area:focus-within .area-media, .project:focus-within .project-media { translate: 0 -2px; }
+  .area:focus-within .area-title::before,
+  .project:focus-within .project-title::before { transform: scaleX(1.75); }
+  @media (hover: hover) {
+    .area:hover .area-media, .project:hover .project-media { translate: 0 -2px; }
+    .area:hover .area-title::before,
+    .project:hover .project-title::before { transform: scaleX(1.75); }
+  }
+  .area:active .area-media, .project:active .project-media {
+    translate: 0 0;
+    transition-duration: var(--m-fast);
+  }
+}
+
+/* Under reduced motion a state still changes, at once and in place: the
+   transitions are already off (the rule further up this file), and the arrows
+   that slide on hover stay where they are. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta:hover span, .more a:hover span, .area-extra a:hover span { transform: none; }
+}
+
+
+/* ==== agent:components ==== */
+/* research/components.html, round two (2026-11-19): the page as a short
+   introduction. Scoped to .cs-* (the example components: maps cut from the
+   paper's figures, excerpts set as text, tabs added by viz/components.js),
+   .il-* (the coded illustration of the idea) and the page's own sections.
+   Colours are the site's tokens; the highlight is the paper's own pale
+   yellow with near-black text (14:1), as the excerpts are printed in Fig. 2. */
+
+/* the takeaway, straight under the section nav */
+.paper > p.cs-tldr {
+  max-width: 44rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.75rem;
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+/* -- the example components ------------------------------------------------ */
+.cs { max-width: 44em; margin-left: auto; margin-right: auto; }
+.cs--hero { margin-top: 0; margin-bottom: 1.5rem; }
+#more-examples { margin-top: 2.75rem; }
+.cs-panel { outline: none; }
+.cs-panel + .cs-panel { margin-top: 2.25rem; }            /* stacked, no script */
+.cs-on .cs-panel + .cs-panel { margin-top: 0; }
+.cs-panel:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 0.25rem; }
+.cs-name { margin: 0 0 0.7rem; font-size: 1.1875rem; line-height: 1.35; color: var(--fg); }
+.cs-id {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 0.3rem;
+  background: #f6e3a1;
+  color: #141414;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  vertical-align: 0.12em;
+}
+/* the four maps on the paper's white ground: one row, or two by two */
+.cs-maps {
+  display: grid;
+  grid-template-columns: 564fr 563fr 564fr 602fr;
+  gap: 0.5rem 0.4rem;
+  padding: 0.75rem 0.75rem 0.55rem;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+.cs-map { margin: 0; min-width: 0; }
+.fig .cs-map img { display: block; width: 100%; height: auto; border: 0; border-radius: 0; background: none; }
+.cs-map span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: center;
+  color: #4a4a4a;                    /* 8.3:1 on the plate */
+}
+.cs-map--avg span { color: #2a2a2a; font-weight: 600; }
+@media (max-width: 560px) {
+  .cs-maps { grid-template-columns: 1fr 1fr; padding: 0.6rem 0.5rem 0.45rem; }
+}
+.cs-note { max-width: var(--measure); margin: 0.8rem 0 0; font-size: 0.9375rem; line-height: 1.5; color: var(--fg-dim); }
+.cs-ex { margin: 0.9rem 0 0; padding: 0; list-style: none; }
+.cs-ex li {
+  margin: 0;
+  padding: 0.3rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+  border-top: 1px solid var(--border);
+}
+.cs-ex li:first-child { border-top: 0; }
+.cs-ex mark {
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.2rem;
+  background: #f6e3a1;
+  color: #141414;
+  font-weight: 600;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.cs-src { margin: 0.5rem 0 0; font-size: 0.8125rem; color: var(--fg-muted); }
+.cs figcaption { margin-top: 1rem; }
+
+/* tabs, added by the script */
+.cs-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 1rem; }
+.cs-tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-height: 2.3rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.cs-tab-id { font-family: var(--mono); font-size: 0.75rem; color: var(--fg-muted); }
+.cs-tab:hover { border-color: color-mix(in srgb, var(--area) 60%, transparent); color: var(--fg); }
+.cs-tab[aria-selected="true"] {
+  border-color: var(--area);
+  background: color-mix(in srgb, var(--area) 16%, transparent);
+  color: var(--fg);
+}
+.cs-tab[aria-selected="true"] .cs-tab-id { color: var(--fg-dim); }
+.cs-tab:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+/* the "see its maps" tag in the list is a link */
+a.cx-maplink { text-decoration: none; color: var(--fg-dim); }
+a.cx-maplink:hover { color: var(--fg); border-color: var(--area); }
+a.cx-maplink:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+/* -- the illustration of the idea --------------------------------------------- */
+.il-flow {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr 1.25fr;
+  gap: 1.4rem;
+  margin: 0;
+  padding: 1.1rem;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--surface);
+}
+.il-step { position: relative; display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+/* the arrow between two stages: right on a wide screen, down on a narrow one */
+.il-step + .il-step::before {
+  content: "→";
+  position: absolute;
+  left: -1.15rem;
+  top: 1.6rem;
+  color: var(--area);
+  font-size: 1rem;
+  line-height: 1;
+}
+.il-k { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.04em; color: var(--fg-muted); }
+.il-quote { font-size: 0.875rem; line-height: 1.5; color: var(--fg-dim); }
+.il-quote mark { padding: 0 0.15rem; border-radius: 0.15rem; background: #f6e3a1; color: #141414; }
+.il-v { font-size: 0.8125rem; line-height: 1.4; color: var(--fg-muted); }
+.il-v b { color: var(--fg); font-weight: 600; }
+/* the dense reading: grey stripes of uneven weight, all alike in kind */
+.il-bars {
+  display: block;
+  height: 2.6rem;
+  border-radius: 0.2rem;
+  background:
+    repeating-linear-gradient(90deg, #5a5a5a 0 2px, transparent 2px 5px, #8a8a8a 5px 6px, transparent 6px 9px, #3c3c3c 9px 12px, transparent 12px 13px),
+    #222;
+}
+.il-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; max-width: 11rem; }
+.il-grid i { display: block; aspect-ratio: 1; border-radius: 2px; background: #2e2e2e; }
+.il-grid i.on { background: var(--area); }
+.il-grid i.il-c8 { background: #f6e3a1; box-shadow: 0 0 0 2px var(--fg); }
+.il-out { display: block; font-size: 0.875rem; line-height: 1.45; color: var(--fg-dim); }
+.il-out b { color: var(--fg); }
+.il-heads { display: flex; gap: 4px; margin-top: 0.35rem; }
+.il-heads i {
+  display: block;
+  width: 1.1rem;
+  height: 0.8rem;
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(circle at 60% 40%, var(--area) 0 22%, #3a3a3a 24%);
+}
+@media (max-width: 760px) {
+  .il-flow { grid-template-columns: 1fr; gap: 1.6rem; }
+  .il-step + .il-step::before { content: "↓"; left: 0; top: -1.3rem; }
+  .il-grid { max-width: 13rem; }
+}
+.il-more { margin-top: 1rem; }
+.il-more .fig { margin-top: 1rem; }
+
+/* sections that open on a figure or a heading */
+#found > h3:first-of-type { margin-top: 1.25rem; }
+#found .fig.viz { margin-top: 1.25rem; margin-bottom: 0.5rem; }
+#components > p + .fig { margin-top: 1.5rem; }
+.paper-section > p.cs-details { color: var(--fg-dim); }
+
+
+/* ==== agent:lang ==== */
+/* research/superpositions.html and research/number.html (2026-11-19): two
+   figures drawn in the page on the superpositions page. #sp-crowd is an
+   illustration of superposition (labelled so in its caption) with buttons
+   added by viz/superpositions.js; without script it shows the "number" state.
+   #sp-walking is thesis Figure 2.2 redrawn on the dark ground, with a grid of
+   the 1,000 atoms. Concept colors are paired with text labels everywhere, so
+   no reading depends on hue. Scoped to .sp-*. */
+.sp-fig {
+  --sp-number: #ec8299;
+  --sp-time:   #7cc77f;
+  --sp-space:  #7aa8f5;
+  --sp-family: #e0aa5c;
+  --sp-color:  #b897e8;
+}
+.sp-c-number { --c: var(--sp-number); }
+.sp-c-time   { --c: var(--sp-time); }
+.sp-c-space  { --c: var(--sp-space); }
+.sp-c-family { --c: var(--sp-family); }
+.sp-c-color  { --c: var(--sp-color); }
+
+.sp-crowd {
+  display: grid;
+  gap: 1.25rem 2rem;
+  align-items: center;
+  max-width: 44em;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--surface) 55%, var(--bg));
+}
+@media (min-width: 40em) { .sp-crowd { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
+.sp-space { display: block; width: 100%; max-width: 24rem; height: auto; margin: 0 auto; overflow: visible; }
+.sp-concept line { stroke: var(--c); stroke-width: 3; stroke-linecap: round; }
+.sp-concept polygon { fill: var(--c); }
+.sp-concept text { fill: var(--fg-dim); font: 13px var(--sans); }
+.sp-concept.is-on text { fill: var(--fg); font-weight: 700; }
+.sp-voxel line { stroke: var(--fg); stroke-width: 6; stroke-linecap: round; }
+.sp-voxel polygon { fill: var(--fg); }
+.sp-origin { fill: var(--fg-muted); }
+
+.sp-readings { font-size: 0.8125rem; line-height: 1.3; }
+.sp-reading-h { margin: 0 0 0.45rem; color: var(--fg-dim); font-weight: 600; }
+.sp-rows + .sp-reading-h { margin-top: 1rem; }
+.sp-rows { display: grid; gap: 0.3rem; }
+.sp-row { display: grid; grid-template-columns: 3.6rem 1fr; gap: 0.6rem; align-items: center; color: var(--fg-muted); }
+.sp-track { display: block; height: 0.6rem; border-radius: 0.3rem; background: var(--border); overflow: hidden; }
+.sp-bar {
+  display: block; height: 100%;
+  background: var(--c);
+  transform: scaleX(var(--v, 0));
+  transform-origin: 0 50%;
+  transition: transform 0.4s ease;
+}
+
+.sp-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 1rem; }
+.sp-pick[hidden] { display: none; }
+.sp-pick-label { margin-right: 0.3rem; font-size: 0.8125rem; color: var(--fg-muted); }
+.sp-pick button {
+  min-height: 2rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.sp-pick button:hover { border-color: var(--fg-muted); color: var(--fg); }
+.sp-pick button[aria-pressed="true"] { border-color: var(--area); background: color-mix(in srgb, var(--area) 16%, var(--surface)); color: var(--fg); }
+.sp-pick button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.sp-say { max-width: 34rem; min-height: 2.9em; margin: 0.75rem 0 0; font-size: 0.875rem; line-height: 1.45; color: var(--fg-dim); }
+.sp-say + figcaption { margin-top: 0.5rem; }
+
+/* walking = 3 x trail + ... */
+.sp-walk {
+  display: grid;
+  gap: 1rem 1.5rem;
+  max-width: 44em;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--surface) 55%, var(--bg));
+}
+@media (min-width: 40em) { .sp-walk { grid-template-columns: auto 1fr; align-items: center; } }
+.sp-walk-word { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--fg); white-space: nowrap; }
+.sp-walk-word span[aria-hidden] { margin-left: 0.4rem; color: var(--fg-muted); font-weight: 400; }
+.sp-walk-rows { display: grid; gap: 0.45rem; margin: 0; padding: 0; list-style: none; font-size: 0.875rem; line-height: 1.35; }
+.sp-walk-rows li {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.1rem 0.6rem;
+  padding-left: 0.6rem;
+  border-left: 3px solid color-mix(in srgb, var(--area) calc(30% + var(--w) * 23%), transparent);
+}
+.sp-walk-rows b { grid-row: span 2; font-family: var(--mono); font-weight: 400; color: var(--fg); }
+.sp-atom { color: var(--fg); font-weight: 600; }
+.sp-words { color: var(--fg-muted); font-size: 0.8125rem; }
+.sp-grid { grid-column: 1 / -1; display: block; width: 100%; max-width: 30rem; height: auto; }
+.sp-grid-off { fill: url(#sp-cell); }
+#sp-cell rect { fill: #262626; }
+.sp-grid-on rect { fill: var(--area); opacity: calc(0.4 + var(--w) * 0.2); }
+
+/* a tall plate (one atom, two listeners) should not fill the column */
+.sp-portrait { max-width: 24rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-bar { transition: none; }
+}
+
+/* the color key under the 19-listener map on research/number.html; the
+   swatches are the viewer's own channel colors, each named in words */
+.num-key { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; margin: 0.75rem 0 0; padding: 0; list-style: none; font-size: 0.8125rem; color: var(--fg-dim); }
+.num-key li { display: inline-flex; align-items: center; gap: 0.4rem; }
+.num-key i { width: 0.7rem; height: 0.7rem; border-radius: 50%; }
+.num-key + figcaption { margin-top: 0.5rem; }
+
+/* the walking grid sits beside the rows when there is room, and its five
+   atoms carry a light edge so they read at a glance */
+@media (min-width: 56em) {
+  .sp-walk { grid-template-columns: auto minmax(0, 1fr) 13rem; }
+  .sp-grid { grid-column: auto; }
+}
+.sp-grid { max-width: 20rem; }
+.sp-grid-on rect { stroke: var(--fg); stroke-width: 1.2; }
+
+
+/* ==== agent:clinical ==== */
+/* research/dbs.html, research/stimulation.html, research/birdsong.html
+   (2026-11-19). Scoped to .dbs-*, .bird-* and the three figure classes
+   below; nothing here applies elsewhere.
+
+   #dbs-loop is a coded illustration: an inline SVG loop and three schematic
+   traces. Without script it is static and says both states in words; with
+   viz/dbs.js it gains .is-live, a playhead and two state buttons, and the
+   loop names the current state. The state is always written out, so colour
+   is never the only cue. The birdsong figure is three static SVG panels.   */
+
+/* -- plates that are small in the source: do not blow them up past their pixels */
+.dbs-fig-small img { max-width: 24rem; }
+.dbs-fig-results img { max-width: 40rem; }
+
+/* -- the DBS loop ---------------------------------------------------------- */
+.dbs-loop-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--surface);
+}
+@media (min-width: 40em) {
+  .dbs-loop-row { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+}
+.dbs-loop svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dbs-loop-cycle { max-width: 22rem; margin: 0 auto; }
+.dbs-node rect { fill: var(--bg); stroke: var(--border); stroke-width: 1.5; }
+.dbs-node text { text-anchor: middle; fill: var(--fg-dim); font-family: var(--sans); }
+.dbs-node-title { font-size: 16px; font-weight: 600; fill: var(--fg) !important; }
+.dbs-node-text { font-size: 13.5px; }
+.dbs-node-state { font-size: 15px; font-weight: 600; fill: var(--area) !important; }
+.dbs-edge { fill: none; stroke: var(--fg-muted); stroke-width: 1.5; }
+.dbs-arrowhead { fill: var(--fg-muted); }
+.dbs-live { display: none; }
+.dbs-loop.is-live .dbs-live { display: inline; }
+.dbs-loop.is-live .dbs-static { display: none; }
+.dbs-loop.is-live .dbs-node--decoder rect,
+.dbs-loop.is-live .dbs-node--stim rect { stroke: color-mix(in srgb, var(--area) 60%, transparent); }
+
+.dbs-shade rect { fill: var(--fg); opacity: 0.06; }
+.dbs-trace-label { font-family: var(--sans); font-size: 16px; fill: var(--fg-dim); }
+.dbs-trace-axis { font-family: var(--sans); font-size: 14px; fill: var(--fg-muted); text-anchor: end; }
+.dbs-trace { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.dbs-trace--move { stroke: var(--fg-dim); stroke-width: 1.5; }
+.dbs-trace--const { stroke: var(--fg-muted); stroke-dasharray: 6 5; }
+.dbs-trace--resp { stroke: var(--area); }
+.dbs-playhead { display: none; stroke: var(--fg); stroke-width: 1.5; opacity: 0.7; }
+.dbs-loop.is-live .dbs-playhead { display: inline; }
+
+.dbs-loop-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.dbs-btn {
+  min-height: 2.25rem;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.dbs-btn:hover { border-color: var(--fg-muted); color: var(--fg); }
+.dbs-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dbs-btn[aria-pressed="true"] { border-color: var(--area); color: var(--fg); }
+.dbs-btn--play { margin-left: auto; }
+
+/* -- the birdsong delay-embedding panels ----------------------------------- */
+.bird-embed svg { display: block; width: 100%; height: auto; }
+.bird-line { fill: none; stroke: var(--area); stroke-width: 0.8; stroke-linejoin: round; opacity: 0.9; }
+.bird-embed-strip .bird-line { stroke-width: 1.2; }
+.bird-axis { stroke: var(--border); stroke-width: 1; }
+.bird-frame { fill: var(--surface); stroke: var(--border); }
+.bird-embed-label { margin: 0.35rem 0 1rem; font-size: 0.8125rem; color: var(--fg-muted); }
+.bird-embed-panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.paper-section > .fig .bird-embed-panels li + li { margin-top: 0; }
+.bird-embed-panels p { margin: 0.5rem 0 0; font-size: 0.8125rem; line-height: 1.4; color: var(--fg-muted); }
+.bird-embed-panels b { display: block; color: var(--fg-dim); font-weight: 600; }
+
+
+/* ==== agent:media ==== */
+/* ---- the media pass, 2026-11-19 ----------------------------------------------
+   index.html and research.html. Every slot was judged on one question: does a
+   visitor who knows nothing see in two seconds what it is? What changed:
+
+   - the hero is a new capture of the viewer (figures/home-hero.mp4, 1160 by
+     580): the same group map, larger in frame, turning slowly from side to
+     side. The clip is 2:1 and its brain is centred, so it fills the frame
+     with object-fit and needs none of the earlier crop arithmetic. Its
+     colours are named under it with the words that drive each one;
+   - the area cards and the inventory carry purpose-made 870 by 600 media
+     (the 1.45 frame), and an <img> may stand where a clip did.            */
+
+/* -- the hero clip -------------------------------------------------------------- */
+.hero-clip { aspect-ratio: 2; }
+.hero-media .hero-clip video {
+  inset: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  transform: none;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-clip { aspect-ratio: 2; }
+  .hero-media .hero-clip video { height: 100%; }
+}
+/* On a phone the 2:1 frame left the brain small; the frame takes the 1.45
+   shape of every other clip and the empty ground either side is cropped. */
+@media (max-width: 39.99em) {
+  .hero-clip { aspect-ratio: 1.45; }
+}
+
+/* -- the hero caption: what the colours are --------------------------------------
+   The caption line, then the key (each colour named, with three of the
+   viewer's own example words for it), then the way into the viewer. The key
+   uses the viewer's word colours, which pass 4.5:1 on the page; each entry
+   is named in words, so the colour is never the only cue. */
+.hero-media figcaption { align-items: flex-end; }
+.hero-cap {
+  flex: 1 1 24rem;
+  max-width: 40rem;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+.hero-key {
+  order: 3;
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+.hero-key li { margin: 0; padding: 0; }
+.hero-key li::before {
+  content: "";
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin-right: 0.45em;
+  border-radius: 0.15em;
+  background: var(--key);
+  vertical-align: 0.02em;
+}
+.key-name { margin-right: 0.3em; font-weight: 600; color: var(--key-text); }
+.key-number { --key: #e76889; --key-text: #f08a83; }
+.key-time   { --key: #80a925; --key-text: #6cc673; }
+.key-space  { --key: #2b9ff4; --key-text: #86a8ff; }
+@media (max-width: 39.99em) {
+  .hero-key { flex-direction: column; }
+}
+
+/* -- a still where a clip was --------------------------------------------------- */
+.area-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
