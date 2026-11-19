@@ -6,12 +6,12 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0a0a0a">
 <title>Semantic-cortical components — Alicia Zeng</title>
-<meta name="description" content="Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI, an oral at NeurIPS 2026: one model that learns a sparse basis of semantic-cortical components shared across subjects, keeping about 82% of dense ridge prediction with 50 components.">
+<meta name="description" content="A model that learns 50 components from people listening to stories, each a nameable kind of meaning paired with a map of where it drives the brain in each of six listeners.">
 <meta property="og:title" content="Semantic-cortical components — Alicia Zeng">
-<meta property="og:description" content="Semantic-Cortical Components: A Multisubject Coupled Sparse Autoencoder for Interpretable Language Encoding in fMRI, an oral at NeurIPS 2026: one model that learns a sparse basis of semantic-cortical components shared across subjects, keeping about 82% of dense ridge prediction with 50 components.">
+<meta property="og:description" content="A model that learns 50 components from people listening to stories, each a nameable kind of meaning paired with a map of where it drives the brain in each of six listeners.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research/components.html">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://alicialitrtwe.github.io/figures/components-fig2.jpg">
+<meta property="og:image" content="https://alicialitrtwe.github.io/figures/components-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://alicialitrtwe.github.io/research/components.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12.5' cy='16' r='7.5' fill='none' stroke='%23d4698f' stroke-width='2.6'/%3E%3Ccircle cx='19.5' cy='16' r='7.5' fill='none' stroke='%2335bcc9' stroke-width='2.6'/%3E%3C/svg%3E">
@@ -66,24 +66,23 @@
       Interpretable models</a><span class="sep" aria-hidden="true">·</span><a href="../research.html">All
       research</a></p>
 
-    <!-- The NeurIPS 2026 oral. Since 2026-11-17 everything factual here is
-         from the camera-ready paper (sparsebrain repo,
-         paper/neurips_2026/neurips_2026.tex, commit 5e2e31e of 2026-11-07):
-         the abstract verbatim, the short version written for this page from
-         the abstract and the contributions list, and Fig. 2
-         (paper/figures/fig2_components_v2.png). Before that the page carried
-         the submitted version's abstract (88%, "atoms") and its Fig. 1,
-         which is still in figures/ as atoms-fig1.*, unlinked.
+    <!-- The NeurIPS 2026 oral. Everything factual here is from the
+         camera-ready paper (sparsebrain repo, paper/neurips_2026/neurips_2026.tex,
+         commit 5e2e31e of 2026-11-07): the abstract verbatim, and the running
+         text written for this page from the abstract, the contributions list
+         and the results sections.
 
-         Added 2026-11-19, all from the same tex and written to be read
-         without the paper: Fig. 1 (the model diagram,
-         paper/figures/fig1_architecture_v6f.png) in its own section; the 50
-         components as a list, each with two marks (Table 15, the catalog);
-         and the comparison with two-stage training as a grid of ticks (Table
-         1 and the contributions list; no scores). The list and the grid are
-         plain HTML and complete without script; ../viz/components.js adds
-         ordering, filtering and folding to the list. Table 15 is on the page
-         in full, folded. -->
+         Rewritten 2026-11-19 as a short introduction. Visuals: the examples
+         at the top and the six further examples are crops of the paper's
+         Fig. 2 and appendix example figures, maps as images and excerpts as
+         text (figures/components-c*-*.jpg); the illustration of the idea is
+         coded and says so; Fig. 1 is folded under it; the list of all 50
+         components and the tick grid are from Table 15 and Table 1; Table 15
+         itself is folded at the end of the list. Older material still on
+         disk, unlinked: atoms-fig1.*, components-fig2.* (linked from the
+         caption only). ../viz/components.js makes the tabs, folds the
+         details marked data-fold, and adds ordering and filtering to the
+         list. -->
     <article class="paper">
 
       <header class="paper-head">
@@ -105,112 +104,225 @@
 
       <nav class="paper-nav" aria-label="Sections">
         <ol>
-          <li><a href="#tldr">Short version</a></li>
-          <li><a href="#model">The model</a></li>
-          <li><a href="#components">The 50 components</a></li>
-          <li><a href="#coupling">Why train jointly</a></li>
+          <li><a href="#idea">The idea</a></li>
+          <li><a href="#found">What it found</a></li>
+          <li><a href="#components">All 50 components</a></li>
+          <li><a href="#matters">Why it matters</a></li>
           <li><a href="#abstract">Abstract</a></li>
           <li><a href="#bibtex">BibTeX</a></li>
         </ol>
       </nav>
 
-      <!-- Fig. 2 of the camera-ready paper: a white plate, served as WebP with
-           the JPEG behind it, 1600 px from the 3300 px original. The legend is
-           the paper's, folded under a one-line caption. -->
-      <figure class="fig fig--hero fig--plate">
-        <a href="../figures/components-fig2.jpg"><picture>
-          <source srcset="../figures/components-fig2.webp" type="image/webp">
-          <img src="../figures/components-fig2.jpg" width="1600" height="1969"
-               alt="Four rows, one per component: spoken numbers and quantities; references to family members and personal relations; clothing, outfits and physical appearance; natural landscape and scenery. Each row shows the component’s map on the flattened cortex of three subjects and on the average of six, four story excerpts with the words that drove it highlighted, and its scores: nameability, stability across seeds, consistency across subjects, Yeo 7 networks and best Neurosynth term. Below, a chart of all 50 components ordered by how stable their cortical map is across seeds.">
-        </picture></a>
-        <figcaption><b>Fig. 2: Each component pairs a nameable description with a cortical map in
-          every subject.</b> Four example components, each with its map in three subjects and on
-          the average brain, the story moments that drive it, and its scores; then all 50
-          components ordered by stability. From the camera-ready paper.
-          <details class="legend"><summary>The paper’s legend (appendix references omitted)</summary>
-          <p><b>Figure 2: Each component pairs a nameable description with a cortical map in
-          every subject.</b> (a) c8, (b) c23, (c) c2 and (d) c45 of the seed-0 model. Each row
-          shows the AutoInterp judge’s description, the component’s cortical map in three
-          subjects and averaged on fsaverage (a common cortical surface), and top-activating
-          excerpts with the firing TR highlighted. Each map has its own colour scale, with its
-          maximum given below it, because the average map is weaker than any single-subject map.
-          Side column: nameability (AutoInterp AUC); cross-seed stability of the cortical map;
-          cross-subject <i>r</i> of the cortical maps; cross-seed stability of the semantic
-          decoder; active % of time points; significant Yeo&nbsp;7 networks (DMN = default mode,
-          FPN = frontoparietal, DAN = dorsal attention); the best Neurosynth term and its map
-          correlation <i>r</i> (*: <i>q</i> &lt; 0.05). (e) All 50 components, ordered by
-          cross-seed stability of the cortical map. Filled orange markers show the cross-seed
-          stability of the cortical map and hollow blue markers that of the semantic decoder,
-          each over 20 seeds (best-match cosine). Orange diamonds show the cross-subject
-          consistency <i>r</i> of the cortical map, open if <i>q</i> ≥ 0.05. Components a–d are
-          highlighted.</p></details></figcaption>
+            <p class="tldr cs-tldr">I built a model that learns 50 components from people listening to
+        stories. Each component is a kind of meaning, such as numbers or family, paired with a
+        map of where the brain responds to it, and the six listeners share the same set.</p>
+
+      <!-- The hero: one component at a time, cropped from Fig. 2 of the
+           camera-ready (paper/figures/fig2_components_v2.png, 3300 px). The
+           four maps are the figure's own panels cut apart at full resolution;
+           the description and the story excerpts are set as text, copied
+           from the figure (three of its four excerpts per component). With
+           no script the four components stack; ../viz/components.js turns
+           them into tabs. data-no-zoom: the tiles are already at their
+           natural size, and the full figure is linked from the caption. -->
+      <figure class="fig cs cs--hero" id="examples" data-no-zoom data-switch>
+      <div class="cs-panel" id="comp-c8" data-label="Numbers" aria-labelledby="cs-h-c8">
+        <p class="cs-name" id="cs-h-c8"><span class="cs-id">c8</span> spoken numbers and quantities</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c8-uts02.jpg" width="564" height="305" alt="Brain map of component c8 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c8-uts03.jpg" width="563" height="305" alt="Brain map of component c8 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c8-uts06.jpg" width="564" height="305" alt="Brain map of component c8 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c8-avg.jpg" width="602" height="305" alt="Brain map of component c8 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c8 is most active">
+          <li><span class="cs-pre">…wilson stephanie wilson is about</span> <mark>five foot two and weighs about a hundred pounds</mark> <span class="cs-post">stephanie…</span></li>
+          <li><span class="cs-pre">…anorexically petite friends growing up</span> <mark>at five foot five a hundred and forty pounds</mark> <span class="cs-post">it was universally…</span></li>
+          <li><span class="cs-pre">…with his pipes he could either be</span> <mark>five foot or up to six four</mark> <span class="cs-post">he said he didn’t know how tall he would…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c23" data-label="Family" aria-labelledby="cs-h-c23">
+        <p class="cs-name" id="cs-h-c23"><span class="cs-id">c23</span> references to family members and personal relations</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c23-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c23 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c23-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c23 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c23-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c23 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c23-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c23 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c23 is most active">
+          <li><span class="cs-pre">…worked out fine so i even had a friend</span> <mark>named neil whose parents had done the same thing</mark> <span class="cs-post">you know…</span></li>
+          <li><span class="cs-pre">…or two later this great grandmother</span> <mark>who had worried about them and prayed for</mark> <span class="cs-post">them for years and…</span></li>
+          <li><span class="cs-pre">…and then a few years into high school</span> <mark>my mom told me that she was getting remarried and</mark> <span class="cs-post">we were…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c2" data-label="Clothing" aria-labelledby="cs-h-c2">
+        <p class="cs-name" id="cs-h-c2"><span class="cs-id">c2</span> clothing, outfits and physical appearance descriptions</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c2-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c2 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c2-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c2 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c2-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c2 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c2-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c2 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c2 is most active">
+          <li><span class="cs-pre">…she was just very badly dressed</span> <mark>like pink and red together and stripes</mark> <span class="cs-post">and i thought she can’t put…</span></li>
+          <li><span class="cs-pre">…right on the side thing and his hair</span> <mark>and his beard and he’s got the th you know thing</mark> <span class="cs-post">and a bunch…</span></li>
+          <li><span class="cs-pre">…like blonde she’s petite she was waify</span> <mark>she had a pert nose and like no visible body</mark> <span class="cs-post">hair it was just like…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c45" data-label="Landscapes" aria-labelledby="cs-h-c45">
+        <p class="cs-name" id="cs-h-c45"><span class="cs-id">c45</span> natural landscape and scenery descriptions</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c45-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c45 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c45-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c45 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c45-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c45 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c45-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c45 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c45 is most active">
+          <li><span class="cs-pre">…shore of lake cayuga there’s flatland</span> <mark>and these hills and it has a a very particular</mark> <span class="cs-post">microclimate there…</span></li>
+          <li><span class="cs-pre">…that almost impossible stretch of road</span> <mark>carved into the divide of steep mountain</mark> <span class="cs-post">rock and ocean i had…</span></li>
+          <li><span class="cs-pre">…giant stone cliffs like two mighty cliffs</span> <mark>where the crack in between there was a small</mark> <span class="cs-post">path and you are…</span></li>
+        </ul>
+      </div>
+        <figcaption>Four of the 50 components, as the model learned them. Under each
+          description: its brain map in three of the six listeners, each brain’s surface
+          flattened out, and averaged over all six on a standard brain. Brighter means a
+          stronger response; the average has its own scale because averaging weakens it. Below
+          the maps, story moments where the component is most active, with the two seconds of
+          speech in which it fires highlighted. From Fig.&nbsp;2 of the paper
+          (<a href="../figures/components-fig2.jpg">the full figure</a>).</figcaption>
       </figure>
 
-<blockquote class="pull"><p>Each of the 50 code dimensions, which we call semantic-cortical components, pairs a semantic direction with a cortical map in every subject.</p></blockquote>
+<p class="source">Written for this page from the camera-ready paper. It was submitted as <cite>Learning Sparse Semantic-Cortical Atoms for Multisubject Naturalistic fMRI Encoding</cite>, which called the components “atoms”; the conference listing may still show that title.</p>
 
-<p class="source">Written for this page from the camera-ready paper. The paper is <a href="https://openreview.net/forum?id=YcEZoSqrxa">on OpenReview</a> and is presented as an oral at NeurIPS 2026 in Sydney, with a poster in Poster Session&nbsp;2. The abstract and Figs.&nbsp;1 and&nbsp;2 here are the camera-ready version’s. The paper was submitted under the title <cite>Learning Sparse Semantic-Cortical Atoms for Multisubject Naturalistic fMRI Encoding</cite>, which called the components “atoms”; the conference listing may still show that title and the submitted abstract.</p>
+<section class="paper-section" id="idea" aria-labelledby="h-idea">
+  <h2 id="h-idea">The idea</h2>
+  <p>Large language models are good at predicting how the brain responds to speech. Play a
+    story to someone in an fMRI scanner, feed the same story to a language model, and a
+    simple fitted map from the model’s internal numbers to the brain predicts responses
+    across much of the brain. What those numbers mean is another matter.</p>
+  <p>The obstacle is that a language model is thought to pack far more ideas than it has numbers, so each
+    number carries a mix of many ideas, like a smoothie you can taste but not take apart.
+    The brain side has a similar problem: the usual model fits every small patch of brain
+    separately and every person separately, so a shared layout has to be pieced together
+    afterward, if at all.</p>
+  <p>My model tackles both at once. Each moment of the story is squeezed into 50
+    components, only five of which may be on at a time. From those five, the model has to
+    rebuild the language model’s numbers and also predict the brain responses of six
+    listeners. A component that serves both jobs becomes two things at once: a kind of
+    meaning, and a map of where that meaning drives the brain in each listener. Squeezed
+    this hard, the model still keeps about 82% of the brain-prediction accuracy of a
+    standard model that reads all 2,304 of the language model’s numbers.</p>
 
-<section class="paper-section" id="tldr" aria-labelledby="h-tldr">
-  <h2 id="h-tldr">The short version</h2>
-<p class="tldr">Encoding models built on language-model activations predict cortical responses to natural language well but are hard to interpret. There are three reasons: semantic selectivity is not identifiable in a dense, correlated activation space; cortical organization stays implicit in voxelwise weights; and correspondence across subjects is usually worked out only after fitting. This paper addresses all three in one model.</p>
-<p>A multisubject coupled sparse autoencoder is trained jointly to reconstruct the language-model activations and to predict the brain responses of six subjects from one sparse code. Each of the 50 code dimensions is a <em>semantic-cortical component</em>: a semantic direction paired with a cortical map in every subject.</p>
-<ul class="stats" role="list">
-  <li><b>≈82%</b><span>of the brain-prediction accuracy of ridge regression on all 2,304 activation dimensions</span></li>
-  <li><b>50</b><span>components, learned jointly from six subjects</span></li>
-  <li><b><i>k</i>&nbsp;=&nbsp;5</b><span>components active per time point</span></li>
-  <li><b>87%, 102%</b><span>of ridge accuracy for two new subjects, with about 2% of its parameters</span></li>
-</ul>
-<p>The components are evaluated on three properties. Nameability: an LLM judge’s one-sentence description of a component predicts which held-out text activates it. Cross-subject consistency: the cortical maps agree across subjects, and many also align with the Yeo&nbsp;7 resting-state networks and with Neurosynth meta-analytic maps. Cross-seed stability: many components recur when the model is retrained, though not all.</p>
-<p>Only the coupled model does well on all three properties and on both objectives. Matched models trained on the two objectives in sequence do not. A brain-only basis predicts brain responses slightly better but is worse on semantic reconstruction, nameability and cross-seed stability. A semantics-only basis reconstructs the activations slightly better but is 19% worse on brain prediction and less consistent across subjects.</p>
-<p>The code also transfers to new subjects. For two subjects unseen in training, a linear readout from the frozen code, fit on 22 stories each, recovers 87% and 102% of the accuracy of ridge with about 2% of its parameters.</p>
-<p>It is the successor to <a href="superpositions.html">the 2025 paper</a>, which unpacked a word embedding into sparse concept atoms first and fit the encoding model second. Here the two steps are trained together, and all subjects are modeled jointly.</p>
+  <!-- A coded illustration of the idea, not data. HTML and CSS: four
+       stages that run left to right on a wide screen and top to bottom on a
+       narrow one. The story line is a real moment (c8's first excerpt in
+       Fig. 2); which cells are lit is schematic. -->
+  <figure class="fig il" data-no-zoom>
+    <ol class="il-flow" role="list">
+      <li class="il-step">
+        <span class="il-k">1 · A moment of a story</span>
+        <span class="il-quote">“…stephanie wilson is about <mark>five foot two and weighs about a hundred pounds</mark>…”</span>
+      </li>
+      <li class="il-step">
+        <span class="il-k">2 · The language model’s reading</span>
+        <span class="il-bars" aria-hidden="true"></span>
+        <span class="il-v">2,304 numbers, every meaning mixed in</span>
+      </li>
+      <li class="il-step il-step--code">
+        <span class="il-k">3 · 50 components, five on</span>
+        <span class="il-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on il-c8"></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="il-v">lit here: <b>c8, numbers</b>, and four others</span>
+      </li>
+      <li class="il-step il-step--out">
+        <span class="il-k">4 · Two jobs from the same five</span>
+        <span class="il-out"><b>Rebuild</b> the language model’s 2,304 numbers</span>
+        <span class="il-out"><b>Predict</b> the brain response of each of six listeners
+          <span class="il-heads" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+      </li>
+    </ol>
+    <figcaption><b>The idea, as an illustration.</b> Every two seconds of a story pass through
+      a language model and then through a bottleneck of 50 components, only five of them on
+      at once. From those five the model must do two jobs at the same time, and that is what
+      ties each component’s meaning to a place in the brain. The lit cells are schematic.</figcaption>
+  </figure>
+
+  <details class="viz-data il-more" open data-fold>
+    <summary>The paper’s own diagram of the model (Fig.&nbsp;1)</summary>
+    <figure class="fig fig--plate">
+      <a href="../figures/components-fig1.jpg"><picture>
+        <source srcset="../figures/components-fig1.webp" type="image/webp">
+        <img src="../figures/components-fig1.jpg" width="1600" height="873" loading="lazy"
+             alt="A diagram in three panels. Panel a: a story excerpt goes through Gemma-2-2b, layer 25, to a 2304-dimensional activation vector, and through a shared encoder with ReLU and TopK to a sparse code of 50 components with 5 active. A semantic decoder reconstructs the activations from the code; a brain decoder for each of six subjects predicts 30,000 voxels from copies of the code delayed by 2 to 8 seconds; the two losses are added. Panel b: component c18 as column 18 of the semantic decoder, described by the LLM judge as food and drink items and meals, with three top excerpts, and as a cortical map in subjects UTS02, UTS03 and UTS06. Panel c: the component’s activation, convolved with its learned delay scales, gives a response 2 to 8 seconds later.">
+      </picture></a>
+      <figcaption><b>Fig.&nbsp;1 of the paper.</b> (a) The model: the language model’s
+        activations, the sparse code, the decoder that rebuilds the activations and one brain
+        decoder per listener, trained together. (b) One component, c18 (food and drink), as a
+        description with its top excerpts and as a map in three listeners. (c) How a
+        component’s firing turns into a brain response two to eight seconds later.</figcaption>
+    </figure>
+  </details>
+
 </section>
 
-<section class="paper-section" id="model" aria-labelledby="h-model">
-  <h2 id="h-model">The model</h2>
-  <!-- Fig. 1 of the camera-ready paper: a white plate, 1600 px from the
-       3300 px original, WebP with the JPEG behind it, as Fig. 2 above. The
-       caption is written for this page; the paper's legend is folded. -->
-  <figure class="fig fig--plate">
-    <a href="../figures/components-fig1.jpg"><picture>
-      <source srcset="../figures/components-fig1.webp" type="image/webp">
-      <img src="../figures/components-fig1.jpg" width="1600" height="873" loading="lazy"
-           alt="A diagram in three panels. Panel a: a story excerpt goes through Gemma-2-2b, layer 25, to a 2304-dimensional activation vector, and through a shared encoder with ReLU and TopK to a sparse code of 50 components with 5 active. A semantic decoder reconstructs the activations from the code; a brain decoder for each of six subjects predicts 30,000 voxels from copies of the code delayed by 2 to 8 seconds; the two losses are added. Panel b: component c18 as column 18 of the semantic decoder, described by the LLM judge as food and drink items and meals, with three top excerpts, and as a cortical map in subjects UTS02, UTS03 and UTS06. Panel c: the component’s activation, convolved with its learned delay scales, gives a response 2 to 8 seconds later.">
-    </picture></a>
-    <figcaption><b>Fig. 1: The model.</b> In goes a language model’s reading of the story.
-      Out come that reading rebuilt and a prediction of each listener’s brain response, both
-      read from one code of 50 components with five active at a time. A component (here c18,
-      food and drink) is one kind of meaning paired with a map on every listener’s cortex.
-      From the camera-ready paper.
-      <details class="legend"><summary>The paper’s legend (section and appendix references omitted)</summary>
-      <p><b>Figure 1: The coupled SAE reconstructs the activations and predicts every
-      subject’s responses from one sparse code, whose dimensions are semantic-cortical
-      components.</b> Blue: semantic side; orange: brain side; gold: component c18; grey:
-      observed <i>x<sub>t</sub></i> and <i>y</i><sup>(<i>s</i>)</sup><sub><i>t</i></sub>.
-      (a) Gemma-2-2b activations <i>x<sub>t</sub></i> (layer&nbsp;25, 2304-d, one per TR) are
-      encoded into a sparse code <i>z<sub>t</sub></i> with <i>k</i>&nbsp;=&nbsp;5 of 50
-      components active (dark cells). The semantic decoder <i>W</i><sub>sem</sub>
-      reconstructs <i>x̂<sub>t</sub></i> from the active components’ columns (bias
-      <i>b</i><sub>pre</sub> omitted). The brain decoder takes copies of the code delayed by
-      1–4 TRs (2–8&nbsp;s) and rescaled by learned per-component delay scales
-      <i>λ<sub>δ</sub></i>. Each subject’s non-negative
-      <i>W</i><sup>(<i>s</i>)</sup><sub>brain</sub> maps these delayed codes to predicted
-      responses <i>ŷ</i><sup>(<i>s</i>)</sup><sub><i>t</i></sub> (one card per subject; one
-      block of 50 columns per delay). All parts are trained jointly on
-      ℒ&nbsp;=&nbsp;ℒ<sub>brain</sub>&nbsp;+&nbsp;<i>α</i>&#8239;ℒ<sub>sem</sub>.
-      (b) Component c18 (seed&nbsp;0). Left: its column of <i>W</i><sub>sem</sub>, summarized
-      by the LLM judge’s description (AutoInterp) and top-activating excerpts (highlight: the
-      TR where c18 is active). Right: its cortical map (brighter = larger), computed from its
-      four columns of <i>W</i><sup>(<i>s</i>)</sup><sub>brain</sub>, in three of the six
-      subjects, each on its own flattened cortex. (c) The delay model for c18: a schematic
-      activation trace <i>z</i><sub>18</sub>(<i>t</i>) (the TRs of the highlighted words)
-      convolved with its learned delay scales (real values, all near 1; dotted line) gives a
-      response 2–8&nbsp;s later (faded stems: the activation again).</p></details></figcaption>
+<section class="paper-section" id="found" aria-labelledby="h-found">
+  <h2 id="h-found">What it found</h2>
+
+  <h3>Each component can be named, and its map looks alike across people</h3>
+  <p>To name a component, another language model reads the passages that switch it on and
+    writes one sentence. For nearly every component, that sentence picks out which unseen
+    passages will switch it on. The maps agree across the six listeners even though the
+    model was never told how one brain lines up with another, and many match brain networks
+    known from other studies. Five components follow the rhythm of speech, its pauses and
+    fast stretches, rather than its meaning.</p>
+
+  <h3>Most components come back when the model is retrained</h3>
+  <p>Retrained from a different random start, the model learns most of the same components
+    again. The few that do not return reliably are narrow or tied to a single story, so I
+    treat the components as a useful description rather than the brain’s one true set of
+    parts. The <a href="#components">list of all 50</a> below shows how reliably each
+    returns.</p>
+
+  <h3>Training the two halves together is what makes this work</h3>
+  <p>The same model can also be trained in two steps, learning the components from the
+    language model first and fitting them to the brain afterward, or the other way round.
+    Each version falls short where its first step did not look. Learned from meaning first,
+    the components predict the brain worse and their maps agree less across people. Learned
+    from the brain first, they predict the brain slightly better but rebuild meaning poorly,
+    are harder to name and return less often.</p>
+  <figure class="fig viz" id="cmp">
+    <div class="table-wrap">
+      <table class="cmp-grid">
+        <thead>
+          <tr><td></td><th scope="col">Trained jointly<span>this paper’s model</span></th><th scope="col">Meaning first,<span>then fit to the brain</span></th><th scope="col">Brain first,<span>then fit to meaning</span></th></tr>
+        </thead>
+        <tbody>
+          <tr class="cmp-grp"><th colspan="4" scope="colgroup">The two jobs</th></tr>
+          <tr><th scope="row">Predicts brain activity</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td></tr>
+          <tr><th scope="row">Rebuilds the language model’s reading of the story</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td></tr>
+          <tr class="cmp-grp"><th colspan="4" scope="colgroup">Three qualities of the components</th></tr>
+          <tr><th scope="row">Each can be named in a sentence</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td></tr>
+          <tr><th scope="row">Their brain maps agree across people</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td></tr>
+          <tr><th scope="row">They come back when the model is retrained</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figcaption><b>Only joint training does well on all five counts.</b> The same model
+      trained in two steps falls short where its first step did not look. A tick means the
+      model is at or near the best of the three; a ring means it is behind the other two. After
+      Table&nbsp;1 of the paper.</figcaption>
   </figure>
+
+  <h3>The components carry over to new people</h3>
+  <p>For two people the model never saw, I kept the components fixed and fitted only a small
+    new readout from them to each person’s brain, with about 2% of the adjustable weights of
+    the standard model. Given the same data, it recovered most of the standard model’s
+    accuracy for one person and all of it for the other.</p>
 </section>
 
 <section class="paper-section" id="components" aria-labelledby="h-components">
-  <h2 id="h-components">The 50 components</h2>
+  <h2 id="h-components">All 50 components</h2>
+  <p>The two marks on each line show how reliably the component’s map returns when the
+    model is retrained (circle) and how well it agrees across the six listeners (diamond);
+    further right is better. “See its maps” opens the ten whose maps are on this page.</p>
 
   <!-- The component explorer: one line per component of the seed-0 model,
        from Table 15 of the camera-ready (tab:catalog). The description is the
@@ -223,23 +335,23 @@
   <figure class="fig viz" id="cx">
     <div class="cx-head">
       <ul class="viz-legend" role="list">
-        <li><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg>how stable its brain map is when the model is retrained</li>
-        <li><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg>how well its brain map agrees across people</li>
+        <li><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg>comes back when the model is retrained</li>
+        <li><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg>map agrees across people</li>
         <li><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg>agreement not above chance</li>
       </ul>
       <div class="cx-axis" aria-hidden="true"><span>0</span><span>0.5</span><span>1</span><i>1 = identical maps</i></div>
     </div>
     <ol class="cx-list" role="list">
-              <!-- cx rows:begin -->
+      <!-- cx rows:begin -->
       <li class="cx-row" data-n="0" data-stab="0.73" data-xr="0.25"><span class="cx-id">c0</span><span class="cx-what"><span class="cx-desc">people looking at each other, eye contact and facial expressions</span></span><span class="cx-track"><span class="cx-link" style="left:25%;width:48%"></span><span class="cx-m cx-m--dia" style="left:25%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.25</span></span><span class="cx-m cx-m--dot" style="left:73%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.73</span></span></span></li>
       <li class="cx-row" data-n="1" data-stab="0.47" data-xr="0.08" data-tags="unstable"><span class="cx-id">c1</span><span class="cx-what"><span class="cx-desc">story-opening setup: a child’s school and family expectations</span></span><span class="cx-track"><span class="cx-link" style="left:8%;width:39%"></span><span class="cx-m cx-m--dia" style="left:8%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.08</span></span><span class="cx-m cx-m--dot" style="left:47%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.47</span></span></span></li>
-      <li class="cx-row" data-n="2" data-stab="0.87" data-xr="0.28" data-tags="fig2"><span class="cx-id">c2</span><span class="cx-what"><span class="cx-desc">clothing, outfits and physical appearance descriptions</span> <span class="cx-tag">Fig.&nbsp;2c</span></span><span class="cx-track"><span class="cx-link" style="left:28%;width:59%"></span><span class="cx-m cx-m--dia" style="left:28%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.28</span></span><span class="cx-m cx-m--dot" style="left:87%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.87</span></span></span></li>
+      <li class="cx-row" data-n="2" data-stab="0.87" data-xr="0.28" data-tags="maps"><span class="cx-id">c2</span><span class="cx-what"><span class="cx-desc">clothing, outfits and physical appearance descriptions</span> <a class="cx-tag cx-maplink" href="#comp-c2">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:28%;width:59%"></span><span class="cx-m cx-m--dia" style="left:28%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.28</span></span><span class="cx-m cx-m--dot" style="left:87%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.87</span></span></span></li>
       <li class="cx-row" data-n="3" data-stab="0.97" data-xr="0.06"><span class="cx-id">c3</span><span class="cx-what"><span class="cx-desc">physical places and venues where things are seen or encountered</span></span><span class="cx-track"><span class="cx-link" style="left:6%;width:91%"></span><span class="cx-m cx-m--dia" style="left:6%"><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.06<span class="vh">, not above chance</span></span></span><span class="cx-m cx-m--dot" style="left:97%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.97</span></span></span></li>
       <li class="cx-row" data-n="4" data-stab="0.25" data-xr="0.03" data-tags="unstable"><span class="cx-id">c4</span><span class="cx-what"><span class="cx-desc">dogs, puppies and baby animals</span></span><span class="cx-track"><span class="cx-link" style="left:3%;width:22%"></span><span class="cx-m cx-m--dia" style="left:3%"><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.03<span class="vh">, not above chance</span></span></span><span class="cx-m cx-m--dot" style="left:25%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.25</span></span></span></li>
-      <li class="cx-row" data-n="5" data-stab="0.89" data-xr="0.40"><span class="cx-id">c5</span><span class="cx-what"><span class="cx-desc">story-opening component</span></span><span class="cx-track"><span class="cx-link" style="left:40%;width:49%"></span><span class="cx-m cx-m--dia" style="left:40%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.40</span></span><span class="cx-m cx-m--dot" style="left:89%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.89</span></span></span></li>
+      <li class="cx-row" data-n="5" data-stab="0.89" data-tags="maps" data-xr="0.40"><span class="cx-id">c5</span><span class="cx-what"><span class="cx-desc">story-opening component</span> <a class="cx-tag cx-maplink" href="#comp-c5">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:40%;width:49%"></span><span class="cx-m cx-m--dia" style="left:40%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.40</span></span><span class="cx-m cx-m--dot" style="left:89%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.89</span></span></span></li>
       <li class="cx-row" data-n="6" data-stab="0.73" data-xr="0.28"><span class="cx-id">c6</span><span class="cx-what"><span class="cx-desc">place names and geographic locations people live in or move to</span></span><span class="cx-track"><span class="cx-link" style="left:28%;width:45%"></span><span class="cx-m cx-m--dia" style="left:28%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.28</span></span><span class="cx-m cx-m--dot" style="left:73%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.73</span></span></span></li>
       <li class="cx-row" data-n="7" data-stab="0.58" data-xr="0.17"><span class="cx-id">c7</span><span class="cx-what"><span class="cx-desc">crowds and groups acting collectively and noisily</span></span><span class="cx-track"><span class="cx-link" style="left:17%;width:41%"></span><span class="cx-m cx-m--dia" style="left:17%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.17</span></span><span class="cx-m cx-m--dot" style="left:58%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.58</span></span></span></li>
-      <li class="cx-row" data-n="8" data-stab="0.91" data-xr="0.20" data-tags="fig2"><span class="cx-id">c8</span><span class="cx-what"><span class="cx-desc">spoken numbers and quantities</span> <span class="cx-tag">Fig.&nbsp;2a</span></span><span class="cx-track"><span class="cx-link" style="left:20%;width:71%"></span><span class="cx-m cx-m--dia" style="left:20%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.20</span></span><span class="cx-m cx-m--dot" style="left:91%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.91</span></span></span></li>
+      <li class="cx-row" data-n="8" data-stab="0.91" data-xr="0.20" data-tags="maps"><span class="cx-id">c8</span><span class="cx-what"><span class="cx-desc">spoken numbers and quantities</span> <a class="cx-tag cx-maplink" href="#comp-c8">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:20%;width:71%"></span><span class="cx-m cx-m--dia" style="left:20%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.20</span></span><span class="cx-m cx-m--dot" style="left:91%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.91</span></span></span></li>
       <li class="cx-row" data-n="9" data-stab="0.51" data-xr="0.14" data-tags="unstable"><span class="cx-id">c9</span><span class="cx-what"><span class="cx-desc">film and camera/photography equipment</span></span><span class="cx-track"><span class="cx-link" style="left:14%;width:37%"></span><span class="cx-m cx-m--dia" style="left:14%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.14</span></span><span class="cx-m cx-m--dot" style="left:51%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.51</span></span></span></li>
       <li class="cx-row" data-n="10" data-stab="0.58" data-xr="0.24"><span class="cx-id">c10</span><span class="cx-what"><span class="cx-desc">religion, faith and cultural/group identity</span></span><span class="cx-track"><span class="cx-link" style="left:24%;width:34%"></span><span class="cx-m cx-m--dia" style="left:24%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.24</span></span><span class="cx-m cx-m--dot" style="left:58%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.58</span></span></span></li>
       <li class="cx-row" data-n="11" data-stab="0.78" data-xr="0.29"><span class="cx-id">c11</span><span class="cx-what"><span class="cx-desc">sequences of physical actions by a third person, mostly a man</span></span><span class="cx-track"><span class="cx-link" style="left:29%;width:49%"></span><span class="cx-m cx-m--dia" style="left:29%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.29</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
@@ -251,17 +363,17 @@
       <li class="cx-row" data-n="17" data-stab="0.41" data-xr="0.09" data-tags="unstable"><span class="cx-id">c17</span><span class="cx-what"><span class="cx-desc">therapy, counseling and self-help groups</span></span><span class="cx-track"><span class="cx-link" style="left:9%;width:32%"></span><span class="cx-m cx-m--dia" style="left:9%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.09</span></span><span class="cx-m cx-m--dot" style="left:41%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.41</span></span></span></li>
       <li class="cx-row" data-n="18" data-stab="0.79" data-xr="0.22"><span class="cx-id">c18</span><span class="cx-what"><span class="cx-desc">food and drink items and meals</span></span><span class="cx-track"><span class="cx-link" style="left:22%;width:57%"></span><span class="cx-m cx-m--dia" style="left:22%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.22</span></span><span class="cx-m cx-m--dot" style="left:79%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.79</span></span></span></li>
       <li class="cx-row" data-n="19" data-stab="0.30" data-xr="0.06" data-tags="unstable"><span class="cx-id">c19</span><span class="cx-what"><span class="cx-desc">Oregon Trail wagon-train scenario</span></span><span class="cx-track"><span class="cx-link" style="left:6%;width:24%"></span><span class="cx-m cx-m--dia" style="left:6%"><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.06<span class="vh">, not above chance</span></span></span><span class="cx-m cx-m--dot" style="left:30%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.30</span></span></span></li>
-      <li class="cx-row" data-n="20" data-stab="0.78" data-xr="0.13"><span class="cx-id">c20</span><span class="cx-what"><span class="cx-desc">letters, documents and written objects</span></span><span class="cx-track"><span class="cx-link" style="left:13%;width:65%"></span><span class="cx-m cx-m--dia" style="left:13%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.13</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
+      <li class="cx-row" data-n="20" data-stab="0.78" data-tags="maps" data-xr="0.13"><span class="cx-id">c20</span><span class="cx-what"><span class="cx-desc">letters, documents and written objects</span> <a class="cx-tag cx-maplink" href="#comp-c20">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:13%;width:65%"></span><span class="cx-m cx-m--dia" style="left:13%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.13</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
       <li class="cx-row" data-n="21" data-stab="0.98" data-xr="0.03" data-tags="speech"><span class="cx-id">c21</span><span class="cx-what"><span class="cx-desc">rapid-speech component</span> <span class="cx-tag">speech timing</span></span><span class="cx-track"><span class="cx-link" style="left:3%;width:95%"></span><span class="cx-m cx-m--dia" style="left:3%"><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.03<span class="vh">, not above chance</span></span></span><span class="cx-m cx-m--dot" style="left:98%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.98</span></span></span></li>
       <li class="cx-row" data-n="22" data-stab="0.76" data-xr="0.28"><span class="cx-id">c22</span><span class="cx-what"><span class="cx-desc">first-person travel and locomotion from place to place</span></span><span class="cx-track"><span class="cx-link" style="left:28%;width:48%"></span><span class="cx-m cx-m--dia" style="left:28%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.28</span></span><span class="cx-m cx-m--dot" style="left:76%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.76</span></span></span></li>
-      <li class="cx-row" data-n="23" data-stab="0.72" data-xr="0.32" data-tags="fig2"><span class="cx-id">c23</span><span class="cx-what"><span class="cx-desc">references to family members and personal relations</span> <span class="cx-tag">Fig.&nbsp;2b</span></span><span class="cx-track"><span class="cx-link" style="left:32%;width:40%"></span><span class="cx-m cx-m--dia" style="left:32%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.32</span></span><span class="cx-m cx-m--dot" style="left:72%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.72</span></span></span></li>
-      <li class="cx-row" data-n="24" data-stab="0.87" data-xr="0.29"><span class="cx-id">c24</span><span class="cx-what"><span class="cx-desc">forceful physical body actions and struggle</span></span><span class="cx-track"><span class="cx-link" style="left:29%;width:58%"></span><span class="cx-m cx-m--dia" style="left:29%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.29</span></span><span class="cx-m cx-m--dot" style="left:87%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.87</span></span></span></li>
+      <li class="cx-row" data-n="23" data-stab="0.72" data-xr="0.32" data-tags="maps"><span class="cx-id">c23</span><span class="cx-what"><span class="cx-desc">references to family members and personal relations</span> <a class="cx-tag cx-maplink" href="#comp-c23">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:32%;width:40%"></span><span class="cx-m cx-m--dia" style="left:32%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.32</span></span><span class="cx-m cx-m--dot" style="left:72%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.72</span></span></span></li>
+      <li class="cx-row" data-n="24" data-stab="0.87" data-tags="maps" data-xr="0.29"><span class="cx-id">c24</span><span class="cx-what"><span class="cx-desc">forceful physical body actions and struggle</span> <a class="cx-tag cx-maplink" href="#comp-c24">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:29%;width:58%"></span><span class="cx-m cx-m--dia" style="left:29%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.29</span></span><span class="cx-m cx-m--dot" style="left:87%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.87</span></span></span></li>
       <li class="cx-row" data-n="25" data-stab="0.88" data-xr="0.22"><span class="cx-id">c25</span><span class="cx-what"><span class="cx-desc">introspective first-person feeling/thinking statements</span></span><span class="cx-track"><span class="cx-link" style="left:22%;width:66%"></span><span class="cx-m cx-m--dia" style="left:22%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.22</span></span><span class="cx-m cx-m--dot" style="left:88%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.88</span></span></span></li>
       <li class="cx-row" data-n="26" data-stab="0.51" data-xr="0.11"><span class="cx-id">c26</span><span class="cx-what"><span class="cx-desc">navy water-survival/parachute training procedures</span></span><span class="cx-track"><span class="cx-link" style="left:11%;width:40%"></span><span class="cx-m cx-m--dia" style="left:11%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.11</span></span><span class="cx-m cx-m--dot" style="left:51%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.51</span></span></span></li>
       <li class="cx-row" data-n="27" data-stab="0.77" data-xr="0.35"><span class="cx-id">c27</span><span class="cx-what"><span class="cx-desc">spatial descriptions of rooms and built locations</span></span><span class="cx-track"><span class="cx-link" style="left:35%;width:42%"></span><span class="cx-m cx-m--dia" style="left:35%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.35</span></span><span class="cx-m cx-m--dot" style="left:77%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.77</span></span></span></li>
-      <li class="cx-row" data-n="28" data-stab="0.76" data-xr="0.30"><span class="cx-id">c28</span><span class="cx-what"><span class="cx-desc">describing plural groups or categories of people</span></span><span class="cx-track"><span class="cx-link" style="left:30%;width:46%"></span><span class="cx-m cx-m--dia" style="left:30%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.30</span></span><span class="cx-m cx-m--dot" style="left:76%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.76</span></span></span></li>
+      <li class="cx-row" data-n="28" data-stab="0.76" data-tags="maps" data-xr="0.30"><span class="cx-id">c28</span><span class="cx-what"><span class="cx-desc">describing plural groups or categories of people</span> <a class="cx-tag cx-maplink" href="#comp-c28">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:30%;width:46%"></span><span class="cx-m cx-m--dia" style="left:30%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.30</span></span><span class="cx-m cx-m--dot" style="left:76%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.76</span></span></span></li>
       <li class="cx-row" data-n="29" data-stab="0.89" data-xr="0.09"><span class="cx-id">c29</span><span class="cx-what"><span class="cx-desc">mostly the repeated shouted command ‘pick up the gun’; no unified concept</span></span><span class="cx-track"><span class="cx-link" style="left:9%;width:80%"></span><span class="cx-m cx-m--dia" style="left:9%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.09</span></span><span class="cx-m cx-m--dot" style="left:89%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.89</span></span></span></li>
-      <li class="cx-row" data-n="30" data-stab="0.96" data-xr="0.35" data-tags="speech"><span class="cx-id">c30</span><span class="cx-what"><span class="cx-desc">silence-firing component</span> <span class="cx-tag">speech timing</span></span><span class="cx-track"><span class="cx-link" style="left:35%;width:61%"></span><span class="cx-m cx-m--dia" style="left:35%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.35</span></span><span class="cx-m cx-m--dot" style="left:96%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.96</span></span></span></li>
+      <li class="cx-row" data-n="30" data-stab="0.96" data-xr="0.35" data-tags="speech maps"><span class="cx-id">c30</span><span class="cx-what"><span class="cx-desc">silence-firing component</span> <span class="cx-tag">speech timing</span> <a class="cx-tag cx-maplink" href="#comp-c30">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:35%;width:61%"></span><span class="cx-m cx-m--dia" style="left:35%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.35</span></span><span class="cx-m cx-m--dot" style="left:96%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.96</span></span></span></li>
       <li class="cx-row" data-n="31" data-stab="0.86" data-xr="0.37"><span class="cx-id">c31</span><span class="cx-what"><span class="cx-desc">quotative ‘I was like / he was like’ reported dialogue and reactions</span></span><span class="cx-track"><span class="cx-link" style="left:37%;width:49%"></span><span class="cx-m cx-m--dia" style="left:37%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.37</span></span><span class="cx-m cx-m--dot" style="left:86%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.86</span></span></span></li>
       <li class="cx-row" data-n="32" data-stab="0.50" data-xr="0.06"><span class="cx-id">c32</span><span class="cx-what"><span class="cx-desc">medical procedures and hospital treatment</span></span><span class="cx-track"><span class="cx-link" style="left:6%;width:44%"></span><span class="cx-m cx-m--dia" style="left:6%"><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.06<span class="vh">, not above chance</span></span></span><span class="cx-m cx-m--dot" style="left:50%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.50</span></span></span></li>
       <li class="cx-row" data-n="33" data-stab="0.66" data-xr="0.31"><span class="cx-id">c33</span><span class="cx-what"><span class="cx-desc">foreign-language phrases, unusual words and proper names</span></span><span class="cx-track"><span class="cx-link" style="left:31%;width:35%"></span><span class="cx-m cx-m--dia" style="left:31%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.31</span></span><span class="cx-m cx-m--dot" style="left:66%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.66</span></span></span></li>
@@ -276,21 +388,115 @@
       <li class="cx-row" data-n="42" data-stab="0.54" data-xr="0.21"><span class="cx-id">c42</span><span class="cx-what"><span class="cx-desc">habitual or hypothetical ‘you would / we would’ procedural narration</span></span><span class="cx-track"><span class="cx-link" style="left:21%;width:33%"></span><span class="cx-m cx-m--dia" style="left:21%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.21</span></span><span class="cx-m cx-m--dot" style="left:54%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.54</span></span></span></li>
       <li class="cx-row" data-n="43" data-stab="0.64" data-xr="0.21"><span class="cx-id">c43</span><span class="cx-what"><span class="cx-desc">casual vernacular quoted dialogue with ‘he’s like / I’m like’</span></span><span class="cx-track"><span class="cx-link" style="left:21%;width:43%"></span><span class="cx-m cx-m--dia" style="left:21%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.21</span></span><span class="cx-m cx-m--dot" style="left:64%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.64</span></span></span></li>
       <li class="cx-row" data-n="44" data-stab="0.98" data-xr="0.01"><span class="cx-id">c44</span><span class="cx-what"><span class="cx-desc">quoted questions, requests and instructions in dialogue</span></span><span class="cx-track"><span class="cx-link" style="left:1%;width:97%"></span><span class="cx-m cx-m--dia" style="left:1%"><svg class="cx-g cx-g--dia cx-g--open" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.4L10.6 6L6 10.6L1.4 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.01<span class="vh">, not above chance</span></span></span><span class="cx-m cx-m--dot" style="left:98%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.98</span></span></span></li>
-      <li class="cx-row" data-n="45" data-stab="0.78" data-xr="0.24" data-tags="fig2"><span class="cx-id">c45</span><span class="cx-what"><span class="cx-desc">natural landscape and scenery descriptions</span> <span class="cx-tag">Fig.&nbsp;2d</span></span><span class="cx-track"><span class="cx-link" style="left:24%;width:54%"></span><span class="cx-m cx-m--dia" style="left:24%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.24</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
-      <li class="cx-row" data-n="46" data-stab="0.78" data-xr="0.38"><span class="cx-id">c46</span><span class="cx-what"><span class="cx-desc">quoted speech directly addressing ‘you’ with propositions, questions or commands</span></span><span class="cx-track"><span class="cx-link" style="left:38%;width:40%"></span><span class="cx-m cx-m--dia" style="left:38%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.38</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
+      <li class="cx-row" data-n="45" data-stab="0.78" data-xr="0.24" data-tags="maps"><span class="cx-id">c45</span><span class="cx-what"><span class="cx-desc">natural landscape and scenery descriptions</span> <a class="cx-tag cx-maplink" href="#comp-c45">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:24%;width:54%"></span><span class="cx-m cx-m--dia" style="left:24%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.24</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
+      <li class="cx-row" data-n="46" data-stab="0.78" data-tags="maps" data-xr="0.38"><span class="cx-id">c46</span><span class="cx-what"><span class="cx-desc">quoted speech directly addressing ‘you’ with propositions, questions or commands</span> <a class="cx-tag cx-maplink" href="#comp-c46">see its maps</a></span><span class="cx-track"><span class="cx-link" style="left:38%;width:40%"></span><span class="cx-m cx-m--dia" style="left:38%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.38</span></span><span class="cx-m cx-m--dot" style="left:78%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.78</span></span></span></li>
       <li class="cx-row" data-n="47" data-stab="0.95" data-xr="0.11" data-tags="speech"><span class="cx-id">c47</span><span class="cx-what"><span class="cx-desc">silence-firing component</span> <span class="cx-tag">speech timing</span></span><span class="cx-track"><span class="cx-link" style="left:11%;width:84%"></span><span class="cx-m cx-m--dia" style="left:11%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.11</span></span><span class="cx-m cx-m--dot" style="left:95%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.95</span></span></span></li>
       <li class="cx-row" data-n="48" data-stab="0.98" data-xr="0.17" data-tags="speech"><span class="cx-id">c48</span><span class="cx-what"><span class="cx-desc">rapid-speech component</span> <span class="cx-tag">speech timing</span></span><span class="cx-track"><span class="cx-link" style="left:17%;width:81%"></span><span class="cx-m cx-m--dia" style="left:17%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.17</span></span><span class="cx-m cx-m--dot" style="left:98%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.98</span></span></span></li>
       <li class="cx-row" data-n="49" data-stab="0.70" data-xr="0.20" data-tags="speech"><span class="cx-id">c49</span><span class="cx-what"><span class="cx-desc">silence-firing component</span> <span class="cx-tag">speech timing</span></span><span class="cx-track"><span class="cx-link" style="left:20%;width:50%"></span><span class="cx-m cx-m--dia" style="left:20%"><svg class="cx-g cx-g--dia" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1L11 6L6 11L1 6Z"/></svg><span class="cx-val"><span class="vh">agreement across people </span>0.20</span></span><span class="cx-m cx-m--dot" style="left:70%"><svg class="cx-g cx-g--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5"/></svg><span class="cx-val"><span class="vh">, stable when retrained </span>0.70</span></span></span></li>
               <!-- cx rows:end -->
     </ol>
-    <figcaption><b>What the model found.</b> Each line is one of the 50 components, described
-      in one sentence by a language model that was shown the text the component responds to
-      most. Further right is better: the circle is how stable its brain map is when the model
-      is retrained, the diamond how well that map agrees across the six listeners. Values
-      from Table&nbsp;15 of the paper.</figcaption>
+    <figcaption><b>The 50 components.</b> Descriptions are written by a language model shown
+      the text each component responds to most. Values from Table&nbsp;15 of the
+      paper.</figcaption>
   </figure>
-  <details class="viz-data">
-    <summary>Every value for the 50 components (Table&nbsp;15 of the paper)</summary>
+
+  <!-- Six more components with their maps, from the paper's appendix
+       example figures (paper/figures/appendix_examples/c*.png, cropped as the
+       four above). Same switcher; stacked without script. -->
+  <figure class="fig cs" id="more-examples" data-no-zoom data-switch>
+      <div class="cs-panel" id="comp-c24" data-label="Struggle" aria-labelledby="cs-h-c24">
+        <p class="cs-name" id="cs-h-c24"><span class="cs-id">c24</span> forceful physical body actions and struggle</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c24-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c24 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c24-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c24 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c24-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c24 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c24-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c24 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c24 is most active">
+          <li><span class="cs-pre">…into the door and using my elbows</span> <mark>i swing to the right so that as i swing</mark> <span class="cs-post">to the left i use his weight…</span></li>
+          <li><span class="cs-pre">…libre and jumped right onto the goat</span> <mark>and got him in a headlock and then he started yelling</mark> <span class="cs-post">at me la…</span></li>
+          <li><span class="cs-pre">…hands and drop them i had to hold</span> <mark>them with my feet and drop them i had to they</mark> <span class="cs-post">would sort of say…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c20" data-label="Letters" aria-labelledby="cs-h-c20">
+        <p class="cs-name" id="cs-h-c20"><span class="cs-id">c20</span> letters, documents and written objects</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c20-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c20 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c20-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c20 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c20-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c20 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c20-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c20 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c20 is most active">
+          <li><span class="cs-pre">…gonna happen but i had to take</span> <mark>a chance i wrote the letter and i sent</mark> <span class="cs-post">it and hoped for the best and…</span></li>
+          <li><span class="cs-pre">…i didn’t really know how to write</span> <mark>one my dad had to help me put the stamp on the right part</mark> <span class="cs-post">of the…</span></li>
+          <li><span class="cs-pre">…came in the mail and the cover</span> <mark>letter had a paragraph</mark> <span class="cs-post">at the beginning that said congratulations and…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c28" data-label="Groups of people" aria-labelledby="cs-h-c28">
+        <p class="cs-name" id="cs-h-c28"><span class="cs-id">c28</span> describing plural groups or categories of people</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c28-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c28 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c28-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c28 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c28-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c28 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c28-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c28 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c28 is most active">
+          <li><span class="cs-pre">…bucks um also these are not the i</span> <mark>these are all my friends i love them some</mark> <span class="cs-post">of them are here…</span></li>
+          <li><span class="cs-pre">…whole quarter so i was with all these</span> <mark>swedish and german girls and it was even</mark> <span class="cs-post">better than being a…</span></li>
+          <li><span class="cs-pre">…they were catholic they were family</span> <mark>we were like the relatives that they never</mark> <span class="cs-post">got to see but we knew…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c46" data-label="Speech to “you”" aria-labelledby="cs-h-c46">
+        <p class="cs-name" id="cs-h-c46"><span class="cs-id">c46</span> quoted speech directly addressing ‘you’ with propositions, questions or commands</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c46-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c46 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c46-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c46 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c46-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c46 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c46-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c46 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c46 is most active">
+          <li><span class="cs-pre">…and he just looks at me and says</span> <mark>are your parents gonna mind you taking the train home</mark> <span class="cs-post">late at…</span></li>
+          <li><span class="cs-pre">…my friend mark is the kind of person</span> <mark>who will say to you if you get a tattoo</mark> <span class="cs-post">i’ll pay for it so that means…</span></li>
+          <li><span class="cs-pre">…lady cut her off and said ma’am take</span> <mark>the form take it to the desk fill it out</mark> <span class="cs-post">and come back next my…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c5" data-label="Story openings" aria-labelledby="cs-h-c5">
+        <p class="cs-name" id="cs-h-c5"><span class="cs-id">c5</span> story-opening component</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c5-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c5 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c5-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c5 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c5-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c5 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c5-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c5 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <p class="cs-note">It marks the start of a story, a pattern in the telling rather than a topic.</p>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c5 is most active">
+          <li><span class="cs-pre">…really good in school so it fell</span> <mark>into this pattern with my family where people would say things</mark> <span class="cs-post">like…</span></li>
+          <li><span class="cs-pre">…so the story begins in in uh</span> <mark>yes i we yes i was employed back then</mark> <span class="cs-post">ok i don’t know why you laughed…</span></li>
+          <li><span class="cs-pre">…a very usual thing i had been</span> <mark>touring for years and years seven or eight years by that</mark> <span class="cs-post">point so um it…</span></li>
+        </ul>
+      </div>
+      <div class="cs-panel" id="comp-c30" data-label="Silence" aria-labelledby="cs-h-c30">
+        <p class="cs-name" id="cs-h-c30"><span class="cs-id">c30</span> silence-firing component</p>
+        <div class="cs-maps">
+          <div class="cs-map"><img src="../figures/components-c30-uts02.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c30 in listener UTS02, flattened cortex."><span>UTS02</span></div>
+          <div class="cs-map"><img src="../figures/components-c30-uts03.jpg" width="563" height="305" loading="lazy" alt="Brain map of component c30 in listener UTS03, flattened cortex."><span>UTS03</span></div>
+          <div class="cs-map"><img src="../figures/components-c30-uts06.jpg" width="564" height="305" loading="lazy" alt="Brain map of component c30 in listener UTS06, flattened cortex."><span>UTS06</span></div>
+          <div class="cs-map cs-map--avg"><img src="../figures/components-c30-avg.jpg" width="602" height="305" loading="lazy" alt="Brain map of component c30 averaged over the six listeners on a standard brain, flattened cortex."><span>Average of all six</span></div>
+        </div>
+        <p class="cs-note">It fires in pauses. It is the one component whose firing predicts a drop in brain response; the maps show the size of that drop.</p>
+        <ul class="cs-ex" role="list" aria-label="Story moments where c30 is most active">
+          <li><span class="cs-pre">…on eat it i don’t want to eat it eat it</span> <mark>[silence]</mark> <span class="cs-post">so i’m like driving back and that’s all i’m thinking like this…</span></li>
+          <li><span class="cs-pre">…click on it and it takes me to craigslist</span> <mark>[silence]</mark> <span class="cs-post">yes do we know what craigslist is if anyone here doesn’t…</span></li>
+          <li><span class="cs-pre">…and ask him real quick though</span> <mark>[silence]</mark> <span class="cs-post">so then we were up to four children one girl and three…</span></li>
+        </ul>
+      </div>
+    <figcaption>Six more components, laid out as the four at the top: maps in three
+      listeners and on the average brain, then story moments with the firing two seconds
+      highlighted. From the paper’s appendix figures of example components.</figcaption>
+  </figure>
+
+  <details class="viz-data" open data-fold>
+    <summary>For specialists: every value for the 50 components (Table&nbsp;15 of the paper)</summary>
     <div class="table-wrap" tabindex="0" role="region" aria-labelledby="catalog-cap">
       <table class="viz-table" id="catalog">
         <caption id="catalog-cap">All 50 components of the seed-0 coupled SAE with their per-component values</caption>
@@ -357,37 +563,16 @@
   </details>
 </section>
 
-<section class="paper-section" id="coupling" aria-labelledby="h-coupling">
-  <h2 id="h-coupling">Why train jointly</h2>
-
-  <!-- Table 1 of the camera-ready as ticks, no scores. A cell "falls short"
-       exactly where the paper's contributions list says so: a brain-only
-       basis (Brain→Sem) "is worse on semantic reconstruction, nameability and
-       cross-seed stability"; a semantics-only basis (Sem→Brain) "is 19% worse
-       on brain prediction and less consistent across subjects". Static HTML,
-       no script. -->
-  <figure class="fig viz" id="cmp">
-    <div class="table-wrap">
-      <table class="cmp-grid">
-        <thead>
-          <tr><td></td><th scope="col">Trained jointly<span>Coupled SAE</span></th><th scope="col">Meaning first<span>Sem→Brain</span></th><th scope="col">Brain first<span>Brain→Sem</span></th></tr>
-        </thead>
-        <tbody>
-          <tr class="cmp-grp"><th colspan="4" scope="colgroup">The two jobs</th></tr>
-          <tr><th scope="row">Predicts brain activity</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td></tr>
-          <tr><th scope="row">Rebuilds the language model’s reading of the story</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td></tr>
-          <tr class="cmp-grp"><th colspan="4" scope="colgroup">Three qualities of the components</th></tr>
-          <tr><th scope="row">Each can be named in a sentence</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td></tr>
-          <tr><th scope="row">Their brain maps agree across people</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td></tr>
-          <tr><th scope="row">They come back when the model is retrained</th><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-yes"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.4l2.9 2.9 5.9-6.3"/></svg><span class="vh">does well</span></td><td class="cmp-no"><svg class="cmp-i" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25"/></svg><span class="cmp-short">falls short</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <figcaption><b>Only joint training does well on all five counts.</b> Train the same
-      model in two steps instead and it falls short where its first step did not look: on
-      the brain if it learned meaning first, on meaning if it learned the brain first. After
-      Table&nbsp;1 of the paper.</figcaption>
-  </figure>
+<section class="paper-section" id="matters" aria-labelledby="h-matters">
+  <h2 id="h-matters">Why it matters</h2>
+  <p>The aim is a unit a neuroscientist can work with directly: choose a component by its
+    description, read its map in every person, and compare that map with known brain
+    networks, with no hand-made categories and no after-the-fact alignment of people. It extends <a href="superpositions.html">my 2025 paper</a>, which separated
+    concepts first and fitted the brain second. All results so far come from one dataset,
+    one language model and one test story; other datasets are the next test.</p>
+  <p class="cs-details">For the details, the measurements behind each statement and the
+    analysis of every component, see <a href="https://openreview.net/pdf?id=YcEZoSqrxa">the
+    paper</a>. Its abstract follows.</p>
 </section>
 
       <section class="paper-section" id="abstract" aria-labelledby="h-abstract">
