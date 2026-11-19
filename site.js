@@ -631,6 +631,9 @@
     folded.forEach(function (d) { d.open = false; });
     folded = [];
   });
+})();
+
+
 /* ==== agent:motion ==== */
 /* The script half of the motion system (the CSS half is the last block of
    styles.css). Two things. A clip starts at the frame its poster shows, so

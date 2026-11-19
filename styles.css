@@ -1422,6 +1422,8 @@ html { scroll-padding-top: 4rem; }
   .contact .profiles li + li { margin-top: 0.45rem; }
 }
 .contact .otherwise { margin-top: 1.25rem; font-size: 0.9375rem; color: var(--fg-muted); }
+
+
 /* ==== agent:viz ==== */
 /* research/components.html (2026-11-19): the list of the 50 components (#cx)
    and the grid of ticks that sets joint training against two-stage training
@@ -1657,6 +1659,9 @@ html { scroll-padding-top: 4rem; }
 @media print {
   .cx-controls, .cx-more { display: none; }
   .cx-row[hidden] { display: grid; }
+}
+
+
 /* ==== agent:reading ==== */
 /* The reading pass: the long paper and explainer pages, audited at 1440, 800
    and 390 px. Two halves. The first is plain CSS on the existing markup and
@@ -2151,6 +2156,9 @@ dialog.rd-lightbox::backdrop { background: var(--bg); }
   :is(figcaption, .rd-lb-cap) details.legend > summary, .transcript > summary { color: #555; }
   :is(figcaption, .rd-lb-cap) details.legend > summary::before, .transcript > summary::before { display: none; }
   :is(figcaption, .rd-lb-cap) details.legend > p, .transcript > p { border-left-color: #ccc; }
+}
+
+
 /* ==== agent:motion ==== */
 /* ---- the motion system (2026-11-19) -------------------------------------------
    One block for everything that moves, so it can be read, tuned or removed in
