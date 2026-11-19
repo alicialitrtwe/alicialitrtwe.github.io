@@ -11,7 +11,7 @@
 <meta property="og:description" content="Alicia Zeng, co-founder and CTO of Erised AI. PhD in biophysics at UC Berkeley: interpretable encoding models of cortex, adaptive deep brain stimulation measured at home, and now AI-native instruments for the nanoscale.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/">
 <meta property="og:type" content="profile">
-<meta property="og:image" content="https://alicialitrtwe.github.io/figures/viewer-thumb.jpg">
+<meta property="og:image" content="https://alicialitrtwe.github.io/figures/home-hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://alicialitrtwe.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12.5' cy='16' r='7.5' fill='none' stroke='%23d4698f' stroke-width='2.6'/%3E%3Ccircle cx='19.5' cy='16' r='7.5' fill='none' stroke='%2335bcc9' stroke-width='2.6'/%3E%3C/svg%3E">
@@ -96,16 +96,31 @@
         <a href="research/dbs.html">Nature Biomedical Engineering 2026</a><span class="sep" aria-hidden="true">·</span>
         <a href="notes/thesis.html">Thesis</a></p>
 
+      <!-- The hero (media pass, 2026-11-19): the same viewer and the same map
+           as before, captured again larger and turning slowly from one side
+           of the brain to the other instead of through a full rotation, so
+           the coloured patches stay in view. The colours are named in the
+           caption with the words that drive each one: the viewer's own
+           example words, the top loadings of each dimension. The map is the
+           group map, the average of 19 listeners (it was captioned as one
+           listener). -->
       <figure class="hero-media">
         <div class="hero-clip">
-        <video loop muted playsinline preload="none" data-rate="0.6"
-               poster="figures/viewer-thumb.jpg" width="870" height="600"
-               aria-label="The brain viewer turning an inflated cortical surface through a full rotation, the number, time and space maps laid over it in pink, green and blue.">
-          <source src="figures/viewer-thumb.mp4" type="video/mp4">
+        <video loop muted playsinline preload="none"
+               poster="figures/home-hero.jpg" width="1160" height="580"
+               aria-label="An inflated brain, seen from behind and turning slowly from one side to the other. Dark grey cortex carries patches of pink, green and blue, brightest toward the back and sides, with white where the colors overlap.">
+          <source src="figures/home-hero.mp4" type="video/mp4">
         </video>
         </div>
-        <figcaption><span>Where number, time and space are represented in one listener’s
-          cortex.</span>
+        <figcaption>
+          <p class="hero-cap">Where cortex responds to talk of number, time and space,
+            averaged over 19 people listening to stories. White marks where all three
+            overlap.</p>
+          <ul class="hero-key">
+            <li class="key-number"><span class="key-name">Number</span> fourteen, twenty, hundred</li>
+            <li class="key-time"><span class="key-name">Time</span> noon, morning, Monday</li>
+            <li class="key-space"><span class="key-name">Space</span> near, located, miles</li>
+          </ul>
           <a class="hero-cta" href="viewer/" target="_blank" rel="noopener">Explore the brain
           viewer <span aria-hidden="true">&#8594;</span></a></figcaption>
       </figure>
@@ -136,9 +151,10 @@
          in the order she wants them read: Bayesian, cognition, closed loop
          (shown since 2026-11-12 as Interpretable models, Dense measurement,
          Closed-loop instruments; the anchors and data-area keep the old names).
-         research.html carries the same order. The videos are real material: the
-         measured responses the semantic models are fit to, the viewer's own
-         channel toggles, and one session of at-home recording.
+         research.html carries the same order. The media are real material
+         (media pass, 2026-11-19): four components from Fig. 2 of the NeurIPS
+         2026 paper, the viewer's channel toggles with each channel named,
+         and Fig. 2b of the DBS paper's preprint.
 
          Under each lead, .area-works lists what is inside the area, one row
          per work with its venue, each row a link of its own. The card's whole
@@ -150,17 +166,23 @@
       <div class="areas">
 
         <article class="area" data-area="bayesian">
+          <!-- Four of the 50 components learned in the NeurIPS 2026 paper, one
+               after another: the name it was given, its map in one listener
+               (UTS02) and a story passage that drives it. Map crops and words
+               from Fig. 2 of the camera-ready paper, set on black; the
+               excerpts are verbatim, shortened only at the ellipses. -->
           <div class="area-media">
             <video loop muted playsinline preload="none"
-                   poster="figures/area-bayesian.jpg" width="762" height="526"
-                   aria-label="Measured cortical responses to a story, on a pair of flattened hemispheres, changing frame by frame.">
-              <source src="figures/area-bayesian.mp4" type="video/mp4">
+                   poster="figures/home-components.jpg" width="870" height="600"
+                   aria-label="Four learned components shown in turn, each with its name, its map on one listener’s flattened cortex and a story passage that drives it: c8, spoken numbers and quantities (“five foot two and weighs about a hundred pounds”); c23, family members and personal relations; c2, clothing and appearance; c45, natural landscape and scenery.">
+              <source src="figures/home-components.mp4" type="video/mp4">
             </video>
           </div>
           <div class="area-body">
             <h3 class="area-title"><a href="research.html#bayesian">Interpretable models</a></h3>
-            <p class="area-lead">Models whose parameters can be read: each learned axis has
-              one meaning, so the fitted weights describe the system itself.</p>
+            <p class="area-lead">Models whose parameters can be read: each learned component
+              has one meaning, such as spoken numbers or family relations, and its own
+              map on cortex.</p>
             <ul class="area-count area-works">
               <li><a href="research/components.html"><span class="work-title">Semantic-cortical components</span> <span class="work-meta"><span class="work-new">New</span> NeurIPS 2026, oral</span></a></li>
               <li><a href="research/superpositions.html"><span class="work-title">Sparse concept atoms</span> <span class="work-meta">NeurIPS 2025</span></a></li>
@@ -170,11 +192,14 @@
         </article>
 
         <article class="area" data-area="cognition">
+          <!-- The viewer's own channel toggles (the clip that was here),
+               cropped to the flatmap and labelled: which channel is on, and
+               the viewer's example words for it. Group map, 19 listeners. -->
           <div class="area-media">
             <video loop muted playsinline preload="none"
-                   poster="figures/area-cognition.jpg" width="1270" height="810"
-                   aria-label="A flattened pair of hemispheres with the number, time and space channels switching on and off one at a time: pink for number, green for time, blue for space, and pale where they overlap.">
-              <source src="figures/area-cognition.mp4" type="video/mp4">
+                   poster="figures/home-dense.jpg" width="870" height="600"
+                   aria-label="Both hemispheres of cortex laid flat, averaged over 19 listeners. The labels name the channel shown: number (words like fourteen, twenty, hundred) in pink, time (noon, morning, Monday) in green, space (near, located, miles) in blue, then number and time together, then all three, white where they overlap.">
+              <source src="figures/home-dense.mp4" type="video/mp4">
             </video>
           </div>
           <div class="area-body">
@@ -192,12 +217,13 @@
         </article>
 
         <article class="area" data-area="closed-loop">
+          <!-- The decoder's training signal, from the paper's CC BY preprint
+               (Dixon et al. 2024, Fig. 2b, left hemisphere), light and dark
+               swapped for the dark page with every hue kept. It replaces a
+               clip drawn from unpublished home recordings. -->
           <div class="area-media">
-            <video loop muted playsinline preload="none"
-                   poster="figures/area-closed-loop.jpg" width="870" height="600"
-                   aria-label="Four rows scrolling together on one clock: spectrograms of precentral and postcentral cortex across the whole band the implant returns, 0 to 250 hertz, then the right wrist’s acceleration spectrum, then the shoulder and elbow angle of the same arm measured from video. Bright columns of wrist movement line up with the elbow swinging and with low-frequency bursts in the cortex.">
-              <source src="figures/area-closed-loop.mp4" type="video/mp4">
-            </video>
+            <img src="figures/thumb-dbs.jpg" width="870" height="600" loading="lazy"
+                 alt="Three minutes of home recording from the paper: wrist acceleration in orange above, beta power from motor cortex in blue below. In the three shaded periods, when the hand is moving, acceleration rises above a red threshold line and the beta power drops. Figure 2b of the preprint, left hemisphere.">
           </div>
           <div class="area-body">
             <h3 class="area-title"><a href="research.html#closed-loop">Closed-loop instruments</a></h3>

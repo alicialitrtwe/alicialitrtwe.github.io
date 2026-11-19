@@ -2349,3 +2349,93 @@ a, .button, .hero-proof a, .hero-cta, summary {
 @media (prefers-reduced-motion: reduce) {
   .hero-cta:hover span, .more a:hover span, .area-extra a:hover span { transform: none; }
 }
+
+
+/* ==== agent:media ==== */
+/* ---- the media pass, 2026-11-19 ----------------------------------------------
+   index.html and research.html. Every slot was judged on one question: does a
+   visitor who knows nothing see in two seconds what it is? What changed:
+
+   - the hero is a new capture of the viewer (figures/home-hero.mp4, 1160 by
+     580): the same group map, larger in frame, turning slowly from side to
+     side. The clip is 2:1 and its brain is centred, so it fills the frame
+     with object-fit and needs none of the earlier crop arithmetic. Its
+     colours are named under it with the words that drive each one;
+   - the area cards and the inventory carry purpose-made 870 by 600 media
+     (the 1.45 frame), and an <img> may stand where a clip did.            */
+
+/* -- the hero clip -------------------------------------------------------------- */
+.hero-clip { aspect-ratio: 2; }
+.hero-media .hero-clip video {
+  inset: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  transform: none;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-clip { aspect-ratio: 2; }
+  .hero-media .hero-clip video { height: 100%; }
+}
+/* On a phone the 2:1 frame left the brain small; the frame takes the 1.45
+   shape of every other clip and the empty ground either side is cropped. */
+@media (max-width: 39.99em) {
+  .hero-clip { aspect-ratio: 1.45; }
+}
+
+/* -- the hero caption: what the colours are --------------------------------------
+   The caption line, then the key (each colour named, with three of the
+   viewer's own example words for it), then the way into the viewer. The key
+   uses the viewer's word colours, which pass 4.5:1 on the page; each entry
+   is named in words, so the colour is never the only cue. */
+.hero-media figcaption { align-items: flex-end; }
+.hero-cap {
+  flex: 1 1 24rem;
+  max-width: 40rem;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+.hero-key {
+  order: 3;
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+.hero-key li { margin: 0; padding: 0; }
+.hero-key li::before {
+  content: "";
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin-right: 0.45em;
+  border-radius: 0.15em;
+  background: var(--key);
+  vertical-align: 0.02em;
+}
+.key-name { margin-right: 0.3em; font-weight: 600; color: var(--key-text); }
+.key-number { --key: #e76889; --key-text: #f08a83; }
+.key-time   { --key: #80a925; --key-text: #6cc673; }
+.key-space  { --key: #2b9ff4; --key-text: #86a8ff; }
+@media (max-width: 39.99em) {
+  .hero-key { flex-direction: column; }
+}
+
+/* -- a still where a clip was --------------------------------------------------- */
+.area-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
