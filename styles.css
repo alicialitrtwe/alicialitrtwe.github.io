@@ -2531,3 +2531,131 @@ a.cx-maplink:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; 
 #found .fig.viz { margin-top: 1.25rem; margin-bottom: 0.5rem; }
 #components > p + .fig { margin-top: 1.5rem; }
 .paper-section > p.cs-details { color: var(--fg-dim); }
+
+
+/* ==== agent:lang ==== */
+/* research/superpositions.html and research/number.html (2026-11-19): two
+   figures drawn in the page on the superpositions page. #sp-crowd is an
+   illustration of superposition (labelled so in its caption) with buttons
+   added by viz/superpositions.js; without script it shows the "number" state.
+   #sp-walking is thesis Figure 2.2 redrawn on the dark ground, with a grid of
+   the 1,000 atoms. Concept colors are paired with text labels everywhere, so
+   no reading depends on hue. Scoped to .sp-*. */
+.sp-fig {
+  --sp-number: #ec8299;
+  --sp-time:   #7cc77f;
+  --sp-space:  #7aa8f5;
+  --sp-family: #e0aa5c;
+  --sp-color:  #b897e8;
+}
+.sp-c-number { --c: var(--sp-number); }
+.sp-c-time   { --c: var(--sp-time); }
+.sp-c-space  { --c: var(--sp-space); }
+.sp-c-family { --c: var(--sp-family); }
+.sp-c-color  { --c: var(--sp-color); }
+
+.sp-crowd {
+  display: grid;
+  gap: 1.25rem 2rem;
+  align-items: center;
+  max-width: 44em;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--surface) 55%, var(--bg));
+}
+@media (min-width: 40em) { .sp-crowd { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
+.sp-space { display: block; width: 100%; max-width: 24rem; height: auto; margin: 0 auto; overflow: visible; }
+.sp-concept line { stroke: var(--c); stroke-width: 3; stroke-linecap: round; }
+.sp-concept polygon { fill: var(--c); }
+.sp-concept text { fill: var(--fg-dim); font: 13px var(--sans); }
+.sp-concept.is-on text { fill: var(--fg); font-weight: 700; }
+.sp-voxel line { stroke: var(--fg); stroke-width: 6; stroke-linecap: round; }
+.sp-voxel polygon { fill: var(--fg); }
+.sp-origin { fill: var(--fg-muted); }
+
+.sp-readings { font-size: 0.8125rem; line-height: 1.3; }
+.sp-reading-h { margin: 0 0 0.45rem; color: var(--fg-dim); font-weight: 600; }
+.sp-rows + .sp-reading-h { margin-top: 1rem; }
+.sp-rows { display: grid; gap: 0.3rem; }
+.sp-row { display: grid; grid-template-columns: 3.6rem 1fr; gap: 0.6rem; align-items: center; color: var(--fg-muted); }
+.sp-track { display: block; height: 0.6rem; border-radius: 0.3rem; background: var(--border); overflow: hidden; }
+.sp-bar {
+  display: block; height: 100%;
+  background: var(--c);
+  transform: scaleX(var(--v, 0));
+  transform-origin: 0 50%;
+  transition: transform 0.4s ease;
+}
+
+.sp-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 1rem; }
+.sp-pick[hidden] { display: none; }
+.sp-pick-label { margin-right: 0.3rem; font-size: 0.8125rem; color: var(--fg-muted); }
+.sp-pick button {
+  min-height: 2rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.sp-pick button:hover { border-color: var(--fg-muted); color: var(--fg); }
+.sp-pick button[aria-pressed="true"] { border-color: var(--area); background: color-mix(in srgb, var(--area) 16%, var(--surface)); color: var(--fg); }
+.sp-pick button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.sp-say { max-width: 34rem; min-height: 2.9em; margin: 0.75rem 0 0; font-size: 0.875rem; line-height: 1.45; color: var(--fg-dim); }
+.sp-say + figcaption { margin-top: 0.5rem; }
+
+/* walking = 3 x trail + ... */
+.sp-walk {
+  display: grid;
+  gap: 1rem 1.5rem;
+  max-width: 44em;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--surface) 55%, var(--bg));
+}
+@media (min-width: 40em) { .sp-walk { grid-template-columns: auto 1fr; align-items: center; } }
+.sp-walk-word { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--fg); white-space: nowrap; }
+.sp-walk-word span[aria-hidden] { margin-left: 0.4rem; color: var(--fg-muted); font-weight: 400; }
+.sp-walk-rows { display: grid; gap: 0.45rem; margin: 0; padding: 0; list-style: none; font-size: 0.875rem; line-height: 1.35; }
+.sp-walk-rows li {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.1rem 0.6rem;
+  padding-left: 0.6rem;
+  border-left: 3px solid color-mix(in srgb, var(--area) calc(30% + var(--w) * 23%), transparent);
+}
+.sp-walk-rows b { grid-row: span 2; font-family: var(--mono); font-weight: 400; color: var(--fg); }
+.sp-atom { color: var(--fg); font-weight: 600; }
+.sp-words { color: var(--fg-muted); font-size: 0.8125rem; }
+.sp-grid { grid-column: 1 / -1; display: block; width: 100%; max-width: 30rem; height: auto; }
+.sp-grid-off { fill: url(#sp-cell); }
+#sp-cell rect { fill: #262626; }
+.sp-grid-on rect { fill: var(--area); opacity: calc(0.4 + var(--w) * 0.2); }
+
+/* a tall plate (one atom, two listeners) should not fill the column */
+.sp-portrait { max-width: 24rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-bar { transition: none; }
+}
+
+/* the color key under the 19-listener map on research/number.html; the
+   swatches are the viewer's own channel colors, each named in words */
+.num-key { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; margin: 0.75rem 0 0; padding: 0; list-style: none; font-size: 0.8125rem; color: var(--fg-dim); }
+.num-key li { display: inline-flex; align-items: center; gap: 0.4rem; }
+.num-key i { width: 0.7rem; height: 0.7rem; border-radius: 50%; }
+.num-key + figcaption { margin-top: 0.5rem; }
+
+/* the walking grid sits beside the rows when there is room, and its five
+   atoms carry a light edge so they read at a glance */
+@media (min-width: 56em) {
+  .sp-walk { grid-template-columns: auto minmax(0, 1fr) 13rem; }
+  .sp-grid { grid-column: auto; }
+}
+.sp-grid { max-width: 20rem; }
+.sp-grid-on rect { stroke: var(--fg); stroke-width: 1.2; }
