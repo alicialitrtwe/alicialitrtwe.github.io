@@ -1,10 +1,20 @@
-/* Alicia Zeng — the two things on this site that need a script.
-   Neither is load-bearing: without JavaScript every clip stays on its poster
-   and the section list on a paper page is a plain list of links.
+/* Alicia Zeng: the shared script, loaded on every page except 404.html and
+   the redirect pages. Nothing on the site depends on it: without JavaScript
+   every clip stays on its poster, every figure and fold is visible, and the
+   section list on a paper page is a plain list of links. Three parts, each
+   its own closure:
 
-   1. The clips: play when on screen, pause when not, never under
-      prefers-reduced-motion.
-   2. On a paper page, the sticky section list marks the section in view.  */
+   1. (this first block) The clips play when on screen and pause when not,
+      never under prefers-reduced-motion; on a paper page, the sticky section
+      list marks the section in view.
+   2. agent:reading  - reading aids on pages with an <article class="paper">:
+      figure zoom, the BibTeX copy button, the reading-progress line and
+      back-to-top, table and equation handling, print preparation.
+   3. agent:motion   - a clip starts on the frame its poster shows, and blocks
+      below the fold settle in once as they are scrolled to.
+
+   Page-specific interactions (switchers, illustrations) live in viz/, one
+   file per page, loaded only by that page.  */
 
 (function () {
   'use strict';
@@ -678,9 +688,11 @@
      frame as before. The browser has to be able to seek, so the server must
      answer Range requests: GitHub Pages does, python's http.server does not,
      and there a clip starts from the top exactly as it used to. */
+  // Only clips still on a page are listed (2026-11-19). The clips made for
+  // the homepage and research list (home-*, thumb-viewer) take their poster
+  // from their first frame and need no entry.
   var POSTER_AT = {
-    'viewer-thumb': 8.18, 'area-bayesian': 9.017, 'area-cognition': 3.383,
-    'project-birdsong': 7.683, 'number-viewer-tour': 0.817
+    'project-birdsong': 7.683
   };
   [].forEach.call(d.querySelectorAll('video[poster][muted][loop]'), function (v) {
     if (v.readyState !== 0 || v.currentTime) return;
