@@ -198,7 +198,7 @@
   <p>Large language models are good at predicting how the brain responds to speech. Play a
     story to someone in an fMRI scanner, feed the same story to a language model, and a
     simple fitted map from the model’s internal numbers to the brain predicts responses
-    across much of the brain. What those numbers mean is another matter.</p>
+    across much of the brain. But what any one of those numbers means cannot be read off.</p>
   <p>The obstacle is that a language model is thought to pack far more ideas than it has numbers, so each
     number carries a mix of many ideas, like a smoothie you can taste but not take apart.
     The brain side has a similar problem: the usual model fits every small patch of brain
@@ -281,7 +281,7 @@
     parts. The <a href="#components">list of all 50</a> below shows how reliably each
     returns.</p>
 
-  <h3>Training the two halves together is what makes this work</h3>
+  <h3>Both halves have to be trained together</h3>
   <p>The same model can also be trained in two steps, learning the components from the
     language model first and fitting them to the brain afterward, or the other way round.
     Each version falls short where its first step did not look. Learned from meaning first,
@@ -305,8 +305,7 @@
         </tbody>
       </table>
     </div>
-    <figcaption><b>Only joint training does well on all five counts.</b> The same model
-      trained in two steps falls short where its first step did not look. A tick means the
+    <figcaption><b>Only joint training does well on all five counts.</b> A tick means the
       model is at or near the best of the three; a ring means it is behind the other two. After
       Table&nbsp;1 of the paper.</figcaption>
   </figure>
