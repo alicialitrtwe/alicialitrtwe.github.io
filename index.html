@@ -74,15 +74,20 @@
 
   <main id="main" tabindex="-1">
 
-    <!-- The opening, reordered 2026-11-12 for a reader who gives it fifteen
-         seconds: the claim, the evidence, the instrument, then her essay.
-         Three lines that are mine (eyebrow, statement, the line of venues),
-         then the brain viewer at the full width of the column, since it is
-         the most persuasive thing on the site (her birdsong attractor was
-         here first, and she found it ugly), then her own opening paragraphs,
-         verbatim and at full length: she wants the detail kept. -->
+    <!-- The page in the order a reader with fifteen seconds needs it
+         (2026-11-19): the claim, the evidence, the instrument; then what she
+         does now; then the three areas of work; then her essay, whole, for the
+         reader who stays; then how to reach her. Until this date her essay sat
+         between the clip and everything else, which put the first research
+         card two and a half screens down on a desktop and three and a half
+         on a phone.
+
+         The opening: three lines that are mine (eyebrow, statement, the line
+         of venues), then the brain viewer at the full width of the column,
+         since it is the most persuasive thing on the site (her birdsong
+         attractor was here first, and she found it ugly). -->
     <section class="hero" aria-labelledby="h-name">
-      <p class="hero-eyebrow">Co-founder and CTO, Erised AI<span class="sep" aria-hidden="true">·</span>PhD Biophysics, UC&nbsp;Berkeley</p>
+      <p class="hero-eyebrow"><span class="hero-role">Co-founder and CTO, Erised AI</span><span class="sep" aria-hidden="true">·</span><span class="hero-role">PhD Biophysics, UC&nbsp;Berkeley</span></p>
       <p class="hero-statement">I build AI that explains how complex physical and biological
         systems work.</p>
       <p class="hero-proof">
@@ -104,69 +109,41 @@
           <a class="hero-cta" href="viewer/" target="_blank" rel="noopener">Explore the brain
           viewer <span aria-hidden="true">&#8594;</span></a></figcaption>
       </figure>
-
-      <!-- Her opening, written with her over 2026-10-27 to 29 in the
-           register of the thesis note. The paragraphs are hers in substance
-           and were approved sentence by sentence. Lightly edited for plain
-           language on 2026-11-17 at her request, every detail kept; do not
-           smooth them further without her. -->
-      <p class="lead">As the brain works, the blood flowing through it changes its magnetism by a
-        hair. An MRI scanner can follow that change across the whole cortex, and from the pattern
-        it records we can now tell what a person is listening to, and something of what they are
-        imagining. A thought can be read from the magnetism of blood.</p>
-
-      <div class="prose">
-        <p>That fact leads back to the question that first drew me to science. Atoms are cold and
-          interchangeable, yet assemblies of them make cells, sentences, and the minds that read
-          them. How does meaning arise from matter? That has been my question ever since. After
-          two years in the business school at Peking University, it took me to philosophy and
-          physics at Vanderbilt, then to the physics of living matter in
-          Vijay&nbsp;Balasubramanian’s laboratory at the University of Pennsylvania, and then to
-          the biophysics program at UC&nbsp;Berkeley. There I joined Jack&nbsp;Gallant’s lab and
-          found a second intellectual home at the Redwood Center for Theoretical Neuroscience with
-          Bruno&nbsp;Olshausen, who later served on my thesis committee.</p>
-        <p>At Berkeley the question became an empirical one, and that scanner was the instrument.
-          Its recordings are noisy, high-dimensional, and only indirectly related to the activity
-          of neurons. The method for reading them came from the Redwood Center: sparse coding,
-          which assigns each learned axis a single meaning. With it, I used machine learning to
-          map how abstract concepts such as number, space, and time are represented across the
-          human cortex. A second project went the other way. Drawing on the understanding such
-          models provide, we built closed-loop deep brain stimulation that decodes a patient’s
-          movement from the brain itself and adjusts therapy for Parkinson’s disease in real
-          time.</p>
-        <p>Both projects point to the same conclusion. The main constraint on scientific
-          progress is seldom the quality of our models. We overestimate our own ingenuity: the
-          hypotheses we are able to write down form a measure-zero subset of what is possible, and
-          progress has come more often from new and better measurements, made in the environments
-          where the systems of interest operate, than from new ideas. This is a hopeful
-          conclusion, because instruments can be built. That is what Erised is for. Understanding
-          the world at its smallest scales is a way to help the world and the living things in
-          it.</p>
-      </div>
     </section>
 
-    <!-- What she does now: one paragraph from Erised's public description
-         (erised-ai.com), no company numbers by the company's own rule for its
-         site, and a pointer to the thesis note the opening draws on. -->
-    <section class="block" aria-labelledby="h-now">
+    <!-- What she does now. The words are the paragraph that was here before
+         (from Erised's public description, erised-ai.com), set as a heading,
+         a statement and her role instead of one run of text; nothing is added.
+         No company numbers, by the company's own rule for its site. -->
+    <section class="block now" aria-labelledby="h-now">
       <h2 class="section-label" id="h-now">Now</h2>
-      <div class="prose">
-        <p><a href="https://erised-ai.com">Erised AI</a> builds AI-native systems and world models
-          for nanoscience and metrology: instruments that get smarter with every measurement,
-          because the measurement and the model are designed together. I co-founded it and am its
-          CTO, leading the AI, data and computational microscopy side.</p>
-        <p>The argument above is the one in my thesis introduction; <a href="notes/thesis.html">the
-          note</a> makes it at length.</p>
+      <div class="now-panel">
+        <div class="now-main">
+          <h3 class="now-title">Erised AI</h3>
+          <p class="now-statement">AI-native systems and world models for nanoscience and
+            metrology: instruments that get smarter with every measurement, because the
+            measurement and the model are designed together.</p>
+        </div>
+        <div class="now-side">
+          <p class="now-role">I co-founded it and am its CTO, leading the AI, data and
+            computational microscopy side.</p>
+          <p class="now-out"><a class="cta" href="https://erised-ai.com">Visit erised-ai.com</a></p>
+        </div>
       </div>
     </section>
 
     <!-- Three areas, stacked, each fronted by a video that plays on its own,
          in the order she wants them read: Bayesian, cognition, closed loop
-         (shown since 2026-11-12 as Dense measurement, Closed-loop instruments,
-         Interpretable models; the anchors and data-area keep the old names).
-         research.html carries the same order. The videos are real material: the viewer's own channel
-         toggles, one session of at-home recording, and the measured responses
-         the semantic models are fit to. -->
+         (shown since 2026-11-12 as Interpretable models, Dense measurement,
+         Closed-loop instruments; the anchors and data-area keep the old names).
+         research.html carries the same order. The videos are real material: the
+         measured responses the semantic models are fit to, the viewer's own
+         channel toggles, and one session of at-home recording.
+
+         Under each lead, .area-works lists what is inside the area, one row
+         per work with its venue, each row a link of its own. The card's whole
+         surface is the title's link (its ::after covers the card), so the rows
+         sit in their own stacking context (.area-count a). -->
     <section class="block" aria-labelledby="h-research">
       <h2 class="section-label" id="h-research">Research</h2>
 
@@ -184,11 +161,11 @@
             <h3 class="area-title"><a href="research.html#bayesian">Interpretable models</a></h3>
             <p class="area-lead">Models whose parameters can be read: each learned axis has
               one meaning, so the fitted weights describe the system itself.</p>
-            <p class="area-count"><a href="research/components.html">Semantic-cortical components, NeurIPS 2026 oral</a> · <a href="research/superpositions.html">Sparse concept atoms, NeurIPS 2025</a> · <a href="research/birdsong.html">Birdsong in state space</a></p>
-            <!-- Its own stacking context, like the viewer link on the first
-                 card: the area title's ::after covers the whole card. -->
-            <p class="area-extra"><a href="research/components.html">New: an oral at NeurIPS 2026
-              <span aria-hidden="true">&#8594;</span></a></p>
+            <ul class="area-count area-works">
+              <li><a href="research/components.html"><span class="work-title">Semantic-cortical components</span> <span class="work-meta"><span class="work-new">New</span> NeurIPS 2026, oral</span></a></li>
+              <li><a href="research/superpositions.html"><span class="work-title">Sparse concept atoms</span> <span class="work-meta">NeurIPS 2025</span></a></li>
+              <li><a href="research/birdsong.html"><span class="work-title">Birdsong in state space</span> <span class="work-meta">2017–2019</span></a></li>
+            </ul>
           </div>
         </article>
 
@@ -205,12 +182,12 @@
             <p class="area-lead">One rich recording in place of many narrow experiments: how
               cortex represents number, space and time, mapped from people listening to
               stories.</p>
-            <p class="area-count"><a href="research/number.html">Number, space and time</a></p>
             <!-- The clip is the viewer's own channel toggles, so the viewer is
-                 the obvious next click. It needs its own stacking context: the
-                 area title's ::after covers the whole card. -->
-            <p class="area-extra"><a href="viewer/" target="_blank" rel="noopener">Play with it yourself in the brain
-              viewer <span aria-hidden="true">&#8594;</span></a></p>
+                 the obvious next click. -->
+            <ul class="area-count area-works">
+              <li><a href="research/number.html"><span class="work-title">Number, space and time</span> <span class="work-meta">CCN 2026, poster</span></a></li>
+              <li><a href="viewer/" target="_blank" rel="noopener"><span class="work-title">The brain viewer</span> <span class="work-meta">play with it yourself</span></a></li>
+            </ul>
           </div>
         </article>
 
@@ -227,27 +204,92 @@
             <p class="area-lead">A model inside the instrument: a brain implant that decodes
               movement as it records and adjusts Parkinson’s therapy in real time, at
               home instead of in a clinic.</p>
-            <p class="area-count"><a href="research/dbs.html">Nature Biomedical Engineering 2026</a> · <a href="research/stimulation.html">Parkinson’s, measured at home</a></p>
+            <ul class="area-count area-works">
+              <li><a href="research/dbs.html"><span class="work-title">Movement-responsive deep brain stimulation</span> <span class="work-meta">Nature Biomedical Engineering 2026</span></a></li>
+              <li><a href="research/stimulation.html"><span class="work-title">Parkinson’s, measured at home</span> <span class="work-meta">Thesis, chapter 3</span></a></li>
+            </ul>
           </div>
         </article>
 
       </div>
 
-      <p class="more"><a href="research.html">All research <span aria-hidden="true">&#8594;</span></a></p>
+      <p class="more"><a class="cta cta--quiet" href="research.html">All research <span aria-hidden="true">&#8594;</span></a></p>
     </section>
 
-    <section class="block" aria-labelledby="h-contact">
+    <!-- Her opening essay, whole: the standfirst and the three paragraphs,
+         written with her over 2026-10-27 to 29 in the register of the thesis
+         note and approved sentence by sentence. Lightly edited for plain
+         language on 2026-11-17 at her request, every detail kept; do not
+         smooth them further without her. VERBATIM: on 2026-11-19 it moved
+         here from the hero, under the work it explains, and not a word
+         changed. The last line (not hers) is the pointer to the thesis note
+         that used to close the Now section. -->
+    <section class="block essay" aria-labelledby="h-essay">
+      <h2 class="section-label" id="h-essay">Background</h2>
+      <div class="essay-grid">
+        <p class="lead">As the brain works, the blood flowing through it changes its magnetism by a
+          hair. An MRI scanner can follow that change across the whole cortex, and from the pattern
+          it records we can now tell what a person is listening to, and something of what they are
+          imagining. A thought can be read from the magnetism of blood.</p>
+
+        <div class="essay-body">
+          <div class="prose">
+            <p>That fact leads back to the question that first drew me to science. Atoms are cold and
+              interchangeable, yet assemblies of them make cells, sentences, and the minds that read
+              them. How does meaning arise from matter? That has been my question ever since. After
+              two years in the business school at Peking University, it took me to philosophy and
+              physics at Vanderbilt, then to the physics of living matter in
+              Vijay&nbsp;Balasubramanian’s laboratory at the University of Pennsylvania, and then to
+              the biophysics program at UC&nbsp;Berkeley. There I joined Jack&nbsp;Gallant’s lab and
+              found a second intellectual home at the Redwood Center for Theoretical Neuroscience with
+              Bruno&nbsp;Olshausen, who later served on my thesis committee.</p>
+            <p>At Berkeley the question became an empirical one, and that scanner was the instrument.
+              Its recordings are noisy, high-dimensional, and only indirectly related to the activity
+              of neurons. The method for reading them came from the Redwood Center: sparse coding,
+              which assigns each learned axis a single meaning. With it, I used machine learning to
+              map how abstract concepts such as number, space, and time are represented across the
+              human cortex. A second project went the other way. Drawing on the understanding such
+              models provide, we built closed-loop deep brain stimulation that decodes a patient’s
+              movement from the brain itself and adjusts therapy for Parkinson’s disease in real
+              time.</p>
+            <p>Both projects point to the same conclusion. The main constraint on scientific
+              progress is seldom the quality of our models. We overestimate our own ingenuity: the
+              hypotheses we are able to write down form a measure-zero subset of what is possible, and
+              progress has come more often from new and better measurements, made in the environments
+              where the systems of interest operate, than from new ideas. This is a hopeful
+              conclusion, because instruments can be built. That is what Erised is for. Understanding
+              the world at its smallest scales is a way to help the world and the living things in
+              it.</p>
+          </div>
+          <p class="essay-more">This is the argument of my thesis introduction;
+            <a href="notes/thesis.html">the note</a> makes it at length.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The closing section and the point of the page for half its readers:
+         who should write, the address as the one primary button, and the
+         profiles as a side column. -->
+    <section class="block contact" aria-labelledby="h-contact">
       <h2 class="section-label" id="h-contact">Contact</h2>
-      <p class="contact-mail"><a href="mailto:aliciaxiaozeng@gmail.com">aliciaxiaozeng@gmail.com</a></p>
-      <p class="prose contact-note">If you are building, buying or backing nanoscale measurement,
-        or want to work on the models behind it, I would like to hear from you.</p>
-      <p class="profiles">
-        <a href="https://scholar.google.com/citations?user=bXvlhkYAAAAJ">Google Scholar</a>
-        <a href="https://www.linkedin.com/in/alicia-zeng/">LinkedIn</a>
-        <a href="https://github.com/alicialitrtwe">GitHub</a>
-        <a href="https://erised-ai.com">Erised AI</a></p>
-      <!-- Demoted from its own display-scale section to one quiet line: the
-           only sentence here that is not about the work, read as an aside. -->
+      <div class="contact-panel">
+        <div class="contact-main">
+          <p class="contact-note">If you are building, buying or backing nanoscale measurement,
+            or want to work on the models behind&nbsp;it, I would like to hear from you.</p>
+          <p class="contact-mail"><a class="cta" href="mailto:aliciaxiaozeng@gmail.com">aliciaxiaozeng@gmail.com</a></p>
+        </div>
+        <div class="contact-side">
+          <p class="contact-label" id="h-elsewhere">Elsewhere</p>
+          <ul class="profiles" aria-labelledby="h-elsewhere">
+            <li><a href="https://scholar.google.com/citations?user=bXvlhkYAAAAJ">Google Scholar</a></li>
+            <li><a href="https://www.linkedin.com/in/alicia-zeng/">LinkedIn</a></li>
+            <li><a href="https://github.com/alicialitrtwe">GitHub</a></li>
+            <li><a href="https://erised-ai.com">Erised AI</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- One quiet line: the only sentence here that is not about the work,
+           read as an aside. -->
       <p class="otherwise">Outside work: philosophy, ballet, hiking, and hosting friends
         for dinner.</p>
     </section>
