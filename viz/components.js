@@ -7,7 +7,7 @@
 
    - two rows of buttons above it: the order (the paper's numbering, most
      stable first, best agreement across people first) and which components to
-     show (all, the four of Fig. 2, the five that follow speech timing, the
+     show (all, the ten whose maps are on the page, the five that follow speech timing, the
      seven the paper counts as not stable);
    - the list folds to its first ten lines, with a button to show the rest;
    - one line is "open" at a time and prints its two values beside its marks:
@@ -17,6 +17,13 @@
    It carries no data. Order and filters read the data-* attributes the page's
    rows were generated with (data-stab, data-xr, data-tags), which hold the
    same values as the folded table under the list.
+
+   It also runs the two sets of example components (#examples near the top,
+   #more-examples under the list): without script their panels stack; here
+   they become tabs (arrow keys move between them), and a "see its maps" link
+   in the list opens the right panel. And it folds the <details> marked
+   data-fold, which the page sends open so that nothing is hidden without
+   script.
 
    No dependencies, no network, no motion.                                   */
 
@@ -64,8 +71,8 @@
     ];
     var FILTERS = [
       { label: 'All', test: function () { return true; } },
-      { label: 'In Fig. 2', test: tagged('fig2'),
-        say: function (k) { return 'The ' + k + ' components shown in Fig. 2 at the top of the page.'; } },
+      { label: 'With maps', test: tagged('maps'),
+        say: function (k) { return 'The ' + k + ' components whose brain maps are on this page. “See its maps” opens one.'; } },
       { label: 'Speech timing', test: tagged('speech'),
         say: function (k) { return 'These ' + k + ' follow the timing of speech, its pauses and rapid stretches, rather than its meaning. They are the most often active.'; } },
       { label: 'Not stable', test: tagged('unstable'),
@@ -202,7 +209,104 @@
     apply();
   }
 
+  /* -- the example components: tabs over panels that stack without script -- */
+  var switchers = [];
+  function switcher(fig) {
+    var panels = [].slice.call(fig.querySelectorAll('.cs-panel'));
+    if (panels.length < 2) return;
+    var bar = el('div', 'cs-tabs');
+    bar.setAttribute('role', 'tablist');
+    bar.setAttribute('aria-label', fig.id === 'examples' ? 'Example components' : 'More example components');
+    var tabs = panels.map(function (p, i) {
+      var t = el('button', 'cs-tab', null, bar);
+      t.type = 'button';
+      t.id = 'cs-tab-' + p.id;
+      t.setAttribute('role', 'tab');
+      t.setAttribute('aria-controls', p.id);
+      el('span', 'cs-tab-id', p.id.replace('comp-', ''), t);
+      el('span', null, p.getAttribute('data-label'), t);
+      p.setAttribute('role', 'tabpanel');
+      p.setAttribute('aria-labelledby', t.id);
+      p.setAttribute('tabindex', '0');
+      t.addEventListener('click', function () { show(i); });
+      t.addEventListener('keydown', function (e) {
+        var to = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = (i + 1) % panels.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = (i - 1 + panels.length) % panels.length;
+        else if (e.key === 'Home') to = 0;
+        else if (e.key === 'End') to = panels.length - 1;
+        if (to === null) return;
+        e.preventDefault();
+        show(to);
+        tabs[to].focus();
+      });
+      return t;
+    });
+    function show(k) {
+      panels.forEach(function (p, i) {
+        var on = i === k;
+        p.hidden = !on;
+        tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+        tabs[i].setAttribute('tabindex', on ? '0' : '-1');
+      });
+    }
+    fig.insertBefore(bar, panels[0]);
+    fig.classList.add('cs-on');
+    show(0);
+    switchers.push({ fig: fig, panels: panels, show: show, tabs: tabs });
+  }
+
+  // A link to a panel ("see its maps", or an address ending #comp-c24)
+  // selects its tab and brings the figure into view.
+  function reveal(id) {
+    for (var s = 0; s < switchers.length; s++) {
+      var w = switchers[s];
+      for (var i = 0; i < w.panels.length; i++) {
+        if (w.panels[i].id !== id) continue;
+        w.show(i);
+        w.fig.scrollIntoView({ block: 'start' });
+        try { w.tabs[i].focus({ preventScroll: true }); } catch (e) { w.tabs[i].focus(); }
+        return true;
+      }
+    }
+    return false;
+  }
+  function isPanel(h) { return /^comp-c\d+$/.test(h); }
+
+  // <details data-fold> come open in the page as sent, so nothing is hidden
+  // without script; they are folded here.
+  function fold() {
+    [].forEach.call(document.querySelectorAll('details[data-fold]'), function (d) { d.open = false; });
+  }
+
+  function examples() {
+    [].forEach.call(document.querySelectorAll('[data-switch]'), switcher);
+    var h = location.hash.slice(1);
+    if (isPanel(h)) reveal(h);
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#comp-"]');
+      if (!a || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var id = a.getAttribute('href').slice(1);
+      if (reveal(id)) {
+        e.preventDefault();
+        if (history.replaceState) history.replaceState(null, '', '#' + id);
+      }
+    });
+    window.addEventListener('hashchange', function () {
+      var h = location.hash.slice(1);
+      if (isPanel(h)) reveal(h);
+    });
+  }
+
   function start() {
+    try { fold(); } catch (e) { if (window.console) console.error(e); }
+    try { examples(); } catch (e) {
+      // leave the examples as the page sent them: every panel, stacked
+      [].forEach.call(document.querySelectorAll('.cs-panel[hidden]'), function (p) { p.hidden = false; });
+      [].forEach.call(document.querySelectorAll('.cs-tabs'), function (b) { b.parentNode.removeChild(b); });
+      [].forEach.call(document.querySelectorAll('.cs-on'), function (f) { f.classList.remove('cs-on'); });
+      if (window.console) console.error(e);
+    }
     try { explorer(); } catch (e) {
       // leave the list as the page sent it: every line, nothing hidden
       var fig = document.getElementById('cx');
