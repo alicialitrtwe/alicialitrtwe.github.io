@@ -1,20 +1,16 @@
-/* Alicia Zeng — personal site.
-   Plain, after szymonkaliski.com — the system sans, one text size, bold
-   for headings, underlined links, gray for metadata — but on black,
-   committed: there is no light variant. No build step, no framework, no
-   network requests; the one script (site.js) draws the hero and is
-   optional — the page is complete without it.
+/* Alicia Zeng: personal site.
+   Plain, after szymonkaliski.com (the system sans, one text size, bold for
+   headings, underlined links, gray for metadata) but on black, committed:
+   there is no light variant. No build step, no framework, no network
+   requests. Every page is complete without site.js.
 
-   The three research visuals are PURE CSS and ABSTRACT. They are
-   decorative: they are not figures, data or results from the papers.
-   They live here rather than in the markup so the art is written once
-   and every page shares it. See README.md to swap one for a real image.
+   Layers: the tokens and base rules first, then the site's earlier passes,
+   then one block per later pass, each opened by a comment of the form
+   "==== agent:<name> ====". Later blocks override earlier ones; add new
+   rules in a new block at the end. README.md lists the blocks.
 
-   The visuals and the real work are kept apart on purpose: decorative
-   art appears only in the home hero and in a card's thumbnail slot, is
-   never captioned, and never appears on a paper page — see README.
-
-   There are no placeholders left on the site (2026-10-22).               */
+   Every image on the site is real material from the work or a coded
+   illustration labelled as one in its caption; nothing is decorative.     */
 
 /* ---- tokens -------------------------------------------------------------- */
 :root {
