@@ -6,9 +6,9 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0a0a0a">
 <title>Birdsong in state space — Alicia Zeng</title>
-<meta name="description" content="Two years at Penn treating zebra finch song as one observable of a dynamical system, reconstructing the state space behind it by delay embedding.">
+<meta name="description" content="A two-year project at Penn that treated zebra finch song as one measurement of a dynamical system and reconstructed its state space by delay embedding.">
 <meta property="og:title" content="Birdsong in state space">
-<meta property="og:description" content="Treating zebra finch song as one observable of a dynamical system, reconstructing the state space behind it by delay embedding.">
+<meta property="og:description" content="A two-year project at Penn that treated zebra finch song as one measurement of a dynamical system and reconstructed its state space by delay embedding.">
 <meta property="og:url" content="https://alicialitrtwe.github.io/research/birdsong.html">
 <meta property="og:type" content="article">
 <meta property="og:image" content="https://alicialitrtwe.github.io/figures/project-birdsong.jpg">
@@ -70,9 +70,9 @@
   </video>
   <figcaption>One song’s reconstructed state space, turning. Each moment of the recording is
     placed by its own value and its values one and two delays earlier, and the trajectory joins them
-    in order: the whole path is held faint so the shape of the attractor is visible at once, and the
-    bright stroke is the ~30&nbsp;ms the bird is singing at the moment on the readout. One descending
-    chirp from zebra finch 2M, 238&nbsp;ms of song, one turn of the camera.</figcaption>
+    in order. The whole path is drawn faintly so that the shape of the attractor is visible at once, and the
+    bright stroke is the ~30&nbsp;ms the bird is singing at the time shown on the readout. The clip is one descending
+    chirp from zebra finch 2M: 238&nbsp;ms of song, one turn of the camera.</figcaption>
 </figure>
 
 <p class="lead">Zebra finch song is normally described as acoustics: a spectrogram and an
@@ -83,8 +83,8 @@
 <section class="paper-section" id="approach" aria-labelledby="h-approach">
   <h2 id="h-approach">The approach</h2>
 <p>Takens’ theorem says you can recover the geometry of a dynamical system’s attractor from a single
-  measured channel, by treating delayed copies of that channel as independent coordinates. So: take
-  the waveform, choose a delay, and plot each moment against itself one and two delays ago. The delay matters: too short and the coordinates are redundant, too long and they are unrelated. It was chosen from the first local minimum of the mutual information, the standard criterion.
+  measured channel, by treating delayed copies of that channel as independent coordinates. In practice, take
+  the waveform, choose a delay, and plot each moment against its values one and two delays earlier. The delay matters: too short and the coordinates are redundant, too long and they are unrelated. It was set at the first local minimum of the mutual information, the standard criterion.
   The embedding dimension and the Lyapunov exponents, which say whether trajectories nearby now stay
   nearby, were estimated alongside it.</p>
 <p>Because a reconstruction like this produces a picture even from noise, the procedure was also run on systems whose answers are already known, Lorenz and Rössler, and those were kept next to the song
