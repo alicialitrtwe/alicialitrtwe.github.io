@@ -2659,3 +2659,94 @@ a.cx-maplink:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; 
 }
 .sp-grid { max-width: 20rem; }
 .sp-grid-on rect { stroke: var(--fg); stroke-width: 1.2; }
+
+
+/* ==== agent:clinical ==== */
+/* research/dbs.html, research/stimulation.html, research/birdsong.html
+   (2026-11-19). Scoped to .dbs-*, .bird-* and the three figure classes
+   below; nothing here applies elsewhere.
+
+   #dbs-loop is a coded illustration: an inline SVG loop and three schematic
+   traces. Without script it is static and says both states in words; with
+   viz/dbs.js it gains .is-live, a playhead and two state buttons, and the
+   loop names the current state. The state is always written out, so colour
+   is never the only cue. The birdsong figure is three static SVG panels.   */
+
+/* -- plates that are small in the source: do not blow them up past their pixels */
+.dbs-fig-small img { max-width: 24rem; }
+.dbs-fig-results img { max-width: 40rem; }
+
+/* -- the DBS loop ---------------------------------------------------------- */
+.dbs-loop-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--surface);
+}
+@media (min-width: 40em) {
+  .dbs-loop-row { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+}
+.dbs-loop svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dbs-loop-cycle { max-width: 22rem; margin: 0 auto; }
+.dbs-node rect { fill: var(--bg); stroke: var(--border); stroke-width: 1.5; }
+.dbs-node text { text-anchor: middle; fill: var(--fg-dim); font-family: var(--sans); }
+.dbs-node-title { font-size: 16px; font-weight: 600; fill: var(--fg) !important; }
+.dbs-node-text { font-size: 13.5px; }
+.dbs-node-state { font-size: 15px; font-weight: 600; fill: var(--area) !important; }
+.dbs-edge { fill: none; stroke: var(--fg-muted); stroke-width: 1.5; }
+.dbs-arrowhead { fill: var(--fg-muted); }
+.dbs-live { display: none; }
+.dbs-loop.is-live .dbs-live { display: inline; }
+.dbs-loop.is-live .dbs-static { display: none; }
+.dbs-loop.is-live .dbs-node--decoder rect,
+.dbs-loop.is-live .dbs-node--stim rect { stroke: color-mix(in srgb, var(--area) 60%, transparent); }
+
+.dbs-shade rect { fill: var(--fg); opacity: 0.06; }
+.dbs-trace-label { font-family: var(--sans); font-size: 16px; fill: var(--fg-dim); }
+.dbs-trace-axis { font-family: var(--sans); font-size: 14px; fill: var(--fg-muted); text-anchor: end; }
+.dbs-trace { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.dbs-trace--move { stroke: var(--fg-dim); stroke-width: 1.5; }
+.dbs-trace--const { stroke: var(--fg-muted); stroke-dasharray: 6 5; }
+.dbs-trace--resp { stroke: var(--area); }
+.dbs-playhead { display: none; stroke: var(--fg); stroke-width: 1.5; opacity: 0.7; }
+.dbs-loop.is-live .dbs-playhead { display: inline; }
+
+.dbs-loop-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.dbs-btn {
+  min-height: 2.25rem;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.dbs-btn:hover { border-color: var(--fg-muted); color: var(--fg); }
+.dbs-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dbs-btn[aria-pressed="true"] { border-color: var(--area); color: var(--fg); }
+.dbs-btn--play { margin-left: auto; }
+
+/* -- the birdsong delay-embedding panels ----------------------------------- */
+.bird-embed svg { display: block; width: 100%; height: auto; }
+.bird-line { fill: none; stroke: var(--area); stroke-width: 0.8; stroke-linejoin: round; opacity: 0.9; }
+.bird-embed-strip .bird-line { stroke-width: 1.2; }
+.bird-axis { stroke: var(--border); stroke-width: 1; }
+.bird-frame { fill: var(--surface); stroke: var(--border); }
+.bird-embed-label { margin: 0.35rem 0 1rem; font-size: 0.8125rem; color: var(--fg-muted); }
+.bird-embed-panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.paper-section > .fig .bird-embed-panels li + li { margin-top: 0; }
+.bird-embed-panels p { margin: 0.5rem 0 0; font-size: 0.8125rem; line-height: 1.4; color: var(--fg-muted); }
+.bird-embed-panels b { display: block; color: var(--fg-dim); font-weight: 600; }
